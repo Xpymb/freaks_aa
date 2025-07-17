@@ -1,0 +1,6 @@
+@Freaks.Files.WebApi_HostAddress = http://localhost:5156
+
+GET {{Freaks.Files.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
