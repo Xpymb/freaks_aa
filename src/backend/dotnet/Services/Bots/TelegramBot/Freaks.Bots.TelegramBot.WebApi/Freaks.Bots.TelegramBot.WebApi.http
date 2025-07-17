@@ -1,0 +1,6 @@
+@Freaks.Bots.TelegramBot.WebApi_HostAddress = http://localhost:5067
+
+GET {{Freaks.Bots.TelegramBot.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

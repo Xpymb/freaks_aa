@@ -1,0 +1,6 @@
+@Freaks.Bots.DiscordBot.WebApi_HostAddress = http://localhost:5164
+
+GET {{Freaks.Bots.DiscordBot.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
