@@ -1,0 +1,85 @@
+{
+"exchanges": [
+  ],
+  "queues": [
+  ],
+  "bindings":[
+  ],
+  "users":[
+    {
+      "name": "admin",
+      "password": "admin",
+      "tags": "administrator"
+    },
+    {
+      "name": "portal-backend",
+      "password": "portal",
+      "tags": ""
+    },
+    {
+      "name": "files-backend",
+      "password": "files",
+      "tags": ""
+    },
+    {
+      "name": "discord-bot",
+      "password": "discord",
+      "tags": ""
+    },
+    {
+      "name": "telegram-bot",
+      "password": "telegram",
+      "tags": ""
+    }
+  ],
+  "vhosts":[
+    {
+      "name":"/bus"
+    }
+   ],
+  "permissions":[
+    {
+      "user":"admin",
+      "vhost":"/bus",
+      "configure":".*",
+      "write":".*",
+      "read":".*"
+    },
+    {
+      "user":"portal-backend",
+      "vhost":"/bus",
+      "configure":".*",
+      "write":".*",
+      "read":".*"
+    },
+    {
+      "user":"files-backend",
+      "vhost":"/bus",
+      "configure":".*",
+      "write":".*",
+      "read":".*"
+    },
+    {
+      "user":"discord-bot",
+      "vhost":"/bus",
+      "configure":".*",
+      "write":".*",
+      "read":".*"
+    },
+    {
+      "user":"telegram-bot",
+      "vhost":"/bus",
+      "configure":".*",
+      "write":".*",
+      "read":".*"
+    }
+   ],
+   "topic_permissions":[
+   ],
+   "parameters":[
+   ],
+   "global_parameters":[
+   ],
+   "policies":[
+   ]
+}
