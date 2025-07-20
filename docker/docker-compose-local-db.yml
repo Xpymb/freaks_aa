@@ -1,0 +1,62 @@
+services:
+  postgres:
+    image: ${DOCKER_REGISTRY}/postgres:${POSTGRES_VERSION}
+    build: 
+      context: "./Postgres"
+      dockerfile: "./Dockerfile"
+      args:
+        - POSTGRES_VERSION=${POSTGRES_VERSION}
+    ports:
+      - "8432:5432"
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_ADMIN_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  minio:
+    image: ${DOCKER_REGISTRY}/minio:${MINIO_VERSION}
+    build: 
+      context: "./MinIO"
+      dockerfile: "./Dockerfile"
+      args:
+        - MINIO_VERSION=${MINIO_VERSION}
+    ports:
+      - "11000:9000"
+      - "11010:9001"
+    environment:
+      - MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY}
+      - MINIO_SECRET_KEY=${MINIO_SECRET_KEY}
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
+      - MINIO_REGION=${MINIO_REGION}
+      - MINIO_CONSOLE_ADDRESS=:9001
+    volumes:
+      - minio_data:/data
+  rabbitmq:
+    image: ${DOCKER_REGISTRY}/rabbitmq:${RABBITMQ_VERSION}
+    build: 
+      context: "./RabbitMQ"
+      dockerfile: "./Dockerfile"
+      args:
+        - RABBITMQ_VERSION=${RABBITMQ_VERSION}
+    ports:
+      - "18672:15672"
+      - "8672:5672"
+      - "8671:5671"
+      - "18671:15671"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq:rw
+  redis:
+    image: ${DOCKER_REGISTRY}/redis:${REDIS_VERSION}
+    build: 
+      context: "./Redis"
+      dockerfile: "./Dockerfile"
+      args:
+        - REDIS_VERSION=${REDIS_VERSION}
+    ports:
+      - "9379:6379"
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+volumes:
+  postgres_data: null
+  minio_data: null
+  rabbitmq_data: null
