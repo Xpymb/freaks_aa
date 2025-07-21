@@ -6,4 +6,12 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+        <Folder Include="Entities\Raid\"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\Shared\Freaks.Contracts.Common\Freaks.Contracts.Common.csproj"/>
+    </ItemGroup>
+
 </Project>

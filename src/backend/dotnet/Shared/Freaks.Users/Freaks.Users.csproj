@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Freaks.Contracts.Common\Freaks.Contracts.Common.csproj" />
+      <ProjectReference Include="..\Freaks.Dal.Common\Freaks.Dal.Common.csproj" />
+      <ProjectReference Include="..\Freaks.WebApi.Common\Freaks.WebApi.Common.csproj" />
+    </ItemGroup>
+
+</Project>
