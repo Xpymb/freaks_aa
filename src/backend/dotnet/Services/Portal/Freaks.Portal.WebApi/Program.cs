@@ -1,10 +1,10 @@
 using Freaks.Dal.Common.Extensions;
 using Freaks.Portal.Bll.Implementation;
 using Freaks.Portal.Dal.Implementation;
-using Freaks.Portal.Dal.Interfaces;
+using Freaks.Portal.Dal.Persistence;
 using Freaks.Users;
+using Freaks.Users.Persistence;
 using Freaks.WebApi.Common.Extensions;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,9 +37,8 @@ if (app.Environment.IsDevelopment()
 {
     app.UseNSwag();
 
-    using var scope = app.Services.CreateScope();
-    var dbContext = scope.ServiceProvider.GetRequiredService<IPortalDbContext>();
-    await dbContext.Database.MigrateAsync();
+    await app.ApplyMigrationsAsync<IUserDbContext>();
+    await app.ApplyMigrationsAsync<IPortalDbContext>();
 }
 
 app.UseAuthentication();

@@ -1,13 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Freaks.Contracts.Common.Interfaces;
+using Freaks.Dal.Common.Consts;
 
 namespace Freaks.Users.Contracts;
 
 /// <summary>
 ///     Представляет пользователя в системе.
 /// </summary>
-[Table("users", Schema = "users")]
+[Table("users", Schema = DatabaseConsts.UsersSchema)]
 public class User : IEntity<Guid>
 {
     /// <summary>

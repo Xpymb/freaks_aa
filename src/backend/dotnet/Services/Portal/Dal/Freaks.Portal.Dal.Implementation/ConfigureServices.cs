@@ -1,6 +1,5 @@
 ﻿using Freaks.Dal.Common.Extensions;
-using Freaks.Portal.Dal.Implementation.Persistence;
-using Freaks.Portal.Dal.Interfaces;
+using Freaks.Portal.Dal.Persistence;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

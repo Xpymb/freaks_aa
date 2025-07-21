@@ -1,5 +1,6 @@
 ﻿using Freaks.Dal.Common.Interfaces;
 using Freaks.Options.Common;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,18 +8,24 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Freaks.Dal.Common.Extensions;
 
 /// <summary>
-///     Расширения для регистрации PostgreSQL-контекста данных в DI-контейнер.
+/// Расширения для регистрации PostgreSQL-контекста данных в DI-контейнер
+/// и автоматического применения миграций.
 /// </summary>
 public static class DbExtensions
 {
     /// <summary>
-    ///     Регистрирует DbContext на основе PostgreSQL.
-    ///     Также регистрирует интерфейсный контракт контекста как scoped-сервис.
+    /// Регистрирует <see cref="DbContext" /> на основе PostgreSQL.
+    /// Также добавляет реализацию контекста как scoped-сервис по контракту интерфейса.
     /// </summary>
-    /// <typeparam name="TInterface">Интерфейс контекста (например, <c>IAppDbContext</c>).</typeparam>
-    /// <typeparam name="TService">Реализация DbContext (например, <c>AppDbContext</c>).</typeparam>
+    /// <typeparam name="TInterface">
+    /// Интерфейс контекста, например <c>IAppDbContext</c>. Должен реализовывать <see cref="IBaseDbContext"/>.
+    /// </typeparam>
+    /// <typeparam name="TService">
+    /// Класс, реализующий DbContext, например <c>AppDbContext</c>. Должен наследовать <see cref="DbContext" /> и реализовывать <typeparamref name="TInterface"/>.
+    /// </typeparam>
     /// <param name="services">Коллекция сервисов приложения.</param>
-    /// <param name="configuration">Конфигурация приложения (например, <c>IConfiguration</c>).</param>
+    /// <param name="configuration">Конфигурация приложения для получения строки подключения.</param>
+    /// <returns>Обновлённая коллекция сервисов.</returns>
     public static IServiceCollection AddPostgresDbContext<TInterface, TService>(this IServiceCollection services, IConfiguration configuration)
         where TService : DbContext, TInterface
         where TInterface : class, IBaseDbContext
@@ -32,5 +39,21 @@ public static class DbExtensions
         services.AddScoped<TInterface>(provider => provider.GetRequiredService<TService>());
 
         return services;
+    }
+
+    /// <summary>
+    /// Применяет все ожидающие миграции для указанного контекста базы данных при запуске приложения.
+    /// </summary>
+    /// <typeparam name="TDbContext">Тип контекста, реализующий <see cref="IBaseDbContext"/>.</typeparam>
+    /// <param name="app">Экземпляр приложения <see cref="IApplicationBuilder"/>.</param>
+    /// <returns>Обновлённый экземпляр <see cref="IApplicationBuilder"/>.</returns>
+    public static async Task<IApplicationBuilder> ApplyMigrationsAsync<TDbContext>(this IApplicationBuilder app)
+        where TDbContext : IBaseDbContext
+    {
+        using var scope = app.ApplicationServices.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<TDbContext>();
+        await dbContext.Database.MigrateAsync();
+
+        return app;
     }
 }
