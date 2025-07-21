@@ -1,20 +1,52 @@
+using Freaks.Dal.Common.Extensions;
+using Freaks.Portal.Bll.Implementation;
+using Freaks.Portal.Dal.Implementation;
+using Freaks.Portal.Dal.Interfaces;
+using Freaks.Users;
+using Freaks.WebApi.Common.Extensions;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+builder.Services.AddDefaults(builder.Configuration);
+
+// Swagger
+builder.Services.AddNSwag();
+
+// Auth
+builder.Services.AddKeycloakAuth(builder.Configuration);
+
+// Cache
+builder.Services.AddEasyCaching(builder.Configuration);
+
+// User
+builder.Services.AddUserContext(builder.Configuration);
+
+// Core
+builder.Services
+       .AddBllServices()
+       .AddDalProviders(builder.Configuration);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+app.UseDefaults();
+
+if (app.Environment.IsDevelopment()
+    || app.Environment.IsCompose())
 {
-    app.MapOpenApi();
+    app.UseNSwag();
+
+    using var scope = app.Services.CreateScope();
+    var dbContext = scope.ServiceProvider.GetRequiredService<IPortalDbContext>();
+    await dbContext.Database.MigrateAsync();
 }
 
+app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseUserContext();
+app.UseCustomExceptionHandler();
 
 app.MapControllers();
 

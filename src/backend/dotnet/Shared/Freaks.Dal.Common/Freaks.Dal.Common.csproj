@@ -6,4 +6,25 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+        <PackageReference Include="EasyCaching.Bus.Redis" Version="1.9.2"/>
+        <PackageReference Include="EasyCaching.Extensions.EasyCompressor" Version="2.1.0"/>
+        <PackageReference Include="EasyCaching.HybridCache" Version="1.9.2"/>
+        <PackageReference Include="EasyCaching.InMemory" Version="1.9.2"/>
+        <PackageReference Include="EasyCaching.Redis" Version="1.9.2"/>
+        <PackageReference Include="EasyCaching.Serialization.MessagePack" Version="1.9.2"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.7"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.7"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.7"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.7"/>
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4"/>
+        <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="9.103.9.1"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Freaks.Contracts.Common\Freaks.Contracts.Common.csproj"/>
+        <ProjectReference Include="..\Freaks.Options.Common\Freaks.Options.Common.csproj"/>
+        <ProjectReference Include="..\Freaks.WebApi.Common\Freaks.WebApi.Common.csproj"/>
+    </ItemGroup>
+
 </Project>

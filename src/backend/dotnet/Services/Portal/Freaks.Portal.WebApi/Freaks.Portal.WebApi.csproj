@@ -4,10 +4,22 @@
         <TargetFramework>net9.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.7"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.7">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\Shared\Freaks.Users\Freaks.Users.csproj"/>
+        <ProjectReference Include="..\..\..\Shared\Freaks.WebApi.Common\Freaks.WebApi.Common.csproj"/>
+        <ProjectReference Include="..\Bll\Freaks.Portal.Bll.Implementation\Freaks.Portal.Bll.Implementation.csproj"/>
+        <ProjectReference Include="..\Dal\Freaks.Portal.Dal.Implementation\Freaks.Portal.Dal.Implementation.csproj"/>
     </ItemGroup>
 
 </Project>
