@@ -24,7 +24,7 @@ public class EntityNotFoundException : BadRequestApiException
     /// </summary>
     /// <param name="message">Сообщение об ошибке.</param>
     /// <param name="innerException">Вложенное исключение (если есть).</param>
-    public EntityNotFoundException(string? message = null, Exception? innerException = null)
+    public EntityNotFoundException(string? message = "Entity not found", Exception? innerException = null)
         : base(message, innerException)
     {
     }

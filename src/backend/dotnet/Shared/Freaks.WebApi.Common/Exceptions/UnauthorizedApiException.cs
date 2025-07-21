@@ -9,7 +9,7 @@ public class UnauthorizedApiException : BadRequestApiException
 
     public override string ErrorCode => "UNAUTHORIZED";
 
-    public UnauthorizedApiException(string? message = null, Exception? innerException = null)
+    public UnauthorizedApiException(string? message = "User not authorized", Exception? innerException = null)
         : base(message, innerException)
     {
     }

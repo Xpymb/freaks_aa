@@ -1,6 +1,7 @@
 ﻿using Freaks.Contracts.Common.Interfaces;
 using Freaks.Dal.Common.Interfaces;
 using Freaks.Dal.Common.ValueObjects;
+using Freaks.WebApi.Common.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Freaks.Dal.Common.Implementations;
@@ -74,8 +75,7 @@ public abstract class BaseProvider<TEntity, TKey, TDbContext> : IBaseProvider<TE
         var originalEntity = await GetAsync(entity.Id, EntityTrackingType.Tracking);
         if (originalEntity is null)
         {
-            // TODO
-            throw new ArgumentNullException();
+            throw new EntityNotFoundException();
         }
 
         Set

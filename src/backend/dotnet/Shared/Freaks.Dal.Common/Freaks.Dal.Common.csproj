@@ -24,6 +24,7 @@
     <ItemGroup>
         <ProjectReference Include="..\Freaks.Contracts.Common\Freaks.Contracts.Common.csproj"/>
         <ProjectReference Include="..\Freaks.Options.Common\Freaks.Options.Common.csproj"/>
+        <ProjectReference Include="..\Freaks.WebApi.Common\Freaks.WebApi.Common.csproj"/>
     </ItemGroup>
 
 </Project>
