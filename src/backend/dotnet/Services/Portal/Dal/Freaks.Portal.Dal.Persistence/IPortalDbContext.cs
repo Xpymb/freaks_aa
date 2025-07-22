@@ -1,6 +1,6 @@
 ﻿using Freaks.Dal.Common.Interfaces;
-using Freaks.Portal.Contracts.Entities.BossLootEntities;
-using Freaks.Portal.Contracts.Entities.RaidEntities;
+using Freaks.Portal.Contracts.Entities.Loot;
+using Freaks.Portal.Contracts.Entities.RaidSummary;
 using Microsoft.EntityFrameworkCore;
 
 namespace Freaks.Portal.Dal.Persistence;

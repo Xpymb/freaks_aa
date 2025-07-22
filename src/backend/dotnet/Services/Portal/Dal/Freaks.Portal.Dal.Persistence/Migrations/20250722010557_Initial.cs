@@ -48,7 +48,8 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
                     start_dt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     created_dt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     updated_dt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    description = table.Column<string>(type: "text", nullable: false)
+                    description = table.Column<string>(type: "text", nullable: false),
+                    status = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {

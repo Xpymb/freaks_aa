@@ -2,14 +2,16 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Freaks.Contracts.Common.Interfaces;
 using Freaks.Dal.Common.Consts;
-using Freaks.Portal.SharedContracts.ValueObjects.Raid;
+using Freaks.Portal.SharedContracts.ValueObjects.RaidSummary;
 using Freaks.Users.Contracts;
 
-namespace Freaks.Portal.Contracts.Entities.RaidEntities;
+namespace Freaks.Portal.Contracts.Entities.RaidSummary;
 
 /// <summary>
 /// Представляет сущность рейда в базе данных.
 /// Содержит информацию о создателе, типе босса, формате, времени и описании рейда.
+/// Также включает статус рейда, связанные скриншоты, участников и полученные трофеи.
+/// Используется для планирования и отслеживания рейдовых событий в системе.
 /// </summary>
 [Table("raid", Schema = DatabaseConsts.PortalSchema)]
 public class Raid : IEntity<int>
@@ -63,10 +65,30 @@ public class Raid : IEntity<int>
     /// </summary>
     [Column("description")]
     public required string Description { get; init; }
-    
+
+    /// <summary>
+    ///     Текущий статус рейда (запланирован, завершён и т.д.).
+    /// </summary>
+    [Column("status")]
+    public RaidStatus Status { get; init; } = RaidStatus.Planned;
+
+    /// <summary>
+    ///     Навигационное свойство — создатель рейда.
+    /// </summary>
     public User? Creator { get; init; }
-    
+
+    /// <summary>
+    ///     Список участников, присоединившихся к рейду.
+    /// </summary>
     public IList<RaidParticipant> Participants { get; init; } = new List<RaidParticipant>();
+
+    /// <summary>
+    ///     Список скриншотов, загруженных после рейда.
+    /// </summary>
     public IList<RaidScreenshot> Screenshots { get; init; } = new List<RaidScreenshot>();
+
+    /// <summary>
+    ///     Список предметов/трофеев, полученных в ходе рейда.
+    /// </summary>
     public IList<RaidLoot> Loots { get; init; } = new List<RaidLoot>();
 }

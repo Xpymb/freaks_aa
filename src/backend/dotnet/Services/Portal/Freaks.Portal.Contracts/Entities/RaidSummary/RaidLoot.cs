@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using Freaks.Dal.Common.Consts;
-using Freaks.Portal.Contracts.Entities.BossLootEntities;
+using Freaks.Portal.Contracts.Entities.Loot;
 
-namespace Freaks.Portal.Contracts.Entities.RaidEntities;
+namespace Freaks.Portal.Contracts.Entities.RaidSummary;
 
 /// <summary>
 /// Представляет добычу, выпавшую в рамках конкретного рейда.

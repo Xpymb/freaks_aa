@@ -1,4 +1,4 @@
-﻿namespace Freaks.Portal.SharedContracts.ValueObjects.BossLoot;
+﻿namespace Freaks.Portal.SharedContracts.ValueObjects.Loot;
 
 /// <summary>
 /// Перечисление типов добычи, выпадающей в рейдах и с мировых боссов.

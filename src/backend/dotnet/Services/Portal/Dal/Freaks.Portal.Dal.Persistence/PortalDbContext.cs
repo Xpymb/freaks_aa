@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using Freaks.Dal.Common.Consts;
-using Freaks.Portal.Contracts.Entities.BossLootEntities;
-using Freaks.Portal.Contracts.Entities.RaidEntities;
+using Freaks.Portal.Contracts.Entities.Loot;
+using Freaks.Portal.Contracts.Entities.RaidSummary;
 using Freaks.Users.Contracts;
 using Microsoft.EntityFrameworkCore;
 

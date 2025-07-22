@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using Freaks.Dal.Common.Consts;
 
-namespace Freaks.Portal.Contracts.Entities.RaidEntities;
+namespace Freaks.Portal.Contracts.Entities.RaidSummary;
 
 /// <summary>
 /// Представляет скриншот, связанный с рейдом в базе данных.

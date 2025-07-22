@@ -22,7 +22,7 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Freaks.Portal.Contracts.Entities.BossLootEntities.BossLoot", b =>
+            modelBuilder.Entity("Freaks.Portal.Contracts.Entities.Loot.BossLoot", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -53,7 +53,7 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
                     b.ToTable("boss_loot", "portal");
                 });
 
-            modelBuilder.Entity("Freaks.Portal.Contracts.Entities.RaidEntities.Raid", b =>
+            modelBuilder.Entity("Freaks.Portal.Contracts.Entities.RaidSummary.Raid", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -87,6 +87,10 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("start_dt");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("integer")
+                        .HasColumnName("status");
+
                     b.Property<DateTimeOffset?>("UpdatedDt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_dt");
@@ -99,7 +103,7 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
                     b.ToTable("raid", "portal");
                 });
 
-            modelBuilder.Entity("Freaks.Portal.Contracts.Entities.RaidEntities.RaidLoot", b =>
+            modelBuilder.Entity("Freaks.Portal.Contracts.Entities.RaidSummary.RaidLoot", b =>
                 {
                     b.Property<int>("RaidId")
                         .HasColumnType("integer")
@@ -117,7 +121,7 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
                     b.ToTable("raid_loot", "portal");
                 });
 
-            modelBuilder.Entity("Freaks.Portal.Contracts.Entities.RaidEntities.RaidParticipant", b =>
+            modelBuilder.Entity("Freaks.Portal.Contracts.Entities.RaidSummary.RaidParticipant", b =>
                 {
                     b.Property<int>("RaidId")
                         .HasColumnType("integer")
@@ -135,7 +139,7 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
                     b.ToTable("raid_participant", "portal");
                 });
 
-            modelBuilder.Entity("Freaks.Portal.Contracts.Entities.RaidEntities.RaidScreenshot", b =>
+            modelBuilder.Entity("Freaks.Portal.Contracts.Entities.RaidSummary.RaidScreenshot", b =>
                 {
                     b.Property<int>("RaidId")
                         .HasColumnType("integer")
@@ -185,26 +189,26 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
                     b.ToTable("users", "users");
                 });
 
-            modelBuilder.Entity("Freaks.Portal.Contracts.Entities.RaidEntities.Raid", b =>
+            modelBuilder.Entity("Freaks.Portal.Contracts.Entities.RaidSummary.Raid", b =>
                 {
                     b.HasOne("Freaks.Users.Contracts.User", "Creator")
                         .WithOne()
-                        .HasForeignKey("Freaks.Portal.Contracts.Entities.RaidEntities.Raid", "CreatorId")
+                        .HasForeignKey("Freaks.Portal.Contracts.Entities.RaidSummary.Raid", "CreatorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Creator");
                 });
 
-            modelBuilder.Entity("Freaks.Portal.Contracts.Entities.RaidEntities.RaidLoot", b =>
+            modelBuilder.Entity("Freaks.Portal.Contracts.Entities.RaidSummary.RaidLoot", b =>
                 {
-                    b.HasOne("Freaks.Portal.Contracts.Entities.BossLootEntities.BossLoot", "Loot")
+                    b.HasOne("Freaks.Portal.Contracts.Entities.Loot.BossLoot", "Loot")
                         .WithOne()
-                        .HasForeignKey("Freaks.Portal.Contracts.Entities.RaidEntities.RaidLoot", "LootId")
+                        .HasForeignKey("Freaks.Portal.Contracts.Entities.RaidSummary.RaidLoot", "LootId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Freaks.Portal.Contracts.Entities.RaidEntities.Raid", "Raid")
+                    b.HasOne("Freaks.Portal.Contracts.Entities.RaidSummary.Raid", "Raid")
                         .WithMany("Loots")
                         .HasForeignKey("RaidId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -215,15 +219,15 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
                     b.Navigation("Raid");
                 });
 
-            modelBuilder.Entity("Freaks.Portal.Contracts.Entities.RaidEntities.RaidParticipant", b =>
+            modelBuilder.Entity("Freaks.Portal.Contracts.Entities.RaidSummary.RaidParticipant", b =>
                 {
                     b.HasOne("Freaks.Users.Contracts.User", "User")
                         .WithOne()
-                        .HasForeignKey("Freaks.Portal.Contracts.Entities.RaidEntities.RaidParticipant", "ParticipantId")
+                        .HasForeignKey("Freaks.Portal.Contracts.Entities.RaidSummary.RaidParticipant", "ParticipantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Freaks.Portal.Contracts.Entities.RaidEntities.Raid", "Raid")
+                    b.HasOne("Freaks.Portal.Contracts.Entities.RaidSummary.Raid", "Raid")
                         .WithMany("Participants")
                         .HasForeignKey("RaidId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -234,9 +238,9 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Freaks.Portal.Contracts.Entities.RaidEntities.RaidScreenshot", b =>
+            modelBuilder.Entity("Freaks.Portal.Contracts.Entities.RaidSummary.RaidScreenshot", b =>
                 {
-                    b.HasOne("Freaks.Portal.Contracts.Entities.RaidEntities.Raid", "Raid")
+                    b.HasOne("Freaks.Portal.Contracts.Entities.RaidSummary.Raid", "Raid")
                         .WithMany("Screenshots")
                         .HasForeignKey("RaidId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -245,7 +249,7 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
                     b.Navigation("Raid");
                 });
 
-            modelBuilder.Entity("Freaks.Portal.Contracts.Entities.RaidEntities.Raid", b =>
+            modelBuilder.Entity("Freaks.Portal.Contracts.Entities.RaidSummary.Raid", b =>
                 {
                     b.Navigation("Loots");
 

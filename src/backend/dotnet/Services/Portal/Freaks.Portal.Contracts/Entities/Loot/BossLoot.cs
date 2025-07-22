@@ -2,9 +2,9 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Freaks.Contracts.Common.Interfaces;
 using Freaks.Dal.Common.Consts;
-using Freaks.Portal.SharedContracts.ValueObjects.BossLoot;
+using Freaks.Portal.SharedContracts.ValueObjects.Loot;
 
-namespace Freaks.Portal.Contracts.Entities.BossLootEntities;
+namespace Freaks.Portal.Contracts.Entities.Loot;
 
 /// <summary>
 /// Представляет возможную добычу от мирового босса.

@@ -1,4 +1,4 @@
-﻿using Freaks.Portal.Contracts.Entities.RaidEntities;
+﻿using Freaks.Portal.Contracts.Entities.RaidSummary;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

@@ -1,4 +1,4 @@
-﻿namespace Freaks.Portal.SharedContracts.ValueObjects.Raid;
+﻿namespace Freaks.Portal.SharedContracts.ValueObjects.RaidSummary;
 
 /// <summary>
 /// Перечисление форматов рейда.

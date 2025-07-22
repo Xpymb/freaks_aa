@@ -1,4 +1,6 @@
 ﻿using Freaks.Dal.Common.Extensions;
+using Freaks.Portal.Dal.Implementation.RaidSummary;
+using Freaks.Portal.Dal.Interfaces.RaidSummary;
 using Freaks.Portal.Dal.Persistence;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +20,8 @@ public static class ConfigureServices
     public static IServiceCollection AddDalProviders(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddPostgresDbContext<IPortalDbContext, PortalDbContext>(configuration);
+
+        services.AddScoped<IRaidProvider, RaidProvider>();
 
         return services;
     }

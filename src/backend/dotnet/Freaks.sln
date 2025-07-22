@@ -100,6 +100,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Freaks.Users", "Shared\Frea
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Freaks.Portal.Dal.Persistence", "Services\Portal\Dal\Freaks.Portal.Dal.Persistence\Freaks.Portal.Dal.Persistence.csproj", "{890CC15A-4AFA-4361-92E9-B16C5FF71E20}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Freaks.SharedContracts.Common", "Shared\Freaks.SharedContracts.Common\Freaks.SharedContracts.Common.csproj", "{B0F62FB8-329C-4250-9938-2CB117757DA2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -154,6 +156,7 @@ Global
 		{7ED5A0D1-A883-4110-8498-0254FE7014D4} = {058950C2-E5E7-4F9E-9401-11AE064D6305}
 		{6E6A0481-6139-4246-A38D-E722FC323C29} = {058950C2-E5E7-4F9E-9401-11AE064D6305}
 		{890CC15A-4AFA-4361-92E9-B16C5FF71E20} = {A0E73277-518C-4A43-B690-A0FCED10D55A}
+		{B0F62FB8-329C-4250-9938-2CB117757DA2} = {058950C2-E5E7-4F9E-9401-11AE064D6305}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{B769479F-6F9B-4119-9597-38C488FF619C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -296,5 +299,9 @@ Global
 		{890CC15A-4AFA-4361-92E9-B16C5FF71E20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{890CC15A-4AFA-4361-92E9-B16C5FF71E20}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{890CC15A-4AFA-4361-92E9-B16C5FF71E20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0F62FB8-329C-4250-9938-2CB117757DA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0F62FB8-329C-4250-9938-2CB117757DA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0F62FB8-329C-4250-9938-2CB117757DA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0F62FB8-329C-4250-9938-2CB117757DA2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

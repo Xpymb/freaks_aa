@@ -1,4 +1,4 @@
-﻿namespace Freaks.Portal.SharedContracts.ValueObjects.BossLoot;
+﻿namespace Freaks.Portal.SharedContracts.ValueObjects.Loot;
 
 /// <summary>
 /// Перечисление рангов (уровней редкости) добычи в рейдах и у мировых боссов.

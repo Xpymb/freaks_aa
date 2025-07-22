@@ -2,7 +2,7 @@
 using Freaks.Dal.Common.Consts;
 using Freaks.Users.Contracts;
 
-namespace Freaks.Portal.Contracts.Entities.RaidEntities;
+namespace Freaks.Portal.Contracts.Entities.RaidSummary;
 
 /// <summary>
 /// Представляет участника рейда в базе данных.
