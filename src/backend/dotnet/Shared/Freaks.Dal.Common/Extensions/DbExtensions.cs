@@ -1,4 +1,5 @@
-﻿using Freaks.Dal.Common.Interfaces;
+﻿using Freaks.Dal.Common.Implementations;
+using Freaks.Dal.Common.Interfaces;
 using Freaks.Options.Common;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -37,6 +38,8 @@ public static class DbExtensions
 
         services.AddDbContext<TService>(options => options.UseNpgsql(dbOptions?.ConnectionString ?? throw new NullReferenceException()));
         services.AddScoped<TInterface>(provider => provider.GetRequiredService<TService>());
+
+        services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
 
         return services;
     }

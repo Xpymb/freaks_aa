@@ -6,14 +6,23 @@ using Freaks.Dal.Common.ValueObjects;
 using Freaks.Portal.Contracts.Entities.RaidSummary;
 using Freaks.Portal.Dal.Interfaces.RaidSummary;
 using Freaks.Portal.Dal.Persistence;
-using Freaks.Portal.SharedContracts.Requests.RaidSummary;
+using Freaks.Portal.SharedContracts.Requests.RaidSummary.Raid;
 using Freaks.SharedContracts.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace Freaks.Portal.Dal.Implementation.RaidSummary;
 
+/// <summary>
+/// Провайдер для работы с сущностью <see cref="Raid"/>, включающий поддержку кэширования.
+/// Позволяет получать рейды по идентификатору и выполнять постраничную выборку с фильтрацией и сортировкой.
+/// </summary>
 public class RaidProvider : BaseCachedProvider<Raid, int, PortalDbContext>, IRaidProvider
 {
+    /// <summary>
+    /// Инициализирует новый экземпляр <see cref="RaidProvider"/>.
+    /// </summary>
+    /// <param name="dbContext">Контекст базы данных портала.</param>
+    /// <param name="cacheProvider">Провайдер кэширования.</param>
     public RaidProvider(PortalDbContext dbContext, ICacheProvider cacheProvider) : base(dbContext, cacheProvider)
     {
     }

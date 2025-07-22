@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Freaks.Portal.Bll.Implementation.RaidSummary;
+using Freaks.Portal.Bll.Interfaces.RaidSummary;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Freaks.Portal.Bll.Implementation;
 
@@ -13,6 +15,11 @@ public static class ConfigureServices
     /// <param name="services">Коллекция сервисов в DI</param>
     public static IServiceCollection AddBllServices(this IServiceCollection services)
     {
+        services.AddScoped<IRaidService, RaidService>();
+        services.AddScoped<IRaidParticipantService, RaidParticipantService>();
+        services.AddScoped<IRaidScreenshotService, RaidScreenshotService>();
+        services.AddScoped<IRaidLootService, RaidLootService>();
+        
         return services;
     }
 }

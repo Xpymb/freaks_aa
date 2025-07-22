@@ -1,7 +1,7 @@
 ﻿using Freaks.Dal.Common.Interfaces;
 using Freaks.Portal.Contracts.Entities.RaidSummary;
 using Freaks.Portal.Dal.Persistence;
-using Freaks.Portal.SharedContracts.Requests.RaidSummary;
+using Freaks.Portal.SharedContracts.Requests.RaidSummary.Raid;
 using Freaks.SharedContracts.Common;
 
 namespace Freaks.Portal.Dal.Interfaces.RaidSummary;

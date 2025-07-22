@@ -24,6 +24,12 @@ public class RaidParticipant
     public required Guid ParticipantId { get; init; }
 
     /// <summary>
+    ///     Идентификатор пользователя, который создал запись
+    /// </summary>
+    [Column("creator_id")]
+    public required Guid CreatorId { get; init; }
+
+    /// <summary>
     /// Навигационное свойство для доступа к рейду, в котором участвует пользователь.
     /// </summary>
     public Raid? Raid { get; init; }

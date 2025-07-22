@@ -30,6 +30,8 @@ builder.Services
 
 var app = builder.Build();
 
+app.UsePathBase("/portal");
+
 app.UseDefaults();
 
 if (app.Environment.IsDevelopment()

@@ -3,6 +3,7 @@ using System;
 using Freaks.Portal.Dal.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Freaks.Portal.Dal.Persistence.Migrations
 {
     [DbContext(typeof(PortalDbContext))]
-    partial class PortalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250722215943_Alter_Raid_Tables_Added_CreatorId")]
+    partial class Alter_Raid_Tables_Added_CreatorId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,11 +37,6 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
                     b.Property<int>("GradeType")
                         .HasColumnType("integer")
                         .HasColumnName("grade_type");
-
-                    b.Property<string>("ItemDescription")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("item_description");
 
                     b.Property<string>("ItemName")
                         .IsRequired()

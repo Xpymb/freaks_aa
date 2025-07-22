@@ -1,7 +1,7 @@
 ﻿using Freaks.Dal.Common.ValueObjects;
 using Freaks.Portal.SharedContracts.ValueObjects.RaidSummary;
 
-namespace Freaks.Portal.SharedContracts.Requests.RaidSummary;
+namespace Freaks.Portal.SharedContracts.Requests.RaidSummary.Raid;
 
 /// <summary>
 ///     Запрос на получение списка рейдов с фильтрацией, сортировкой и указанием диапазона дат.

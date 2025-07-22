@@ -23,6 +23,12 @@ public class RaidScreenshot
     public required string ScreenshotUrl { get; init; }
 
     /// <summary>
+    ///     Идентификатор пользователя, который создал запись
+    /// </summary>
+    [Column("creator_id")]
+    public required Guid CreatorId { get; init; }
+
+    /// <summary>
     /// Навигационное свойство для доступа к рейду, к которому относится скриншот.
     /// </summary>
     public Raid? Raid { get; init; }

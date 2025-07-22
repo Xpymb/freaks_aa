@@ -29,6 +29,14 @@ public class RaidScreenshotProvider : IRaidScreenshotProvider
     }
 
     /// <inheritdoc />
+    public async Task<RaidScreenshot?> GetAsync(int raidId, string screenshotUrl)
+    {
+        return await _dbContext.RaidScreenshots
+                               .AsNoTracking()
+                               .FirstOrDefaultAsync(s => (s.RaidId == raidId) && (s.ScreenshotUrl == screenshotUrl));
+    }
+
+    /// <inheritdoc />
     public async Task<IList<RaidScreenshot>> GetByRaidIdAsync(int raidId)
     {
         var cacheKey = GetCacheRaidKey(raidId);
@@ -89,7 +97,7 @@ public class RaidScreenshotProvider : IRaidScreenshotProvider
             await _cacheProvider.RemoveAsync(cacheKeys);
         }
     }
-
+    
     /// <summary>
     /// Формирует ключ кэша для скриншотов, привязанных к рейду.
     /// </summary>

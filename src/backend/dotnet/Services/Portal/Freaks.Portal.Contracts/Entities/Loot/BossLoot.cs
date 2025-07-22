@@ -37,7 +37,13 @@ public class BossLoot : IEntity<int>
     /// Название предмета добычи.
     /// </summary>
     [Column("item_name")]
-    public required string ItemName { get; init; }
+    public required string Name { get; init; }
+
+    /// <summary>
+    ///     Описание предмета добычи.
+    /// </summary>
+    [Column("item_description")]
+    public required string Description { get; init; }
 
     /// <summary>
     /// Опыт синтеза, получаемый при использовании эссенции, или null для предметов без опыта синтеза.

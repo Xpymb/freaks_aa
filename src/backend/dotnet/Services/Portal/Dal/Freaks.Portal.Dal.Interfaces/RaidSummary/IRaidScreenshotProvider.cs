@@ -9,6 +9,14 @@ namespace Freaks.Portal.Dal.Interfaces.RaidSummary;
 public interface IRaidScreenshotProvider
 {
     /// <summary>
+    ///     Возвращает скриншот рейда по идентификатору рейда и URL изображения.
+    /// </summary>
+    /// <param name="raidId">Идентификатор рейда.</param>
+    /// <param name="screenshotUrl">URL скриншота.</param>
+    /// <returns>Сущность скриншота, если найдена; иначе — null.</returns>
+    Task<RaidScreenshot?> GetAsync(int raidId, string screenshotUrl);
+    
+    /// <summary>
     /// Возвращает список скриншотов, прикреплённых к указанному рейду.
     /// </summary>
     /// <param name="raidId">Идентификатор рейда.</param>

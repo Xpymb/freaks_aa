@@ -27,7 +27,13 @@ public class RaidLoot
     /// Количество добычи
     /// </summary>
     [Column("amount")]
-    public required int Amount { get; init; }
+    public required int Amount { get; set; }
+
+    /// <summary>
+    ///     Идентификатор пользователя, который создал запись
+    /// </summary>
+    [Column("creator_id")]
+    public required Guid CreatorId { get; init; }
 
     /// <summary>
     /// Навигационное свойство для доступа к рейду, в котором была получена добыча.

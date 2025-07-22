@@ -1,4 +1,4 @@
-﻿namespace Freaks.Portal.SharedContracts.Requests.RaidSummary;
+﻿namespace Freaks.Portal.SharedContracts.Requests.RaidSummary.Raid;
 
 /// <summary>
 ///     Поля, по которым может осуществляться сортировка списка рейдов.

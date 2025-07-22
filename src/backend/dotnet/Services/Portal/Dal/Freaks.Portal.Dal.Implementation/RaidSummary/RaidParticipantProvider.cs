@@ -28,6 +28,14 @@ public class RaidParticipantProvider : IRaidParticipantProvider
     }
 
     /// <inheritdoc />
+    public async Task<RaidParticipant?> GetAsync(int raidId, Guid participantId)
+    {
+        return await _dbContext.RaidParticipants
+                               .AsNoTracking()
+                               .FirstOrDefaultAsync(p => (p.RaidId == raidId) && (p.ParticipantId == participantId));
+    }
+
+    /// <inheritdoc />
     public async Task<IList<RaidParticipant>> GetByRaidIdAsync(int raidId)
     {
         var cacheKey = GetCacheRaidKey(raidId);
@@ -109,7 +117,7 @@ public class RaidParticipantProvider : IRaidParticipantProvider
         var allCacheKeys = GetAllCacheKeys(participant);
         await _cacheProvider.RemoveAsync(allCacheKeys);
     }
-
+    
     /// <summary>
     /// Генерирует ключ кэша для списка участников конкретного рейда.
     /// </summary>

@@ -22,6 +22,9 @@ public static class ConfigureServices
         services.AddPostgresDbContext<IPortalDbContext, PortalDbContext>(configuration);
 
         services.AddScoped<IRaidProvider, RaidProvider>();
+        services.AddScoped<IRaidParticipantProvider, RaidParticipantProvider>();
+        services.AddScoped<IRaidScreenshotProvider, RaidScreenshotProvider>();
+        services.AddScoped<IRaidLootProvider, RaidLootProvider>();
 
         return services;
     }

@@ -9,6 +9,14 @@ namespace Freaks.Portal.Dal.Interfaces.RaidSummary;
 public interface IRaidParticipantProvider
 {
     /// <summary>
+    ///     Возвращает участника рейда по идентификатору рейда и пользователя.
+    /// </summary>
+    /// <param name="raidId">Идентификатор рейда.</param>
+    /// <param name="participantId">Идентификатор участника (пользователя).</param>
+    /// <returns>Объект участника рейда или null, если не найден.</returns>
+    Task<RaidParticipant?> GetAsync(int raidId, Guid participantId);
+    
+    /// <summary>
     /// Возвращает список участников указанного рейда.
     /// </summary>
     /// <param name="raidId">Идентификатор рейда.</param>

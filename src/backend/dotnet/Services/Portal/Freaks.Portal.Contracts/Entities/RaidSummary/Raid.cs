@@ -34,7 +34,7 @@ public class Raid : IEntity<int>
     /// Тип босса, против которого будет проходить рейд.
     /// </summary>
     [Column("boss_type")]
-    public required BossType BossType { get; init; }
+    public required BossType BossType { get; set; }
 
     /// <summary>
     /// Формат рейда, может быть null.
@@ -64,7 +64,7 @@ public class Raid : IEntity<int>
     /// Описание рейда: дополнительные заметки.
     /// </summary>
     [Column("description")]
-    public required string Description { get; init; }
+    public required string Description { get; set; }
 
     /// <summary>
     ///     Текущий статус рейда (запланирован, завершён и т.д.).
