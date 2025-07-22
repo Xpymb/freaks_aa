@@ -49,6 +49,10 @@ public class RaidProvider : BaseCachedProvider<Raid, int, PortalDbContext>, IRai
     }
 
     /// <inheritdoc />
+    /// <remarks>
+    /// Возвращает постраничный список рейдов на основе переданных параметров фильтрации и сортировки.
+    /// Использует кэш с параметризированным ключом.
+    /// </remarks>
     public async Task<PaginatedList<Raid>> GetPaginatedListAsync(GetRaidListRequest request)
     {
         var cacheKey = GetParameterizedCacheKey(request);
@@ -134,11 +138,19 @@ public class RaidProvider : BaseCachedProvider<Raid, int, PortalDbContext>, IRai
         ];
     }
 
+    /// <summary>
+    /// Возвращает стандартный префикс кэша для запросов списка рейдов.
+    /// </summary>
     private static string GetDefaultCachePrefix()
     {
         return $"{nameof(Raid)}:list";
     }
 
+    /// <summary>
+    /// Генерирует параметризированный ключ кэша на основе запроса <see cref="GetRaidListRequest"/>.
+    /// </summary>
+    /// <param name="parameters">Параметры запроса списка рейдов.</param>
+    /// <returns>Строковой ключ кэша.</returns>
     private static string GetParameterizedCacheKey(GetRaidListRequest parameters)
     {
         var parametersJson = JsonSerializer.Serialize(parameters);

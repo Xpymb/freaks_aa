@@ -22,8 +22,14 @@ public class RaidParticipant
     /// </summary>
     [Column("participant_id")]
     public required Guid ParticipantId { get; init; }
-    
+
+    /// <summary>
+    /// Навигационное свойство для доступа к рейду, в котором участвует пользователь.
+    /// </summary>
     public Raid? Raid { get; init; }
-    
-    public User? User { get; init; }
+
+    /// <summary>
+    /// Навигационное свойство для доступа к пользователю-участнику рейда.
+    /// </summary>
+    public User? Participant { get; init; }
 }

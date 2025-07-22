@@ -112,14 +112,14 @@ public abstract class BaseCachedProvider<TEntity, TKey, TDbContext> : BaseProvid
     protected abstract string GetCacheKey(TKey key);
 
     /// <summary>
-    ///     Возвращает список всех возможных ключей кэша, связанных с сущностью.
+    ///     Возвращает список всех возможных ключей кэша, связанных с объектом.
     /// </summary>
     /// <param name="entity">Сущность.</param>
     /// <returns>Список ключей кэша.</returns>
     protected abstract List<string> GetAllCacheKeys(TEntity entity);
 
     /// <summary>
-    ///     Возвращает список всех префиксов ключей кэша, связанных с сущностью.
+    ///     Возвращает список всех префиксов ключей кэша, связанных с объектом.
     /// </summary>
     /// <param name="entity">Сущность.</param>
     /// <returns>Список префиксов ключей.</returns>

@@ -5,7 +5,7 @@ namespace Freaks.Portal.Contracts.Entities.RaidSummary;
 
 /// <summary>
 /// Представляет скриншот, связанный с рейдом в базе данных.
-/// Содержит информацию о том, к какому рейду относится изображение и URL скриншота.
+/// Содержит информацию о том, к какому рейду относится изображение, и URL скриншота.
 /// </summary>
 [Table("raid_screenshot", Schema = DatabaseConsts.PortalSchema)]
 public class RaidScreenshot
@@ -21,6 +21,9 @@ public class RaidScreenshot
     /// </summary>
     [Column("screenshot_url")]
     public required string ScreenshotUrl { get; init; }
-    
+
+    /// <summary>
+    /// Навигационное свойство для доступа к рейду, к которому относится скриншот.
+    /// </summary>
     public Raid? Raid { get; init; }
 }

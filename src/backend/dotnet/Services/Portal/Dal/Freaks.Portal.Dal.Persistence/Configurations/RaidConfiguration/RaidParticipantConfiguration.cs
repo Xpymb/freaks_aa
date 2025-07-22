@@ -23,7 +23,7 @@ public class RaidParticipantConfiguration : IEntityTypeConfiguration<RaidPartici
             .OnDelete(DeleteBehavior.Cascade);
 
         builder
-            .HasOne(p => p.User)
+            .HasOne(p => p.Participant)
             .WithOne()
             .HasForeignKey<RaidParticipant>(p => p.ParticipantId)
             .OnDelete(DeleteBehavior.Cascade);

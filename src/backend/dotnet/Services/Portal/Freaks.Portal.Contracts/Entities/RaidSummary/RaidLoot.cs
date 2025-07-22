@@ -22,8 +22,20 @@ public class RaidLoot
     /// </summary>
     [Column("loot_id")]
     public required int LootId { get; init; }
-    
+
+    /// <summary>
+    /// Количество добычи
+    /// </summary>
+    [Column("amount")]
+    public required int Amount { get; init; }
+
+    /// <summary>
+    /// Навигационное свойство для доступа к рейду, в котором была получена добыча.
+    /// </summary>
     public Raid? Raid { get; init; }
-    
+
+    /// <summary>
+    /// Навигационное свойство для доступа к информации о предмете добычи.
+    /// </summary>
     public BossLoot? Loot { get; init; }
 }
