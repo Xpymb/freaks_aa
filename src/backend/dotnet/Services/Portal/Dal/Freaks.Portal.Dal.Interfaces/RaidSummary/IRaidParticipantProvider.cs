@@ -1,4 +1,6 @@
-﻿using Freaks.Portal.Contracts.Entities.RaidSummary;
+﻿using Freaks.Dal.Common.Interfaces;
+using Freaks.Portal.Contracts.Entities.RaidSummary;
+using Freaks.Portal.Dal.Persistence;
 
 namespace Freaks.Portal.Dal.Interfaces.RaidSummary;
 
@@ -6,16 +8,8 @@ namespace Freaks.Portal.Dal.Interfaces.RaidSummary;
 /// Интерфейс провайдера для управления участниками рейдов.
 /// Предоставляет методы для получения, создания, обновления и удаления записей об участниках рейдов.
 /// </summary>
-public interface IRaidParticipantProvider
+public interface IRaidParticipantProvider : IBaseCompositeProvider<RaidParticipant, RaidParticipantKey, IPortalDbContext>
 {
-    /// <summary>
-    ///     Возвращает участника рейда по идентификатору рейда и пользователя.
-    /// </summary>
-    /// <param name="raidId">Идентификатор рейда.</param>
-    /// <param name="participantId">Идентификатор участника (пользователя).</param>
-    /// <returns>Объект участника рейда или null, если не найден.</returns>
-    Task<RaidParticipant?> GetAsync(int raidId, Guid participantId);
-    
     /// <summary>
     /// Возвращает список участников указанного рейда.
     /// </summary>
@@ -29,24 +23,4 @@ public interface IRaidParticipantProvider
     /// <param name="userId">Идентификатор пользователя.</param>
     /// <returns>Список участий пользователя в рейдах.</returns>
     Task<IList<RaidParticipant>> GetByUserIdAsync(Guid userId);
-
-    /// <summary>
-    /// Создаёт новую запись об участии пользователя в рейде.
-    /// </summary>
-    /// <param name="participant">Объект участника рейда.</param>
-    /// <returns>Созданная сущность участника.</returns>
-    Task<RaidParticipant> CreateAsync(RaidParticipant participant);
-
-    /// <summary>
-    /// Обновляет информацию об участнике рейда.
-    /// </summary>
-    /// <param name="participant">Обновлённый объект участника рейда.</param>
-    /// <returns>Обновлённая сущность участника.</returns>
-    Task<RaidParticipant> UpdateAsync(RaidParticipant participant);
-
-    /// <summary>
-    /// Удаляет участника из рейда.
-    /// </summary>
-    /// <param name="participant">Участник рейда, подлежащий удалению.</param>
-    Task DeleteAsync(RaidParticipant participant);
 }

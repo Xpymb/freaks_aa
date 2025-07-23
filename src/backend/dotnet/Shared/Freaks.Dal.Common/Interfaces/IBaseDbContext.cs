@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Freaks.Dal.Common.Interfaces;
 
@@ -20,4 +21,6 @@ public interface IBaseDbContext
     ///     (например, транзакции, выполнение SQL-команд и т.д.).
     /// </summary>
     DatabaseFacade Database { get; }
+
+    DbSet<TEntity> Set<TEntity>() where TEntity : class;
 }

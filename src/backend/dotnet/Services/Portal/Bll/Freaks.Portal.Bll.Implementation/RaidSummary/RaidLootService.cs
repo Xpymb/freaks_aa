@@ -22,7 +22,7 @@ public class RaidLootService : IRaidLootService
     private readonly IRaidLootProvider _provider;
 
     /// <summary>
-    /// Инициализирует новый экземпляр <see cref="RaidLootService"/>.
+    ///     Инициализирует новый экземпляр <see cref="RaidLootService"/>.
     /// </summary>
     /// <param name="mapper">Сервис AutoMapper для преобразования сущностей в DTO и обратно.</param>
     /// <param name="userContext">Контекст текущего пользователя.</param>
@@ -66,7 +66,7 @@ public class RaidLootService : IRaidLootService
     /// <inheritdoc />
     public async Task<RaidLootDto> UpdateAsync(int raidId, int lootId, UpdateRaidLootRequest request)
     {
-        var entity = await _provider.GetAsync(raidId, lootId, EntityTrackingType.NoTracking);
+        var entity = await _provider.GetAsync(new RaidLootKey(raidId, lootId), EntityTrackingType.NoTracking);
         if (entity is null)
         {
             throw new EntityNotFoundException();
@@ -82,12 +82,6 @@ public class RaidLootService : IRaidLootService
     /// <inheritdoc />
     public async Task DeleteAsync(int raidId, int lootId)
     {
-        var entity = await _provider.GetAsync(raidId, lootId, EntityTrackingType.NoTracking);
-        if (entity is null)
-        {
-            return;
-        }
-
-        await _provider.DeleteAsync(entity);
+        await _provider.DeleteAsync(new RaidLootKey(raidId, lootId));
     }
 }
