@@ -40,7 +40,7 @@ public class User : IEntity<Guid>
     ///     Дата и время создания записи о пользователе.
     /// </summary>
     [Column("created_dt")]
-    public DateTimeOffset CreatedDt { get; init; }
+    public required DateTimeOffset CreatedDt { get; init; }
 
     /// <summary>
     ///     Дата и время последнего обновления записи о пользователе.

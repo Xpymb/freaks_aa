@@ -35,12 +35,12 @@ public static class AuthExtensions
             {
                 options.Authority = authOptions!.Issuer;
                 options.Audience = authOptions.ClientId;
-                options.RequireHttpsMetadata = true;
+                options.RequireHttpsMetadata = false;
 
                 options.TokenValidationParameters =
                     new TokenValidationParameters
                     {
-                        ValidateAudience = true,
+                        ValidateAudience = false,
                         ValidateIssuer = true,
                         ValidIssuer = authOptions!.Issuer,
                         NameClaimType = "preferred_username",

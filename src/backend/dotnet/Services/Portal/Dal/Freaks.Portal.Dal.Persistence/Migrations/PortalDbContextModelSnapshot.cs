@@ -31,16 +31,16 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("GradeType")
-                        .HasColumnType("integer")
-                        .HasColumnName("grade_type");
-
-                    b.Property<string>("ItemDescription")
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("item_description");
 
-                    b.Property<string>("ItemName")
+                    b.Property<int>("GradeType")
+                        .HasColumnType("integer")
+                        .HasColumnName("grade_type");
+
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("item_name");
@@ -102,8 +102,7 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreatorId")
-                        .IsUnique();
+                    b.HasIndex("CreatorId");
 
                     b.ToTable("raid", "portal");
                 });
@@ -213,8 +212,8 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
             modelBuilder.Entity("Freaks.Portal.Contracts.Entities.RaidSummary.Raid", b =>
                 {
                     b.HasOne("Freaks.Users.Contracts.User", "Creator")
-                        .WithOne()
-                        .HasForeignKey("Freaks.Portal.Contracts.Entities.RaidSummary.Raid", "CreatorId")
+                        .WithMany()
+                        .HasForeignKey("CreatorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

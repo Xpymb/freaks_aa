@@ -47,12 +47,12 @@ public class RaidLootService : IRaidLootService
     }
 
     /// <inheritdoc />
-    public async Task<RaidLootDto> CreateAsync(CreateRaidLootRequest request)
+    public async Task<RaidLootDto> CreateAsync(int raidId, CreateRaidLootRequest request)
     {
         var entity =
             new RaidLoot
             {
-                RaidId = request.RaidId,
+                RaidId = raidId,
                 LootId = request.LootId,
                 Amount = request.Amount,
                 CreatorId = _userContext.Id,
@@ -64,9 +64,9 @@ public class RaidLootService : IRaidLootService
     }
 
     /// <inheritdoc />
-    public async Task<RaidLootDto> UpdateAsync(UpdateRaidLootRequest request)
+    public async Task<RaidLootDto> UpdateAsync(int raidId, int lootId, UpdateRaidLootRequest request)
     {
-        var entity = await _provider.GetAsync(request.RaidId, request.LootId, EntityTrackingType.NoTracking);
+        var entity = await _provider.GetAsync(raidId, lootId, EntityTrackingType.NoTracking);
         if (entity is null)
         {
             throw new EntityNotFoundException();

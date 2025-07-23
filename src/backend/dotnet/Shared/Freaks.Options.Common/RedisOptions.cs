@@ -26,7 +26,18 @@ public class RedisOptions
     public string? Password { get; set; }
 
     /// <summary>
+    ///     Порядковый номер базы данных
+    /// </summary>
+    [Required]
+    public int? Database { get; set; }
+
+    /// <summary>
     ///     Таймаут подключения (в миллисекундах)
     /// </summary>
     public int ConnectTimeout { get; set; } = 5000;
+
+    /// <summary>
+    ///     Таймаут синхронизации (в миллисекундах)
+    /// </summary>
+    public int SyncTimeout { get; set; } = 10000;
 }

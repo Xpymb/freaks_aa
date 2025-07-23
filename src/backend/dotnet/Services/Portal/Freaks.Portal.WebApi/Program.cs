@@ -5,14 +5,16 @@ using Freaks.Portal.Dal.Persistence;
 using Freaks.Users;
 using Freaks.Users.Persistence;
 using Freaks.WebApi.Common.Extensions;
+using Mapster;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-builder.Services.AddDefaults(builder.Configuration);
 
-// Swagger
+// Common
+builder.Services.AddDefaults(builder.Configuration);
 builder.Services.AddNSwag();
+builder.Services.AddMapster();
 
 // Auth
 builder.Services.AddKeycloakAuth(builder.Configuration);

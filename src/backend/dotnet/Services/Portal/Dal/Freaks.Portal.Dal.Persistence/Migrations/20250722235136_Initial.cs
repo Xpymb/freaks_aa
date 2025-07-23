@@ -28,6 +28,7 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
                     loot_type = table.Column<int>(type: "integer", nullable: false),
                     grade_type = table.Column<int>(type: "integer", nullable: false),
                     item_name = table.Column<string>(type: "text", nullable: false),
+                    item_description = table.Column<string>(type: "text", nullable: false),
                     synthesis_exp = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
@@ -69,7 +70,9 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
                 columns: table => new
                 {
                     raid_id = table.Column<int>(type: "integer", nullable: false),
-                    loot_id = table.Column<int>(type: "integer", nullable: false)
+                    loot_id = table.Column<int>(type: "integer", nullable: false),
+                    amount = table.Column<int>(type: "integer", nullable: false),
+                    creator_id = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -96,7 +99,8 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
                 columns: table => new
                 {
                     raid_id = table.Column<int>(type: "integer", nullable: false),
-                    participant_id = table.Column<Guid>(type: "uuid", nullable: false)
+                    participant_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    creator_id = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -123,7 +127,8 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false),
-                    screenshot_url = table.Column<string>(type: "text", nullable: false)
+                    screenshot_url = table.Column<string>(type: "text", nullable: false),
+                    creator_id = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -141,8 +146,7 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
                 name: "IX_raid_creator_id",
                 schema: "portal",
                 table: "raid",
-                column: "creator_id",
-                unique: true);
+                column: "creator_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_raid_loot_loot_id",

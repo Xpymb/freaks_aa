@@ -32,7 +32,8 @@ public static class SwaggerExtensions
                 [],
                 new OpenApiSecurityScheme
                 {
-                    Type = OpenApiSecuritySchemeType.ApiKey,
+                    Type = OpenApiSecuritySchemeType.Http,
+                    Scheme = "Bearer",
                     Name = "Authorization",
                     In = OpenApiSecurityApiKeyLocation.Header,
                     Description = "Введите JWT токен как: Bearer {your_token}",

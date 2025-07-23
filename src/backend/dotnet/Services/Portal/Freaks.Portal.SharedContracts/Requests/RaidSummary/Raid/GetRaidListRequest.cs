@@ -14,10 +14,12 @@ namespace Freaks.Portal.SharedContracts.Requests.RaidSummary.Raid;
 /// <param name="To">Конечная дата диапазона (включительно), до которой искать рейды.</param>
 /// <param name="SortBy">Поле, по которому нужно отсортировать результаты.</param>
 /// <param name="SortMode">Направление сортировки (по возрастанию или убыванию).</param>
+/// <param name="Take">Сколько записей вывести.</param>
+/// <param name="Skip">Сколько записей пропустить.</param>
 public record GetRaidListRequest(
-    List<BossType> BossTypes,
-    List<RaidFormatType> FormatTypes,
-    List<RaidStatus> Statuses,
+    List<BossType>? BossTypes,
+    List<RaidFormatType>? FormatTypes,
+    List<RaidStatus>? Statuses,
     DateTimeOffset? From,
     DateTimeOffset? To,
     RaidListSortByType SortBy,

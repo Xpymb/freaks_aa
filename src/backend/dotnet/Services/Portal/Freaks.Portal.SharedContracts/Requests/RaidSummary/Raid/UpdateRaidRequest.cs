@@ -11,7 +11,6 @@ namespace Freaks.Portal.SharedContracts.Requests.RaidSummary.Raid;
 /// <param name="FormatType">Новый формат рейда.</param>
 /// <param name="Description">Обновлённое описание рейда.</param>
 public record UpdateRaidRequest(
-    int Id,
     BossType BossType,
     RaidFormatType FormatType,
     string Description);

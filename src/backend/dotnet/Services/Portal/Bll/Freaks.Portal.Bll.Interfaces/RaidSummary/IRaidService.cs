@@ -34,9 +34,10 @@ public interface IRaidService
     /// <summary>
     ///     Обновляет существующий рейд.
     /// </summary>
+    /// <param name="id">Идентификатор рейда</param>
     /// <param name="request">Данные для обновления рейда.</param>
     /// <returns>Обновлённый рейд с полной информацией.</returns>
-    Task<RaidDto> UpdateAsync(UpdateRaidRequest request);
+    Task<RaidDto> UpdateAsync(int id, UpdateRaidRequest request);
 
     /// <summary>
     ///     Удаляет рейд по его идентификатору.

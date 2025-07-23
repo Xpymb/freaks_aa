@@ -44,12 +44,12 @@ public class RaidParticipantService : IRaidParticipantService
     }
 
     /// <inheritdoc />
-    public async Task<RaidParticipantDto> CreateAsync(CreateRaidParticipantRequest request)
+    public async Task<RaidParticipantDto> CreateAsync(int raidId, CreateRaidParticipantRequest request)
     {
         var entity =
             new RaidParticipant
             {
-                RaidId = request.RaidId,
+                RaidId = raidId,
                 ParticipantId = request.ParticipantId,
                 CreatorId = _userContext.Id,
             };

@@ -44,14 +44,14 @@ public class RaidScreenshotService : IRaidScreenshotService
     }
 
     /// <inheritdoc />
-    public async Task<IList<RaidScreenshotDto>> SetAsync(SetScreenshotRequest request)
+    public async Task<IList<RaidScreenshotDto>> SetAsync(int raidId, SetRaidScreenshotRequest request)
     {
         var entities =
             request.ScreenshotUrls
                    .Select(s =>
                                new RaidScreenshot
                                {
-                                   RaidId = request.RaidId,
+                                   RaidId = raidId,
                                    ScreenshotUrl = s,
                                    CreatorId = _userContext.Id,
                                })

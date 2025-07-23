@@ -19,9 +19,10 @@ public interface IRaidParticipantService
     /// <summary>
     ///     Добавляет нового участника в рейд.
     /// </summary>
+    /// <param name="raidId">Идентификатор рейда</param>
     /// <param name="request">Запрос с данными участника и рейда.</param>
     /// <returns>Добавленный участник рейда.</returns>
-    Task<RaidParticipantDto> CreateAsync(CreateRaidParticipantRequest request);
+    Task<RaidParticipantDto> CreateAsync(int raidId, CreateRaidParticipantRequest request);
 
     /// <summary>
     ///     Удаляет участника из рейда.

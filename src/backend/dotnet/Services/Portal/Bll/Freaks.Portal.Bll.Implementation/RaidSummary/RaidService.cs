@@ -77,9 +77,9 @@ public class RaidService : IRaidService
     }
 
     /// <inheritdoc />
-    public async Task<RaidDto> UpdateAsync(UpdateRaidRequest request)
+    public async Task<RaidDto> UpdateAsync(int id, UpdateRaidRequest request)
     {
-        var entity = await _provider.GetAsync(request.Id, EntityTrackingType.NoTracking);
+        var entity = await _provider.GetAsync(id, EntityTrackingType.NoTracking);
         if (entity is null)
         {
             throw new EntityNotFoundException();

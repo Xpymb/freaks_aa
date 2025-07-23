@@ -76,17 +76,20 @@ public class RaidProvider : BaseCachedProvider<Raid, int, PortalDbContext>, IRai
                 .Include(r => r.Creator)
                 .AsNoTracking();
 
-        if (request.BossTypes.Count > 0)
+        if (request.BossTypes is not null
+            && (request.BossTypes.Count > 0))
         {
             query = query.Where(r => request.BossTypes.Contains(r.BossType));
         }
 
-        if (request.FormatTypes.Count > 0)
+        if (request.FormatTypes is not null
+            && (request.FormatTypes.Count > 0))
         {
             query = query.Where(r => (r.FormatType != null) && request.FormatTypes.Contains(r.FormatType.Value));
         }
 
-        if (request.Statuses.Count > 0)
+        if (request.Statuses is not null
+            && (request.Statuses.Count > 0))
         {
             query = query.Where(r => request.Statuses.Contains(r.Status));
         }

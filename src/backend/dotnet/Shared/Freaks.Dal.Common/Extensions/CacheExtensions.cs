@@ -25,6 +25,8 @@ public static class CacheExtensions
             configuration.GetSection("RedisOptions")
                          .Get<RedisOptions>();
 
+        services.AddLZ4Compressor();
+
         services.AddEasyCaching(options =>
         {
             options.UseRedis(
@@ -32,30 +34,34 @@ public static class CacheExtensions
                 {
                     config.DBConfig.Endpoints.Add(new ServerEndPoint(redis!.Host, redis.Port!.Value));
                     config.DBConfig.Password = redis.Password;
-                    config.DBConfig.Database = 0;
+                    config.DBConfig.Database = redis.Database!.Value;
+                    config.DBConfig.ConnectionTimeout = redis.ConnectTimeout;
+                    config.DBConfig.SyncTimeout = redis.SyncTimeout;
+                    config.DBConfig.AllowAdmin = true;
+                    config.DBConfig.AbortOnConnectFail = false;
+
+                    config.SerializerName = "msgpack";
                 },
-                "redis");
+                "redis")
+                   .WithMessagePack()
+                   .WithCompressor();
 
-            options.UseInMemory("in_memory");
-
-            options.UseHybrid(
-                config =>
-                {
-                    config.TopicName = "freaks_hybrid_cache_channel";
-                    config.LocalCacheProviderName = "in_memory";
-                    config.DistributedCacheProviderName = "redis";
-                },
-                "hybrid");
-
-            options.WithRedisBus(bus =>
-            {
-                bus.Endpoints.Add(new ServerEndPoint(redis!.Host, redis.Port!.Value));
-                bus.Password = redis.Password;
-            });
-
-            options
-                .WithMessagePack()
-                .WithCompressor();
+            // options.UseInMemory("in_memory");
+            //
+            // options.WithRedisBus(bus =>
+            // {
+            //     bus.Endpoints.Add(new ServerEndPoint(redis!.Host, redis.Port!.Value));
+            //     bus.Password = redis.Password;
+            // });
+            //
+            // options.UseHybrid(
+            //     config =>
+            //     {
+            //         config.TopicName = "freaks_hybrid_cache_channel";
+            //         config.LocalCacheProviderName = "in_memory";
+            //         config.DistributedCacheProviderName = "redis";
+            //     },
+            //     "hybrid");
         });
 
         services.AddScoped<ICacheProvider, EasyCacheProvider>();

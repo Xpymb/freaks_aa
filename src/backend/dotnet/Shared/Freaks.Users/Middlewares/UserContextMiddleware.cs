@@ -1,4 +1,5 @@
-﻿using Freaks.Dal.Common.ValueObjects;
+﻿using System.Security.Claims;
+using Freaks.Dal.Common.ValueObjects;
 using Freaks.Users.Bll;
 using Freaks.Users.Contracts;
 using Freaks.Users.Dal;
@@ -59,8 +60,9 @@ public class UserContextMiddleware
                 {
                     Id = userId,
                     Username = user!.FindFirst("preferred_username")!.Value,
-                    Email = user!.FindFirst("email")!.Value,
+                    Email = user!.FindFirst(ClaimTypes.Email)!.Value,
                     GameNickname = user!.FindFirst("game_nickname")!.Value,
+                    CreatedDt = DateTimeOffset.UtcNow,
                 };
 
             await userProvider.CreateAsync(userEntity);

@@ -12,8 +12,8 @@ public class RaidConfiguration : IEntityTypeConfiguration<Raid>
     {
         builder
             .HasOne(r => r.Creator)
-            .WithOne()
-            .HasForeignKey<Raid>(r => r.CreatorId)
+            .WithMany()
+            .HasForeignKey(r => r.CreatorId)
             .OnDelete(DeleteBehavior.Cascade);
         
         builder

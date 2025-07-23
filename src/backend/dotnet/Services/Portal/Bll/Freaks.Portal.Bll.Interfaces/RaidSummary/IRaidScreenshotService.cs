@@ -19,9 +19,10 @@ public interface IRaidScreenshotService
     /// <summary>
     ///     Добавляет новые скриншоты к рейду.
     /// </summary>
+    /// <param name="raidId">Идентификатор рейда.</param>
     /// <param name="request">Запрос с данными скриншота и рейда.</param>
     /// <returns>Добавленный скриншот в виде DTO.</returns>
-    Task<IList<RaidScreenshotDto>> SetAsync(SetScreenshotRequest request);
+    Task<IList<RaidScreenshotDto>> SetAsync(int raidId, SetRaidScreenshotRequest request);
 
     /// <summary>
     ///     Удаляет скриншот из рейда по идентификатору рейда и URL скриншота.
