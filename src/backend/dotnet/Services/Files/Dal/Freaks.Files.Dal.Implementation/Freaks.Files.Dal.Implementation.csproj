@@ -6,4 +6,9 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\..\Shared\Freaks.Dal.Common\Freaks.Dal.Common.csproj"/>
+        <ProjectReference Include="..\Freaks.Files.Dal.Interfaces\Freaks.Files.Dal.Interfaces.csproj"/>
+    </ItemGroup>
+
 </Project>
