@@ -2,6 +2,7 @@
 using Freaks.Users.Bll;
 using Freaks.Users.Dal;
 using Freaks.Users.Middlewares;
+using Freaks.Users.Persistence;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;

@@ -7,11 +7,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Folder Include="Entities\Raid\"/>
-    </ItemGroup>
-
-    <ItemGroup>
         <ProjectReference Include="..\..\..\Shared\Freaks.Contracts.Common\Freaks.Contracts.Common.csproj"/>
+        <ProjectReference Include="..\..\..\Shared\Freaks.Dal.Common\Freaks.Dal.Common.csproj" />
+        <ProjectReference Include="..\..\..\Shared\Freaks.Users\Freaks.Users.csproj" />
+        <ProjectReference Include="..\Freaks.Portal.SharedContracts\Freaks.Portal.SharedContracts.csproj" />
     </ItemGroup>
 
 </Project>

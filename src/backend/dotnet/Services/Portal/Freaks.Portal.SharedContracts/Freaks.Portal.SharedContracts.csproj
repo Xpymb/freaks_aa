@@ -4,6 +4,11 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\Shared\Freaks.Users\Freaks.Users.csproj"/>
+    </ItemGroup>
 
 </Project>

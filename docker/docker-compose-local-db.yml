@@ -46,12 +46,7 @@ services:
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq:rw
   redis:
-    image: ${DOCKER_REGISTRY}/redis:${REDIS_VERSION}
-    build: 
-      context: "./Redis"
-      dockerfile: "./Dockerfile"
-      args:
-        - REDIS_VERSION=${REDIS_VERSION}
+    image: redis:${REDIS_VERSION}
     ports:
       - "9379:6379"
     environment:

@@ -2,7 +2,7 @@
 using Freaks.Users.Contracts;
 using Microsoft.EntityFrameworkCore;
 
-namespace Freaks.Users.Dal;
+namespace Freaks.Users.Persistence;
 
 public interface IUserDbContext : IBaseDbContext
 {

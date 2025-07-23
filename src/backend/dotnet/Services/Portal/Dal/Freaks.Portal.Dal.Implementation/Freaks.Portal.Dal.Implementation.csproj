@@ -9,6 +9,7 @@
     <ItemGroup>
         <ProjectReference Include="..\..\..\..\Shared\Freaks.Dal.Common\Freaks.Dal.Common.csproj"/>
         <ProjectReference Include="..\Freaks.Portal.Dal.Interfaces\Freaks.Portal.Dal.Interfaces.csproj"/>
+        <ProjectReference Include="..\Freaks.Portal.Dal.Persistence\Freaks.Portal.Dal.Persistence.csproj" />
     </ItemGroup>
 
     <ItemGroup>

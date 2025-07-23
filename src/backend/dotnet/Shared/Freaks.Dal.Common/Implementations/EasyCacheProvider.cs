@@ -16,7 +16,8 @@ public class EasyCacheProvider : ICacheProvider
     /// <param name="factory">Фабрика для получения провайдера кэша.</param>
     public EasyCacheProvider(IEasyCachingProviderFactory factory)
     {
-        _provider = factory.GetCachingProvider("hybrid");
+        // _provider = factory.GetCachingProvider("hybrid");
+        _provider = factory.GetCachingProvider("redis");
     }
 
     /// <inheritdoc />

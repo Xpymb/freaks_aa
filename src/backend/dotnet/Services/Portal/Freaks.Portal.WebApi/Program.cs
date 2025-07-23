@@ -1,18 +1,20 @@
 using Freaks.Dal.Common.Extensions;
 using Freaks.Portal.Bll.Implementation;
 using Freaks.Portal.Dal.Implementation;
-using Freaks.Portal.Dal.Interfaces;
+using Freaks.Portal.Dal.Persistence;
 using Freaks.Users;
+using Freaks.Users.Persistence;
 using Freaks.WebApi.Common.Extensions;
-using Microsoft.EntityFrameworkCore;
+using Mapster;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-builder.Services.AddDefaults(builder.Configuration);
 
-// Swagger
+// Common
+builder.Services.AddDefaults(builder.Configuration);
 builder.Services.AddNSwag();
+builder.Services.AddMapster();
 
 // Auth
 builder.Services.AddKeycloakAuth(builder.Configuration);
@@ -30,6 +32,8 @@ builder.Services
 
 var app = builder.Build();
 
+app.UsePathBase("/portal");
+
 app.UseDefaults();
 
 if (app.Environment.IsDevelopment()
@@ -37,9 +41,8 @@ if (app.Environment.IsDevelopment()
 {
     app.UseNSwag();
 
-    using var scope = app.Services.CreateScope();
-    var dbContext = scope.ServiceProvider.GetRequiredService<IPortalDbContext>();
-    await dbContext.Database.MigrateAsync();
+    await app.ApplyMigrationsAsync<IUserDbContext>();
+    await app.ApplyMigrationsAsync<IPortalDbContext>();
 }
 
 app.UseAuthentication();
