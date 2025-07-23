@@ -1,15 +1,24 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using Freaks.Contracts.Common.Interfaces;
 using Freaks.Dal.Common.Consts;
 using Freaks.Users.Contracts;
 
 namespace Freaks.Portal.Contracts.Entities.RaidSummary;
 
 /// <summary>
+///     Составной ключ для сущности <see cref="RaidParticipant" />.
+///     Объединяет идентификаторы рейда и участника, формируя уникальную пару.
+/// </summary>
+/// <param name="RaidId">Идентификатор рейда.</param>
+/// <param name="ParticipantId">Идентификатор участника рейда.</param>
+public record RaidParticipantKey(int RaidId, Guid ParticipantId);
+
+/// <summary>
 /// Представляет участника рейда в базе данных.
 /// Связывает рейд с участником через их идентификаторы.
 /// </summary>
 [Table("raid_participant", Schema = DatabaseConsts.PortalSchema)]
-public class RaidParticipant
+public class RaidParticipant : ICompositeEntity<RaidParticipantKey>
 {
     /// <summary>
     /// Идентификатор рейда, в котором участвует пользователь.
@@ -38,4 +47,10 @@ public class RaidParticipant
     /// Навигационное свойство для доступа к пользователю-участнику рейда.
     /// </summary>
     public User? Participant { get; init; }
+
+    /// <inheritdoc />
+    public RaidParticipantKey GetCompositeKey()
+    {
+        return new RaidParticipantKey(RaidId, ParticipantId);
+    }
 }

@@ -13,17 +13,17 @@ using Microsoft.EntityFrameworkCore;
 namespace Freaks.Portal.Dal.Implementation.RaidSummary;
 
 /// <summary>
-/// Провайдер для работы с сущностью <see cref="Raid"/>, включающий поддержку кэширования.
-/// Позволяет получать рейды по идентификатору и выполнять постраничную выборку с фильтрацией и сортировкой.
+///     Провайдер для работы с сущностью <see cref="Raid"/>, включающий поддержку кэширования.
+///     Позволяет получать рейды по идентификатору и выполнять постраничную выборку с фильтрацией и сортировкой.
 /// </summary>
-public class RaidProvider : BaseCachedProvider<Raid, int, PortalDbContext>, IRaidProvider
+public class RaidProvider : BaseCachedProvider<Raid, int, IPortalDbContext>, IRaidProvider
 {
     /// <summary>
-    /// Инициализирует новый экземпляр <see cref="RaidProvider"/>.
+    ///     Инициализирует новый экземпляр <see cref="RaidProvider"/>.
     /// </summary>
     /// <param name="dbContext">Контекст базы данных портала.</param>
     /// <param name="cacheProvider">Провайдер кэширования.</param>
-    public RaidProvider(PortalDbContext dbContext, ICacheProvider cacheProvider) : base(dbContext, cacheProvider)
+    public RaidProvider(IPortalDbContext dbContext, ICacheProvider cacheProvider) : base(dbContext, cacheProvider)
     {
     }
 
@@ -58,10 +58,6 @@ public class RaidProvider : BaseCachedProvider<Raid, int, PortalDbContext>, IRai
     }
 
     /// <inheritdoc />
-    /// <remarks>
-    /// Возвращает постраничный список рейдов на основе переданных параметров фильтрации и сортировки.
-    /// Использует кэш с параметризированным ключом.
-    /// </remarks>
     public async Task<PaginatedList<Raid>> GetPaginatedListAsync(GetRaidListRequest request)
     {
         var cacheKey = GetParameterizedCacheKey(request);
@@ -151,7 +147,7 @@ public class RaidProvider : BaseCachedProvider<Raid, int, PortalDbContext>, IRai
     }
 
     /// <summary>
-    /// Возвращает стандартный префикс кэша для запросов списка рейдов.
+    ///     Возвращает стандартный префикс кэша для запросов списка рейдов.
     /// </summary>
     private static string GetDefaultCachePrefix()
     {
@@ -159,7 +155,7 @@ public class RaidProvider : BaseCachedProvider<Raid, int, PortalDbContext>, IRai
     }
 
     /// <summary>
-    /// Генерирует параметризированный ключ кэша на основе запроса <see cref="GetRaidListRequest"/>.
+    ///     Генерирует параметризированный ключ кэша на основе запроса <see cref="GetRaidListRequest"/>.
     /// </summary>
     /// <param name="parameters">Параметры запроса списка рейдов.</param>
     /// <returns>Строковой ключ кэша.</returns>

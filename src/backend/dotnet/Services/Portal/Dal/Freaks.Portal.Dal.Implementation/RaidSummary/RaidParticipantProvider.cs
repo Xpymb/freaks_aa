@@ -1,4 +1,5 @@
-﻿using Freaks.Dal.Common.Interfaces;
+﻿using Freaks.Dal.Common.Implementations;
+using Freaks.Dal.Common.Interfaces;
 using Freaks.Portal.Contracts.Entities.RaidSummary;
 using Freaks.Portal.Dal.Interfaces.RaidSummary;
 using Freaks.Portal.Dal.Persistence;
@@ -7,51 +8,39 @@ using Microsoft.EntityFrameworkCore;
 namespace Freaks.Portal.Dal.Implementation.RaidSummary;
 
 /// <summary>
-/// Провайдер для работы с участниками рейдов (<see cref="RaidParticipant"/>), включая кэширование по рейдам и пользователям.
+///     Провайдер для работы с участниками рейдов (<see cref="RaidParticipant"/>), включая кэширование по рейдам и пользователям.
 /// </summary>
-public class RaidParticipantProvider : IRaidParticipantProvider
+public class RaidParticipantProvider : BaseCachedCompositeProvider<RaidParticipant, RaidParticipantKey, IPortalDbContext>, IRaidParticipantProvider
 {
-    private readonly ICacheProvider _cacheProvider;
-    private readonly IPortalDbContext _dbContext;
-
     /// <summary>
-    /// Инициализирует новый экземпляр <see cref="RaidParticipantProvider"/>.
+    ///     Инициализирует новый экземпляр <see cref="RaidParticipantProvider"/>.
     /// </summary>
     /// <param name="cacheProvider">Провайдер кэша.</param>
     /// <param name="dbContext">Контекст базы данных портала.</param>
     public RaidParticipantProvider(
         ICacheProvider cacheProvider,
-        IPortalDbContext dbContext)
+        IPortalDbContext dbContext) : base(dbContext, cacheProvider)
     {
-        _cacheProvider = cacheProvider ?? throw new ArgumentNullException(nameof(cacheProvider));
-        _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
-    }
-
-    /// <inheritdoc />
-    public async Task<RaidParticipant?> GetAsync(int raidId, Guid participantId)
-    {
-        return await _dbContext.RaidParticipants
-                               .AsNoTracking()
-                               .FirstOrDefaultAsync(p => (p.RaidId == raidId) && (p.ParticipantId == participantId));
     }
 
     /// <inheritdoc />
     public async Task<IList<RaidParticipant>> GetByRaidIdAsync(int raidId)
     {
         var cacheKey = GetCacheRaidKey(raidId);
-        var cachedValue = await _cacheProvider.GetAsync<IList<RaidParticipant>>(cacheKey);
+        var cachedValue = await GetCachedValueAsync<IList<RaidParticipant>>(cacheKey);
         if (cachedValue is not null)
         {
             return cachedValue;
         }
 
-        var result = await _dbContext.RaidParticipants
-                                     .Include(p => p.Participant)
-                                     .AsNoTracking()
-                                     .Where(p => p.RaidId == raidId)
-                                     .ToListAsync();
+        var result =
+            await Set
+                  .Include(p => p.Participant)
+                  .AsNoTracking()
+                  .Where(p => p.RaidId == raidId)
+                  .ToListAsync();
 
-        await _cacheProvider.SetAsync(cacheKey, result, TimeSpan.FromMinutes(5));
+        await SetCachedValueAsync(cacheKey, result, TimeSpan.FromMinutes(5));
         return result;
     }
 
@@ -59,67 +48,54 @@ public class RaidParticipantProvider : IRaidParticipantProvider
     public async Task<IList<RaidParticipant>> GetByUserIdAsync(Guid userId)
     {
         var cacheKey = GetCacheUserKey(userId);
-        var cachedValue = await _cacheProvider.GetAsync<IList<RaidParticipant>>(cacheKey);
+        var cachedValue = await GetCachedValueAsync<IList<RaidParticipant>>(cacheKey);
         if (cachedValue is not null)
         {
             return cachedValue;
         }
 
-        var result = await _dbContext.RaidParticipants
-                                     .Include(p => p.Participant)
-                                     .AsNoTracking()
-                                     .Where(p => p.ParticipantId == userId)
-                                     .ToListAsync();
+        var result =
+            await Set
+                  .Include(p => p.Participant)
+                  .AsNoTracking()
+                  .Where(p => p.ParticipantId == userId)
+                  .ToListAsync();
 
-        await _cacheProvider.SetAsync(cacheKey, result, TimeSpan.FromMinutes(5));
+        await SetCachedValueAsync(cacheKey, result, TimeSpan.FromMinutes(5));
         return result;
     }
 
     /// <inheritdoc />
-    public async Task<RaidParticipant> CreateAsync(RaidParticipant participant)
+    protected override IQueryable<RaidParticipant> FilterByKey(RaidParticipantKey key, IQueryable<RaidParticipant> queryable)
     {
-        await RemoveCacheAsync(participant);
-
-        var entry = await _dbContext.RaidParticipants.AddAsync(participant);
-        await _dbContext.SaveChangesAsync();
-
-        return entry.Entity;
+        return queryable.Where(p => (p.RaidId == key.RaidId) && (p.ParticipantId == key.ParticipantId));
     }
 
     /// <inheritdoc />
-    public async Task<RaidParticipant> UpdateAsync(RaidParticipant participant)
+    protected override string GetCacheKey(RaidParticipantKey key)
     {
-        await RemoveCacheAsync(participant);
-
-        var entry = _dbContext.RaidParticipants.Entry(participant);
-        entry.CurrentValues.SetValues(participant);
-        await _dbContext.SaveChangesAsync();
-
-        return entry.Entity;
+        return $"{nameof(RaidParticipant)}:raid:{key.RaidId}:participant:{key.ParticipantId}";
     }
 
     /// <inheritdoc />
-    public async Task DeleteAsync(RaidParticipant participant)
+    protected override List<string> GetAllCacheKeys(RaidParticipant entity)
     {
-        await RemoveCacheAsync(participant);
-
-        await _dbContext.RaidParticipants
-                        .Where(p => p.RaidId == participant.RaidId && p.ParticipantId == participant.ParticipantId)
-                        .ExecuteDeleteAsync();
+        return
+        [
+            GetCacheKey(entity.GetCompositeKey()),
+            GetCacheRaidKey(entity.RaidId),
+            GetCacheUserKey(entity.ParticipantId),
+        ];
     }
 
-    /// <summary>
-    /// Удаляет все связанные с участником ключи кэша (по рейду и пользователю).
-    /// </summary>
-    /// <param name="participant">Участник рейда, к которому относится кэш.</param>
-    private async Task RemoveCacheAsync(RaidParticipant participant)
+    /// <inheritdoc />
+    protected override List<string> GetAllCachePrefixes(RaidParticipant entity)
     {
-        var allCacheKeys = GetAllCacheKeys(participant);
-        await _cacheProvider.RemoveAsync(allCacheKeys);
+        return [];
     }
     
     /// <summary>
-    /// Генерирует ключ кэша для списка участников конкретного рейда.
+    ///     Генерирует ключ кэша для списка участников конкретного рейда.
     /// </summary>
     /// <param name="raidId">Идентификатор рейда.</param>
     /// <returns>Строковой ключ кэша.</returns>
@@ -129,26 +105,12 @@ public class RaidParticipantProvider : IRaidParticipantProvider
     }
 
     /// <summary>
-    /// Генерирует ключ кэша для списка участий конкретного пользователя.
+    ///     Генерирует ключ кэша для списка участий конкретного пользователя.
     /// </summary>
     /// <param name="userId">Идентификатор пользователя.</param>
     /// <returns>Строковой ключ кэша.</returns>
     private static string GetCacheUserKey(Guid userId)
     {
         return $"{nameof(RaidParticipant)}:list:user:{userId}";
-    }
-
-    /// <summary>
-    /// Возвращает список всех ключей кэша, связанных с участником рейда.
-    /// </summary>
-    /// <param name="participant">Участник рейда.</param>
-    /// <returns>Список строковых ключей кэша.</returns>
-    private static List<string> GetAllCacheKeys(RaidParticipant participant)
-    {
-        return
-        [
-            GetCacheRaidKey(participant.RaidId),
-            GetCacheUserKey(participant.ParticipantId),
-        ];
     }
 }

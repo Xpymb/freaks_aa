@@ -62,12 +62,6 @@ public class RaidParticipantService : IRaidParticipantService
     /// <inheritdoc />
     public async Task DeleteAsync(int raidId, Guid participantId)
     {
-        var raidParticipant = await _provider.GetAsync(raidId, participantId);
-        if (raidParticipant is null)
-        {
-            return;
-        }
-
-        await _provider.DeleteAsync(raidParticipant);
+        await _provider.DeleteAsync(new RaidParticipantKey(raidId, participantId));
     }
 }

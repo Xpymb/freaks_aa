@@ -7,15 +7,14 @@ using Microsoft.EntityFrameworkCore;
 namespace Freaks.Dal.Common.Implementations;
 
 /// <summary>
-///     Базовая реализация провайдера доступа к данным.
+///     Базовая реализация провайдера доступа к данным для сущностей с составным ключом.
 ///     Предоставляет стандартные CRUD-операции и доступ к контексту базы данных.
 /// </summary>
-/// <typeparam name="TEntity">Тип сущности, реализующий <see cref="IEntity{TKey}" />.</typeparam>
-/// <typeparam name="TKey">Тип ключа сущности (например, <c>int</c>, <c>Guid</c> и т.д.).</typeparam>
+/// <typeparam name="TEntity">Тип сущности, реализующий <see cref="ICompositeEntity{TKey}" />.</typeparam>
+/// <typeparam name="TKey">Тип составного ключа сущности (чаще всего record).</typeparam>
 /// <typeparam name="TDbContext">Тип контекста базы данных, реализующий <see cref="IBaseDbContext" />.</typeparam>
-public abstract class BaseProvider<TEntity, TKey, TDbContext> : IBaseProvider<TEntity, TKey, TDbContext>
-    where TEntity : class, IEntity<TKey>
-    where TKey : IEquatable<TKey>
+public abstract class BaseCompositeProvider<TEntity, TKey, TDbContext> : IBaseCompositeProvider<TEntity, TKey, TDbContext>
+    where TEntity : class, ICompositeEntity<TKey>
     where TDbContext : IBaseDbContext
 {
     /// <inheritdoc />
@@ -25,20 +24,22 @@ public abstract class BaseProvider<TEntity, TKey, TDbContext> : IBaseProvider<TE
     public TDbContext DbContext { get; }
 
     /// <summary>
-    ///     Создаёт новый экземпляр <see cref="BaseProvider{TEntity, TKey, TDbContext}" />.
+    ///     Создаёт новый экземпляр <see cref="BaseCompositeProvider{TEntity, TKey, TDbContext}" />.
     /// </summary>
-    /// <param name="dbContext">Экземпляр контекста базы данных.</param>
-    protected BaseProvider(TDbContext dbContext)
+    /// <param name="dbContext">Контекст базы данных, предоставляющий доступ к таблицам и транзакциям.</param>
+    /// <exception cref="ArgumentNullException">Если передан <c>null</c> в качестве контекста или DbSet.</exception>
+    protected BaseCompositeProvider(TDbContext dbContext)
     {
         DbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         Set = dbContext.Set<TEntity>() ?? throw new ArgumentNullException(nameof(DbSet<TEntity>));
     }
 
+    protected abstract IQueryable<TEntity> FilterByKey(TKey key, IQueryable<TEntity> queryable);
+
     /// <inheritdoc />
     public virtual async Task<TEntity?> GetAsync(TKey key, EntityTrackingType trackingType)
     {
-        var query = Set.Where(e => e.Id.Equals(key));
-
+        var query = FilterByKey(key, Set);
         if (trackingType is EntityTrackingType.NoTracking)
         {
             query = query.AsNoTracking();
@@ -50,10 +51,9 @@ public abstract class BaseProvider<TEntity, TKey, TDbContext> : IBaseProvider<TE
     /// <inheritdoc />
     public virtual async Task<TEntity> CreateAsync(TEntity entity)
     {
-        var resultEntry = await Set.AddAsync(entity);
+        var entry = await Set.AddAsync(entity);
         await DbContext.SaveChangesAsync();
-
-        return resultEntry.Entity;
+        return entry.Entity;
     }
 
     /// <inheritdoc />
@@ -72,20 +72,19 @@ public abstract class BaseProvider<TEntity, TKey, TDbContext> : IBaseProvider<TE
     /// <inheritdoc />
     public virtual async Task<TEntity> UpdateAsync(TEntity entity)
     {
-        var originalEntity = await GetAsync(entity.Id, EntityTrackingType.Tracking);
-        if (originalEntity is null)
+        var existing = await GetAsync(entity.GetCompositeKey(), EntityTrackingType.Tracking);
+        if (existing is null)
         {
             throw new EntityNotFoundException();
         }
 
-        Set
-            .Entry(originalEntity)
-            .CurrentValues
-            .SetValues(entity);
+        Set.Entry(existing)
+           .CurrentValues
+           .SetValues(entity);
 
         await DbContext.SaveChangesAsync();
 
-        return originalEntity;
+        return existing;
     }
 
     /// <inheritdoc />
@@ -98,33 +97,36 @@ public abstract class BaseProvider<TEntity, TKey, TDbContext> : IBaseProvider<TE
     /// <inheritdoc />
     public virtual async Task DeleteAsync(TKey key)
     {
-        await Set
-              .Where(e => e.Id.Equals(key))
-              .ExecuteDeleteAsync();
+        var query = FilterByKey(key, Set);
+        await query.ExecuteDeleteAsync();
     }
 
     /// <inheritdoc />
     public virtual async Task DeleteAsync(TEntity entity)
     {
-        await DeleteAsync(entity.Id);
+        var key = entity.GetCompositeKey();
+        await DeleteAsync(key);
     }
 
     /// <inheritdoc />
     public virtual async Task DeleteAsync(IList<TKey> keys)
     {
-        await Set
-              .Where(e => keys.Contains(e.Id))
-              .ExecuteDeleteAsync();
+        var query = Set.AsQueryable();
+
+        query =
+            keys.Select(key => FilterByKey(key, Set))
+                .Aggregate(query, (current, nextQuery) => current.Union(nextQuery));
+
+        await query.ExecuteDeleteAsync();
     }
 
     /// <inheritdoc />
     public virtual async Task DeleteAsync(IList<TEntity> entities)
     {
-        var ids =
-            entities
-                .Select(e => e.Id)
-                .ToList();
+        var keys =
+            entities.Select(key => key.GetCompositeKey())
+                    .ToList();
 
-        await DeleteAsync(ids);
+        await DeleteAsync(keys);
     }
 }

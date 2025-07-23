@@ -13,7 +13,7 @@ namespace Freaks.Portal.WebApi.Controllers.RaidSummary;
 /// </summary>
 [Authorize]
 [ApiController]
-[Route("/raids")]
+[Route("raids")]
 public class RaidController : ControllerBase
 {
     private readonly IRaidService _service;

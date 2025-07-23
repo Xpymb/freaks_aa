@@ -65,12 +65,6 @@ public class RaidScreenshotService : IRaidScreenshotService
     /// <inheritdoc />
     public async Task DeleteAsync(int raidId, string screenshotUrl)
     {
-        var entity = await _provider.GetAsync(raidId, screenshotUrl);
-        if (entity is null)
-        {
-            return;
-        }
-
-        await _provider.DeleteAsync(entity);
+        await _provider.DeleteAsync(new RaidScreenshotKey(raidId, screenshotUrl));
     }
 }
