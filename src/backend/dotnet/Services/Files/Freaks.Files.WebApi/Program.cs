@@ -1,19 +1,27 @@
+using Freaks.Files.Bll.Implementation;
+using Freaks.Files.Dal.Implementation;
+using Freaks.WebApi.Common.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+builder.Services.AddNSwag();
+
+builder.Services.AddKeycloakAuth(builder.Configuration);
+
+builder.Services
+       .AddBllServices()
+       .AddDalProviders(builder.Configuration);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment()
+    || app.Environment.IsCompose())
 {
-    app.MapOpenApi();
+    app.UseNSwag();
 }
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

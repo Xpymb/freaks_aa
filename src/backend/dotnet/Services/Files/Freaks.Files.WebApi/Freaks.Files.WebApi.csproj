@@ -4,10 +4,17 @@
         <TargetFramework>net9.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.7"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\Shared\Freaks.WebApi.Common\Freaks.WebApi.Common.csproj"/>
+        <ProjectReference Include="..\Bll\Freaks.Files.Bll.Implementation\Freaks.Files.Bll.Implementation.csproj"/>
+        <ProjectReference Include="..\Dal\Freaks.Files.Dal.Implementation\Freaks.Files.Dal.Implementation.csproj"/>
     </ItemGroup>
 
 </Project>

@@ -31,10 +31,10 @@ public static class DbExtensions
         where TService : DbContext, TInterface
         where TInterface : class, IBaseDbContext
     {
-        var dbOptions =
-            configuration
-                .GetSection(nameof(DbOptions))
-                .Get<DbOptions>();
+        var dbOptionsSection = configuration.GetSection(nameof(DbOptions));
+
+        services.Configure<DbOptions>(dbOptionsSection);
+        var dbOptions = dbOptionsSection.Get<DbOptions>();
 
         services.AddDbContext<TService>(options => options.UseNpgsql(dbOptions?.ConnectionString ?? throw new NullReferenceException()));
         services.AddScoped<TInterface>(provider => provider.GetRequiredService<TService>());

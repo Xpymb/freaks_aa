@@ -21,9 +21,10 @@ public static class CacheExtensions
     /// <returns>Обновлённая коллекция сервисов.</returns>
     public static IServiceCollection AddEasyCaching(this IServiceCollection services, IConfiguration configuration)
     {
-        var redis =
-            configuration.GetSection("RedisOptions")
-                         .Get<RedisOptions>();
+        var redisOptionsSection = configuration.GetSection(nameof(RedisOptions));
+
+        services.Configure<RedisOptions>(redisOptionsSection);
+        var redisOptions = redisOptionsSection.Get<RedisOptions>();
 
         services.AddLZ4Compressor();
 
@@ -32,11 +33,11 @@ public static class CacheExtensions
             options.UseRedis(
                 config =>
                 {
-                    config.DBConfig.Endpoints.Add(new ServerEndPoint(redis!.Host, redis.Port!.Value));
-                    config.DBConfig.Password = redis.Password;
-                    config.DBConfig.Database = redis.Database!.Value;
-                    config.DBConfig.ConnectionTimeout = redis.ConnectTimeout;
-                    config.DBConfig.SyncTimeout = redis.SyncTimeout;
+                    config.DBConfig.Endpoints.Add(new ServerEndPoint(redisOptions!.Host, redisOptions.Port!.Value));
+                    config.DBConfig.Password = redisOptions.Password;
+                    config.DBConfig.Database = redisOptions.Database!.Value;
+                    config.DBConfig.ConnectionTimeout = redisOptions.ConnectTimeout;
+                    config.DBConfig.SyncTimeout = redisOptions.SyncTimeout;
                     config.DBConfig.AllowAdmin = true;
                     config.DBConfig.AbortOnConnectFail = false;
 
