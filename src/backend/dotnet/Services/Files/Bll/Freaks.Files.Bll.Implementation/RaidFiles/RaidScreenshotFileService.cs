@@ -38,7 +38,7 @@ public class RaidScreenshotFileService : IRaidFileService
         await _storageProvider.UploadAsync(request.Content, filePath, fileName, request.ContentType);
 
         return new FileDto(
-            StorageHelper.GetFileUrl(_storageOptions.Host, _storageOptions.DefaultBucketName, filePath, fileName),
+            StorageHelper.GetFileUrl(_storageOptions.Scheme, _storageOptions.Host, _storageOptions.DefaultBucketName, filePath, fileName),
             StorageHelper.GetFileUri(_storageOptions.DefaultBucketName, filePath, fileName),
             fileName,
             request.ContentType);

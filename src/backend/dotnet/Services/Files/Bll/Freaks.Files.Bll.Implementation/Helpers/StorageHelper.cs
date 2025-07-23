@@ -30,6 +30,20 @@ public static class StorageHelper
     }
 
     /// <summary>
+    ///     Формирует абсолютный URL к файлу на основе хоста, bucket'а, пути и имени файла.
+    /// </summary>
+    /// <param name="scheme">Схема адреса хранилища (например, <c>http</c>)</param>
+    /// <param name="host">Базовый адрес хранилища (например, <c>https://storage.example.com</c>).</param>
+    /// <param name="bucketName">Наименование корзины (Bucket).</param>
+    /// <param name="filePath">Виртуальный путь (папка) внутри хранилища (например, <c>raids/1/screenshots</c>).</param>
+    /// <param name="fileName">Имя файла, включая расширение (например, <c>image.png</c>).</param>
+    /// <returns>Абсолютный URL к файлу.</returns>
+    public static string GetFileUrl(string scheme, string host, string bucketName, string filePath, string fileName)
+    {
+        return $"{scheme}://{host.TrimEnd('/')}/{bucketName}/{filePath.TrimEnd('/')}/{fileName}";
+    }
+
+    /// <summary>
     ///     Формирует относительный путь (URI) к файлу, который может использоваться для хранения или логики доступа.
     /// </summary>
     /// <param name="bucketName">Наименование корзины (Bucket).</param>

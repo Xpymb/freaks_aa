@@ -8,6 +8,12 @@ namespace Freaks.Options.Common;
 public class StorageOptions
 {
     /// <summary>
+    ///     Схема адреса сервиса хранилища (например, http)
+    /// </summary>
+    [Required]
+    public required string Scheme { get; init; }
+    
+    /// <summary>
     ///     Хост-адрес сервиса хранилища (например, https://s3.example.com).
     /// </summary>
     [Required]
