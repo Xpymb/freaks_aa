@@ -1,5 +1,7 @@
 ﻿using Freaks.Portal.Bll.Interfaces.Loot;
 using Freaks.Portal.SharedContracts.Dto.Loot;
+using Freaks.Users.Attributes;
+using Freaks.Users.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,8 +11,9 @@ namespace Freaks.Portal.WebApi.Controllers;
 ///     Контроллер для управления предметами добычи (лутом).
 ///     Предоставляет API для получения списка лута.
 /// </summary>
-[Authorize]
 [ApiController]
+[Authorize]
+[RequireRoles(UserRole.Member)]
 [Route("loot-items")]
 public class LootItemsController : ControllerBase
 {

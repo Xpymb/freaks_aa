@@ -59,6 +59,7 @@ public class UserContextMiddleware
                 new User
                 {
                     Id = userId,
+                    Roles = GetUserRoles(user!),
                     Username = user!.FindFirst("preferred_username")!.Value,
                     Email = user!.FindFirst(ClaimTypes.Email)!.Value,
                     GameNickname = user!.FindFirst("game_nickname")!.Value,
@@ -72,6 +73,7 @@ public class UserContextMiddleware
             new UserContext
             {
                 Id = userEntity.Id,
+                Roles = userEntity.Roles,
                 Username = userEntity.Username,
                 Email = userEntity.Email,
                 GameNickname = userEntity.GameNickname,
@@ -82,5 +84,31 @@ public class UserContextMiddleware
         context.Items["UserContext"] = userContext;
 
         await _next(context);
+    }
+
+    private static List<UserRole> GetUserRoles(ClaimsPrincipal user)
+    {
+        var roles = new List<UserRole>();
+
+        foreach (var role in user.Claims.Where(c => c.Type == ClaimTypes.Role))
+        {
+            switch (role.Value)
+            {
+                case "guild_leader":
+                    roles.Add(UserRole.GuildLeader);
+                    break;
+                case "admin":
+                    roles.Add(UserRole.Admin);
+                    break;
+                case "editor":
+                    roles.Add(UserRole.Editor);
+                    break;
+                case "member":
+                    roles.Add(UserRole.Member);
+                    break;
+            }
+        }
+
+        return roles;
     }
 }

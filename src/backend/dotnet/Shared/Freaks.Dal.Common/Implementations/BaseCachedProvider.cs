@@ -64,8 +64,9 @@ public abstract class BaseCachedProvider<TEntity, TKey, TDbContext> : BaseProvid
     /// <inheritdoc />
     public override async Task<TEntity> UpdateAsync(TEntity entity)
     {
+        var result = await base.UpdateAsync(entity);
         await RemoveCacheAsync(entity);
-        return await base.UpdateAsync(entity);
+        return result;
     }
 
     /// <inheritdoc />

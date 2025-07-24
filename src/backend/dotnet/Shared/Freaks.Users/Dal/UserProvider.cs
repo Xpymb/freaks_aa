@@ -2,6 +2,7 @@
 using Freaks.Dal.Common.Interfaces;
 using Freaks.Users.Contracts;
 using Freaks.Users.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace Freaks.Users.Dal;
 
@@ -21,6 +22,29 @@ public class UserProvider : BaseCachedProvider<User, Guid, UserDbContext>, IUser
     }
 
     /// <inheritdoc />
+    public async Task<IList<User>> GetListAsync(bool includeWoRoles)
+    {
+        var cacheKey = GetDefaultCachePrefix();
+        var cachedValue = await GetCachedValueAsync<IList<User>>(cacheKey);
+        if (cachedValue is not null)
+        {
+            return cachedValue;
+        }
+
+        var query = Set.AsNoTracking();
+
+        if (!includeWoRoles)
+        {
+            query = query.Where(u => u.Roles.Any());
+        }
+
+        var result = await query.ToListAsync();
+
+        await SetCachedValueAsync(cacheKey, result, TimeSpan.FromMinutes(5));
+        return result;
+    }
+    
+    /// <inheritdoc />
     protected override string GetCacheKey(Guid key)
     {
         return $"{nameof(User)}:{key}";
@@ -38,6 +62,14 @@ public class UserProvider : BaseCachedProvider<User, Guid, UserDbContext>, IUser
     /// <inheritdoc />
     protected override List<string> GetAllCachePrefixes(User entity)
     {
-        return [];
+        return
+        [
+            GetDefaultCachePrefix(),
+        ];
+    }
+
+    private static string GetDefaultCachePrefix()
+    {
+        return $"{nameof(User)}:list";
     }
 }

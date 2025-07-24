@@ -1,4 +1,4 @@
-﻿using Freaks.Users.Contracts;
+﻿using Freaks.Users.SharedContracts;
 
 namespace Freaks.Users.Bll;
 
@@ -13,19 +13,20 @@ public interface IUserService
     /// </summary>
     /// <param name="id">Уникальный идентификатор пользователя.</param>
     /// <returns>Объект пользователя.</returns>
-    Task<User> GetAsync(Guid id);
+    Task<UserDto> GetAsync(Guid id);
 
     /// <summary>
-    ///     Создаёт нового пользователя.
+    ///     Возвращает список всех пользователей.
     /// </summary>
-    /// <param name="user">Объект пользователя для создания.</param>
-    /// <returns>Созданный пользователь.</returns>
-    Task<User> CreateAsync(User user);
+    /// <param name="includeWoRoles">Показывать пользователей без ролей.</param>
+    /// <returns>Список объектов <see cref="UserDto"/>.</returns>
+    Task<IList<UserDto>> GetListAsync(bool includeWoRoles);
 
     /// <summary>
-    ///     Обновляет данные существующего пользователя.
+    ///     Обновляет роли пользователя.
     /// </summary>
-    /// <param name="user">Объект пользователя с обновлёнными данными.</param>
-    /// <returns>Обновлённый пользователь.</returns>
-    Task<User> UpdateAsync(User user);
+    /// <param name="userId">Идентификатор пользователя.</param>
+    /// <param name="request">Запрос, содержащий список новых ролей пользователя.</param>
+    /// <returns>Обновлённый пользователь с актуальными ролями.</returns>
+    Task<UserDto> UpdateRolesAsync(Guid userId, UpdateUserRolesRequest request);
 }

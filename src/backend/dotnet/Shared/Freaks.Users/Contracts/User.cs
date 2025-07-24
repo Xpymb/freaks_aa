@@ -19,6 +19,12 @@ public class User : IEntity<Guid>
     public Guid Id { get; init; }
 
     /// <summary>
+    ///     Роли пользователя
+    /// </summary>
+    [Column("roles")]
+    public List<UserRole> Roles { get; set; } = [];
+
+    /// <summary>
     ///     Уникальное имя пользователя (username), используемое для входа или отображения.
     /// </summary>
     [Column("username")]
@@ -46,5 +52,5 @@ public class User : IEntity<Guid>
     ///     Дата и время последнего обновления записи о пользователе.
     /// </summary>
     [Column("updated_dt")]
-    public DateTimeOffset UpdatedDt { get; init; }
+    public DateTimeOffset UpdatedDt { get; set; }
 }

@@ -2,6 +2,8 @@
 using Freaks.Files.SharedContracts.Dto;
 using Freaks.Files.SharedContracts.Requests;
 using Freaks.Files.SharedContracts.ValueObjects;
+using Freaks.Users.Attributes;
+using Freaks.Users.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,8 +13,9 @@ namespace Freaks.Files.WebApi.Controllers;
 ///     Контроллер для работы с файлами, связанными с рейдами (например, скриншотами).
 ///     Позволяет загружать файлы определённого типа для конкретного рейда.
 /// </summary>
-[Authorize]
 [ApiController]
+[Authorize]
+[RequireRoles(UserRole.Member)]
 [Route("raids/{raidId:int}")]
 public class RaidFileController : ControllerBase
 {

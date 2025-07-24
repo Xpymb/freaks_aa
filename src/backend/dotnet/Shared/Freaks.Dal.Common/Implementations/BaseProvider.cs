@@ -72,7 +72,7 @@ public abstract class BaseProvider<TEntity, TKey, TDbContext> : IBaseProvider<TE
     /// <inheritdoc />
     public virtual async Task<TEntity> UpdateAsync(TEntity entity)
     {
-        var originalEntity = await GetAsync(entity.Id, EntityTrackingType.Tracking);
+        var originalEntity = await Set.FirstOrDefaultAsync(e => e.Id.Equals(entity.Id));
         if (originalEntity is null)
         {
             throw new EntityNotFoundException();
