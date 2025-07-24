@@ -38,8 +38,9 @@ public class PortalDbContext : DbContext, IPortalDbContext
     public DbSet<RaidScreenshot> RaidScreenshots { get; init; }
 
     /// <inheritdoc />
-    public DbSet<BossLoot> BossLoots { get; init; }
+    public DbSet<LootItem> BossLoots { get; init; }
 
+    /// <inheritdoc />
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

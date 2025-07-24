@@ -23,14 +23,12 @@ services:
       - "11000:9000"
       - "11010:9001"
     environment:
-      - MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY}
-      - MINIO_SECRET_KEY=${MINIO_SECRET_KEY}
       - MINIO_ROOT_USER=${MINIO_ROOT_USER}
       - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
       - MINIO_REGION=${MINIO_REGION}
       - MINIO_CONSOLE_ADDRESS=:9001
     volumes:
-      - minio_data:/data
+      - ./MinIO/data:/data
   rabbitmq:
     image: ${DOCKER_REGISTRY}/rabbitmq:${RABBITMQ_VERSION}
     build: 

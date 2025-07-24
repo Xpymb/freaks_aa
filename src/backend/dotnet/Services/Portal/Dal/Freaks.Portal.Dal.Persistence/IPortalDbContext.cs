@@ -35,5 +35,5 @@ public interface IPortalDbContext : IBaseDbContext
     /// <summary>
     /// Набор возможной добычи от мировых боссов.
     /// </summary>
-    DbSet<BossLoot> BossLoots { get; }
+    DbSet<LootItem> BossLoots { get; }
 }

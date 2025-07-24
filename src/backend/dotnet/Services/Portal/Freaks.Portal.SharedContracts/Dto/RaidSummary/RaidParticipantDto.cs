@@ -1,4 +1,4 @@
-﻿using Freaks.Users.Contracts;
+﻿using Freaks.Users.SharedContracts;
 
 namespace Freaks.Portal.SharedContracts.Dto.RaidSummary;
 

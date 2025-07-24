@@ -12,10 +12,12 @@ namespace Freaks.Portal.SharedContracts.Dto.Loot;
 /// <param name="Name">Название предмета.</param>
 /// <param name="Description">Описание предмета.</param>
 /// <param name="SynthesisExp">Количество опыта для синтеза, если применимо (может быть null).</param>
-public record BossLootDto(
+/// <param name="IconUri">Ссылка на иконку.</param>
+public record LootItemDto(
     int Id,
     LootType Type,
     LootGradeType GradeType,
     string Name,
     string Description,
-    int? SynthesisExp);
+    int? SynthesisExp,
+    string IconUrl);
