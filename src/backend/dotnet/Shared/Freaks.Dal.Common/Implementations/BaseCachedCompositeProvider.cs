@@ -43,7 +43,7 @@ public abstract class BaseCachedCompositeProvider<TEntity, TKey, TDbContext> : B
         }
 
         var result = await base.GetAsync(key, trackingType);
-        await SetCachedValueAsync(key, result, TimeSpan.FromMinutes(5));
+        await SetCachedValueAsync(result, TimeSpan.FromMinutes(5));
         return result;
     }
 
@@ -136,14 +136,14 @@ public abstract class BaseCachedCompositeProvider<TEntity, TKey, TDbContext> : B
         return await _cacheProvider.GetAsync<TResponse>(cacheKey);
     }
 
-    protected async Task SetCachedValueAsync(TKey key, TEntity? entity, TimeSpan expiration)
+    protected async Task SetCachedValueAsync(TEntity? entity, TimeSpan expiration)
     {
         if (entity is null)
         {
             return;
         }
 
-        var cacheKey = GetCacheKey(key);
+        var cacheKey = GetCacheKey(entity.GetCompositeKey());
         await _cacheProvider.SetAsync(cacheKey, entity, expiration);
     }
 

@@ -43,7 +43,7 @@ public abstract class BaseCachedProvider<TEntity, TKey, TDbContext> : BaseProvid
 
         var result = await base.GetAsync(key, trackingType);
 
-        await SetCachedValueAsync(key, result, TimeSpan.FromMinutes(5));
+        await SetCachedValueAsync(result, TimeSpan.FromMinutes(5));
         return result;
     }
 
@@ -153,14 +153,14 @@ public abstract class BaseCachedProvider<TEntity, TKey, TDbContext> : BaseProvid
     /// <param name="key">Ключ сущности.</param>
     /// <param name="entity">Сущность.</param>
     /// <param name="expiration">Время хранения в кэше.</param>
-    protected async Task SetCachedValueAsync(TKey key, TEntity? entity, TimeSpan expiration)
+    protected async Task SetCachedValueAsync(TEntity? entity, TimeSpan expiration)
     {
         if (entity is null)
         {
             return;
         }
 
-        var cacheKey = GetCacheKey(key);
+        var cacheKey = GetCacheKey(entity.Id);
         await _cacheProvider.SetAsync(cacheKey, entity, expiration);
     }
 

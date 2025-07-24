@@ -15,6 +15,22 @@ public interface IUnitOfWork<out TContext>
     where TContext : DbContext, IBaseDbContext
 {
     /// <summary>
+    ///     Выполняет асинхронную операцию без параметров и возвращаемого результата в транзакции.
+    /// </summary>
+    /// <param name="operation">Асинхронная операция, которую необходимо выполнить.</param>
+    /// <param name="cancellationToken">Токен отмены операции.</param>
+    Task<TResult> ExecuteAsync<TResult>(Func<Task<TResult>> operation, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    ///     Выполняет асинхронную операцию без параметров, возвращающую результат, в транзакции.
+    /// </summary>
+    /// <typeparam name="TResult">Тип возвращаемого результата.</typeparam>
+    /// <param name="operation">Асинхронная операция, которую необходимо выполнить.</param>
+    /// <param name="cancellationToken">Токен отмены операции.</param>
+    /// <returns>Результат выполнения операции.</returns>
+    Task ExecuteAsync(Func<Task> operation, CancellationToken cancellationToken = default);
+    
+    /// <summary>
     ///     Выполняет асинхронную операцию над контекстом базы данных.
     /// </summary>
     /// <param name="operation">Функция, принимающая контекст и выполняющая операцию.</param>

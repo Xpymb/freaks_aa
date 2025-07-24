@@ -29,14 +29,14 @@ public class RaidLoot : ICompositeEntity<RaidLootKey>
     /// <summary>
     ///     Идентификатор добычи, полученной в рейде.
     /// </summary>
-    [Column("loot_id")]
-    public required int LootId { get; init; }
+    [Column("loot_item_id")]
+    public required int LootItemId { get; init; }
 
     /// <summary>
     ///     Количество добычи
     /// </summary>
-    [Column("amount")]
-    public required int Amount { get; set; }
+    [Column("quantity")]
+    public required int Quantity { get; set; }
 
     /// <summary>
     ///     Идентификатор пользователя, который создал запись
@@ -57,6 +57,6 @@ public class RaidLoot : ICompositeEntity<RaidLootKey>
     /// <inheritdoc />
     public RaidLootKey GetCompositeKey()
     {
-        return new RaidLootKey(RaidId, LootId);
+        return new RaidLootKey(RaidId, LootItemId);
     }
 }

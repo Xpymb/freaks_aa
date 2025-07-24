@@ -53,7 +53,9 @@ public abstract class BaseCompositeProvider<TEntity, TKey, TDbContext> : IBaseCo
     {
         var entry = await Set.AddAsync(entity);
         await DbContext.SaveChangesAsync();
-        return entry.Entity;
+
+        var result = await GetAsync(entry.Entity.GetCompositeKey(), EntityTrackingType.NoTracking);
+        return result!;
     }
 
     /// <inheritdoc />
@@ -83,7 +85,7 @@ public abstract class BaseCompositeProvider<TEntity, TKey, TDbContext> : IBaseCo
            .SetValues(entity);
 
         await DbContext.SaveChangesAsync();
-
+        
         return existing;
     }
 

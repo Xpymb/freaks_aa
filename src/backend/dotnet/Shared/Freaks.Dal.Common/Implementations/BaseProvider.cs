@@ -50,10 +50,11 @@ public abstract class BaseProvider<TEntity, TKey, TDbContext> : IBaseProvider<TE
     /// <inheritdoc />
     public virtual async Task<TEntity> CreateAsync(TEntity entity)
     {
-        var resultEntry = await Set.AddAsync(entity);
+        var entry = await Set.AddAsync(entity);
         await DbContext.SaveChangesAsync();
 
-        return resultEntry.Entity;
+        var result = await GetAsync(entry.Entity.Id, EntityTrackingType.NoTracking);
+        return result!;
     }
 
     /// <inheritdoc />

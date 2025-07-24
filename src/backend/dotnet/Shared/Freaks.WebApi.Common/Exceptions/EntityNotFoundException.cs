@@ -9,14 +9,10 @@ namespace Freaks.WebApi.Common.Exceptions;
 /// </summary>
 public class EntityNotFoundException : BadRequestApiException
 {
-    /// <summary>
-    ///     HTTP-статус, возвращаемый при данной ошибке (404 Not Found).
-    /// </summary>
+    /// <inheritdoc />
     public override HttpStatusCode StatusCode => HttpStatusCode.NotFound;
 
-    /// <summary>
-    ///     Внутренний код ошибки для логирования или обработки на клиенте.
-    /// </summary>
+    /// <inheritdoc />
     public override string ErrorCode => "ENTITY_NOT_FOUND";
 
     /// <summary>

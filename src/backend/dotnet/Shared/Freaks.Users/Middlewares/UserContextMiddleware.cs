@@ -41,7 +41,7 @@ public class UserContextMiddleware
         }
 
         var sidClaim =
-            user?.FindFirst("sid")
+            user?.FindFirst(ClaimTypes.NameIdentifier)
                 ?.Value;
 
         if (sidClaim is null)
