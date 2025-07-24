@@ -1,4 +1,6 @@
-﻿namespace Freaks.Users.Contracts;
+﻿using Freaks.Users.Contracts;
+
+namespace Freaks.Users.SharedContracts;
 
 /// <summary>
 ///     DTO (Data Transfer Object), представляющий краткую информацию о пользователе для передачи между слоями приложения.
@@ -19,4 +21,9 @@ public class UserDto
     ///     Игровой никнейм пользователя.
     /// </summary>
     public required string GameNickname { get; init; }
+
+    /// <summary>
+    ///     Список ролей пользователя, представленных как элементы перечисления <see cref="UserRole" />.
+    /// </summary>
+    public required List<UserRole> Roles { get; init; }
 }

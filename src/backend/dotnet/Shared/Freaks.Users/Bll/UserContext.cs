@@ -1,10 +1,14 @@
-﻿namespace Freaks.Users.Bll;
+﻿using Freaks.Users.Contracts;
+
+namespace Freaks.Users.Bll;
 
 /// <inheritdoc />
 public class UserContext : IUserContext
 {
     /// <inheritdoc />
     public required Guid Id { get; init; }
+
+    public required List<UserRole> Roles { get; init; }
 
     /// <inheritdoc />
     public required string Username { get; init; }

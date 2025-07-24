@@ -1,4 +1,5 @@
-﻿using Freaks.WebApi.Common.Exceptions;
+﻿using Freaks.Users.Contracts;
+using Freaks.WebApi.Common.Exceptions;
 using Microsoft.AspNetCore.Http;
 
 namespace Freaks.Users.Bll;
@@ -11,6 +12,9 @@ public class UserContextAccessor : IUserContext
 {
     /// <inheritdoc />
     public Guid Id { get; init; }
+
+    /// <inheritdoc />
+    public List<UserRole> Roles { get; init; }
 
     /// <inheritdoc />
     public string Username { get; init; }
@@ -43,6 +47,7 @@ public class UserContextAccessor : IUserContext
             && value is IUserContext uc)
         {
             Id = uc.Id;
+            Roles = uc.Roles;
             Username = uc.Username;
             Email = uc.Email;
             GameNickname = uc.GameNickname;

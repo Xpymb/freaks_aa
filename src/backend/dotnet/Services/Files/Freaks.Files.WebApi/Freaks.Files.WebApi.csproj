@@ -12,6 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\..\Shared\Freaks.Users\Freaks.Users.csproj" />
         <ProjectReference Include="..\..\..\Shared\Freaks.WebApi.Common\Freaks.WebApi.Common.csproj"/>
         <ProjectReference Include="..\Bll\Freaks.Files.Bll.Implementation\Freaks.Files.Bll.Implementation.csproj"/>
         <ProjectReference Include="..\Dal\Freaks.Files.Dal.Implementation\Freaks.Files.Dal.Implementation.csproj"/>

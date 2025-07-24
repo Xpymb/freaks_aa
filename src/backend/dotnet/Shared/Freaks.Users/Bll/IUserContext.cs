@@ -1,4 +1,6 @@
-﻿namespace Freaks.Users.Bll;
+﻿using Freaks.Users.Contracts;
+
+namespace Freaks.Users.Bll;
 
 /// <summary>
 ///     Контекст текущего пользователя, содержащий основные идентификационные и пользовательские данные.
@@ -11,6 +13,11 @@ public interface IUserContext
     /// </summary>
     Guid Id { get; init; }
 
+    /// <summary>
+    ///     Список ролей пользователя
+    /// </summary>
+    List<UserRole> Roles { get; init; }
+    
     /// <summary>
     ///     Username пользователя (уникальное имя для входа или отображения).
     /// </summary>

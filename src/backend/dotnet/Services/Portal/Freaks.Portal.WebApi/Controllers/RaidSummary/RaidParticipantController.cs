@@ -1,6 +1,8 @@
 ﻿using Freaks.Portal.Bll.Interfaces.RaidSummary;
 using Freaks.Portal.SharedContracts.Dto.RaidSummary;
 using Freaks.Portal.SharedContracts.Requests.RaidSummary.RaidParticipant;
+using Freaks.Users.Attributes;
+using Freaks.Users.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,8 +12,9 @@ namespace Freaks.Portal.WebApi.Controllers.RaidSummary;
 ///     Контроллер для управления участниками рейда.
 ///     Позволяет просматривать список участников, добавлять новых и удалять существующих.
 /// </summary>
-[Authorize]
 [ApiController]
+[Authorize]
+[RequireRoles(UserRole.Member)]
 [Route("raids/{raidId:int}/participants")]
 public class RaidParticipantController : ControllerBase
 {

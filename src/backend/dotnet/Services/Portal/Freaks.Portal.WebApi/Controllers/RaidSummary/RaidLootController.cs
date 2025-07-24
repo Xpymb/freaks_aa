@@ -1,6 +1,8 @@
 ﻿using Freaks.Portal.Bll.Interfaces.RaidSummary;
 using Freaks.Portal.SharedContracts.Dto.RaidSummary;
 using Freaks.Portal.SharedContracts.Requests.RaidSummary.RaidLoot;
+using Freaks.Users.Attributes;
+using Freaks.Users.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,8 +12,9 @@ namespace Freaks.Portal.WebApi.Controllers.RaidSummary;
 ///     Контроллер для управления предметами лута, полученными в рейде.
 ///     Позволяет просматривать, добавлять, изменять и удалять лут.
 /// </summary>
-[Authorize]
 [ApiController]
+[Authorize]
+[RequireRoles(UserRole.Member)]
 [Route("raids/{raidId:int}/loots")]
 public class RaidLootController : ControllerBase
 {

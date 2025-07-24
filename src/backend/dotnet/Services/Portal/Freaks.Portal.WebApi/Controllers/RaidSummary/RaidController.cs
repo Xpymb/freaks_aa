@@ -2,6 +2,8 @@
 using Freaks.Portal.SharedContracts.Dto.RaidSummary;
 using Freaks.Portal.SharedContracts.Requests.RaidSummary.Raid;
 using Freaks.SharedContracts.Common;
+using Freaks.Users.Attributes;
+using Freaks.Users.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,8 +13,9 @@ namespace Freaks.Portal.WebApi.Controllers.RaidSummary;
 ///     Контроллер для управления рейдами.
 ///     Предоставляет API для получения, создания, обновления и удаления рейдов.
 /// </summary>
-[Authorize]
 [ApiController]
+[Authorize]
+[RequireRoles(UserRole.Member)]
 [Route("raids")]
 public class RaidController : ControllerBase
 {
