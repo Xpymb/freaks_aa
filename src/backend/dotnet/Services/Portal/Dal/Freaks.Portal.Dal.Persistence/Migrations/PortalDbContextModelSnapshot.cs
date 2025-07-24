@@ -118,21 +118,21 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("raid_id");
 
-                    b.Property<int>("LootId")
+                    b.Property<int>("LootItemId")
                         .HasColumnType("integer")
-                        .HasColumnName("loot_id");
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("integer")
-                        .HasColumnName("amount");
+                        .HasColumnName("loot_item_id");
 
                     b.Property<Guid>("CreatorId")
                         .HasColumnType("uuid")
                         .HasColumnName("creator_id");
 
-                    b.HasKey("RaidId", "LootId");
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer")
+                        .HasColumnName("quantity");
 
-                    b.HasIndex("LootId")
+                    b.HasKey("RaidId", "LootItemId");
+
+                    b.HasIndex("LootItemId")
                         .IsUnique();
 
                     b.ToTable("raid_loot", "portal");
@@ -177,6 +177,77 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
                     b.HasKey("RaidId", "ScreenshotUrl");
 
                     b.ToTable("raid_screenshot", "portal");
+                });
+
+            modelBuilder.Entity("Freaks.Portal.Contracts.Entities.Shop.ShopItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<Guid>("CreatorId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("creator_id");
+
+                    b.Property<int>("LootItemId")
+                        .HasColumnType("integer")
+                        .HasColumnName("loot_item_id");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("integer")
+                        .HasColumnName("price");
+
+                    b.Property<int>("RemainingQuantity")
+                        .HasColumnType("integer")
+                        .HasColumnName("remaining_quantity");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer")
+                        .HasColumnName("status");
+
+                    b.Property<int>("TotalQuantity")
+                        .HasColumnType("integer")
+                        .HasColumnName("total_quantity");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatorId");
+
+                    b.HasIndex("LootItemId");
+
+                    b.ToTable("shop_items", "portal");
+                });
+
+            modelBuilder.Entity("Freaks.Portal.Contracts.Entities.Shop.ShopItemRequest", b =>
+                {
+                    b.Property<int>("ShopItemId")
+                        .HasColumnType("integer")
+                        .HasColumnName("shop_item_id");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.Property<DateTimeOffset>("CreatedDt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_dt");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer")
+                        .HasColumnName("quantity");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer")
+                        .HasColumnName("status");
+
+                    b.HasKey("ShopItemId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("shop_item_requests", "portal");
                 });
 
             modelBuilder.Entity("Freaks.Users.Contracts.User", b =>
@@ -234,7 +305,7 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
                 {
                     b.HasOne("Freaks.Portal.Contracts.Entities.Loot.LootItem", "Loot")
                         .WithOne()
-                        .HasForeignKey("Freaks.Portal.Contracts.Entities.RaidSummary.RaidLoot", "LootId")
+                        .HasForeignKey("Freaks.Portal.Contracts.Entities.RaidSummary.RaidLoot", "LootItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -279,6 +350,44 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
                     b.Navigation("Raid");
                 });
 
+            modelBuilder.Entity("Freaks.Portal.Contracts.Entities.Shop.ShopItem", b =>
+                {
+                    b.HasOne("Freaks.Users.Contracts.User", "Creator")
+                        .WithMany()
+                        .HasForeignKey("CreatorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Freaks.Portal.Contracts.Entities.Loot.LootItem", "LootItem")
+                        .WithMany()
+                        .HasForeignKey("LootItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Creator");
+
+                    b.Navigation("LootItem");
+                });
+
+            modelBuilder.Entity("Freaks.Portal.Contracts.Entities.Shop.ShopItemRequest", b =>
+                {
+                    b.HasOne("Freaks.Portal.Contracts.Entities.Shop.ShopItem", "Item")
+                        .WithMany("Requests")
+                        .HasForeignKey("ShopItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Freaks.Users.Contracts.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Item");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Freaks.Portal.Contracts.Entities.RaidSummary.Raid", b =>
                 {
                     b.Navigation("Loots");
@@ -286,6 +395,11 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
                     b.Navigation("Participants");
 
                     b.Navigation("Screenshots");
+                });
+
+            modelBuilder.Entity("Freaks.Portal.Contracts.Entities.Shop.ShopItem", b =>
+                {
+                    b.Navigation("Requests");
                 });
 #pragma warning restore 612, 618
         }

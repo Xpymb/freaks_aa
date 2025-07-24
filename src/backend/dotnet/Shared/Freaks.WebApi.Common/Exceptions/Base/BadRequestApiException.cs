@@ -8,14 +8,10 @@ namespace Freaks.WebApi.Common.Exceptions.Base;
 /// </summary>
 public class BadRequestApiException : BaseApiException
 {
-    /// <summary>
-    ///     HTTP-статус, возвращаемый при данной ошибке (400 Bad Request).
-    /// </summary>
+    /// <inheritdoc />
     public override HttpStatusCode StatusCode => HttpStatusCode.BadRequest;
 
-    /// <summary>
-    ///     Внутренний код ошибки для клиента или логирования.
-    /// </summary>
+    /// <inheritdoc />
     public override string ErrorCode => "BAD_REQUEST";
 
     /// <summary>

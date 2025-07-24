@@ -4,6 +4,7 @@ using Freaks.WebApi.Common.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace Freaks.WebApi.Common.Middlewares;
 
@@ -20,7 +21,7 @@ public class ExceptionHandlerMiddleware
         _next = next;
     }
 
-    public async Task InvokeAsync(HttpContext context, IWebHostEnvironment env)
+    public async Task InvokeAsync(HttpContext context, IWebHostEnvironment env, ILogger<ExceptionHandlerMiddleware> logger)
     {
         try
         {
@@ -28,6 +29,7 @@ public class ExceptionHandlerMiddleware
         }
         catch (Exception ex)
         {
+            logger.LogError(ex, ex.Message);
             await HandleException(context, ex, env);
         }
     }

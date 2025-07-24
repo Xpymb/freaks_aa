@@ -53,7 +53,7 @@ public class RaidProvider : BaseCachedProvider<Raid, int, IPortalDbContext>, IRa
 
         var result = await query.FirstOrDefaultAsync();
 
-        await SetCachedValueAsync(key, result, TimeSpan.FromMinutes(5));
+        await SetCachedValueAsync(result, TimeSpan.FromMinutes(5));
         return result;
     }
 

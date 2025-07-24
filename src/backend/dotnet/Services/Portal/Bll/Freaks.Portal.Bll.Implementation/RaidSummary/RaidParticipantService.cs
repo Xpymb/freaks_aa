@@ -56,7 +56,7 @@ public class RaidParticipantService : IRaidParticipantService
 
         var result = await _provider.CreateAsync(entity);
 
-        return _mapper.Map<RaidParticipantDto>(result);
+        return _mapper.Map<RaidParticipantDto>(result!);
     }
 
     /// <inheritdoc />

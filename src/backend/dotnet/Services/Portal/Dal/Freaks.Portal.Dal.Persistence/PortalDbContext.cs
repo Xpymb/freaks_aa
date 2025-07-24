@@ -2,6 +2,7 @@
 using Freaks.Dal.Common.Consts;
 using Freaks.Portal.Contracts.Entities.Loot;
 using Freaks.Portal.Contracts.Entities.RaidSummary;
+using Freaks.Portal.Contracts.Entities.Shop;
 using Freaks.Users.Contracts;
 using Microsoft.EntityFrameworkCore;
 
@@ -38,7 +39,13 @@ public class PortalDbContext : DbContext, IPortalDbContext
     public DbSet<RaidScreenshot> RaidScreenshots { get; init; }
 
     /// <inheritdoc />
-    public DbSet<LootItem> BossLoots { get; init; }
+    public DbSet<LootItem> LootItems { get; init; }
+
+    /// <inheritdoc />
+    public DbSet<ShopItem> ShopItems { get; init; }
+
+    /// <inheritdoc />
+    public DbSet<ShopItemRequest> ShopItemRequests { get; init; }
 
     /// <inheritdoc />
     protected override void OnModelCreating(ModelBuilder modelBuilder)

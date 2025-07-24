@@ -1,8 +1,10 @@
 ﻿using Freaks.Dal.Common.Extensions;
 using Freaks.Portal.Dal.Implementation.Loot;
 using Freaks.Portal.Dal.Implementation.RaidSummary;
+using Freaks.Portal.Dal.Implementation.Shop;
 using Freaks.Portal.Dal.Interfaces.Loot;
 using Freaks.Portal.Dal.Interfaces.RaidSummary;
+using Freaks.Portal.Dal.Interfaces.Shop;
 using Freaks.Portal.Dal.Persistence;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,6 +33,10 @@ public static class ConfigureServices
 
         // Loot items
         services.AddScoped<ILootItemProvider, LootItemProvider>();
+
+        // Shop
+        services.AddScoped<IShopItemProvider, ShopItemProvider>();
+        services.AddScoped<IShopItemRequestProvider, ShopItemRequestProvider>();
         
         return services;
     }

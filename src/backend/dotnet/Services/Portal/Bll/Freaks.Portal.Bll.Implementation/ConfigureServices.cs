@@ -1,7 +1,9 @@
 ﻿using Freaks.Portal.Bll.Implementation.Loot;
 using Freaks.Portal.Bll.Implementation.RaidSummary;
+using Freaks.Portal.Bll.Implementation.Shop;
 using Freaks.Portal.Bll.Interfaces.Loot;
 using Freaks.Portal.Bll.Interfaces.RaidSummary;
+using Freaks.Portal.Bll.Interfaces.Shop;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Freaks.Portal.Bll.Implementation;
@@ -25,6 +27,10 @@ public static class ConfigureServices
 
         // Loot items
         services.AddScoped<ILootItemService, LootItemService>();
+
+        // Shop
+        services.AddScoped<IShopItemService, ShopItemService>();
+        services.AddScoped<IShopItemRequestService, ShopItemRequestService>();
         
         return services;
     }

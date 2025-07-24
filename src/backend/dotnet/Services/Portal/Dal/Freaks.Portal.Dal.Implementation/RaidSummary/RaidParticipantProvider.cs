@@ -1,5 +1,6 @@
 ﻿using Freaks.Dal.Common.Implementations;
 using Freaks.Dal.Common.Interfaces;
+using Freaks.Dal.Common.ValueObjects;
 using Freaks.Portal.Contracts.Entities.RaidSummary;
 using Freaks.Portal.Dal.Interfaces.RaidSummary;
 using Freaks.Portal.Dal.Persistence;
@@ -21,6 +22,36 @@ public class RaidParticipantProvider : BaseCachedCompositeProvider<RaidParticipa
         ICacheProvider cacheProvider,
         IPortalDbContext dbContext) : base(dbContext, cacheProvider)
     {
+    }
+
+    /// <inheritdoc />
+    public override async Task<RaidParticipant?> GetAsync(RaidParticipantKey key, EntityTrackingType trackingType)
+    {
+        var cachedValue = await GetCachedValueAsync(key);
+        if (cachedValue is not null)
+        {
+            if (trackingType is EntityTrackingType.Tracking)
+            {
+                Set.Attach(cachedValue);
+            }
+
+            return cachedValue;
+        }
+
+        var query = FilterByKey(key, Set);
+
+        if (trackingType is EntityTrackingType.NoTracking)
+        {
+            query = query.AsNoTracking();
+        }
+
+        var result =
+            await query
+                  .Include(p => p.Participant)
+                  .FirstOrDefaultAsync();
+
+        await SetCachedValueAsync(result, TimeSpan.FromMinutes(5));
+        return result;
     }
 
     /// <inheritdoc />

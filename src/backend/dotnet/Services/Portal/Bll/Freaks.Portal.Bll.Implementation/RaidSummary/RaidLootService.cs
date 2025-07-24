@@ -53,14 +53,14 @@ public class RaidLootService : IRaidLootService
             new RaidLoot
             {
                 RaidId = raidId,
-                LootId = request.LootId,
-                Amount = request.Amount,
+                LootItemId = request.LootId,
+                Quantity = request.Quantity,
                 CreatorId = _userContext.Id,
             };
 
         var result = await _provider.CreateAsync(entity);
 
-        return _mapper.Map<RaidLootDto>(result);
+        return _mapper.Map<RaidLootDto>(result!);
     }
 
     /// <inheritdoc />
@@ -72,7 +72,7 @@ public class RaidLootService : IRaidLootService
             throw new EntityNotFoundException();
         }
 
-        entity.Amount = request.Amount;
+        entity.Quantity = request.Quantity;
 
         var result = await _provider.UpdateAsync(entity);
 

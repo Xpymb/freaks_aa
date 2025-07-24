@@ -13,7 +13,7 @@ public class RaidLootConfiguration : IEntityTypeConfiguration<RaidLoot>
         builder.HasKey(l =>
                            new
                            {
-                               l.RaidId, l.LootId,
+                               l.RaidId, LootId = l.LootItemId,
                            });
 
         builder
@@ -25,7 +25,7 @@ public class RaidLootConfiguration : IEntityTypeConfiguration<RaidLoot>
         builder
             .HasOne(l => l.Loot)
             .WithOne()
-            .HasForeignKey<RaidLoot>(l => l.LootId)
+            .HasForeignKey<RaidLoot>(l => l.LootItemId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

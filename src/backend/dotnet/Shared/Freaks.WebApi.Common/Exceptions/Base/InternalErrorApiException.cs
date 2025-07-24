@@ -8,14 +8,10 @@ namespace Freaks.WebApi.Common.Exceptions.Base;
 /// </summary>
 public class InternalErrorApiException : BaseApiException
 {
-    /// <summary>
-    ///     HTTP-статус, возвращаемый при данной ошибке (500 Internal Server Error).
-    /// </summary>
+    /// <inheritdoc />
     public override HttpStatusCode StatusCode => HttpStatusCode.InternalServerError;
 
-    /// <summary>
-    ///     Внутренний код ошибки для логирования или обработки на клиенте.
-    /// </summary>
+    /// <inheritdoc />
     public override string ErrorCode => "INTERNAL_SERVER_EXCEPTION";
 
     /// <summary>
