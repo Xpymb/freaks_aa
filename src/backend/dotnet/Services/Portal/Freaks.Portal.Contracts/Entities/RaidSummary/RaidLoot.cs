@@ -52,7 +52,7 @@ public class RaidLoot : ICompositeEntity<RaidLootKey>
     /// <summary>
     ///     Навигационное свойство для доступа к информации о предмете добычи.
     /// </summary>
-    public BossLoot? Loot { get; init; }
+    public LootItem? Loot { get; init; }
 
     /// <inheritdoc />
     public RaidLootKey GetCompositeKey()

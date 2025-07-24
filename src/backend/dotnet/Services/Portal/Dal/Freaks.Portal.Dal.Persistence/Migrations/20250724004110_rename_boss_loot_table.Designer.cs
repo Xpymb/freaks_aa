@@ -3,6 +3,7 @@ using System;
 using Freaks.Portal.Dal.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Freaks.Portal.Dal.Persistence.Migrations
 {
     [DbContext(typeof(PortalDbContext))]
-    partial class PortalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250724004110_rename_boss_loot_table")]
+    partial class rename_boss_loot_table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,10 +43,10 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("grade_type");
 
-                    b.Property<string>("IconUrl")
+                    b.Property<string>("IconUri")
                         .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("icon_url");
+                        .HasColumnName("icon_uri");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -199,11 +202,6 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("game_nickname");
-
-                    b.PrimitiveCollection<int[]>("Roles")
-                        .IsRequired()
-                        .HasColumnType("integer[]")
-                        .HasColumnName("roles");
 
                     b.Property<DateTimeOffset>("UpdatedDt")
                         .HasColumnType("timestamp with time zone")

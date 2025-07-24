@@ -7,9 +7,9 @@ namespace Freaks.Portal.SharedContracts.Dto.RaidSummary;
 ///     Связывает рейд с конкретным предметом, выпавшим с босса.
 /// </summary>
 /// <param name="RaidId">Идентификатор рейда, в котором был получен лут.</param>
-/// <param name="BossLoot">Информация о предмете лута, полученном в рейде.</param>
+/// <param name="LootItem">Информация о предмете лута, полученном в рейде.</param>
 /// <param name="Amount">Количество предметов, полученных в рейде.</param>
 public record RaidLootDto(
     int RaidId,
-    BossLootDto BossLoot,
+    LootItemDto LootItem,
     int Amount);

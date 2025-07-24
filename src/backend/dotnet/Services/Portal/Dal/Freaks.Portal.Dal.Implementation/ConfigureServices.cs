@@ -1,5 +1,7 @@
 ﻿using Freaks.Dal.Common.Extensions;
+using Freaks.Portal.Dal.Implementation.Loot;
 using Freaks.Portal.Dal.Implementation.RaidSummary;
+using Freaks.Portal.Dal.Interfaces.Loot;
 using Freaks.Portal.Dal.Interfaces.RaidSummary;
 using Freaks.Portal.Dal.Persistence;
 using Microsoft.Extensions.Configuration;
@@ -21,11 +23,15 @@ public static class ConfigureServices
     {
         services.AddPostgresDbContext<IPortalDbContext, PortalDbContext>(configuration);
 
+        // Raid
         services.AddScoped<IRaidProvider, RaidProvider>();
         services.AddScoped<IRaidParticipantProvider, RaidParticipantProvider>();
         services.AddScoped<IRaidScreenshotProvider, RaidScreenshotProvider>();
         services.AddScoped<IRaidLootProvider, RaidLootProvider>();
 
+        // Loot items
+        services.AddScoped<ILootItemProvider, LootItemProvider>();
+        
         return services;
     }
 }

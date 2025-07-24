@@ -1,4 +1,5 @@
-﻿using Freaks.Options.Common;
+﻿using System.Security.Claims;
+using Freaks.Options.Common;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -44,7 +45,7 @@ public static class AuthExtensions
                         ValidateIssuer = true,
                         ValidIssuer = authOptions!.Issuer,
                         NameClaimType = "preferred_username",
-                        RoleClaimType = "roles",
+                        RoleClaimType = ClaimTypes.Role,
                     };
             });
 
