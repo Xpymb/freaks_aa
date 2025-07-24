@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using NSwag;
+using NSwag.AspNetCore;
 using NSwag.Generation.Processors;
 using NSwag.Generation.Processors.Security;
 
@@ -26,20 +27,39 @@ public static class SwaggerExtensions
             options.Title = "Freaks API";
             options.UseControllerSummaryAsTagDescription = true;
 
-            // Добавляем схему авторизации через Bearer-токе
             options.AddSecurity(
-                "Bearer",
+                "Keycloak OAuth 2.0",
                 [],
                 new OpenApiSecurityScheme
                 {
-                    Type = OpenApiSecuritySchemeType.Http,
-                    Scheme = "Bearer",
-                    Name = "Authorization",
-                    In = OpenApiSecurityApiKeyLocation.Header,
-                    Description = "Введите JWT токен как: Bearer {your_token}",
+                    Type = OpenApiSecuritySchemeType.OAuth2,
+                    Description = "Авторизация через Keycloak",
+                    Flows =
+                        new OpenApiOAuthFlows
+                {
+                    AuthorizationCode =
+                        new OpenApiOAuthFlow
+                        {
+                            AuthorizationUrl = "https://auth.freaks-aa.ru/realms/freaks-dev/protocol/openid-connect/auth",
+                            TokenUrl = "https://auth.freaks-aa.ru/realms/freaks-dev/protocol/openid-connect/token",
+                            Scopes =
+                                new Dictionary<string, string>
+                                {
+                                    {
+                                        "openid", "OpenID"
+                                    },
+                                    {
+                                        "profile", "User profile"
+                                    },
+                                    {
+                                        "email", "User email"
+                                    },
+                                },
+                        },
+                },
                 });
 
-            options.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("Bearer"));
+            options.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("Keycloak OAuth 2.0"));
             options.OperationProcessors.Add(new OperationSummaryAndDescriptionProcessor());
         });
 
@@ -55,7 +75,23 @@ public static class SwaggerExtensions
     public static IApplicationBuilder UseNSwag(this IApplicationBuilder app)
     {
         app.UseOpenApi();
-        app.UseSwaggerUi();
+        app.UseSwaggerUi(options =>
+        {
+            options.OAuth2Client =
+                new OAuth2ClientSettings
+                {
+                    ClientId = "swagger-ui",
+                    AppName = "Freaks Swagger UI",
+                    ScopeSeparator = " ",
+                    Scopes =
+                    {
+                        "openid",
+                        "profile",
+                        "email",
+                    },
+                    UsePkceWithAuthorizationCodeGrant = true,
+                };
+        });
 
         return app;
     }
