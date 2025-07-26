@@ -7,22 +7,6 @@ The platform allows guild administrators to organize raids, manage users and the
 
 ---
 
-## 🧠 Project Structure
-
-src/<br>
-├── backend/<br>
-│ └── dotnet/<br>
-│ ├── Services/<br>
-│ │ ├── Portal/ # Main business logic (users, raids, guilds, etc.)<br>
-│ │ ├── Files/ # File storage service<br>
-│ │ └── Bots/ # Integration bots (e.g., Discord, Telegram)<br>
-│ ├── Shared/ # Shared infrastructure and utilities<br>
-│ └── Freaks.sln # .NET solution file<br>
-├── frontend/ # Web front-end (Next.js or similar)<br>
-docker/ # Docker configurations for local development<br>
-
----
-
 ## 🚀 Getting Started
 
 To run the project locally using Docker Compose:
