@@ -20,11 +20,10 @@ builder.Services.AddMapster();
 builder.Services.AddKeycloakAuth(builder.Configuration);
 
 // Cache
-builder.Services.AddEasyCaching(builder.Configuration);
+builder.Services.AddEasyCachingCommon(builder.Configuration);
 
 // User
 builder.Services.AddUserContext(builder.Configuration);
-builder.Services.AddKeycloakAdmin(builder.Configuration);
 
 // Core
 builder.Services

@@ -10,7 +10,7 @@ public class HangfireHttpContextSnapshot
     /// <summary>
     ///     Контекст пользователя
     /// </summary>
-    public required IUserContext UserContext { get; init; }
+    public required UserContext UserContext { get; init; }
 
     /// <summary>
     ///     Клаймы пользователя

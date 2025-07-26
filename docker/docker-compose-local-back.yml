@@ -1,0 +1,102 @@
+services:
+  solution-build-artifacts:
+    image: ${DOCKER_REGISTRY}/solution-build-artifacts:${APP_VERSION}
+    build: 
+      context: "./../src/backend/dotnet"
+      dockerfile: "./Dockerfile"
+      args:
+        - DOTNET_SDK_VERSION=${DOTNET_SDK_VERSION}
+  portal-web-api:
+    image: ${DOCKER_REGISTRY}/portal-web-api:${APP_VERSION}
+    build: 
+      context: "./dotnet/PortalService"
+      dockerfile: "./Dockerfile"
+      args:
+        - DOCKER_REGISTRY=${DOCKER_REGISTRY}
+        - APP_VERSION=${APP_VERSION}
+        - ASPNET_VERSION=${ASPNET_VERSION}
+    ports:
+      - "5000:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Compose
+      - KeycloakAdmin__credentials__secret=${KEYCLOAK_ADMIN_CLIENT_SECRET}
+    depends_on:
+      - solution-build-artifacts
+      - postgres
+  files-web-api:
+    image: ${DOCKER_REGISTRY}/files-web-api:${APP_VERSION}
+    build: 
+      context: "./dotnet/FileService"
+      dockerfile: "./Dockerfile"
+      args:
+        - DOCKER_REGISTRY=${DOCKER_REGISTRY}
+        - APP_VERSION=${APP_VERSION}
+        - ASPNET_VERSION=${ASPNET_VERSION}
+    ports:
+      - "5010:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Compose
+    depends_on:
+      - solution-build-artifacts
+      - postgres
+      - minio
+  postgres:
+    image: ${DOCKER_REGISTRY}/postgres:${POSTGRES_VERSION}
+    build: 
+      context: "./Postgres"
+      dockerfile: "./Dockerfile"
+      args:
+        - POSTGRES_VERSION=${POSTGRES_VERSION}
+    ports:
+      - "8432:5432"
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_ADMIN_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    depends_on:
+      - solution-build-artifacts
+  minio:
+    image: ${DOCKER_REGISTRY}/minio:${MINIO_VERSION}
+    build: 
+      context: "./MinIO"
+      dockerfile: "./Dockerfile"
+      args:
+        - MINIO_VERSION=${MINIO_VERSION}
+    ports:
+      - "11000:9000"
+      - "11010:9001"
+    environment:
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
+      - MINIO_REGION=${MINIO_REGION}
+      - MINIO_CONSOLE_ADDRESS=:9001
+    volumes:
+      - ./MinIO/data:/data
+    depends_on:
+      - solution-build-artifacts
+  rabbitmq:
+    image: ${DOCKER_REGISTRY}/rabbitmq:${RABBITMQ_VERSION}
+    build: 
+      context: "./RabbitMQ"
+      dockerfile: "./Dockerfile"
+      args:
+        - RABBITMQ_VERSION=${RABBITMQ_VERSION}
+    ports:
+      - "18672:15672"
+      - "8672:5672"
+      - "8671:5671"
+      - "18671:15671"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq:rw
+    depends_on:
+      - solution-build-artifacts
+  redis:
+    image: redis:${REDIS_VERSION}
+    ports:
+      - "9379:6379"
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+volumes:
+  postgres_data: null
+  minio_data: null
+  rabbitmq_data: null

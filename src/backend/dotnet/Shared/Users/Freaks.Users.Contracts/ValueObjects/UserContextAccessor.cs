@@ -43,7 +43,7 @@ public class UserContextAccessor : IUserContext
         var context = httpContextAccessor.HttpContext;
 
         if ((context?.Items.TryGetValue("UserContext", out var value) == true)
-            && value is IUserContext uc)
+            && value is UserContext uc)
         {
             Id = uc.Id;
             Roles = uc.Roles;

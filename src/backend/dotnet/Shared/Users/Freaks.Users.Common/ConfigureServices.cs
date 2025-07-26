@@ -30,6 +30,7 @@ public static class ConfigureServices
     /// <returns>Обновлённая коллекция сервисов.</returns>
     public static IServiceCollection AddUserContext(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddKeycloakAdmin(configuration);
         
         services.AddPostgresDbContext<IUserDbContext, UserDbContext>(configuration);
 
