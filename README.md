@@ -34,6 +34,8 @@ git clone https://github.com/Xpymb/freaks_aa.git
 cd freaks_aa
 ```
 
+---
+
 ### 2. Prepare environment file
 
 The project uses a .env file stored in the root of the docker/ folder. To initialize it:
