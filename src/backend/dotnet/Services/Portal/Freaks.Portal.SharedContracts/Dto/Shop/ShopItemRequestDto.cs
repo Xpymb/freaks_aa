@@ -1,5 +1,5 @@
 ﻿using Freaks.Portal.SharedContracts.ValueObjects.Shop;
-using Freaks.Users.SharedContracts;
+using Freaks.Users.SharedContracts.Dto;
 
 namespace Freaks.Portal.SharedContracts.Dto.Shop;
 

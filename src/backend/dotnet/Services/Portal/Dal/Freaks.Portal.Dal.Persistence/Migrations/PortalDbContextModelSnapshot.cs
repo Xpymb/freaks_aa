@@ -250,7 +250,7 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
                     b.ToTable("shop_item_requests", "portal");
                 });
 
-            modelBuilder.Entity("Freaks.Users.Contracts.User", b =>
+            modelBuilder.Entity("Freaks.Users.Contracts.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -292,7 +292,7 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
 
             modelBuilder.Entity("Freaks.Portal.Contracts.Entities.RaidSummary.Raid", b =>
                 {
-                    b.HasOne("Freaks.Users.Contracts.User", "Creator")
+                    b.HasOne("Freaks.Users.Contracts.Entities.User", "Creator")
                         .WithMany()
                         .HasForeignKey("CreatorId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -322,7 +322,7 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
 
             modelBuilder.Entity("Freaks.Portal.Contracts.Entities.RaidSummary.RaidParticipant", b =>
                 {
-                    b.HasOne("Freaks.Users.Contracts.User", "Participant")
+                    b.HasOne("Freaks.Users.Contracts.Entities.User", "Participant")
                         .WithOne()
                         .HasForeignKey("Freaks.Portal.Contracts.Entities.RaidSummary.RaidParticipant", "ParticipantId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -352,7 +352,7 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
 
             modelBuilder.Entity("Freaks.Portal.Contracts.Entities.Shop.ShopItem", b =>
                 {
-                    b.HasOne("Freaks.Users.Contracts.User", "Creator")
+                    b.HasOne("Freaks.Users.Contracts.Entities.User", "Creator")
                         .WithMany()
                         .HasForeignKey("CreatorId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -377,7 +377,7 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Freaks.Users.Contracts.User", "User")
+                    b.HasOne("Freaks.Users.Contracts.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

@@ -3,7 +3,7 @@ using Freaks.Portal.Contracts.Entities.RaidSummary;
 using Freaks.Portal.Dal.Interfaces.RaidSummary;
 using Freaks.Portal.SharedContracts.Dto.RaidSummary;
 using Freaks.Portal.SharedContracts.Requests.RaidSummary.RaidParticipant;
-using Freaks.Users.Bll;
+using Freaks.Users.Contracts.ValueObjects;
 using MapsterMapper;
 
 namespace Freaks.Portal.Bll.Implementation.RaidSummary;

@@ -1,7 +1,7 @@
 ﻿using Freaks.Portal.Bll.Interfaces.Loot;
 using Freaks.Portal.SharedContracts.Dto.Loot;
-using Freaks.Users.Attributes;
-using Freaks.Users.Contracts;
+using Freaks.Users.Common.Attributes;
+using Freaks.Users.Contracts.ValueObjects;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

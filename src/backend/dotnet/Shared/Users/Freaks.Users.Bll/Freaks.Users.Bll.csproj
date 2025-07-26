@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Freaks.Bll.Common\Freaks.Bll.Common.csproj" />
+      <ProjectReference Include="..\Freaks.Users.Dal\Freaks.Users.Dal.csproj" />
+      <ProjectReference Include="..\Freaks.Users.SharedContracts\Freaks.Users.SharedContracts.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Duende.AccessTokenManagement" Version="3.2.0" />
+      <PackageReference Include="Keycloak.AuthServices.Sdk.Kiota" Version="26.0.5" />
+    </ItemGroup>
+
+</Project>

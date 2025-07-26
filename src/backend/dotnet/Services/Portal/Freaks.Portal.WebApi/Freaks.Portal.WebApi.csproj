@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <UserSecretsId>7008d224-1aa6-439b-9809-b8bcccfa396e</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
@@ -16,8 +17,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\..\Shared\Freaks.Users\Freaks.Users.csproj"/>
         <ProjectReference Include="..\..\..\Shared\Freaks.WebApi.Common\Freaks.WebApi.Common.csproj"/>
+        <ProjectReference Include="..\..\..\Shared\Users\Freaks.Users.Common\Freaks.Users.Common.csproj"/>
         <ProjectReference Include="..\Bll\Freaks.Portal.Bll.Implementation\Freaks.Portal.Bll.Implementation.csproj"/>
         <ProjectReference Include="..\Dal\Freaks.Portal.Dal.Implementation\Freaks.Portal.Dal.Implementation.csproj"/>
     </ItemGroup>

@@ -1,7 +1,8 @@
-﻿using Freaks.Users.Attributes;
-using Freaks.Users.Bll;
-using Freaks.Users.Contracts;
-using Freaks.Users.SharedContracts;
+﻿using Freaks.Users.Bll.Interfaces;
+using Freaks.Users.Common.Attributes;
+using Freaks.Users.Contracts.ValueObjects;
+using Freaks.Users.SharedContracts.Dto;
+using Freaks.Users.SharedContracts.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

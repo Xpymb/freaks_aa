@@ -1,9 +1,11 @@
-﻿using Freaks.Portal.Bll.Implementation.Loot;
+﻿using Freaks.Bll.Common.Extensions;
+using Freaks.Portal.Bll.Implementation.Loot;
 using Freaks.Portal.Bll.Implementation.RaidSummary;
 using Freaks.Portal.Bll.Implementation.Shop;
 using Freaks.Portal.Bll.Interfaces.Loot;
 using Freaks.Portal.Bll.Interfaces.RaidSummary;
 using Freaks.Portal.Bll.Interfaces.Shop;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Freaks.Portal.Bll.Implementation;
@@ -17,8 +19,11 @@ public static class ConfigureServices
     ///     Добавить Bll сервисы в DI
     /// </summary>
     /// <param name="services">Коллекция сервисов в DI</param>
-    public static IServiceCollection AddBllServices(this IServiceCollection services)
+    /// <param name="configuration">Конфигурация окружения</param>
+    public static IServiceCollection AddBllServices(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddHangfireCommon(configuration);
+        
         // Raid
         services.AddScoped<IRaidService, RaidService>();
         services.AddScoped<IRaidParticipantService, RaidParticipantService>();

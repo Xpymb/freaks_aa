@@ -1,5 +1,5 @@
 ﻿using Freaks.Portal.SharedContracts.ValueObjects.RaidSummary;
-using Freaks.Users.SharedContracts;
+using Freaks.Users.SharedContracts.Dto;
 
 namespace Freaks.Portal.SharedContracts.Dto.RaidSummary;
 
