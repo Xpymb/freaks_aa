@@ -37,9 +37,6 @@ bld/
 *.VisualState.xml
 TestResult.xml
 
-# Макеты
-Documents/Макеты/
-
 # Build Results of an ATL Project
 [Dd]ebugPS/
 [Rr]eleasePS/
@@ -203,17 +200,11 @@ FakesAssemblies/
 *.opt
 
 .idea/
-/Source/Frontend/itsk-dkp/src/css/output
-/Source/Markup/output/main.css
 
 # postgres dump
 *.dmp
 *.dat.gz
 toc.dat
-
-#Frontend dist
-Source/Frontend/dist/*
-Source/Frontend/teta_backup
 
 # maven build directory
 target
@@ -221,14 +212,8 @@ target
 # IntelliJ Idea project files
 *.iml
 
-# Buld artifacts
-./Build/deploy/*
-artifacts.tar.gz
+# Ignore .env file with secrets
+**/.env
 
-# Auto generated docs from compodoc
-documentation.json
-Teta.*.xml
-/Docker/tetacom_landing/*.bak
-*.bak
-.DS_Store
-Source/Utils/Migrate/Teta.Migration.Console/Properties/launchSettings.json
+# Ignore minio data folder
+/docker/MinIO/data/

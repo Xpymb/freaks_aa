@@ -23,6 +23,8 @@ services:
     depends_on:
       - solution-build-artifacts
       - postgres
+      - rabbitmq
+      - redis
   files-web-api:
     image: ${DOCKER_REGISTRY}/files-web-api:${APP_VERSION}
     build: 
@@ -40,6 +42,8 @@ services:
       - solution-build-artifacts
       - postgres
       - minio
+      - rabbitmq
+      - redis
   postgres:
     image: ${DOCKER_REGISTRY}/postgres:${POSTGRES_VERSION}
     build: 
