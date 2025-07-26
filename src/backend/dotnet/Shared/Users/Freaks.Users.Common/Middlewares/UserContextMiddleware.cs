@@ -99,9 +99,20 @@ public class UserContextMiddleware
     /// </exception>
     private static List<UserRole> GetUserRoles(ClaimsPrincipal user)
     {
-        return user.Claims
-                   .Where(x => x.Type == ClaimTypes.Role)
-                   .Select(claim => UserRoleExtensions.GetRoleType(claim.Value))
-                   .ToList();
+        var roles = new List<UserRole>();
+
+        foreach (var claim in user.Claims)
+        {
+            var userRole = UserRoleExtensions.GetRoleType(claim.Value);
+            if (userRole is null
+                || ((int)userRole == 0))
+            {
+                continue;
+            }
+
+            roles.Add(userRole.Value);
+        }
+
+        return roles;
     }
 }

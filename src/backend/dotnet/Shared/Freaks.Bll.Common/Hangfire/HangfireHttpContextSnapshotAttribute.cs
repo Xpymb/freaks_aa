@@ -38,7 +38,7 @@ public class HangfireHttpContextSnapshotAttribute :
         }
 
         if (!ctx.Items.TryGetValue("UserContext", out var userContextItem)
-            || userContextItem is not IUserContext userContext)
+            || userContextItem is not UserContext userContext)
         {
             return;
         }

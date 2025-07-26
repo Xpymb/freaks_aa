@@ -19,7 +19,7 @@ public static class CacheExtensions
     /// <param name="services">Коллекция сервисов DI.</param>
     /// <param name="configuration">Конфигурация приложения (для получения настроек Redis).</param>
     /// <returns>Обновлённая коллекция сервисов.</returns>
-    public static IServiceCollection AddEasyCaching(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddEasyCachingCommon(this IServiceCollection services, IConfiguration configuration)
     {
         var redisOptionsSection = configuration.GetSection(nameof(RedisOptions));
 

@@ -1,4 +1,5 @@
-﻿using Freaks.Options.Common;
+﻿using Freaks.Bll.Common.Hangfire;
+using Freaks.Options.Common;
 using Hangfire;
 using Hangfire.PostgreSql;
 using Microsoft.Extensions.Configuration;
@@ -19,7 +20,9 @@ public static class HangfireExtensions
             throw new ArgumentNullException();
         }
 
-        services.AddHangfire(config =>
+        services.AddSingleton<HangfireHttpContextSnapshotAttribute>();
+
+        services.AddHangfire((serviceProvider, config) =>
         {
             config.UsePostgreSqlStorage(
                 options =>
@@ -32,6 +35,8 @@ public static class HangfireExtensions
                     QueuePollInterval = TimeSpan.FromSeconds(5),
                     InvisibilityTimeout = TimeSpan.FromMinutes(5),
                 });
+
+            config.UseFilter(serviceProvider.GetRequiredService<HangfireHttpContextSnapshotAttribute>());
         });
 
         services.AddHangfireServer(options =>

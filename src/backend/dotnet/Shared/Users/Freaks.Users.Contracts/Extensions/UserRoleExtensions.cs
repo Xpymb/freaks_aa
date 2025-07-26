@@ -57,11 +57,11 @@ public static class UserRoleExtensions
     /// <exception cref="InvalidOperationException">
     ///     Если не найдено ни одного значения <see cref="UserRole" /> с заданным именем.
     /// </exception>
-    public static UserRole GetRoleType(string roleName)
+    public static UserRole? GetRoleType(string roleName)
     {
         var roleNames = GetRoleNames();
 
-        return roleNames.First(r => r.Value == roleName)
+        return roleNames.FirstOrDefault(r => r.Value == roleName)
                         .Key;
     }
 }
