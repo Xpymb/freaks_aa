@@ -3,7 +3,7 @@ using Freaks.Dal.Common.Consts;
 using Freaks.Portal.Contracts.Entities.Loot;
 using Freaks.Portal.Contracts.Entities.RaidSummary;
 using Freaks.Portal.Contracts.Entities.Shop;
-using Freaks.Users.Contracts;
+using Freaks.Users.Contracts.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Freaks.Portal.Dal.Persistence;

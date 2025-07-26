@@ -6,7 +6,7 @@ using Freaks.Portal.SharedContracts.Dto.Shop;
 using Freaks.Portal.SharedContracts.Requests.Shop.ShopItem;
 using Freaks.Portal.SharedContracts.ValueObjects.Shop;
 using Freaks.SharedContracts.Common;
-using Freaks.Users.Bll;
+using Freaks.Users.Contracts.ValueObjects;
 using Freaks.WebApi.Common.Exceptions;
 using Freaks.WebApi.Common.Exceptions.Shop;
 using MapsterMapper;

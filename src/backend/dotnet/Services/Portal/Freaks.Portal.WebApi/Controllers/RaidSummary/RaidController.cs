@@ -2,8 +2,8 @@
 using Freaks.Portal.SharedContracts.Dto.RaidSummary;
 using Freaks.Portal.SharedContracts.Requests.RaidSummary.Raid;
 using Freaks.SharedContracts.Common;
-using Freaks.Users.Attributes;
-using Freaks.Users.Contracts;
+using Freaks.Users.Common.Attributes;
+using Freaks.Users.Contracts.ValueObjects;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Freaks.Contracts.Common.Interfaces;
 using Freaks.Dal.Common.Consts;
 using Freaks.Portal.SharedContracts.ValueObjects.RaidSummary;
-using Freaks.Users.Contracts;
+using Freaks.Users.Contracts.Entities;
 
 namespace Freaks.Portal.Contracts.Entities.RaidSummary;
 
@@ -70,7 +70,7 @@ public class Raid : IEntity<int>
     ///     Текущий статус рейда (запланирован, завершён и т.д.).
     /// </summary>
     [Column("status")]
-    public RaidStatus Status { get; init; } = RaidStatus.Planned;
+    public required RaidStatus Status { get; set; }
 
     /// <summary>
     ///     Навигационное свойство — создатель рейда.

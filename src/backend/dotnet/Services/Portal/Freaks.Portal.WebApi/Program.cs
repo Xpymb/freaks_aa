@@ -2,8 +2,8 @@ using Freaks.Dal.Common.Extensions;
 using Freaks.Portal.Bll.Implementation;
 using Freaks.Portal.Dal.Implementation;
 using Freaks.Portal.Dal.Persistence;
-using Freaks.Users;
-using Freaks.Users.Persistence;
+using Freaks.Users.Common;
+using Freaks.Users.Dal.Persistence;
 using Freaks.WebApi.Common.Extensions;
 using Mapster;
 
@@ -24,10 +24,11 @@ builder.Services.AddEasyCaching(builder.Configuration);
 
 // User
 builder.Services.AddUserContext(builder.Configuration);
+builder.Services.AddKeycloakAdmin(builder.Configuration);
 
 // Core
 builder.Services
-       .AddBllServices()
+       .AddBllServices(builder.Configuration)
        .AddDalProviders(builder.Configuration);
 
 var app = builder.Build();

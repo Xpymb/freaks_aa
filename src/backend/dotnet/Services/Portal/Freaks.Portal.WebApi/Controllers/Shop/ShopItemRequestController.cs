@@ -1,8 +1,8 @@
 ﻿using Freaks.Portal.Bll.Interfaces.Shop;
 using Freaks.Portal.SharedContracts.Dto.Shop;
 using Freaks.Portal.SharedContracts.Requests.Shop.ShopItemRequest;
-using Freaks.Users.Attributes;
-using Freaks.Users.Contracts;
+using Freaks.Users.Common.Attributes;
+using Freaks.Users.Contracts.ValueObjects;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

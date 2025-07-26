@@ -4,7 +4,7 @@ using Freaks.Contracts.Common.Interfaces;
 using Freaks.Dal.Common.Consts;
 using Freaks.Portal.Contracts.Entities.Loot;
 using Freaks.Portal.SharedContracts.ValueObjects.Shop;
-using Freaks.Users.Contracts;
+using Freaks.Users.Contracts.Entities;
 
 namespace Freaks.Portal.Contracts.Entities.Shop;
 

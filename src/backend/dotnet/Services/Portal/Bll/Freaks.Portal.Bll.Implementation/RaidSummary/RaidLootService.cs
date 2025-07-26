@@ -4,7 +4,7 @@ using Freaks.Portal.Contracts.Entities.RaidSummary;
 using Freaks.Portal.Dal.Interfaces.RaidSummary;
 using Freaks.Portal.SharedContracts.Dto.RaidSummary;
 using Freaks.Portal.SharedContracts.Requests.RaidSummary.RaidLoot;
-using Freaks.Users.Bll;
+using Freaks.Users.Contracts.ValueObjects;
 using Freaks.WebApi.Common.Exceptions;
 using MapsterMapper;
 

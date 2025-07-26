@@ -1,6 +1,6 @@
 using Freaks.Files.Bll.Implementation;
 using Freaks.Files.Dal.Implementation;
-using Freaks.Users;
+using Freaks.Users.Common;
 using Freaks.WebApi.Common.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);

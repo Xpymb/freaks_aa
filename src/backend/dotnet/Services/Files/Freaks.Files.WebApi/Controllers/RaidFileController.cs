@@ -2,8 +2,8 @@
 using Freaks.Files.SharedContracts.Dto;
 using Freaks.Files.SharedContracts.Requests;
 using Freaks.Files.SharedContracts.ValueObjects;
-using Freaks.Users.Attributes;
-using Freaks.Users.Contracts;
+using Freaks.Users.Common.Attributes;
+using Freaks.Users.Contracts.ValueObjects;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
