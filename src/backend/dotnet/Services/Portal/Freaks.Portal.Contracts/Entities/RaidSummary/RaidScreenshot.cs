@@ -10,7 +10,7 @@ namespace Freaks.Portal.Contracts.Entities.RaidSummary;
 /// </summary>
 /// <param name="RaidId">Идентификатор рейда, к которому относится скриншот.</param>
 /// <param name="ScreenshotUrl">Уникальный URL-адрес скриншота.</param>
-public record RaidScreenshotKey(int RaidId, string ScreenshotUrl);
+public record RaidScreenshotKey(long RaidId, string ScreenshotUrl);
 
 /// <summary>
 ///     Представляет скриншот, связанный с рейдом в базе данных.
@@ -23,7 +23,7 @@ public class RaidScreenshot : ICompositeEntity<RaidScreenshotKey>
     ///     Уникальный идентификатор рейда, к которому относится скриншот.
     /// </summary>
     [Column("id")]
-    public required int RaidId { get; init; }
+    public required long RaidId { get; init; }
 
     /// <summary>
     ///     URL-адрес скриншота рейда.

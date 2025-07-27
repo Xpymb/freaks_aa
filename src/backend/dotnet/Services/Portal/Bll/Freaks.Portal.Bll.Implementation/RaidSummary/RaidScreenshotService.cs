@@ -36,7 +36,7 @@ public class RaidScreenshotService : IRaidScreenshotService
     }
 
     /// <inheritdoc />
-    public async Task<IList<RaidScreenshotDto>> GetListAsync(int raidId)
+    public async Task<IList<RaidScreenshotDto>> GetListAsync(long raidId)
     {
         var result = await _provider.GetByRaidIdAsync(raidId);
 
@@ -44,7 +44,7 @@ public class RaidScreenshotService : IRaidScreenshotService
     }
 
     /// <inheritdoc />
-    public async Task<IList<RaidScreenshotDto>> SetAsync(int raidId, SetRaidScreenshotRequest request)
+    public async Task<IList<RaidScreenshotDto>> SetAsync(long raidId, SetRaidScreenshotRequest request)
     {
         var entities =
             request.ScreenshotUrls
@@ -63,7 +63,7 @@ public class RaidScreenshotService : IRaidScreenshotService
     }
 
     /// <inheritdoc />
-    public async Task DeleteAsync(int raidId, string screenshotUrl)
+    public async Task DeleteAsync(long raidId, string screenshotUrl)
     {
         await _provider.DeleteAsync(new RaidScreenshotKey(raidId, screenshotUrl));
     }

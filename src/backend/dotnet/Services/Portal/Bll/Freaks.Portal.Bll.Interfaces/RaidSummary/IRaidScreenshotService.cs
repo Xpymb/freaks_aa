@@ -14,7 +14,7 @@ public interface IRaidScreenshotService
     /// </summary>
     /// <param name="raidId">Идентификатор рейда.</param>
     /// <returns>Список скриншотов рейда.</returns>
-    Task<IList<RaidScreenshotDto>> GetListAsync(int raidId);
+    Task<IList<RaidScreenshotDto>> GetListAsync(long raidId);
 
     /// <summary>
     ///     Добавляет новые скриншоты к рейду.
@@ -22,12 +22,12 @@ public interface IRaidScreenshotService
     /// <param name="raidId">Идентификатор рейда.</param>
     /// <param name="request">Запрос с данными скриншота и рейда.</param>
     /// <returns>Добавленный скриншот в виде DTO.</returns>
-    Task<IList<RaidScreenshotDto>> SetAsync(int raidId, SetRaidScreenshotRequest request);
+    Task<IList<RaidScreenshotDto>> SetAsync(long raidId, SetRaidScreenshotRequest request);
 
     /// <summary>
     ///     Удаляет скриншот из рейда по идентификатору рейда и URL скриншота.
     /// </summary>
     /// <param name="raidId">Идентификатор рейда.</param>
     /// <param name="screenshotUrl">URL удаляемого скриншота.</param>
-    Task DeleteAsync(int raidId, string screenshotUrl);
+    Task DeleteAsync(long raidId, string screenshotUrl);
 }

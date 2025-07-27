@@ -16,7 +16,7 @@ namespace Freaks.Portal.Dal.Implementation.RaidSummary;
 ///     Провайдер для работы с сущностью <see cref="Raid"/>, включающий поддержку кэширования.
 ///     Позволяет получать рейды по идентификатору и выполнять постраничную выборку с фильтрацией и сортировкой.
 /// </summary>
-public class RaidProvider : BaseCachedProvider<Raid, int, IPortalDbContext>, IRaidProvider
+public class RaidProvider : BaseCachedProvider<Raid, long, IPortalDbContext>, IRaidProvider
 {
     /// <summary>
     ///     Инициализирует новый экземпляр <see cref="RaidProvider"/>.
@@ -28,7 +28,7 @@ public class RaidProvider : BaseCachedProvider<Raid, int, IPortalDbContext>, IRa
     }
 
     /// <inheritdoc />
-    public override async Task<Raid?> GetAsync(int key, EntityTrackingType trackingType)
+    public override async Task<Raid?> GetAsync(long key, EntityTrackingType trackingType)
     {
         var cachedValue = await GetCachedValueAsync(key);
         if (cachedValue is not null)
@@ -123,7 +123,7 @@ public class RaidProvider : BaseCachedProvider<Raid, int, IPortalDbContext>, IRa
     }
 
     /// <inheritdoc />
-    protected override string GetCacheKey(int key)
+    protected override string GetCacheKey(long key)
     {
         return $"{nameof(Raid)}:{key}";
     }

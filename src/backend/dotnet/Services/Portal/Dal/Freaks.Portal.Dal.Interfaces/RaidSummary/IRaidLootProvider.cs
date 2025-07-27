@@ -15,5 +15,5 @@ public interface IRaidLootProvider : IBaseCompositeProvider<RaidLoot, RaidLootKe
     /// </summary>
     /// <param name="raidId">Идентификатор рейда.</param>
     /// <returns>Список добычи, связанной с рейдом.</returns>
-    Task<IList<RaidLoot>> GetByRaidIdAsync(int raidId);
+    Task<IList<RaidLoot>> GetByRaidIdAsync(long raidId);
 }

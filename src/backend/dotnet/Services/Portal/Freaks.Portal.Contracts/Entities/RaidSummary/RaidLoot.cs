@@ -11,7 +11,7 @@ namespace Freaks.Portal.Contracts.Entities.RaidSummary;
 /// </summary>
 /// <param name="RaidId">Идентификатор рейда.</param>
 /// <param name="LootId">Идентификатор предмета добычи.</param>
-public record RaidLootKey(int RaidId, int LootId);
+public record RaidLootKey(long RaidId, int LootId);
 
 /// <summary>
 ///     Представляет добычу, выпавшую в рамках конкретного рейда. 
@@ -24,7 +24,7 @@ public class RaidLoot : ICompositeEntity<RaidLootKey>
     ///     Идентификатор рейда, в котором была получена добыча.
     /// </summary>
     [Column("raid_id")]
-    public required int RaidId { get; init; }
+    public required long RaidId { get; init; }
 
     /// <summary>
     ///     Идентификатор добычи, полученной в рейде.

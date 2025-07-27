@@ -10,6 +10,6 @@ namespace Freaks.Portal.SharedContracts.Dto.RaidSummary;
 /// <param name="LootItem">Информация о предмете лута, полученном в рейде.</param>
 /// <param name="Quantity">Количество предметов, полученных в рейде.</param>
 public record RaidLootDto(
-    int RaidId,
+    long RaidId,
     LootItemDto LootItem,
     int Quantity);

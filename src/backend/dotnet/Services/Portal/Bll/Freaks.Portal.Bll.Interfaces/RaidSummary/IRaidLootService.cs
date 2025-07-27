@@ -14,7 +14,7 @@ public interface IRaidLootService
     /// </summary>
     /// <param name="raidId">Идентификатор рейда.</param>
     /// <returns>Список предметов лута в виде DTO.</returns>
-    Task<IList<RaidLootDto>> GetListAsync(int raidId);
+    Task<IList<RaidLootDto>> GetListAsync(long raidId);
 
     /// <summary>
     ///     Добавляет новый предмет лута в рейд.
@@ -22,7 +22,7 @@ public interface IRaidLootService
     /// <param name="raidId">Идентификатор рейда.</param>
     /// <param name="request">Запрос с информацией о рейде, предмете и количестве.</param>
     /// <returns>Добавленный предмет лута в виде DTO.</returns>
-    Task<RaidLootDto> CreateAsync(int raidId, CreateRaidLootRequest request);
+    Task<RaidLootDto> CreateAsync(long raidId, CreateRaidLootRequest request);
 
     /// <summary>
     ///     Обновляет количество указанного предмета лута в рейде.
@@ -31,12 +31,12 @@ public interface IRaidLootService
     /// <param name="lootId">Идентификатор предмета лута.</param>
     /// <param name="request">Запрос с новой информацией о луте.</param>
     /// <returns>Обновлённый предмет лута в виде DTO.</returns>
-    Task<RaidLootDto> UpdateAsync(int raidId, int lootId, UpdateRaidLootRequest request);
+    Task<RaidLootDto> UpdateAsync(long raidId, int lootId, UpdateRaidLootRequest request);
 
     /// <summary>
     ///     Удаляет указанный предмет лута из рейда.
     /// </summary>
     /// <param name="raidId">Идентификатор рейда.</param>
     /// <param name="lootId">Идентификатор предмета лута, который нужно удалить.</param>
-    Task DeleteAsync(int raidId, int lootId);
+    Task DeleteAsync(long raidId, int lootId);
 }

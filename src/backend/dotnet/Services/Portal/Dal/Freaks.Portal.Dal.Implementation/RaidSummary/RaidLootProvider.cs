@@ -56,7 +56,7 @@ public class RaidLootProvider : BaseCachedCompositeProvider<RaidLoot, RaidLootKe
     }
 
     /// <inheritdoc />
-    public async Task<IList<RaidLoot>> GetByRaidIdAsync(int raidId)
+    public async Task<IList<RaidLoot>> GetByRaidIdAsync(long raidId)
     {
         var cacheKey = GetCacheRaidKey(raidId);
         var cachedValue = await GetCachedValueAsync<IList<RaidLoot>>(cacheKey);
@@ -106,7 +106,7 @@ public class RaidLootProvider : BaseCachedCompositeProvider<RaidLoot, RaidLootKe
     /// </summary>
     /// <param name="raidId">Идентификатор рейда.</param>
     /// <returns>Ключ кэша.</returns>
-    private static string GetCacheRaidKey(int raidId)
+    private static string GetCacheRaidKey(long raidId)
     {
         return $"{nameof(RaidLoot)}:list:raid:{raidId}";
     }

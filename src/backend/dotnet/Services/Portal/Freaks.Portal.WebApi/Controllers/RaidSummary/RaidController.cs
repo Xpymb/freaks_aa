@@ -35,8 +35,8 @@ public class RaidController : ControllerBase
     /// </summary>
     /// <param name="id">Идентификатор рейда.</param>
     /// <returns>Объект <see cref="RaidDto" /> с полной информацией о рейде.</returns>
-    [HttpGet("{id:int}")]
-    public async Task<RaidDto> GetAsync([FromRoute] int id)
+    [HttpGet("{id:long}")]
+    public async Task<RaidDto> GetAsync([FromRoute] long id)
     {
         return await _service.GetAsync(id);
     }
@@ -69,8 +69,8 @@ public class RaidController : ControllerBase
     /// <param name="id">Идентификатор рейда, который нужно обновить.</param>
     /// <param name="request">Обновлённые данные рейда.</param>
     /// <returns>Обновлённый рейд в виде <see cref="RaidDto" />.</returns>
-    [HttpPut("{id:int}")]
-    public async Task<RaidDto> UpdateAsync([FromRoute] int id, [FromBody] UpdateRaidRequest request)
+    [HttpPut("{id:long}")]
+    public async Task<RaidDto> UpdateAsync([FromRoute] long id, [FromBody] UpdateRaidRequest request)
     {
         return await _service.UpdateAsync(id, request);
     }
@@ -80,8 +80,8 @@ public class RaidController : ControllerBase
     /// </summary>
     /// <param name="id">Идентификатор рейда, подлежащего удалению.</param>
     /// <returns>Результат выполнения операции.</returns>
-    [HttpDelete("{id:int}")]
-    public async Task<ActionResult> DeleteAsync([FromRoute] int id)
+    [HttpDelete("{id:long}")]
+    public async Task<ActionResult> DeleteAsync([FromRoute] long id)
     {
         await _service.DeleteAsync(id);
         return Ok();
