@@ -66,13 +66,7 @@ public class RaidScreenshotService : IRaidScreenshotService
 
         var result = await _provider.SetAsync(entities);
 
-        var message =
-            new RaidScreenshotChangedMessage
-            {
-                RaidId = raidId, ActionType = EntityActionType.Created,
-            };
-
-        await _messageService.Publish(message);
+        await PublishMessageAsync(raidId, EntityActionType.Created);
 
         return _mapper.Map<IList<RaidScreenshotDto>>(result);
     }
@@ -82,10 +76,15 @@ public class RaidScreenshotService : IRaidScreenshotService
     {
         await _provider.DeleteAsync(new RaidScreenshotKey(raidId, screenshotUrl));
 
+        await PublishMessageAsync(raidId, EntityActionType.Deleted);
+    }
+
+    private async Task PublishMessageAsync(long raidId, EntityActionType actionType)
+    {
         var message =
             new RaidScreenshotChangedMessage
             {
-                RaidId = raidId, ActionType = EntityActionType.Deleted,
+                RaidId = raidId, ActionType = actionType,
             };
 
         await _messageService.Publish(message);

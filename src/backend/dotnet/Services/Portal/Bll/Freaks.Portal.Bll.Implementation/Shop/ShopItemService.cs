@@ -88,15 +88,7 @@ public class ShopItemService : IShopItemService
 
         var result = await _provider.CreateAsync(entity);
 
-        var message =
-            new ShopItemChangedMessage
-            {
-                Id = result.Id,
-                Status = result.Status,
-                ActionType = EntityActionType.Created,
-            };
-
-        await _messageService.Publish(message);
+        await PublishMessageAsync(result.Id, result.Status, EntityActionType.Created);
 
         return _mapper.Map<ShopItemDto>(result);
     }
@@ -142,15 +134,7 @@ public class ShopItemService : IShopItemService
 
         var result = await _provider.UpdateAsync(entity);
 
-        var message =
-            new ShopItemChangedMessage
-            {
-                Id = result.Id,
-                Status = result.Status,
-                ActionType = EntityActionType.Updated,
-            };
-
-        await _messageService.Publish(message);
+        await PublishMessageAsync(result.Id, result.Status, EntityActionType.Updated);
 
         return _mapper.Map<ShopItemDto>(result);
     }
@@ -160,10 +144,17 @@ public class ShopItemService : IShopItemService
     {
         await _provider.DeleteAsync(id);
 
+        await PublishMessageAsync(id, null, EntityActionType.Deleted);
+    }
+
+    private async Task PublishMessageAsync(int id, ShopItemStatus? status, EntityActionType actionType)
+    {
         var message =
             new ShopItemChangedMessage
             {
-                Id = id, ActionType = EntityActionType.Deleted,
+                Id = id,
+                Status = status,
+                ActionType = actionType,
             };
 
         await _messageService.Publish(message);

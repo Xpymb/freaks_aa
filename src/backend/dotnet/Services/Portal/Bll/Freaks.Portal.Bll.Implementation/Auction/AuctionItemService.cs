@@ -118,15 +118,7 @@ public class AuctionItemService : IAuctionItemService
             request.EndDt
         );
 
-        var message =
-            new AuctionItemChangedMessage
-            {
-                Id = result.Id,
-                Status = result.Status,
-                ActionType = EntityActionType.Created,
-            };
-
-        await _messageService.Publish(message);
+        await PublishMessageAsync(result.Id, result.Status, EntityActionType.Created);
 
         return _mapper.Map<AuctionItemDto>(result);
     }
@@ -145,15 +137,7 @@ public class AuctionItemService : IAuctionItemService
 
         var result = await _provider.UpdateAsync(entity);
 
-        var message =
-            new AuctionItemChangedMessage
-            {
-                Id = result.Id,
-                Status = result.Status,
-                ActionType = EntityActionType.Updated,
-            };
-
-        await _messageService.Publish(message);
+        await PublishMessageAsync(result.Id, result.Status, EntityActionType.Updated);
 
         return await GetAsync(result.Id);
     }
@@ -163,13 +147,7 @@ public class AuctionItemService : IAuctionItemService
     {
         await _provider.DeleteAsync(id);
 
-        var message =
-            new AuctionItemChangedMessage
-            {
-                Id = id, ActionType = EntityActionType.Deleted,
-            };
-
-        await _messageService.Publish(message);
+        await PublishMessageAsync(id, null, EntityActionType.Deleted);
     }
 
     /// <summary>
@@ -193,12 +171,17 @@ public class AuctionItemService : IAuctionItemService
 
         await _provider.UpdateAsync(entity);
 
+        await PublishMessageAsync(entity.Id, entity.Status, EntityActionType.Updated);
+    }
+
+    private async Task PublishMessageAsync(long id, AuctionItemStatus? status, EntityActionType actionType)
+    {
         var message =
             new AuctionItemChangedMessage
             {
-                Id = entity.Id,
-                Status = entity.Status,
-                ActionType = EntityActionType.Updated,
+                Id = id,
+                Status = status,
+                ActionType = actionType,
             };
 
         await _messageService.Publish(message);

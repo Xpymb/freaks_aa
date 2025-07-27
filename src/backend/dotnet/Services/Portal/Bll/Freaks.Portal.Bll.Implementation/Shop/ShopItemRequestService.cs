@@ -100,13 +100,7 @@ public class ShopItemRequestService : IShopItemRequestService
             shopItemEntity.RemainingQuantity -= request.Quantity;
             await _shopItemProvider.UpdateAsync(shopItemEntity);
 
-            var message =
-                new ShopItemRequestChangedMessage
-                {
-                    ShopItemId = shopItemId, ActionType = EntityActionType.Created,
-                };
-
-            await _messageService.Publish(message);
+            await PublishMessageAsync(shopItemId, EntityActionType.Created);
 
             return _mapper.Map<ShopItemRequestDto>(result);
         });
@@ -148,13 +142,7 @@ public class ShopItemRequestService : IShopItemRequestService
                 await _shopItemProvider.UpdateAsync(shopItemEntity);
             }
 
-            var message =
-                new ShopItemRequestChangedMessage
-                {
-                    ShopItemId = shopItemId, ActionType = EntityActionType.Updated,
-                };
-
-            await _messageService.Publish(message);
+            await PublishMessageAsync(shopItemId, EntityActionType.Updated);
 
             return _mapper.Map<ShopItemRequestDto>(result);
         });
@@ -187,13 +175,18 @@ public class ShopItemRequestService : IShopItemRequestService
 
             await _provider.DeleteAsync(new ShopItemRequestKey(shopItemId, userId));
 
-            var message =
-                new ShopItemRequestChangedMessage
-                {
-                    ShopItemId = shopItemId, ActionType = EntityActionType.Deleted,
-                };
-
-            await _messageService.Publish(message);
+            await PublishMessageAsync(shopItemId, EntityActionType.Deleted);
         });
+    }
+
+    private async Task PublishMessageAsync(int shopItemId, EntityActionType actionType)
+    {
+        var message =
+            new ShopItemRequestChangedMessage
+            {
+                ShopItemId = shopItemId, ActionType = actionType,
+            };
+
+        await _messageService.Publish(message);
     }
 }

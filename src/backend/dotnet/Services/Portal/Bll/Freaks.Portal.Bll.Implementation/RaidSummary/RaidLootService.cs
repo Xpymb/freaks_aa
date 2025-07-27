@@ -67,13 +67,7 @@ public class RaidLootService : IRaidLootService
 
         var result = await _provider.CreateAsync(entity);
 
-        var message =
-            new RaidLootChangedMessage
-            {
-                RaidId = raidId, ActionType = EntityActionType.Created,
-            };
-
-        await _messageService.Publish(message);
+        await PublishMessageAsync(raidId, EntityActionType.Created);
 
         return _mapper.Map<RaidLootDto>(result!);
     }
@@ -91,13 +85,7 @@ public class RaidLootService : IRaidLootService
 
         var result = await _provider.UpdateAsync(entity);
 
-        var message =
-            new RaidLootChangedMessage
-            {
-                RaidId = raidId, ActionType = EntityActionType.Updated,
-            };
-
-        await _messageService.Publish(message);
+        await PublishMessageAsync(raidId, EntityActionType.Updated);
 
         return _mapper.Map<RaidLootDto>(result);
     }
@@ -107,10 +95,15 @@ public class RaidLootService : IRaidLootService
     {
         await _provider.DeleteAsync(new RaidLootKey(raidId, lootId));
 
+        await PublishMessageAsync(raidId, EntityActionType.Deleted);
+    }
+
+    private async Task PublishMessageAsync(long raidId, EntityActionType actionType)
+    {
         var message =
             new RaidLootChangedMessage
             {
-                RaidId = raidId, ActionType = EntityActionType.Deleted,
+                RaidId = raidId, ActionType = actionType,
             };
 
         await _messageService.Publish(message);

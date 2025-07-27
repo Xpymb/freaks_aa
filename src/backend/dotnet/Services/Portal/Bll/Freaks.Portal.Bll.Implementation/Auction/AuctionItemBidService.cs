@@ -89,15 +89,7 @@ public class AuctionItemBidService : IAuctionItemBidService
 
         var result = await _provider.CreateAsync(entity);
 
-        var message =
-            new AuctionItemBidChangedMessage
-            {
-                AuctionItemId = result.Id,
-                BidId = result.Id,
-                ActionType = EntityActionType.Created,
-            };
-
-        await _messageService.Publish(message);
+        await PublishMessageAsync(auctionItem.Id, result.Id, EntityActionType.Created);
 
         return _mapper.Map<AuctionItemBidDto>(result);
     }
@@ -129,12 +121,17 @@ public class AuctionItemBidService : IAuctionItemBidService
 
         await _provider.DeleteAsync(id);
 
+        await PublishMessageAsync(auctionItem.Id, bid.Id, EntityActionType.Deleted);
+    }
+
+    private async Task PublishMessageAsync(long auctionItemId, long bidId, EntityActionType actionType)
+    {
         var message =
             new AuctionItemBidChangedMessage
             {
-                AuctionItemId = auctionItem.Id,
-                BidId = bid.Id,
-                ActionType = EntityActionType.Deleted,
+                AuctionItemId = auctionItemId,
+                BidId = bidId,
+                ActionType = actionType,
             };
 
         await _messageService.Publish(message);

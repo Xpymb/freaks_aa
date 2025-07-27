@@ -63,15 +63,9 @@ public class RaidParticipantService : IRaidParticipantService
 
         var result = await _provider.CreateAsync(entity);
 
-        var message =
-            new RaidParticipantChangedMessage
-            {
-                RaidId = raidId, ActionType = EntityActionType.Created,
-            };
+        await PublishMessageAsync(raidId, EntityActionType.Created);
 
-        await _messageService.Publish(message);
-
-        return _mapper.Map<RaidParticipantDto>(result!);
+        return _mapper.Map<RaidParticipantDto>(result);
     }
 
     /// <inheritdoc />
@@ -79,10 +73,15 @@ public class RaidParticipantService : IRaidParticipantService
     {
         await _provider.DeleteAsync(new RaidParticipantKey(raidId, participantId));
 
+        await PublishMessageAsync(raidId, EntityActionType.Deleted);
+    }
+
+    private async Task PublishMessageAsync(long raidId, EntityActionType actionType)
+    {
         var message =
             new RaidParticipantChangedMessage
             {
-                RaidId = raidId, ActionType = EntityActionType.Deleted,
+                RaidId = raidId, ActionType = actionType,
             };
 
         await _messageService.Publish(message);

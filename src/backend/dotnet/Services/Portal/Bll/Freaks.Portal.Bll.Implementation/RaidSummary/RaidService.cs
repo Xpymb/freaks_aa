@@ -101,13 +101,7 @@ public class RaidService : IRaidService
             );
         }
 
-        var message =
-            new RaidChangedMessage
-            {
-                Id = result.Id, ActionType = EntityActionType.Created,
-            };
-
-        await _messageService.Publish(message);
+        await PublishMessageAsync(result.Id, EntityActionType.Created);
 
         return _mapper.Map<RaidDto>(result);
     }
@@ -127,13 +121,7 @@ public class RaidService : IRaidService
 
         var result = await _provider.UpdateAsync(entity);
 
-        var message =
-            new RaidChangedMessage
-            {
-                Id = result.Id, ActionType = EntityActionType.Updated,
-            };
-
-        await _messageService.Publish(message);
+        await PublishMessageAsync(result.Id, EntityActionType.Updated);
 
         return _mapper.Map<RaidDto>(result);
     }
@@ -141,21 +129,9 @@ public class RaidService : IRaidService
     /// <inheritdoc />
     public async Task DeleteAsync(long id)
     {
-        var entity = await _provider.GetAsync(id, EntityTrackingType.NoTracking);
-        if (entity is null)
-        {
-            return;
-        }
+        await _provider.DeleteAsync(id);
 
-        await _provider.DeleteAsync(entity);
-
-        var message =
-            new RaidChangedMessage
-            {
-                Id = entity.Id, ActionType = EntityActionType.Deleted,
-            };
-
-        await _messageService.Publish(message);
+        await PublishMessageAsync(id, EntityActionType.Deleted);
     }
 
     /// <summary>
@@ -188,10 +164,15 @@ public class RaidService : IRaidService
 
         await _provider.UpdateAsync(entity);
 
+        await PublishMessageAsync(entity.Id, EntityActionType.Updated);
+    }
+
+    private async Task PublishMessageAsync(long id, EntityActionType actionType)
+    {
         var message =
             new RaidChangedMessage
             {
-                Id = entity.Id, ActionType = EntityActionType.Updated,
+                Id = id, ActionType = actionType,
             };
 
         await _messageService.Publish(message);
