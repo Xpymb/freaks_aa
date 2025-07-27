@@ -58,6 +58,7 @@ public class ShopItemRequestController : ControllerBase
     /// <param name="shopItemId">Идентификатор товара магазина.</param>
     /// <param name="request">Данные с новым статусом заявки.</param>
     /// <returns>Обновлённая заявка.</returns>
+    [RequireRoles(UserRole.Admin, UserRole.GuildLeader)]
     [HttpPatch]
     public async Task<ShopItemRequestDto> UpdateStatusAsync([FromRoute] int shopItemId, [FromBody] UpdateStatusShopItemRequest request)
     {
@@ -70,8 +71,9 @@ public class ShopItemRequestController : ControllerBase
     /// <param name="shopItemId">Идентификатор товара магазина.</param>
     /// <param name="userId">Идентификатор пользователя, чью заявку нужно удалить.</param>
     [HttpDelete]
-    public async Task DeleteAsync([FromRoute] int shopItemId, [FromQuery] Guid userId)
+    public async Task<IActionResult> DeleteAsync([FromRoute] int shopItemId, [FromQuery] Guid userId)
     {
         await _service.DeleteAsync(shopItemId, userId);
+        return Ok();
     }
 }
