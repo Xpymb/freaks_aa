@@ -1,4 +1,7 @@
-﻿using Freaks.Portal.Bll.Interfaces.RaidSummary;
+﻿using Freaks.Messages.Bll.Interfaces;
+using Freaks.Messages.SharedContracts.Messages.RaidSummary;
+using Freaks.Messages.SharedContracts.ValueObjects;
+using Freaks.Portal.Bll.Interfaces.RaidSummary;
 using Freaks.Portal.Contracts.Entities.RaidSummary;
 using Freaks.Portal.Dal.Interfaces.RaidSummary;
 using Freaks.Portal.SharedContracts.Dto.RaidSummary;
@@ -17,6 +20,7 @@ public class RaidScreenshotService : IRaidScreenshotService
     private readonly IMapper _mapper;
     private readonly IUserContext _userContext;
     private readonly IRaidScreenshotProvider _provider;
+    private readonly IMessageService _messageService;
 
     /// <summary>
     ///     Инициализирует новый экземпляр <see cref="RaidScreenshotService" />.
@@ -24,15 +28,18 @@ public class RaidScreenshotService : IRaidScreenshotService
     /// <param name="mapper">Маппер для преобразования сущностей в DTO.</param>
     /// <param name="userContext">Контекст текущего пользователя.</param>
     /// <param name="provider">Провайдер доступа к данным скриншотов.</param>
+    /// <param name="messageService">Сервис для публикации сообщений в систему обмена сообщениями.</param>
     /// <exception cref="ArgumentNullException">Выбрасывается, если один из параметров равен null.</exception>
     public RaidScreenshotService(
         IMapper mapper,
         IUserContext userContext,
-        IRaidScreenshotProvider provider)
+        IRaidScreenshotProvider provider,
+        IMessageService messageService)
     {
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
         _provider = provider ?? throw new ArgumentNullException(nameof(provider));
+        _messageService = messageService ?? throw new ArgumentNullException(nameof(messageService));
     }
 
     /// <inheritdoc />
@@ -59,6 +66,14 @@ public class RaidScreenshotService : IRaidScreenshotService
 
         var result = await _provider.SetAsync(entities);
 
+        var message =
+            new RaidScreenshotChangedMessage
+            {
+                RaidId = raidId, ActionType = EntityActionType.Created,
+            };
+
+        await _messageService.Publish(message);
+
         return _mapper.Map<IList<RaidScreenshotDto>>(result);
     }
 
@@ -66,5 +81,13 @@ public class RaidScreenshotService : IRaidScreenshotService
     public async Task DeleteAsync(long raidId, string screenshotUrl)
     {
         await _provider.DeleteAsync(new RaidScreenshotKey(raidId, screenshotUrl));
+
+        var message =
+            new RaidScreenshotChangedMessage
+            {
+                RaidId = raidId, ActionType = EntityActionType.Deleted,
+            };
+
+        await _messageService.Publish(message);
     }
 }

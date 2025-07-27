@@ -18,6 +18,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\..\Shared\Freaks.WebApi.Common\Freaks.WebApi.Common.csproj"/>
+        <ProjectReference Include="..\..\..\Shared\Messages\Freaks.Messages.Common\Freaks.Messages.Common.csproj"/>
         <ProjectReference Include="..\..\..\Shared\Users\Freaks.Users.Common\Freaks.Users.Common.csproj"/>
         <ProjectReference Include="..\Bll\Freaks.Portal.Bll.Implementation\Freaks.Portal.Bll.Implementation.csproj"/>
         <ProjectReference Include="..\Dal\Freaks.Portal.Dal.Implementation\Freaks.Portal.Dal.Implementation.csproj"/>

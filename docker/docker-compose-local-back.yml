@@ -25,6 +25,7 @@ services:
       - postgres
       - rabbitmq
       - redis
+      - centrifugo
   files-web-api:
     image: ${DOCKER_REGISTRY}/files-web-api:${APP_VERSION}
     build: 
@@ -44,6 +45,7 @@ services:
       - minio
       - rabbitmq
       - redis
+      - centrifugo
   postgres:
     image: ${DOCKER_REGISTRY}/postgres:${POSTGRES_VERSION}
     build: 
@@ -100,6 +102,22 @@ services:
       - "9379:6379"
     environment:
       - REDIS_PASSWORD=${REDIS_PASSWORD}
+  centrifugo:
+    image: ${DOCKER_REGISTRY}/centrifugo:${CENTRIFUGO_VERSION}
+    build:
+      context: "./Centrifugo"
+      dockerfile: "./Dockerfile"
+      args:
+        - CENTRIFUGO_VERSION=${CENTRIFUGO_VERSION}
+    command: centrifugo -c config.json
+    ports:
+      - 8000:8000
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535
+    depends_on:
+      - solution-build-artifacts
 volumes:
   postgres_data: null
   minio_data: null
