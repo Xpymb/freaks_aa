@@ -1,4 +1,7 @@
-﻿using Freaks.Portal.Bll.Interfaces.RaidSummary;
+﻿using Freaks.Messages.Bll.Interfaces;
+using Freaks.Messages.SharedContracts.Messages.RaidSummary;
+using Freaks.Messages.SharedContracts.ValueObjects;
+using Freaks.Portal.Bll.Interfaces.RaidSummary;
 using Freaks.Portal.Contracts.Entities.RaidSummary;
 using Freaks.Portal.Dal.Interfaces.RaidSummary;
 using Freaks.Portal.SharedContracts.Dto.RaidSummary;
@@ -17,6 +20,7 @@ public class RaidParticipantService : IRaidParticipantService
     private readonly IMapper _mapper;
     private readonly IUserContext _userContext;
     private readonly IRaidParticipantProvider _provider;
+    private readonly IMessageService _messageService;
 
     /// <summary>
     ///     Инициализирует новый экземпляр <see cref="RaidParticipantService" />.
@@ -24,15 +28,18 @@ public class RaidParticipantService : IRaidParticipantService
     /// <param name="mapper">Маппер для преобразования сущностей в DTO.</param>
     /// <param name="userContext">Контекст текущего пользователя.</param>
     /// <param name="provider">Провайдер доступа к данным участников рейда.</param>
+    /// <param name="messageService">Сервис для публикации сообщений в систему обмена сообщениями.</param>
     /// <exception cref="ArgumentNullException">Выбрасывается, если один из параметров равен null.</exception>
     public RaidParticipantService(
         IMapper mapper,
         IUserContext userContext,
-        IRaidParticipantProvider provider)
+        IRaidParticipantProvider provider,
+        IMessageService messageService)
     {
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
         _provider = provider ?? throw new ArgumentNullException(nameof(provider));
+        _messageService = messageService ?? throw new ArgumentNullException(nameof(messageService));
     }
 
     /// <inheritdoc />
@@ -56,6 +63,14 @@ public class RaidParticipantService : IRaidParticipantService
 
         var result = await _provider.CreateAsync(entity);
 
+        var message =
+            new RaidParticipantChangedMessage
+            {
+                RaidId = raidId, ActionType = EntityActionType.Created,
+            };
+
+        await _messageService.Publish(message);
+
         return _mapper.Map<RaidParticipantDto>(result!);
     }
 
@@ -63,5 +78,13 @@ public class RaidParticipantService : IRaidParticipantService
     public async Task DeleteAsync(long raidId, Guid participantId)
     {
         await _provider.DeleteAsync(new RaidParticipantKey(raidId, participantId));
+
+        var message =
+            new RaidParticipantChangedMessage
+            {
+                RaidId = raidId, ActionType = EntityActionType.Deleted,
+            };
+
+        await _messageService.Publish(message);
     }
 }

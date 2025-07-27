@@ -1,4 +1,7 @@
 ﻿using Freaks.Dal.Common.ValueObjects;
+using Freaks.Messages.Bll.Interfaces;
+using Freaks.Messages.SharedContracts.Messages.Shop;
+using Freaks.Messages.SharedContracts.ValueObjects;
 using Freaks.Portal.Bll.Interfaces.Shop;
 using Freaks.Portal.Contracts.Entities.Shop;
 using Freaks.Portal.Dal.Interfaces.Shop;
@@ -13,23 +16,39 @@ using MapsterMapper;
 
 namespace Freaks.Portal.Bll.Implementation.Shop;
 
+/// <summary>
+///     Сервис для управления товарами в магазине: получение, создание, обновление и удаление позиций с публикацией событий
+///     в шину сообщений.
+/// </summary>
 public class ShopItemService : IShopItemService
 {
     private readonly IMapper _mapper;
     private readonly IUserContext _userContext;
     private readonly IShopItemProvider _provider;
     private readonly IShopItemRequestProvider _shopItemRequestProvider;
+    private readonly IMessageService _messageService;
 
+    /// <summary>
+    ///     Инициализирует новый экземпляр <see cref="ShopItemService" />,
+    ///     устанавливая все необходимые зависимости.
+    /// </summary>
+    /// <param name="mapper">Маппер для проекции сущностей в DTO.</param>
+    /// <param name="userContext">Контекст текущего пользователя.</param>
+    /// <param name="provider">Провайдер для операций над товарами магазина.</param>
+    /// <param name="shopItemRequestProvider">Провайдер для операций над запросами на покупку товаров.</param>
+    /// <param name="messageService">Сервис для публикации событий изменений.</param>
     public ShopItemService(
         IMapper mapper,
         IUserContext userContext,
         IShopItemProvider provider,
-        IShopItemRequestProvider shopItemRequestProvider)
+        IShopItemRequestProvider shopItemRequestProvider,
+        IMessageService messageService)
     {
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
         _provider = provider ?? throw new ArgumentNullException(nameof(provider));
         _shopItemRequestProvider = shopItemRequestProvider ?? throw new ArgumentNullException(nameof(shopItemRequestProvider));
+        _messageService = messageService ?? throw new ArgumentNullException(nameof(messageService));
     }
 
     /// <inheritdoc />
@@ -68,6 +87,16 @@ public class ShopItemService : IShopItemService
             };
 
         var result = await _provider.CreateAsync(entity);
+
+        var message =
+            new ShopItemChangedMessage
+            {
+                Id = result.Id,
+                Status = result.Status,
+                ActionType = EntityActionType.Created,
+            };
+
+        await _messageService.Publish(message);
 
         return _mapper.Map<ShopItemDto>(result);
     }
@@ -111,14 +140,32 @@ public class ShopItemService : IShopItemService
             entity.Status = ShopItemStatus.Ended;
         }
 
-        await _provider.UpdateAsync(entity);
+        var result = await _provider.UpdateAsync(entity);
 
-        return _mapper.Map<ShopItemDto>(entity);
+        var message =
+            new ShopItemChangedMessage
+            {
+                Id = result.Id,
+                Status = result.Status,
+                ActionType = EntityActionType.Updated,
+            };
+
+        await _messageService.Publish(message);
+
+        return _mapper.Map<ShopItemDto>(result);
     }
 
     /// <inheritdoc />
     public async Task DeleteAsync(int id)
     {
         await _provider.DeleteAsync(id);
+
+        var message =
+            new ShopItemChangedMessage
+            {
+                Id = id, ActionType = EntityActionType.Deleted,
+            };
+
+        await _messageService.Publish(message);
     }
 }

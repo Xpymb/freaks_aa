@@ -1,5 +1,6 @@
 using Freaks.Bll.Common.Extensions;
 using Freaks.Dal.Common.Extensions;
+using Freaks.Messages.Common;
 using Freaks.Portal.Bll.Implementation;
 using Freaks.Portal.Dal.Implementation;
 using Freaks.Portal.Dal.Persistence;
@@ -15,6 +16,7 @@ builder.Services.AddControllers();
 builder.Services.AddDefaults(builder.Configuration);
 builder.Services.AddNSwag();
 builder.Services.AddMapsterCommon();
+builder.Services.AddCentrifugoMessageService(builder.Configuration);
 
 // Auth
 builder.Services.AddKeycloakAuth(builder.Configuration);

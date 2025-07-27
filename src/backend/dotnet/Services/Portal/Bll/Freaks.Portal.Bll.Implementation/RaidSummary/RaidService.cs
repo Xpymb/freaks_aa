@@ -1,4 +1,7 @@
 ﻿using Freaks.Dal.Common.ValueObjects;
+using Freaks.Messages.Bll.Interfaces;
+using Freaks.Messages.SharedContracts.Messages.RaidSummary;
+using Freaks.Messages.SharedContracts.ValueObjects;
 using Freaks.Portal.Bll.Interfaces.RaidSummary;
 using Freaks.Portal.Contracts.Entities.RaidSummary;
 using Freaks.Portal.Dal.Interfaces.RaidSummary;
@@ -21,6 +24,7 @@ public class RaidService : IRaidService
 {
     private readonly IRaidProvider _provider;
     private readonly IBackgroundJobClient _jobClient;
+    private readonly IMessageService _messageService;
     private readonly IMapper _mapper;
     private readonly IUserContext _userContext;
 
@@ -31,15 +35,18 @@ public class RaidService : IRaidService
     /// <param name="userContext">Контекст текущего пользователя.</param>
     /// <param name="provider">Провайдер доступа к данным участников рейда.</param>
     /// <param name="jobClient">Клиент фоновых задач.</param>
+    /// <param name="messageService">Сервис для публикации сообщений в систему обмена сообщениями.</param>
     /// <exception cref="ArgumentNullException">Выбрасывается, если один из аргументов равен null.</exception>
     public RaidService(
         IMapper mapper,
         IUserContext userContext,
         IRaidProvider provider,
-        IBackgroundJobClient jobClient)
+        IBackgroundJobClient jobClient,
+        IMessageService messageService)
     {
         _provider = provider ?? throw new ArgumentNullException(nameof(provider));
         _jobClient = jobClient ?? throw new ArgumentNullException(nameof(jobClient));
+        _messageService = messageService ?? throw new ArgumentNullException(nameof(messageService));
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
     }
@@ -94,6 +101,14 @@ public class RaidService : IRaidService
             );
         }
 
+        var message =
+            new RaidChangedMessage
+            {
+                Id = result.Id, ActionType = EntityActionType.Created,
+            };
+
+        await _messageService.Publish(message);
+
         return _mapper.Map<RaidDto>(result);
     }
 
@@ -112,6 +127,14 @@ public class RaidService : IRaidService
 
         var result = await _provider.UpdateAsync(entity);
 
+        var message =
+            new RaidChangedMessage
+            {
+                Id = result.Id, ActionType = EntityActionType.Updated,
+            };
+
+        await _messageService.Publish(message);
+
         return _mapper.Map<RaidDto>(result);
     }
 
@@ -125,6 +148,14 @@ public class RaidService : IRaidService
         }
 
         await _provider.DeleteAsync(entity);
+
+        var message =
+            new RaidChangedMessage
+            {
+                Id = entity.Id, ActionType = EntityActionType.Deleted,
+            };
+
+        await _messageService.Publish(message);
     }
 
     /// <summary>
@@ -156,5 +187,13 @@ public class RaidService : IRaidService
         entity.UpdatedDt = DateTimeOffset.UtcNow;
 
         await _provider.UpdateAsync(entity);
+
+        var message =
+            new RaidChangedMessage
+            {
+                Id = entity.Id, ActionType = EntityActionType.Updated,
+            };
+
+        await _messageService.Publish(message);
     }
 }

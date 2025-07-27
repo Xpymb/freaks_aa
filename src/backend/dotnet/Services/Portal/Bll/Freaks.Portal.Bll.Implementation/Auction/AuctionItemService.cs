@@ -1,4 +1,7 @@
 ﻿using Freaks.Dal.Common.ValueObjects;
+using Freaks.Messages.Bll.Interfaces;
+using Freaks.Messages.SharedContracts.Messages.Auction;
+using Freaks.Messages.SharedContracts.ValueObjects;
 using Freaks.Portal.Bll.Interfaces.Auction;
 using Freaks.Portal.Contracts.Entities.Auction;
 using Freaks.Portal.Dal.Interfaces.Auction;
@@ -23,6 +26,7 @@ public class AuctionItemService : IAuctionItemService
     private readonly IBackgroundJobClient _jobClient;
     private readonly IAuctionItemProvider _provider;
     private readonly IAuctionItemBidProvider _bidProvider;
+    private readonly IMessageService _messageService;
 
     /// <summary>
     ///     Инициализирует новый экземпляр <see cref="AuctionItemService" />,
@@ -33,18 +37,21 @@ public class AuctionItemService : IAuctionItemService
     /// <param name="jobClient">Клиент фоновых задач для планирования уведомлений и прочего.</param>
     /// <param name="provider">Провайдер для работы с сущностями лотов аукциона.</param>
     /// <param name="bidProvider">Провайдер для работы со ставками по лотам.</param>
+    /// <param name="messageService">Сервис для публикации сообщений в систему обмена сообщениями.</param>
     public AuctionItemService(
         IMapper mapper,
         IUserContext userContext,
         IBackgroundJobClient jobClient,
         IAuctionItemProvider provider,
-        IAuctionItemBidProvider bidProvider)
+        IAuctionItemBidProvider bidProvider,
+        IMessageService messageService)
     {
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
         _jobClient = jobClient ?? throw new ArgumentNullException(nameof(jobClient));
         _provider = provider ?? throw new ArgumentNullException(nameof(provider));
         _bidProvider = bidProvider ?? throw new ArgumentNullException(nameof(bidProvider));
+        _messageService = messageService ?? throw new ArgumentNullException(nameof(messageService));
     }
 
     /// <inheritdoc />
@@ -111,6 +118,16 @@ public class AuctionItemService : IAuctionItemService
             request.EndDt
         );
 
+        var message =
+            new AuctionItemChangedMessage
+            {
+                Id = result.Id,
+                Status = result.Status,
+                ActionType = EntityActionType.Created,
+            };
+
+        await _messageService.Publish(message);
+
         return _mapper.Map<AuctionItemDto>(result);
     }
 
@@ -128,6 +145,16 @@ public class AuctionItemService : IAuctionItemService
 
         var result = await _provider.UpdateAsync(entity);
 
+        var message =
+            new AuctionItemChangedMessage
+            {
+                Id = result.Id,
+                Status = result.Status,
+                ActionType = EntityActionType.Updated,
+            };
+
+        await _messageService.Publish(message);
+
         return await GetAsync(result.Id);
     }
 
@@ -135,6 +162,14 @@ public class AuctionItemService : IAuctionItemService
     public async Task DeleteAsync(long id)
     {
         await _provider.DeleteAsync(id);
+
+        var message =
+            new AuctionItemChangedMessage
+            {
+                Id = id, ActionType = EntityActionType.Deleted,
+            };
+
+        await _messageService.Publish(message);
     }
 
     /// <summary>
@@ -157,5 +192,15 @@ public class AuctionItemService : IAuctionItemService
         entity.Status = AuctionItemStatus.Ended;
 
         await _provider.UpdateAsync(entity);
+
+        var message =
+            new AuctionItemChangedMessage
+            {
+                Id = entity.Id,
+                Status = entity.Status,
+                ActionType = EntityActionType.Updated,
+            };
+
+        await _messageService.Publish(message);
     }
 }

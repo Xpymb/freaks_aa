@@ -1,5 +1,8 @@
 ﻿using Freaks.Dal.Common.Interfaces;
 using Freaks.Dal.Common.ValueObjects;
+using Freaks.Messages.Bll.Interfaces;
+using Freaks.Messages.SharedContracts.Messages.Shop;
+using Freaks.Messages.SharedContracts.ValueObjects;
 using Freaks.Portal.Bll.Interfaces.Shop;
 using Freaks.Portal.Contracts.Entities.Shop;
 using Freaks.Portal.Dal.Interfaces.Shop;
@@ -14,6 +17,10 @@ using MapsterMapper;
 
 namespace Freaks.Portal.Bll.Implementation.Shop;
 
+/// <summary>
+///     Сервис для управления запросами на покупку товаров в магазине:
+///     получение списка запросов, создание, изменение статуса и удаление запросов с публикацией событий.
+/// </summary>
 public class ShopItemRequestService : IShopItemRequestService
 {
     private readonly IMapper _mapper;
@@ -21,19 +28,32 @@ public class ShopItemRequestService : IShopItemRequestService
     private readonly IShopItemRequestProvider _provider;
     private readonly IShopItemProvider _shopItemProvider;
     private readonly IUnitOfWork<PortalDbContext> _unitOfWork;
+    private readonly IMessageService _messageService;
 
+    /// <summary>
+    ///     Инициализирует новый экземпляр <see cref="ShopItemRequestService" />,
+    ///     устанавливая зависимости для работы с запросами и товарами, а также публикации сообщений.
+    /// </summary>
+    /// <param name="mapper">Маппер для преобразования сущностей в DTO.</param>
+    /// <param name="userContext">Контекст текущего пользователя.</param>
+    /// <param name="provider">Провайдер для операций над запросами на покупку товаров.</param>
+    /// <param name="shopItemProvider">Провайдер для операций над товарами магазина.</param>
+    /// <param name="unitOfWork">Юнит работы для обеспечения транзакционной целостности.</param>
+    /// <param name="messageService">Сервис для публикации событий об изменениях.</param>
     public ShopItemRequestService(
         IMapper mapper,
         IUserContext userContext,
         IShopItemRequestProvider provider,
         IShopItemProvider shopItemProvider,
-        IUnitOfWork<PortalDbContext> unitOfWork)
+        IUnitOfWork<PortalDbContext> unitOfWork,
+        IMessageService messageService)
     {
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
         _provider = provider ?? throw new ArgumentNullException(nameof(provider));
         _shopItemProvider = shopItemProvider ?? throw new ArgumentNullException(nameof(shopItemProvider));
         _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+        _messageService = messageService ?? throw new ArgumentNullException(nameof(messageService));
     }
 
     /// <inheritdoc />
@@ -80,6 +100,14 @@ public class ShopItemRequestService : IShopItemRequestService
             shopItemEntity.RemainingQuantity -= request.Quantity;
             await _shopItemProvider.UpdateAsync(shopItemEntity);
 
+            var message =
+                new ShopItemRequestChangedMessage
+                {
+                    ShopItemId = shopItemId, ActionType = EntityActionType.Created,
+                };
+
+            await _messageService.Publish(message);
+
             return _mapper.Map<ShopItemRequestDto>(result);
         });
     }
@@ -120,6 +148,14 @@ public class ShopItemRequestService : IShopItemRequestService
                 await _shopItemProvider.UpdateAsync(shopItemEntity);
             }
 
+            var message =
+                new ShopItemRequestChangedMessage
+                {
+                    ShopItemId = shopItemId, ActionType = EntityActionType.Updated,
+                };
+
+            await _messageService.Publish(message);
+
             return _mapper.Map<ShopItemRequestDto>(result);
         });
     }
@@ -150,6 +186,14 @@ public class ShopItemRequestService : IShopItemRequestService
             await _shopItemProvider.UpdateAsync(shopItemEntity);
 
             await _provider.DeleteAsync(new ShopItemRequestKey(shopItemId, userId));
+
+            var message =
+                new ShopItemRequestChangedMessage
+                {
+                    ShopItemId = shopItemId, ActionType = EntityActionType.Deleted,
+                };
+
+            await _messageService.Publish(message);
         });
     }
 }

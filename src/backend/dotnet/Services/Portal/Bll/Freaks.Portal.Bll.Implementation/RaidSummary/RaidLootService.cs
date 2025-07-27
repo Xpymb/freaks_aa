@@ -1,4 +1,7 @@
 ﻿using Freaks.Dal.Common.ValueObjects;
+using Freaks.Messages.Bll.Interfaces;
+using Freaks.Messages.SharedContracts.Messages.RaidSummary;
+using Freaks.Messages.SharedContracts.ValueObjects;
 using Freaks.Portal.Bll.Interfaces.RaidSummary;
 using Freaks.Portal.Contracts.Entities.RaidSummary;
 using Freaks.Portal.Dal.Interfaces.RaidSummary;
@@ -20,6 +23,7 @@ public class RaidLootService : IRaidLootService
     private readonly IMapper _mapper;
     private readonly IUserContext _userContext;
     private readonly IRaidLootProvider _provider;
+    private readonly IMessageService _messageService;
 
     /// <summary>
     ///     Инициализирует новый экземпляр <see cref="RaidLootService"/>.
@@ -27,15 +31,18 @@ public class RaidLootService : IRaidLootService
     /// <param name="mapper">Сервис AutoMapper для преобразования сущностей в DTO и обратно.</param>
     /// <param name="userContext">Контекст текущего пользователя.</param>
     /// <param name="provider">Провайдер доступа к данным рейдового лута.</param>
+    /// <param name="messageService">Сервис для публикации сообщений в систему обмена сообщениями.</param>
     /// <exception cref="ArgumentNullException">Выбрасывается, если любой из аргументов равен null.</exception>
     public RaidLootService(
         IMapper mapper,
         IUserContext userContext,
-        IRaidLootProvider provider)
+        IRaidLootProvider provider,
+        IMessageService messageService)
     {
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
         _provider = provider ?? throw new ArgumentNullException(nameof(provider));
+        _messageService = messageService ?? throw new ArgumentNullException(nameof(messageService));
     }
 
     /// <inheritdoc />
@@ -60,6 +67,14 @@ public class RaidLootService : IRaidLootService
 
         var result = await _provider.CreateAsync(entity);
 
+        var message =
+            new RaidLootChangedMessage
+            {
+                RaidId = raidId, ActionType = EntityActionType.Created,
+            };
+
+        await _messageService.Publish(message);
+
         return _mapper.Map<RaidLootDto>(result!);
     }
 
@@ -76,6 +91,14 @@ public class RaidLootService : IRaidLootService
 
         var result = await _provider.UpdateAsync(entity);
 
+        var message =
+            new RaidLootChangedMessage
+            {
+                RaidId = raidId, ActionType = EntityActionType.Updated,
+            };
+
+        await _messageService.Publish(message);
+
         return _mapper.Map<RaidLootDto>(result);
     }
 
@@ -83,5 +106,13 @@ public class RaidLootService : IRaidLootService
     public async Task DeleteAsync(long raidId, int lootId)
     {
         await _provider.DeleteAsync(new RaidLootKey(raidId, lootId));
+
+        var message =
+            new RaidLootChangedMessage
+            {
+                RaidId = raidId, ActionType = EntityActionType.Deleted,
+            };
+
+        await _messageService.Publish(message);
     }
 }

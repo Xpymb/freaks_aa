@@ -1,4 +1,7 @@
 ﻿using Freaks.Dal.Common.ValueObjects;
+using Freaks.Messages.Bll.Interfaces;
+using Freaks.Messages.SharedContracts.Messages.Auction;
+using Freaks.Messages.SharedContracts.ValueObjects;
 using Freaks.Portal.Bll.Interfaces.Auction;
 using Freaks.Portal.Contracts.Entities.Auction;
 using Freaks.Portal.Dal.Interfaces.Auction;
@@ -12,23 +15,38 @@ using MapsterMapper;
 
 namespace Freaks.Portal.Bll.Implementation.Auction;
 
+/// <summary>
+///     Сервис для работы со ставками лотов аукциона: получение списка, создание и удаление ставок с публикацией событий.
+/// </summary>
 public class AuctionItemBidService : IAuctionItemBidService
 {
     private readonly IMapper _mapper;
     private readonly IUserContext _userContext;
     private readonly IAuctionItemBidProvider _provider;
     private readonly IAuctionItemProvider _itemProvider;
+    private readonly IMessageService _messageService;
 
+    /// <summary>
+    ///     Инициализирует новый экземпляр <see cref="AuctionItemBidService" />,
+    ///     устанавливая все необходимые зависимости.
+    /// </summary>
+    /// <param name="mapper">Маппер для преобразования сущностей в DTO.</param>
+    /// <param name="userContext">Контекст текущего пользователя.</param>
+    /// <param name="provider">Провайдер для операций над сущностями ставок.</param>
+    /// <param name="itemProvider">Провайдер для операций над лотами аукциона.</param>
+    /// <param name="messageService">Сервис для публикации событий об изменении ставок.</param>
     public AuctionItemBidService(
         IMapper mapper,
         IUserContext userContext,
         IAuctionItemBidProvider provider,
-        IAuctionItemProvider itemProvider)
+        IAuctionItemProvider itemProvider,
+        IMessageService messageService)
     {
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
         _provider = provider ?? throw new ArgumentNullException(nameof(provider));
         _itemProvider = itemProvider ?? throw new ArgumentNullException(nameof(itemProvider));
+        _messageService = messageService ?? throw new ArgumentNullException(nameof(messageService));
     }
 
     /// <inheritdoc />
@@ -71,6 +89,16 @@ public class AuctionItemBidService : IAuctionItemBidService
 
         var result = await _provider.CreateAsync(entity);
 
+        var message =
+            new AuctionItemBidChangedMessage
+            {
+                AuctionItemId = result.Id,
+                BidId = result.Id,
+                ActionType = EntityActionType.Created,
+            };
+
+        await _messageService.Publish(message);
+
         return _mapper.Map<AuctionItemBidDto>(result);
     }
 
@@ -100,5 +128,15 @@ public class AuctionItemBidService : IAuctionItemBidService
         }
 
         await _provider.DeleteAsync(id);
+
+        var message =
+            new AuctionItemBidChangedMessage
+            {
+                AuctionItemId = auctionItem.Id,
+                BidId = bid.Id,
+                ActionType = EntityActionType.Deleted,
+            };
+
+        await _messageService.Publish(message);
     }
 }
