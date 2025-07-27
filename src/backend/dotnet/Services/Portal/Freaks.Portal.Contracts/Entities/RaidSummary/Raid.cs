@@ -14,7 +14,7 @@ namespace Freaks.Portal.Contracts.Entities.RaidSummary;
 /// Используется для планирования и отслеживания рейдовых событий в системе.
 /// </summary>
 [Table("raid", Schema = DatabaseConsts.PortalSchema)]
-public class Raid : IEntity<int>
+public class Raid : IEntity<long>
 {
     /// <summary>
     /// Уникальный идентификатор рейда (первичный ключ).
@@ -22,7 +22,7 @@ public class Raid : IEntity<int>
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("id")]
-    public int Id { get; init; }
+    public long Id { get; init; }
 
     /// <summary>
     /// Идентификатор пользователя, создавшего рейд.

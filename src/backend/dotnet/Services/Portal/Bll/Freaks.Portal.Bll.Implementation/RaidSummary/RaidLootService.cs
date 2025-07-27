@@ -39,7 +39,7 @@ public class RaidLootService : IRaidLootService
     }
 
     /// <inheritdoc />
-    public async Task<IList<RaidLootDto>> GetListAsync(int raidId)
+    public async Task<IList<RaidLootDto>> GetListAsync(long raidId)
     {
         var result = await _provider.GetByRaidIdAsync(raidId);
 
@@ -47,7 +47,7 @@ public class RaidLootService : IRaidLootService
     }
 
     /// <inheritdoc />
-    public async Task<RaidLootDto> CreateAsync(int raidId, CreateRaidLootRequest request)
+    public async Task<RaidLootDto> CreateAsync(long raidId, CreateRaidLootRequest request)
     {
         var entity =
             new RaidLoot
@@ -64,7 +64,7 @@ public class RaidLootService : IRaidLootService
     }
 
     /// <inheritdoc />
-    public async Task<RaidLootDto> UpdateAsync(int raidId, int lootId, UpdateRaidLootRequest request)
+    public async Task<RaidLootDto> UpdateAsync(long raidId, int lootId, UpdateRaidLootRequest request)
     {
         var entity = await _provider.GetAsync(new RaidLootKey(raidId, lootId), EntityTrackingType.NoTracking);
         if (entity is null)
@@ -80,7 +80,7 @@ public class RaidLootService : IRaidLootService
     }
 
     /// <inheritdoc />
-    public async Task DeleteAsync(int raidId, int lootId)
+    public async Task DeleteAsync(long raidId, int lootId)
     {
         await _provider.DeleteAsync(new RaidLootKey(raidId, lootId));
     }

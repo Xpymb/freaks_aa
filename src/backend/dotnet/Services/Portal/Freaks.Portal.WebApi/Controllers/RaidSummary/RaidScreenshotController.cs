@@ -15,7 +15,7 @@ namespace Freaks.Portal.WebApi.Controllers.RaidSummary;
 [ApiController]
 [Authorize]
 [RequireRoles(UserRole.Member)]
-[Route("raids/{raidId:int}/screenshots")]
+[Route("raids/{raidId:long}/screenshots")]
 public class RaidScreenshotController : ControllerBase
 {
     private readonly IRaidScreenshotService _service;
@@ -35,7 +35,7 @@ public class RaidScreenshotController : ControllerBase
     /// <param name="raidId">Идентификатор рейда.</param>
     /// <returns>Список скриншотов.</returns>
     [HttpGet]
-    public async Task<IList<RaidScreenshotDto>> GetListAsync([FromRoute] int raidId)
+    public async Task<IList<RaidScreenshotDto>> GetListAsync([FromRoute] long raidId)
     {
         return await _service.GetListAsync(raidId);
     }
@@ -47,7 +47,7 @@ public class RaidScreenshotController : ControllerBase
     /// <param name="request">Данные скриншотов для установки.</param>
     /// <returns>Актуальный список скриншотов после обновления.</returns>
     [HttpPost]
-    public async Task<IList<RaidScreenshotDto>> SetAsync([FromRoute] int raidId, [FromBody] SetRaidScreenshotRequest request)
+    public async Task<IList<RaidScreenshotDto>> SetAsync([FromRoute] long raidId, [FromBody] SetRaidScreenshotRequest request)
     {
         return await _service.SetAsync(raidId, request);
     }
@@ -59,7 +59,7 @@ public class RaidScreenshotController : ControllerBase
     /// <param name="screenshotUrl">URL скриншота для удаления.</param>
     /// <returns>Результат выполнения операции.</returns>
     [HttpDelete]
-    public async Task<ActionResult> DeleteAsync([FromRoute] int raidId, [FromQuery] string screenshotUrl)
+    public async Task<ActionResult> DeleteAsync([FromRoute] long raidId, [FromQuery] string screenshotUrl)
     {
         await _service.DeleteAsync(raidId, screenshotUrl);
         return Ok();

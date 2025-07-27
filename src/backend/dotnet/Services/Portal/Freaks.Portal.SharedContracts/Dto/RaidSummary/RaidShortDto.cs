@@ -12,7 +12,7 @@ namespace Freaks.Portal.SharedContracts.Dto.RaidSummary;
 /// <param name="StartDt">Дата и время начала рейда.</param>
 /// <param name="Status">Текущий статус рейда.</param>
 public record RaidShortDto(
-    int Id,
+    long Id,
     BossType BossType,
     UserDto Creator,
     DateTimeOffset StartDt,

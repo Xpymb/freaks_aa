@@ -24,7 +24,7 @@ public class RaidScreenshotProvider : BaseCachedCompositeProvider<RaidScreenshot
     {
     }
     /// <inheritdoc />
-    public async Task<IList<RaidScreenshot>> GetByRaidIdAsync(int raidId)
+    public async Task<IList<RaidScreenshot>> GetByRaidIdAsync(long raidId)
     {
         var cacheKey = GetCacheRaidKey(raidId);
         var cachedValue = await GetCachedValueAsync<IList<RaidScreenshot>>(cacheKey);
@@ -75,7 +75,7 @@ public class RaidScreenshotProvider : BaseCachedCompositeProvider<RaidScreenshot
     /// </summary>
     /// <param name="raidId">Идентификатор рейда.</param>
     /// <returns>Строковой ключ кэша.</returns>
-    private static string GetCacheRaidKey(int raidId)
+    private static string GetCacheRaidKey(long raidId)
     {
         return $"{nameof(RaidScreenshot)}:list:raid:{raidId}";
     }

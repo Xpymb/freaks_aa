@@ -15,5 +15,5 @@ public interface IRaidScreenshotProvider : IBaseCompositeProvider<RaidScreenshot
     /// </summary>
     /// <param name="raidId">Идентификатор рейда.</param>
     /// <returns>Список скриншотов, связанных с рейдом.</returns>
-    Task<IList<RaidScreenshot>> GetByRaidIdAsync(int raidId);
+    Task<IList<RaidScreenshot>> GetByRaidIdAsync(long raidId);
 }

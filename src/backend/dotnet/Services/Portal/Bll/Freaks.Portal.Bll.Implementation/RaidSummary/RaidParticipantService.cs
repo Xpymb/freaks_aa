@@ -36,7 +36,7 @@ public class RaidParticipantService : IRaidParticipantService
     }
 
     /// <inheritdoc />
-    public async Task<IList<RaidParticipantDto>> GetListAsync(int raidId)
+    public async Task<IList<RaidParticipantDto>> GetListAsync(long raidId)
     {
         var result = await _provider.GetByRaidIdAsync(raidId);
 
@@ -44,7 +44,7 @@ public class RaidParticipantService : IRaidParticipantService
     }
 
     /// <inheritdoc />
-    public async Task<RaidParticipantDto> CreateAsync(int raidId, CreateRaidParticipantRequest request)
+    public async Task<RaidParticipantDto> CreateAsync(long raidId, CreateRaidParticipantRequest request)
     {
         var entity =
             new RaidParticipant
@@ -60,7 +60,7 @@ public class RaidParticipantService : IRaidParticipantService
     }
 
     /// <inheritdoc />
-    public async Task DeleteAsync(int raidId, Guid participantId)
+    public async Task DeleteAsync(long raidId, Guid participantId)
     {
         await _provider.DeleteAsync(new RaidParticipantKey(raidId, participantId));
     }

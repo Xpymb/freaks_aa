@@ -14,7 +14,7 @@ public interface IRaidParticipantService
     /// </summary>
     /// <param name="raidId">Идентификатор рейда.</param>
     /// <returns>Список участников рейда.</returns>
-    Task<IList<RaidParticipantDto>> GetListAsync(int raidId);
+    Task<IList<RaidParticipantDto>> GetListAsync(long raidId);
 
     /// <summary>
     ///     Добавляет нового участника в рейд.
@@ -22,12 +22,12 @@ public interface IRaidParticipantService
     /// <param name="raidId">Идентификатор рейда</param>
     /// <param name="request">Запрос с данными участника и рейда.</param>
     /// <returns>Добавленный участник рейда.</returns>
-    Task<RaidParticipantDto> CreateAsync(int raidId, CreateRaidParticipantRequest request);
+    Task<RaidParticipantDto> CreateAsync(long raidId, CreateRaidParticipantRequest request);
 
     /// <summary>
     ///     Удаляет участника из рейда.
     /// </summary>
     /// <param name="raidId">Идентификатор рейда.</param>
     /// <param name="participantId">Идентификатор участника (пользователя), которого нужно удалить.</param>
-    Task DeleteAsync(int raidId, Guid participantId);
+    Task DeleteAsync(long raidId, Guid participantId);
 }

@@ -17,7 +17,7 @@ namespace Freaks.Portal.SharedContracts.Dto.RaidSummary;
 /// <param name="Description">Описание рейда и дополнительные заметки.</param>
 /// <param name="Status">Текущий статус рейда.</param>
 public record RaidDto(
-    int Id,
+    long Id,
     BossType BossType,
     RaidFormatType? FormatType,
     UserDto Creator,

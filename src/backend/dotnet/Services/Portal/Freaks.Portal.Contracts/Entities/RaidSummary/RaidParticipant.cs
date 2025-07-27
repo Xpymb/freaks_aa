@@ -11,7 +11,7 @@ namespace Freaks.Portal.Contracts.Entities.RaidSummary;
 /// </summary>
 /// <param name="RaidId">Идентификатор рейда.</param>
 /// <param name="ParticipantId">Идентификатор участника рейда.</param>
-public record RaidParticipantKey(int RaidId, Guid ParticipantId);
+public record RaidParticipantKey(long RaidId, Guid ParticipantId);
 
 /// <summary>
 /// Представляет участника рейда в базе данных.
@@ -24,7 +24,7 @@ public class RaidParticipant : ICompositeEntity<RaidParticipantKey>
     /// Идентификатор рейда, в котором участвует пользователь.
     /// </summary>
     [Column("raid_id")]
-    public required int RaidId { get; init; }
+    public required long RaidId { get; init; }
 
     /// <summary>
     /// Идентификатор участника рейда.

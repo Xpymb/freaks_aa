@@ -15,7 +15,7 @@ public interface IRaidParticipantProvider : IBaseCompositeProvider<RaidParticipa
     /// </summary>
     /// <param name="raidId">Идентификатор рейда.</param>
     /// <returns>Список участников рейда.</returns>
-    Task<IList<RaidParticipant>> GetByRaidIdAsync(int raidId);
+    Task<IList<RaidParticipant>> GetByRaidIdAsync(long raidId);
 
     /// <summary>
     /// Возвращает список рейдов, в которых участвует указанный пользователь.

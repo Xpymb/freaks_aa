@@ -10,7 +10,7 @@ namespace Freaks.Portal.Dal.Interfaces.RaidSummary;
 ///     Интерфейс провайдера для работы с рейдами в базе данных.
 ///     Предоставляет методы получения и фильтрации данных о рейдах.
 /// </summary>
-public interface IRaidProvider : IBaseProvider<Raid, int, IPortalDbContext>
+public interface IRaidProvider : IBaseProvider<Raid, long, IPortalDbContext>
 {
     /// <summary>
     ///     Возвращает список рейдов с постраничной выборкой на основе переданных фильтров и параметров сортировки.

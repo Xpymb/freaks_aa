@@ -45,7 +45,7 @@ public class RaidService : IRaidService
     }
 
     /// <inheritdoc />
-    public async Task<RaidDto> GetAsync(int id)
+    public async Task<RaidDto> GetAsync(long id)
     {
         var entity = await _provider.GetAsync(id, EntityTrackingType.NoTracking);
         if (entity is null)
@@ -98,7 +98,7 @@ public class RaidService : IRaidService
     }
 
     /// <inheritdoc />
-    public async Task<RaidDto> UpdateAsync(int id, UpdateRaidRequest request)
+    public async Task<RaidDto> UpdateAsync(long id, UpdateRaidRequest request)
     {
         var entity = await _provider.GetAsync(id, EntityTrackingType.NoTracking);
         if (entity is null)
@@ -116,7 +116,7 @@ public class RaidService : IRaidService
     }
 
     /// <inheritdoc />
-    public async Task DeleteAsync(int id)
+    public async Task DeleteAsync(long id)
     {
         var entity = await _provider.GetAsync(id, EntityTrackingType.NoTracking);
         if (entity is null)
@@ -139,7 +139,7 @@ public class RaidService : IRaidService
     /// <exception cref="EntityNotFoundException">Если рейд с указанным идентификатором не найден</exception>
     [AutomaticRetry(Attempts = 2, OnAttemptsExceeded = AttemptsExceededAction.Delete)]
     // ReSharper disable once MemberCanBePrivate.Global
-    public async Task EvaluateRaidStartAsync(int id)
+    public async Task EvaluateRaidStartAsync(long id)
     {
         var entity = await _provider.GetAsync(id, EntityTrackingType.NoTracking);
         if (entity is null)

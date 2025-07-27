@@ -15,7 +15,7 @@ public interface IRaidService
     /// </summary>
     /// <param name="id">Идентификатор рейда.</param>
     /// <returns>Детальная информация о рейде.</returns>
-    Task<RaidDto> GetAsync(int id);
+    Task<RaidDto> GetAsync(long id);
 
     /// <summary>
     ///     Получает список рейдов с фильтрацией, сортировкой и пагинацией.
@@ -37,11 +37,11 @@ public interface IRaidService
     /// <param name="id">Идентификатор рейда</param>
     /// <param name="request">Данные для обновления рейда.</param>
     /// <returns>Обновлённый рейд с полной информацией.</returns>
-    Task<RaidDto> UpdateAsync(int id, UpdateRaidRequest request);
+    Task<RaidDto> UpdateAsync(long id, UpdateRaidRequest request);
 
     /// <summary>
     ///     Удаляет рейд по его идентификатору.
     /// </summary>
     /// <param name="id">Идентификатор рейда для удаления.</param>
-    Task DeleteAsync(int id);
+    Task DeleteAsync(long id);
 }

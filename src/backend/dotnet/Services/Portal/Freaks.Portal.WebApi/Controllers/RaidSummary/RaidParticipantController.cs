@@ -15,7 +15,7 @@ namespace Freaks.Portal.WebApi.Controllers.RaidSummary;
 [ApiController]
 [Authorize]
 [RequireRoles(UserRole.Member)]
-[Route("raids/{raidId:int}/participants")]
+[Route("raids/{raidId:long}/participants")]
 public class RaidParticipantController : ControllerBase
 {
     private readonly IRaidParticipantService _service;
@@ -36,7 +36,7 @@ public class RaidParticipantController : ControllerBase
     /// <param name="raidId">Идентификатор рейда.</param>
     /// <returns>Список участников рейда.</returns>
     [HttpGet]
-    public async Task<IList<RaidParticipantDto>> GetListAsync([FromRoute] int raidId)
+    public async Task<IList<RaidParticipantDto>> GetListAsync([FromRoute] long raidId)
     {
         return await _service.GetListAsync(raidId);
     }
@@ -48,7 +48,7 @@ public class RaidParticipantController : ControllerBase
     /// <param name="request">Данные нового участника.</param>
     /// <returns>Информация о добавленном участнике.</returns>
     [HttpPost]
-    public async Task<RaidParticipantDto> CreateAsync([FromRoute] int raidId, [FromBody] CreateRaidParticipantRequest request)
+    public async Task<RaidParticipantDto> CreateAsync([FromRoute] long raidId, [FromBody] CreateRaidParticipantRequest request)
     {
         var result = await _service.CreateAsync(raidId, request);
         return result;
@@ -61,7 +61,7 @@ public class RaidParticipantController : ControllerBase
     /// <param name="participantId">Идентификатор участника.</param>
     /// <returns>Результат выполнения операции.</returns>
     [HttpDelete("{participantId:Guid}")]
-    public async Task<ActionResult> DeleteAsync([FromRoute] int raidId, [FromRoute] Guid participantId)
+    public async Task<ActionResult> DeleteAsync([FromRoute] long raidId, [FromRoute] Guid participantId)
     {
         await _service.DeleteAsync(raidId, participantId);
         return Ok();
