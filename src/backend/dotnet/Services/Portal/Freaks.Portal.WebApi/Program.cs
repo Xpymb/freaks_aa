@@ -1,3 +1,4 @@
+using Freaks.Bll.Common.Extensions;
 using Freaks.Dal.Common.Extensions;
 using Freaks.Portal.Bll.Implementation;
 using Freaks.Portal.Dal.Implementation;
@@ -5,7 +6,6 @@ using Freaks.Portal.Dal.Persistence;
 using Freaks.Users.Common;
 using Freaks.Users.Dal.Persistence;
 using Freaks.WebApi.Common.Extensions;
-using Mapster;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +14,7 @@ builder.Services.AddControllers();
 // Common
 builder.Services.AddDefaults(builder.Configuration);
 builder.Services.AddNSwag();
-builder.Services.AddMapster();
+builder.Services.AddMapsterCommon();
 
 // Auth
 builder.Services.AddKeycloakAuth(builder.Configuration);

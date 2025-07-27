@@ -1,4 +1,5 @@
 ﻿using Freaks.Dal.Common.Interfaces;
+using Freaks.Portal.Contracts.Entities.Auction;
 using Freaks.Portal.Contracts.Entities.Loot;
 using Freaks.Portal.Contracts.Entities.RaidSummary;
 using Freaks.Portal.Contracts.Entities.Shop;
@@ -47,4 +48,14 @@ public interface IPortalDbContext : IBaseDbContext
     ///     Набор заявок на покупку предметов магазина.
     /// </summary>
     DbSet<ShopItemRequest> ShopItemRequests { get; }
+
+    /// <summary>
+    ///     Набор сущностей аукционных лотов.
+    /// </summary>
+    DbSet<AuctionItem> AuctionItems { get; }
+
+    /// <summary>
+    ///     Набор сущностей ставок по лотам аукциона.
+    /// </summary>
+    DbSet<AuctionItemBid> AuctionItemBids { get; }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Freaks.Dal.Common.Consts;
+using Freaks.Portal.Contracts.Entities.Auction;
 using Freaks.Portal.Contracts.Entities.Loot;
 using Freaks.Portal.Contracts.Entities.RaidSummary;
 using Freaks.Portal.Contracts.Entities.Shop;
@@ -46,6 +47,12 @@ public class PortalDbContext : DbContext, IPortalDbContext
 
     /// <inheritdoc />
     public DbSet<ShopItemRequest> ShopItemRequests { get; init; }
+
+    /// <inheritdoc />
+    public DbSet<AuctionItem> AuctionItems { get; init; }
+
+    /// <inheritdoc />
+    public DbSet<AuctionItemBid> AuctionItemBids { get; init; }
 
     /// <inheritdoc />
     protected override void OnModelCreating(ModelBuilder modelBuilder)

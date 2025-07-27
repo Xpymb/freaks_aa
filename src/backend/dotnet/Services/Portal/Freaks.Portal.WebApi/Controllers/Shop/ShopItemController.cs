@@ -59,6 +59,7 @@ public class ShopItemController : ControllerBase
     /// </summary>
     /// <param name="request">Данные для создания товара.</param>
     /// <returns>Созданный объект <see cref="ShopItemDto" />.</returns>
+    [RequireRoles(UserRole.Admin, UserRole.GuildLeader)]
     [HttpPost]
     public async Task<ShopItemDto> CreateAsync([FromBody] CreateShopItemRequest request)
     {
@@ -71,6 +72,7 @@ public class ShopItemController : ControllerBase
     /// <param name="id">Идентификатор товара.</param>
     /// <param name="request">Данные для обновления товара.</param>
     /// <returns>Обновлённый объект <see cref="ShopItemDto" />.</returns>
+    [RequireRoles(UserRole.Admin, UserRole.GuildLeader)]
     [HttpPut("{id:int}")]
     public async Task<ShopItemDto> UpdateAsync([FromRoute] int id, UpdateShopItemRequest request)
     {
@@ -81,9 +83,11 @@ public class ShopItemController : ControllerBase
     ///     Удаляет товар из магазина по его идентификатору.
     /// </summary>
     /// <param name="id">Идентификатор удаляемого товара.</param>
+    [RequireRoles(UserRole.Admin, UserRole.GuildLeader)]
     [HttpDelete("{id:int}")]
-    public async Task DeleteAsync([FromRoute] int id)
+    public async Task<IActionResult> DeleteAsync([FromRoute] int id)
     {
         await _service.DeleteAsync(id);
+        return Ok();
     }
 }

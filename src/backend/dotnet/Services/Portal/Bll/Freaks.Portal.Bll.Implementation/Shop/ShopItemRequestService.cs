@@ -130,13 +130,18 @@ public class ShopItemRequestService : IShopItemRequestService
         var entity = await _provider.GetAsync(new ShopItemRequestKey(shopItemId, userId), EntityTrackingType.NoTracking);
         if (entity is null)
         {
-            throw new EntityNotFoundException();
+            return;
+        }
+
+        if (entity.UserId != _userContext.Id)
+        {
+            return;
         }
 
         var shopItemEntity = await _shopItemProvider.GetAsync(shopItemId, EntityTrackingType.NoTracking);
         if (shopItemEntity is null)
         {
-            throw new EntityNotFoundException();
+            return;
         }
 
         await _unitOfWork.ExecuteAsync(async () =>
