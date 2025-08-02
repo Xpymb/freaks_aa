@@ -2,6 +2,7 @@
 using Freaks.Dal.Common.Consts;
 using Freaks.Portal.Contracts.Entities.Auction;
 using Freaks.Portal.Contracts.Entities.Loot;
+using Freaks.Portal.Contracts.Entities.Notification;
 using Freaks.Portal.Contracts.Entities.RaidSummary;
 using Freaks.Portal.Contracts.Entities.Shop;
 using Freaks.Users.Contracts.Entities;
@@ -53,6 +54,12 @@ public class PortalDbContext : DbContext, IPortalDbContext
 
     /// <inheritdoc />
     public DbSet<AuctionItemBid> AuctionItemBids { get; init; }
+    
+    /// <inheritdoc />
+    public DbSet<NotificationChannel> NotificationChannels { get; init; }
+    
+    /// <inheritdoc />
+    public DbSet<NotificationChannelMessage> NotificationChannelMessages { get; init; }
 
     /// <inheritdoc />
     protected override void OnModelCreating(ModelBuilder modelBuilder)
