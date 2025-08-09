@@ -9,10 +9,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Freaks.Portal.Dal.Implementation.Notification;
 
+/// <summary>
+/// Провайдер доступа к данным Discord-каналов.
+/// Обеспечивает кэшированное взаимодействие с базой данных для операций с каналами.
+/// </summary>
 public class NotificationChannelProvider : BaseCachedProvider<NotificationChannel, int, IPortalDbContext>,
                                                                                      INotificationChannelProvider
 {
-    public NotificationChannelProvider(IPortalDbContext dbContext, ICacheProvider cacheProvider) : base(dbContext, cacheProvider)
+    /// <summary>
+    /// Инициализирует новый экземпляр <see cref="NotificationChannelMessageProvider"/>.
+    /// </summary>
+    /// <param name="dbContext">Контекст базы данных портала.</param>
+    /// <param name="cacheProvider">Провайдер кэширования.</param>
+    public NotificationChannelProvider(IPortalDbContext dbContext,
+                                       ICacheProvider cacheProvider) : base(dbContext, cacheProvider)
     {
     }
     
@@ -59,9 +69,11 @@ public class NotificationChannelProvider : BaseCachedProvider<NotificationChanne
         ];
     }
     
+    /// <summary>
+    /// Возвращает стандартный префикс ключа кэша для списка Discord-каналов.
+    /// </summary>
     private static string GetDefaultCachePrefix()
     {
         return $"{nameof(NotificationChannel)}:list";
     }
-    
 }

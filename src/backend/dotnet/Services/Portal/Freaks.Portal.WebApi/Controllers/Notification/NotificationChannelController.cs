@@ -9,7 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace Freaks.Portal.WebApi.Controllers.Notification;
 
 /// <summary>
-/// 
+/// Контроллер для работы с Discord-каналами.
+/// Предоставляет API для получения списка каналов и создания новых.
 /// </summary>
 [ApiController]
 [Authorize]
@@ -20,19 +21,18 @@ public class NotificationChannelController : ControllerBase
     private readonly INotificationChannelService _service;
 
     /// <summary>
-    /// 
+    /// Инициализирует новый экземпляр контроллера.
     /// </summary>
-    /// <param name="service"></param>
-    /// <exception cref="ArgumentNullException"></exception>
+    /// <param name="service">Сервис для работы с каналами</param>
     public NotificationChannelController(INotificationChannelService service)
     {
         _service = service ?? throw new ArgumentNullException(nameof(service));
     }
 
     /// <summary>
-    /// 
+    /// Получает список всех зарегистрированных каналов.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>Список каналов в формате DTO.</returns>
     [HttpGet]
     public async Task<IList<NotificationChannelDto>> GetListAsync()
     {
@@ -40,10 +40,10 @@ public class NotificationChannelController : ControllerBase
     }
 
     /// <summary>
-    /// 
+    /// Создает новый канал в системе.
     /// </summary>
-    /// <param name="request"></param>
-    /// <returns></returns>
+    /// <param name="request">Данные для создания канала.</param>
+    /// <returns>/// Созданный канал в формате DTO.</returns>
     [RequireRoles(UserRole.Admin,  UserRole.GuildLeader)]
     [HttpPost]
     public async Task<NotificationChannelDto> CreateAsync([FromBody] CreateNotificationChannelRequest request)

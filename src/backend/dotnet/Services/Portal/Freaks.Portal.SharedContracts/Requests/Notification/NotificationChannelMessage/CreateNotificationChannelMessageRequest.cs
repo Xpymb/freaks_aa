@@ -1,12 +1,11 @@
 ﻿namespace Freaks.Portal.SharedContracts.Requests.Notification.NotificationChannelMessage;
 
 /// <summary>
-/// 
+/// Запрос на создание сообщения в Discord-канале.
 /// </summary>
-/// <param name="NotificationChannelId"></param>
-/// <param name="CreatorId"></param>
-/// <param name="Message"></param>
-/// <param name="CreatedDt"></param>
+/// <param name="CreatorId">Идентификатор пользователя-автора сообщения</param>
+/// <param name="Message">Текст сообщения </param>
+/// <param name="CreatedDt">Дата и время создания сообщения</param>
 public record CreateNotificationChannelMessageRequest(
     Guid CreatorId,
     string Message,

@@ -9,6 +9,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Freaks.Portal.WebApi.Controllers.Notification;
 
+/// <summary>
+/// Контроллер для работы с сообщениями каналов.
+/// Предоставляет API для получения сообщений с пагинацией и сортировкой.
+/// </summary>
 [ApiController]
 [Authorize]
 [RequireRoles(UserRole.Member)]
@@ -18,39 +22,23 @@ public class NotificationChannelMessageController : ControllerBase
     private readonly INotificationChannelMessageService _service;
 
     /// <summary>
-    /// 
+    /// Инициализирует новый экземпляр контроллера.
     /// </summary>
-    /// <param name="service"></param>
-    /// <exception cref="ArgumentNullException"></exception>
+    /// <param name="service">Сервис для работы с сообщениями каналов</param>
     public NotificationChannelMessageController(INotificationChannelMessageService service)
     {
         _service = service ?? throw new ArgumentNullException(nameof(service));
     }
 
     /// <summary>
-    /// 
+    /// Получает пагинированный список сообщений указанного канала.
     /// </summary>
-    /// <param name="request"></param>
-    /// <returns></returns>
+    /// <param name="request">Параметры фильтрации, сортировки и пагинации.</param>
+    /// <returns>Список сообщений.</returns>
     [HttpGet]
     public async Task<PaginatedList<NotificationChannelMessageDto>> GetListAsync(
                  [FromQuery]GetNotificationChannelMessageRequest request)
     {
         return await _service.GetListAsync(request);
-    }
-    
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="channelId"></param>
-    /// <param name="request"></param>
-    /// <returns></returns>
-    [HttpPost]
-    public async Task<NotificationChannelMessageDto> CreateAsync(
-                 [FromRoute] int channelId,
-                 [FromBody] CreateNotificationChannelMessageRequest request)
-    {
-        var result = await _service.CreateAsync(channelId, request);
-        return result;
     }
 }

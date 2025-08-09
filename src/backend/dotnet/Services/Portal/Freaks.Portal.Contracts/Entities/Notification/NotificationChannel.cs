@@ -5,6 +5,11 @@ using Freaks.Dal.Common.Consts;
 
 namespace Freaks.Portal.Contracts.Entities.Notification;
 
+/// <summary>
+/// Представляет сущность каналов в базе данных.
+/// Содержит информацию о каналах, которые отслеживаются системой для отображения сообщений на портале.
+/// Включает идентификаторы Discord, название канала и связанные сообщения.
+/// </summary>
 [Table("notification_channel", Schema = DatabaseConsts.PortalSchema)]
 public class NotificationChannel : IEntity<int>
 {

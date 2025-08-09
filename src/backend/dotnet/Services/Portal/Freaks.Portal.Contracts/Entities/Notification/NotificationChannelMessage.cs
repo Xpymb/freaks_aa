@@ -5,6 +5,10 @@ using Freaks.Dal.Common.Consts;
 
 namespace Freaks.Portal.Contracts.Entities.Notification;
 
+/// <summary>
+/// Представляет сообщение Discord-канала в базе данных.
+/// Содержит текст сообщения, информацию об авторе, время отправки и связь с каналом.
+/// </summary>
 [Table("notification_channel_message", Schema = DatabaseConsts.PortalSchema)]
 public class NotificationChannelMessage : IEntity<long>
 {
