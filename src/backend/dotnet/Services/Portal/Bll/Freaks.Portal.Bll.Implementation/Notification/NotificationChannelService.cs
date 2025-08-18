@@ -9,6 +9,7 @@ using Freaks.Portal.SharedContracts.Requests.Notification.NotificationChannel;
 using MapsterMapper;
 
 namespace Freaks.Portal.Bll.Implementation.Notification;
+
 /// <summary>
 /// Сервис для работы с Discord-каналами: получение списка каналов,
 /// создание новых каналов и публикация соответствующих событий.

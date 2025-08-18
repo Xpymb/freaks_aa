@@ -5,8 +5,10 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Freaks.Portal.Dal.Persistence.Configurations.Notification;
 
+/// <inheritdoc />
 public class NotificationChannelMessageConfiguration :IEntityTypeConfiguration<NotificationChannelMessage>
 {
+    /// <inheritdoc />
     public void Configure(EntityTypeBuilder<NotificationChannelMessage> builder)
     {
         builder

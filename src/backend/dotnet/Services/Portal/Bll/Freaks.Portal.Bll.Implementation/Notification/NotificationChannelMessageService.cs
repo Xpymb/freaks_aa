@@ -44,6 +44,7 @@ public class NotificationChannelMessageService : INotificationChannelMessageServ
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
     
+    /// <inheritdoc />
     public async Task<PaginatedList<NotificationChannelMessageDto>> GetListAsync(GetNotificationChannelMessageRequest request)
     {
         var result = await _provider.GetPaginatedListAsync(request);
