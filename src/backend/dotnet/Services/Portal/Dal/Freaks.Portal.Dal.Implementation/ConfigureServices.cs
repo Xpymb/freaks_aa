@@ -1,10 +1,12 @@
 ﻿using Freaks.Dal.Common.Extensions;
 using Freaks.Portal.Dal.Implementation.Auction;
 using Freaks.Portal.Dal.Implementation.Loot;
+using Freaks.Portal.Dal.Implementation.Notification;
 using Freaks.Portal.Dal.Implementation.RaidSummary;
 using Freaks.Portal.Dal.Implementation.Shop;
 using Freaks.Portal.Dal.Interfaces.Auction;
 using Freaks.Portal.Dal.Interfaces.Loot;
+using Freaks.Portal.Dal.Interfaces.Notification;
 using Freaks.Portal.Dal.Interfaces.RaidSummary;
 using Freaks.Portal.Dal.Interfaces.Shop;
 using Freaks.Portal.Dal.Persistence;
@@ -43,6 +45,10 @@ public static class ConfigureServices
         // Auction
         services.AddScoped<IAuctionItemProvider, AuctionItemProvider>();
         services.AddScoped<IAuctionItemBidProvider, AuctionItemBidProvider>();
+        
+        // Notification
+        services.AddScoped<INotificationChannelMessageProvider, NotificationChannelMessageProvider>();
+        services.AddScoped<INotificationChannelProvider, NotificationChannelProvider>();
         
         return services;
     }

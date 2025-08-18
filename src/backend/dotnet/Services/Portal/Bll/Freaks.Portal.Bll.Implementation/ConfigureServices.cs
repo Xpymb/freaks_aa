@@ -1,10 +1,12 @@
 ﻿using Freaks.Bll.Common.Extensions;
 using Freaks.Portal.Bll.Implementation.Auction;
 using Freaks.Portal.Bll.Implementation.Loot;
+using Freaks.Portal.Bll.Implementation.Notification;
 using Freaks.Portal.Bll.Implementation.RaidSummary;
 using Freaks.Portal.Bll.Implementation.Shop;
 using Freaks.Portal.Bll.Interfaces.Auction;
 using Freaks.Portal.Bll.Interfaces.Loot;
+using Freaks.Portal.Bll.Interfaces.Notification;
 using Freaks.Portal.Bll.Interfaces.RaidSummary;
 using Freaks.Portal.Bll.Interfaces.Shop;
 using Microsoft.Extensions.Configuration;
@@ -42,6 +44,10 @@ public static class ConfigureServices
         // Auction
         services.AddScoped<IAuctionItemService, AuctionItemService>();
         services.AddScoped<IAuctionItemBidService, AuctionItemBidService>();
+        
+        //Notification
+        services.AddScoped<INotificationChannelMessageService, NotificationChannelMessageService>();
+        services.AddScoped<INotificationChannelService, NotificationChannelService>();
         
         return services;
     }
