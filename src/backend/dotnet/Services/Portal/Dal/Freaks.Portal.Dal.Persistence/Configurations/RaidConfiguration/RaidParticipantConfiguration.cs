@@ -27,5 +27,15 @@ public class RaidParticipantConfiguration : IEntityTypeConfiguration<RaidPartici
             .WithOne()
             .HasForeignKey<RaidParticipant>(p => p.ParticipantId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder
+            .HasIndex(p =>
+                          new
+                          {
+                              p.RaidNumber,
+                              p.RaidPartyNumber,
+                              p.RaidPartyPositionNumber,
+                          })
+            .IsUnique();
     }
 }

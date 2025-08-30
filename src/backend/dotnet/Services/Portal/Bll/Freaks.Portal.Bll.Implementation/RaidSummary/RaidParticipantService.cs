@@ -59,6 +59,9 @@ public class RaidParticipantService : IRaidParticipantService
                 RaidId = raidId,
                 ParticipantId = request.ParticipantId,
                 CreatorId = _userContext.Id,
+                RaidNumber = request.RaidNumber,
+                RaidPartyNumber = request.RaidPartyNumber,
+                RaidPartyPositionNumber = request.RaidPartyPositionNumber,
             };
 
         var result = await _provider.CreateAsync(entity);
