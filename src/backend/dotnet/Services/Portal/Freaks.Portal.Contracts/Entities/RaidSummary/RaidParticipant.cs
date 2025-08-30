@@ -33,10 +33,28 @@ public class RaidParticipant : ICompositeEntity<RaidParticipantKey>
     public required Guid ParticipantId { get; init; }
 
     /// <summary>
-    ///     Идентификатор пользователя, который создал запись
+    ///     Идентификатор пользователя, который создал запись.
     /// </summary>
     [Column("creator_id")]
     public required Guid CreatorId { get; init; }
+
+    /// <summary>
+    ///     Номер рейда, в котором был участник.
+    /// </summary>
+    [Column("raid_number")]
+    public required int RaidNumber { get; init; }
+
+    /// <summary>
+    ///     Номер отряда в рейде, в котором был участник.
+    /// </summary>
+    [Column("raid_party_number")]
+    public required int RaidPartyNumber { get; init; }
+
+    /// <summary>
+    ///     Номер позиции в отряде рейда, в котором был участник.
+    /// </summary>
+    [Column("raid_party_position_number")]
+    public required int RaidPartyPositionNumber { get; init; }
 
     /// <summary>
     /// Навигационное свойство для доступа к рейду, в котором участвует пользователь.
