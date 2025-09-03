@@ -16,7 +16,7 @@ services:
         - APP_VERSION=${APP_VERSION}
         - ASPNET_VERSION=${ASPNET_VERSION}
     ports:
-      - "5000:8080"
+      - "5100:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Compose
       - KeycloakAdmin__credentials__secret=${KEYCLOAK_ADMIN_CLIENT_SECRET}
@@ -36,7 +36,7 @@ services:
         - APP_VERSION=${APP_VERSION}
         - ASPNET_VERSION=${ASPNET_VERSION}
     ports:
-      - "5010:8080"
+      - "5110:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Compose
     depends_on:
@@ -111,7 +111,7 @@ services:
         - CENTRIFUGO_VERSION=${CENTRIFUGO_VERSION}
     command: centrifugo -c config.json
     ports:
-      - 8000:8000
+      - 8100:8000
     ulimits:
       nofile:
         soft: 65535

@@ -1,0 +1,11 @@
+@import "@/ThemeMUI/_variables.module.scss";
+
+.header {
+  border-bottom: 1px solid $mutedColor;
+  padding: 0.5rem 0;
+  .wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}

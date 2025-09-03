@@ -58,7 +58,7 @@ services:
         - CENTRIFUGO_VERSION=${CENTRIFUGO_VERSION}
     command: centrifugo -c config.json
     ports:
-      - 8000:8000
+      - 8100:8000
     ulimits:
       nofile:
         soft: 65535
