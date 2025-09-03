@@ -1,0 +1,23 @@
+@import "@/ThemeMUI/_variables.module.scss";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  // outline: 1px solid rgba(0, 0, 255, 0.3);
+}
+html,
+body {
+  height: 100%;
+}
+.layoutWrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  background-color: $primaryBackgroundColor;
+  color: white;
+}
+main {
+  display: flex;
+  flex-grow: 1;
+}

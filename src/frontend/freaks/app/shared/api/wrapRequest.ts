@@ -1,0 +1,14 @@
+import { AxiosResponse } from "axios";
+import { redirect } from "next/navigation";
+import { handleAxiosError } from "@/shared/errors";
+
+export async function wrapRequest<T>(
+  fn: () => Promise<AxiosResponse<T>>
+): Promise<T> {
+  try {
+    const { data } = await fn();
+    return data;
+  } catch (error: any) {
+    throw handleAxiosError(error);
+  }
+}

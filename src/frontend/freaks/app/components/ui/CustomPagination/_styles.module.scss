@@ -1,0 +1,22 @@
+@import "/app/ThemeMUI/variables.module";
+
+.rootPagination {
+  color: red;
+  .listPagination {
+    column-gap: 1rem;
+    @media only screen and (max-width: 450px) {
+      column-gap: 0.3rem;
+    }
+    .itemPagination {
+      color: $educationMainTextColor;
+      &:hover {
+        background-color: white;
+      }
+    }
+    .active {
+      color: $primaryMainColor;
+      border: 1px solid $primaryMainColor;
+      background-color: white;
+    }
+  }
+}
