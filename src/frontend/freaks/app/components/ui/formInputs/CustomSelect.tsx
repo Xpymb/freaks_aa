@@ -11,7 +11,6 @@ import {
   FieldError,
   FieldValues,
   Path,
-  UseFormRegister,
 } from "react-hook-form";
 import { CustomTypography } from "../CustomTypography";
 import { ReactNode } from "react";

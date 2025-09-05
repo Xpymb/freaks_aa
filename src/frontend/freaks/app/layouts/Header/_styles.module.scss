@@ -1,4 +1,4 @@
-@import "@/ThemeMUI/_variables.module.scss";
+@use "@/ThemeMUI/variables" as *;
 
 .header {
   border-bottom: 1px solid $mutedColor;
@@ -7,5 +7,10 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    .imageWrapper {
+      position: relative;
+      width: 56px;
+      height: 56px;
+    }
   }
 }

@@ -1,4 +1,4 @@
-@import "../../../ThemeMUI/variables.module";
+@use "@/ThemeMUI/variables" as *;
 
 .loaderWrapper {
   display: flex;

@@ -1,4 +1,4 @@
-@import "@/ThemeMUI/_variables.module.scss";
+@use "@/ThemeMUI/variables" as *;
 
 * {
   margin: 0;
@@ -18,6 +18,4 @@ body {
   color: white;
 }
 main {
-  display: flex;
-  flex-grow: 1;
 }

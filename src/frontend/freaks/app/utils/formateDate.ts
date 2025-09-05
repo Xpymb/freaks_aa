@@ -17,6 +17,9 @@ export enum DateFormat {
   /** 23.06.25 */
   SHORT_DATE_SHORT_YEAR = "dd.MM.yy",
 
+  /** 23.06.25 14:35 */
+  SHORT_DATE_SHORT_YEAR_TIME = "dd.MM.yy HH:mm",
+
   /** 2025-06-23 */
   ISO_DATE = "yyyy-MM-dd",
 

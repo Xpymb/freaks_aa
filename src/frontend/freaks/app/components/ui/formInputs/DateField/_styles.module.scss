@@ -1,0 +1,31 @@
+@use "@/ThemeMUI/variables" as *;
+
+.wrapper {
+  .modalOpen {
+    display: flex;
+    column-gap: 1rem;
+  }
+}
+.modal {
+  background-color: $secondaryBackgroundColor;
+  .btnWrapp {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+    column-gap: 1rem;
+  }
+}
+
+.rangBackgroundStart {
+  background: $mutedColor;
+  border-top-left-radius: 50%;
+  border-bottom-left-radius: 50%;
+}
+.rangBackgroundMiddle {
+  background: $mutedColor;
+}
+.rangBackgroundEnd {
+  background: $mutedColor;
+  border-top-right-radius: 50%;
+  border-bottom-right-radius: 50%;
+}
