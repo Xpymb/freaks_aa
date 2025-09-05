@@ -127,6 +127,24 @@ public class RaidService : IRaidService
     }
 
     /// <inheritdoc />
+    public async Task<RaidDto> FinishAsync(long id)
+    {
+        var entity = await _provider.GetAsync(id, EntityTrackingType.NoTracking);
+        if (entity is null)
+        {
+            throw new EntityNotFoundException();
+        }
+
+        entity.Status = RaidStatus.Ended;
+        
+        var result = await _provider.UpdateAsync(entity);
+        
+        await PublishMessageAsync(result.Id, EntityActionType.Updated);
+
+        return _mapper.Map<RaidDto>(result);
+    }
+
+    /// <inheritdoc />
     public async Task DeleteAsync(long id)
     {
         await _provider.DeleteAsync(id);
