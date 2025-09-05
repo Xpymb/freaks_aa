@@ -76,6 +76,18 @@ public class RaidController : ControllerBase
     }
 
     /// <summary>
+    ///     Завершает существующий рейд.
+    /// </summary>
+    /// <param name="id">Идентификатор рейда.</param>
+    /// <returns>Завершенный рейд в виде <see cref="RaidDto" />.</returns>
+    [RequireRoles(UserRole.Admin, UserRole.GuildLeader)]
+    [HttpPatch("{id:long}/finish")]
+    public async Task<RaidDto> FinishAsync([FromRoute] long id)
+    {
+        return await _service.FinishAsync(id);
+    }
+
+    /// <summary>
     ///     Удаляет рейд по его идентификатору.
     /// </summary>
     /// <param name="id">Идентификатор рейда, подлежащего удалению.</param>
