@@ -1,0 +1,21 @@
+@use "@/ThemeMUI/variables" as *;
+
+.createRaid {
+  padding: $secondarySectionPadding;
+  .openBtn {
+    margin: 0px auto 0px;
+  }
+  .createRaidInputs {
+    display: flex;
+    flex-direction: column;
+    .inputs {
+      display: flex;
+      align-items: center;
+    }
+    .btnWrapper {
+      display: flex;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+  }
+}
