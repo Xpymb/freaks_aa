@@ -3,6 +3,7 @@ using System;
 using Freaks.Portal.Dal.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Freaks.Portal.Dal.Persistence.Migrations
 {
     [DbContext(typeof(PortalDbContext))]
-    partial class PortalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250906032051_rename_loot_icon_url_to_loot_icon_uri")]
+    partial class rename_loot_icon_url_to_loot_icon_uri
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -322,15 +325,15 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("id");
 
-                    b.Property<string>("ScreenshotUri")
+                    b.Property<string>("ScreenshotUrl")
                         .HasColumnType("text")
-                        .HasColumnName("screenshot_uri");
+                        .HasColumnName("screenshot_url");
 
                     b.Property<Guid>("CreatorId")
                         .HasColumnType("uuid")
                         .HasColumnName("creator_id");
 
-                    b.HasKey("RaidId", "ScreenshotUri");
+                    b.HasKey("RaidId", "ScreenshotUrl");
 
                     b.ToTable("raid_screenshot", "portal");
                 });

@@ -59,7 +59,7 @@ public class RaidScreenshotService : IRaidScreenshotService
                                new RaidScreenshot
                                {
                                    RaidId = raidId,
-                                   ScreenshotUrl = s,
+                                   ScreenshotUri = s,
                                    CreatorId = _userContext.Id,
                                })
                    .ToList();

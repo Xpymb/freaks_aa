@@ -45,7 +45,7 @@ public class RaidScreenshotProvider : BaseCachedCompositeProvider<RaidScreenshot
     /// <inheritdoc />
     protected override IQueryable<RaidScreenshot> FilterByKey(RaidScreenshotKey key, IQueryable<RaidScreenshot> queryable)
     {
-        return queryable.Where(s => s.RaidId == key.RaidId && s.ScreenshotUrl == key.ScreenshotUrl);
+        return queryable.Where(s => s.RaidId == key.RaidId && s.ScreenshotUri == key.ScreenshotUrl);
     }
 
     /// <inheritdoc />
