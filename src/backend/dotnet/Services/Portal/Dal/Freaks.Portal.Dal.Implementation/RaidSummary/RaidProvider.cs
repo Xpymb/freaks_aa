@@ -92,12 +92,18 @@ public class RaidProvider : BaseCachedProvider<Raid, long, IPortalDbContext>, IR
 
         if (request.From is not null)
         {
-            query = query.Where(r => r.StartDt >= request.From);
+            var fromUtc = new DateTimeOffset(
+                request.From.Value.ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc)
+            );
+            query = query.Where(r => r.StartDt >= fromUtc);
         }
 
         if (request.To is not null)
         {
-            query = query.Where(r => r.StartDt <= request.To);
+            var toUtcExclusive = new DateTimeOffset(
+                request.To.Value.AddDays(1).ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc)
+            );
+            query = query.Where(r => r.StartDt < toUtcExclusive);
         }
 
         query =
