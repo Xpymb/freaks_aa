@@ -54,7 +54,7 @@ public class RaidScreenshotService : IRaidScreenshotService
     public async Task<IList<RaidScreenshotDto>> SetAsync(long raidId, SetRaidScreenshotRequest request)
     {
         var entities =
-            request.ScreenshotUrls
+            request.ScreenshotUris
                    .Select(s =>
                                new RaidScreenshot
                                {
