@@ -15,7 +15,6 @@ spec:
       containers:
       - name: {{ .Values.service.name }}
         image:  {{ index .Values.werf.image "redis" }}
-        imagePullPolicy: {{ .Values.image.pullPolicy | default "IfNotPresent" }}
         ports:
         - containerPort: {{ .Values.service.portHttp }}
         resources:
@@ -31,5 +30,3 @@ spec:
             secretKeyRef:
               name: freaks-dev-redis
               key: password
-      imagePullSecrets:
-      - name: {{ .Values.imagePullSecrets }}
