@@ -1,34 +1,33 @@
-name: prod
+name: manual deploy staging (werf)
+
 on:
-  push:
-    branches: ['**']
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Branch/tag/SHA to deploy (optional)'
+        required: false
+        type: string
 
 jobs:
-  prod:
-    name: prod
+  deploy-staging:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/werf/werf:2-stable-ubuntu
-      # if you use fuse, then add the option --device /dev/fuse
       options: --security-opt "seccomp:unconfined" --security-opt "apparmor:unconfined" --user 1001
       volumes:
         - buildah-cache:/home/build1001/.local/share/containers
         - werf-cache:/home/build1001/.werf
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
+          ref: ${{ inputs.ref != '' && inputs.ref || github.ref }}
           fetch-depth: 0
 
-      # Uncomment this block for cross-platform build
-      # - name: Set up QEMU
-      #   uses: docker/setup-qemu-action@v3
-      #   with:
-      #     platforms: linux/amd64, linux/arm64
-
-      - run: |
+      - name: werf converge (staging)
+        shell: bash
+        run: |
           . "$(werf ci-env github --as-file)"
           werf converge
         env:
-          WERF_ENV: prod
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          WERF_KUBECONFIG_BASE64: ${{ secrets.WERF_KUBECONFIG_BASE64 }}
+          WERF_KUBE_CONFIG_BASE64: ${{ secrets.KUBECONFIG_BASE64 }}
