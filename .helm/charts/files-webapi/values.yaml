@@ -14,16 +14,16 @@ kcAdmin:
   authServerUrl: "https://auth.freaks-aa.ru"
   sslRequired: "external"
   resource: "realm_admin"
-  verifyTokenAudience: true
-  confidentialPort: 0
+  verifyTokenAudience: "true"
+  confidentialPort: "0"
 redis:
-  database: 0
-  connectTimeout: 60000
-  syncTimeout: 60000
+  database: "0"
+  connectTimeout: "60000"
+  syncTimeout: "60000"
 s3:
   serviceUrl: "s3.twcstorage.ru"
   defaultBucketName: "3b49aa04-dfa87595-9ac1-49da-82e3-ebabea7b3c0f"
-  withSsl: true
+  withSsl: "true"
 limits:
   memoryRequests: "500Mi"
   memoryLimits: "1Gi"
