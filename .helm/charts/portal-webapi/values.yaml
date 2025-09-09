@@ -25,4 +25,4 @@ limits:
   memoryRequests: "500Mi"
   memoryLimits: "1Gi"
   cpuRequests: "500m"
-  cpuLimits: "1000m"
+  cpuLimits: "500m"
