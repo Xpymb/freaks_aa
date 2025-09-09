@@ -1,11 +1,13 @@
 name: deploy prod (werf)
 
 on:
+  push:
+    branches: ['**']
   workflow_dispatch: {}
 
 jobs:
   prod:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     container:
       image: ghcr.io/werf/werf:2-stable-ubuntu
       options: --security-opt "seccomp:unconfined" --security-opt "apparmor:unconfined" --user 1001
