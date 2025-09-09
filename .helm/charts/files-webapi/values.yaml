@@ -2,7 +2,7 @@ environment: "Staging"
 replicaCount: 1
 service:
   name: "files-webapi"
-  portHttp: 80
+  portHttp: 8080
 ingress:
   enabled: true
   host: files-api.freaks-aa.ru
