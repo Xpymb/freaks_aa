@@ -1,0 +1,27 @@
+environment: "Staging"
+replicaCount: 2
+service:
+  name: "portal-webapi"
+  portHttp: 80
+ingress:
+  enabled: true
+  host: api.freaks-aa.ru
+auth:
+  issuer: "https://auth.freaks-aa.ru/realms/freaks-dev"
+  clientId: "portal-backend"
+kcAdmin:
+  realm: "freaks-dev"
+  authServerUrl: "https://auth.freaks-aa.ru"
+  sslRequired: "external"
+  resource: "realm_admin"
+  verifyTokenAudience: true
+  confidentialPort: 0
+redis:
+  database: 0
+  connectTimeout: 60000
+  syncTimeout: 60000
+limits:
+  memoryRequests: "500Mi"
+  memoryLimits: "1Gi"
+  cpuRequests: "500m"
+  cpuLimits: "1000m"

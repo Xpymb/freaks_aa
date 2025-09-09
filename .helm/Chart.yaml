@@ -1,0 +1,25 @@
+name: freaks-aa
+apiVersion: v2
+type: application
+appVersion: 1.0.0
+dependencies:
+  - name: portal-webapi
+    export-values:
+      - parent: werf
+        child: werf
+    version: 1.0.0
+  - name: files-webapi
+    export-values:
+      - parent: werf
+        child: werf
+    version: 1.0.0
+  - name: redis
+    export-values:
+      - parent: werf
+        child: werf
+    version: 1.0.0
+  - name: centrifugo
+    export-values:
+      - parent: werf
+        child: werf
+    version: 1.0.0
