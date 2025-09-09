@@ -1,5 +1,6 @@
 environment: "Staging"
 replicaCount: 2
+
 service:
   name: "portal-webapi"
   portHttp: 80
