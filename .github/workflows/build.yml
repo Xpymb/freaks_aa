@@ -13,10 +13,6 @@ jobs:
         - werf-cache:/home/build1001/.werf
     steps:
       - uses: actions/checkout@v4
-        with:
-          # если ref не задан — чекаутим ветку, выбранную в выпадашке "Use workflow from"
-          ref: ${{ inputs.ref != '' && inputs.ref || github.ref }}
-          fetch-depth: 0
 
       - name: werf build
         shell: bash
