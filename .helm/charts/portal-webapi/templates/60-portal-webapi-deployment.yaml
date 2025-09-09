@@ -15,7 +15,6 @@ spec:
       containers:
       - name: {{ .Values.service.name }}
         image:  {{ index .Values.werf.image "portal-web-api" }}
-        imagePullPolicy: {{ .Values.image.pullPolicy | default "IfNotPresent" }}
         ports:
         - containerPort: {{ .Values.service.portHttp }}
         resources:
@@ -89,5 +88,3 @@ spec:
             secretKeyRef:
               name: freaks-dev-centrifugo
               key: apiKey
-      imagePullSecrets:
-      - name: {{ .Values.imagePullSecrets }}
