@@ -1,11 +1,13 @@
 name: build (werf)
 
 on:
-  workflow_dispatch: {}
+  push:
+    branches: ['**']    # предлагать билд на КАЖДЫЙ push, в любую ветку
+  workflow_dispatch: {}  # и возможность запустить руками в любой момент
 
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     container:
       image: ghcr.io/werf/werf:2-stable-ubuntu
       options: --security-opt "seccomp:unconfined" --security-opt "apparmor:unconfined" --user 1001
