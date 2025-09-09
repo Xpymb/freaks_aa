@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: {{ .Values.service.name }}
-        image:  {{ index .Values.werf.image "portal-web-api" }}
+        image:  {{ index .Values.werf.image "portal-webapi" }}
         ports:
         - containerPort: {{ .Values.service.portHttp }}
         resources:
