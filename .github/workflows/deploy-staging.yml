@@ -1,26 +1,31 @@
-name: deploy prod (werf)
-
+name: prod
 on:
   push:
     branches: ['**']
-  workflow_dispatch: {}
 
 jobs:
   prod:
+    name: prod
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/werf/werf:2-stable-ubuntu
+      # if you use fuse, then add the option --device /dev/fuse
       options: --security-opt "seccomp:unconfined" --security-opt "apparmor:unconfined" --user 1001
       volumes:
         - buildah-cache:/home/build1001/.local/share/containers
         - werf-cache:/home/build1001/.werf
     steps:
-      - uses: actions/checkout@v4
-        with: { fetch-depth: 0 }
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-      - name: werf converge
-        shell: bash
-        run: |
+      # Uncomment this block for cross-platform build
+      # - name: Set up QEMU
+      #   uses: docker/setup-qemu-action@v3
+      #   with:
+      #     platforms: linux/amd64, linux/arm64
+
+      - run: |
           . "$(werf ci-env github --as-file)"
           werf converge
         env:
