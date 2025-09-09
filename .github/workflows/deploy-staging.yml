@@ -21,6 +21,6 @@ jobs:
           --env "$WERF_ENV" \
           --kube-config-base64 "$WERF_KUBECONFIG_BASE64"
         env:
-          WERF_ENV: staging
+          WERF_ENV: dev
           WERF_KUBECONFIG_BASE64: ${{ secrets.WERF_KUBECONFIG_BASE64 }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
