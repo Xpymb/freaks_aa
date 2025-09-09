@@ -8,21 +8,17 @@ jobs:
   prod:
     name: prod
     runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/werf/werf:2-stable-ubuntu
-      options: --security-opt "seccomp:unconfined" --security-opt "apparmor:unconfined"
-      volumes:
-        - buildah-cache:/home/build1001/.local/share/containers
-        - werf-cache:/home/build1001/.werf
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
+  
+      - uses: werf/actions/install@v2
 
       - run: |
-          . "$(werf ci-env github --as-file)"
+          source "$(werf ci-env github --as-file)"
           werf converge
         env:
           WERF_ENV: prod
+          WERF_KUBECONFIG_BASE64: ${{ secrets.KUBECONFIG_BASE64 }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          WERF_KUBECONFIG_BASE64: ${{ secrets.WERF_KUBECONFIG_BASE64 }}
