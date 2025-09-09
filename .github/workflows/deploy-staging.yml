@@ -1,9 +1,12 @@
-name: manual deploy staging (werf)
-
-on: workflow_dispatch
+name: prod
+on:
+  push:
+    branches:
+      - feat/helm
 
 jobs:
-  deploy-staging:
+  prod:
+    name: prod
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/werf/werf:2-stable-ubuntu
@@ -12,16 +15,14 @@ jobs:
         - buildah-cache:/home/build1001/.local/share/containers
         - werf-cache:/home/build1001/.werf
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
         with:
-          ref: ${{ inputs.ref != '' && inputs.ref || github.ref }}
           fetch-depth: 0
 
-      - name: werf converge (staging)
-        shell: bash
-        run: |
+      - run: |
           . "$(werf ci-env github --as-file)"
           werf converge
         env:
+          WERF_ENV: prod
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          WERF_KUBE_CONFIG_BASE64: ${{ secrets.KUBECONFIG_BASE64 }}
+          WERF_KUBECONFIG_BASE64: ${{ secrets.WERF_KUBECONFIG_BASE64 }}
