@@ -15,7 +15,6 @@ spec:
       containers:
       - name: {{ .Values.service.name }}
         image:  {{ index .Values.werf.image "portal-web-api" }}
-        imagePullPolicy: {{ .Values.image.pullPolicy | default "IfNotPresent" }}
         ports:
         - containerPort: {{ .Values.service.portHttp }}
         resources:
@@ -95,5 +94,3 @@ spec:
           value: {{ .Values.s3.defaultBucketName }}
         - name: StorageOptions__WithSsl
           value: {{ .Values.s3.withSsl }}
-      imagePullSecrets:
-      - name: {{ .Values.imagePullSecrets }}
