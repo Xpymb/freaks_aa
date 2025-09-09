@@ -1,12 +1,6 @@
 name: manual deploy staging (werf)
 
-on:
-  workflow_dispatch:
-    inputs:
-      ref:
-        description: 'Branch/tag/SHA to deploy (optional)'
-        required: false
-        type: string
+on: workflow_dispatch
 
 jobs:
   deploy-staging:
