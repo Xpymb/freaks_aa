@@ -24,11 +24,3 @@ spec:
           limits:
             cpu: {{ .Values.limits.cpuLimits }}
             memory: {{ .Values.limits.memoryLimits }}
-      readinessProbe:
-        httpGet: { path: /health, port: http }
-        initialDelaySeconds: 5
-        periodSeconds: 10
-      livenessProbe:
-        httpGet: { path: /health, port: http }
-        initialDelaySeconds: 15
-        periodSeconds: 20
