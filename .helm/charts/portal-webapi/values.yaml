@@ -14,12 +14,12 @@ kcAdmin:
   authServerUrl: "https://auth.freaks-aa.ru"
   sslRequired: "external"
   resource: "realm_admin"
-  verifyTokenAudience: true
-  confidentialPort: 0
+  verifyTokenAudience: "true"
+  confidentialPort: "0"
 redis:
-  database: 0
-  connectTimeout: 60000
-  syncTimeout: 60000
+  database: "0"
+  connectTimeout: "60000"
+  syncTimeout: "60000"
 limits:
   memoryRequests: "500Mi"
   memoryLimits: "1Gi"
