@@ -3,7 +3,7 @@ replicaCount: 2
 
 service:
   name: "portal-webapi"
-  portHttp: 80
+  portHttp: 8080
 ingress:
   enabled: true
   host: api.freaks-aa.ru
