@@ -1,13 +1,16 @@
-name: build (werf)
+name: manual build (werf)
 
 on:
-  push:
-    branches: ['**']    # предлагать билд на КАЖДЫЙ push, в любую ветку
-  workflow_dispatch: {}  # и возможность запустить руками в любой момент
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Branch/tag/SHA to build (optional)'
+        required: false
+        type: string
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     container:
       image: ghcr.io/werf/werf:2-stable-ubuntu
       options: --security-opt "seccomp:unconfined" --security-opt "apparmor:unconfined" --user 1001
@@ -16,7 +19,10 @@ jobs:
         - werf-cache:/home/build1001/.werf
     steps:
       - uses: actions/checkout@v4
-        with: { fetch-depth: 0 }
+        with:
+          # если ref не задан — чекаутим ветку, выбранную в выпадашке "Use workflow from"
+          ref: ${{ inputs.ref != '' && inputs.ref || github.ref }}
+          fetch-depth: 0
 
       - name: werf build
         shell: bash
