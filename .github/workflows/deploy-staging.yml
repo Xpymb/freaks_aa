@@ -1,4 +1,4 @@
-name: prod
+name: staging
 on:
   push:
     branches:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   prod:
-    name: prod
+    name: staging
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -17,8 +17,10 @@ jobs:
 
       - run: |
           source "$(werf ci-env github --as-file)"
-          werf converge
+          werf converge \
+          --env "$WERF_ENV" \
+          --kube-config-base64 "$WERF_KUBE_CONFIG_BASE64"
         env:
-          WERF_ENV: prod
+          WERF_ENV: staging
           WERF_KUBECONFIG_BASE64: ${{ secrets.KUBECONFIG_BASE64 }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
