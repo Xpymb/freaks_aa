@@ -2,7 +2,7 @@ ARG DOTNET_SDK_VERSION
 # сборка бандла
 FROM mcr.microsoft.com/dotnet/sdk:$DOTNET_SDK_VERSION AS build
 WORKDIR /src
-COPY ./../../ .
+COPY ../../. .
 RUN dotnet tool restore && \
     dotnet ef migrations bundle \
       --project Services/Portal/Dal/Freaks.Portal.Dal.Persistence/Freaks.Portal.Dal.Persistence.csproj \
