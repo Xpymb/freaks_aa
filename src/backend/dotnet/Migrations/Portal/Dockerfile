@@ -5,9 +5,10 @@ WORKDIR /src
 ENV PATH="$PATH:/root/.dotnet/tools"
 RUN dotnet tool install -g dotnet-ef
 
+ENV ASPNETCORE_ENVIRONMENT=Staging
+
 COPY . .
-RUN dotnet tool restore && \
-    dotnet ef migrations bundle \
+RUN dotnet ef migrations bundle \
       --project Services/Portal/Dal/Freaks.Portal.Dal.Persistence/Freaks.Portal.Dal.Persistence.csproj \
       --startup-project Services/Portal/Freaks.Portal.WebApi/Freaks.Portal.WebApi.csproj \
       --context PortalDbContext \
