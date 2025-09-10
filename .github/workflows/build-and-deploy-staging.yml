@@ -1,7 +1,9 @@
 name: build-and-deploy-staging
 
 on:
-  workflow_dispatch: {}  # только вручную
+  push:
+    branches: ['feat/helm']
+  #workflow_dispatch: {}
 
 permissions:
   contents: read
@@ -14,8 +16,7 @@ concurrency:
 jobs:
   build:
     name: Build images (werf)
-    # временно разрешаем develop И feat/helm
-    if: ${{ github.ref_name == 'develop' || github.ref_name == 'feat/helm' }}
+    #if: ${{ github.ref_name == 'develop' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -36,7 +37,7 @@ jobs:
   deploy:
     name: Deploy to staging (werf converge)
     needs: build
-    if: ${{ needs.build.result == 'success' && (github.ref_name == 'develop' || github.ref_name == 'feat/helm') }}
+    #if: ${{ needs.build.result == 'success' && github.ref_name == 'develop' }}
     runs-on: ubuntu-latest
     environment: staging
     steps:
