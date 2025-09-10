@@ -1,29 +1,27 @@
-name: staging
+name: build-and-deploy-staging
 
 on:
-  # оставляем push на develop "для вида", но фактически запуск будет только вручную
-  push:
-    branches: [feat/helm]
-  workflow_dispatch:
+  workflow_dispatch: {}  # запуск только вручную
 
 permissions:
   contents: read
   packages: write
 
 concurrency:
-  group: werf-deploy-develop
+  group: werf-deploy-${{ github.ref_name }}
   cancel-in-progress: true
 
 jobs:
   build:
     name: Build images (werf)
-    # запускаем ТОЛЬКО вручную и ТОЛЬКО если ref == develop
-    if: ${{ github.event_name == 'workflow_dispatch' && endsWith(github.ref, '/feat/helm') }}
+    # жёстко пропускаем всё, если выбрана не develop
+    if: ${{ github.ref_name == 'feat/helm' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ github.ref }} # из выбранной в UI ветки
 
       - uses: werf/actions/install@v2
 
@@ -37,14 +35,15 @@ jobs:
 
   deploy:
     name: Deploy to staging (werf converge)
-    if: ${{ github.event_name == 'workflow_dispatch' && endsWith(github.ref, '/feat/helm') }}
     needs: build
+    if: ${{ needs.build.result == 'success' && github.ref_name == 'feat/helm' }}
     runs-on: ubuntu-latest
     environment: staging
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ github.ref }}
 
       - uses: werf/actions/install@v2
 
