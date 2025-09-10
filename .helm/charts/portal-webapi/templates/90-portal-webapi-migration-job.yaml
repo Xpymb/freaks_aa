@@ -20,8 +20,8 @@ spec:
             - name: ASPNETCORE_ENVIRONMENT
               value: {{ .Values.environment | quote }}
             - name: DB_CONNECTION
-                valueFrom:
-                  secretKeyRef:
-                    name: freaks-dev-db
-                    key: connectionString
+              valueFrom:
+                secretKeyRef:
+                  name: freaks-dev-db
+                  key: connectionString
           args: ["--connection", "$(DB_CONNECTION)", "--verbose"]
