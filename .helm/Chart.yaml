@@ -13,13 +13,3 @@ dependencies:
       - parent: werf
         child: werf
     version: 1.0.0
-  - name: redis
-    export-values:
-      - parent: werf
-        child: werf
-    version: 1.0.0
-  - name: centrifugo
-    export-values:
-      - parent: werf
-        child: werf
-    version: 1.0.0
