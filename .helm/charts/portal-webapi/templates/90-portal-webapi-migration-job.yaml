@@ -17,9 +17,11 @@ spec:
           image: {{ index .Values.werf.image "portal-webapi-migrations" }}
           # если строка из секрета:
           env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: {{ .Values.environment | quote }}
             - name: DB_CONNECTION
-              valueFrom:
-                secretKeyRef:
-                  name: freaks-dev-db
-                  key: connectionString
+                valueFrom:
+                  secretKeyRef:
+                    name: freaks-dev-db
+                    key: connectionString
           args: ["--connection", "$(DB_CONNECTION)", "--verbose"]

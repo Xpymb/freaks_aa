@@ -13,20 +13,20 @@ spec:
         app: {{ .Values.service.name }}
     spec:
       containers:
-      - name: {{ .Values.service.name }}
-        image:  {{ index .Values.werf.image "redis" }}
-        ports:
-        - containerPort: {{ .Values.service.portHttp }}
-        resources:
-          requests:
-            cpu: {{ .Values.limits.cpuRequests }}
-            memory: {{ .Values.limits.memoryRequests }}
-          limits:
-            cpu: {{ .Values.limits.cpuLimits }}
-            memory: {{ .Values.limits.memoryLimits }}
-        env:
-        - name: REDIS_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: freaks-dev-redis
-              key: password
+        - name: {{ .Values.service.name }}
+          image:  {{ index .Values.werf.image "redis" }}
+          ports:
+            - containerPort: {{ .Values.service.portHttp }}
+          resources:
+            requests:
+              cpu: {{ .Values.limits.cpuRequests }}
+              memory: {{ .Values.limits.memoryRequests }}
+            limits:
+              cpu: {{ .Values.limits.cpuLimits }}
+              memory: {{ .Values.limits.memoryLimits }}
+          env:
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: freaks-dev-redis
+                  key: password

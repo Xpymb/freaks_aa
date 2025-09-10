@@ -13,78 +13,78 @@ spec:
         app: {{ .Values.service.name }}
     spec:
       containers:
-      - name: {{ .Values.service.name }}
-        image:  {{ index .Values.werf.image "portal-webapi" }}
-        ports:
-        - containerPort: {{ .Values.service.portHttp }}
-        resources:
-          requests:
-            cpu: {{ .Values.limits.cpuRequests }}
-            memory: {{ .Values.limits.memoryRequests }}
-          limits:
-            cpu: {{ .Values.limits.cpuLimits }}
-            memory: {{ .Values.limits.memoryLimits }}
-        livenessProbe:
-          httpGet:
-            path: /healthz
-            port: 80
-            scheme: HTTP
-          failureThreshold: 3
-          initialDelaySeconds: 10
-          periodSeconds: 10
-          successThreshold: 1
-          timeoutSeconds: 1
-        env:
-        - name: ASPNETCORE_ENVIRONMENT
-          value: {{ .Values.environment | quote }}
-        - name: DbOptions__ConnectionString
-          valueFrom:
-            secretKeyRef:
-              name: freaks-dev-db
-              key: connectionString
-        - name: AuthOptions__Issuer
-          value: {{ .Values.auth.issuer | quote }}
-        - name: AuthOptions__ClientId
-          value: {{ .Values.auth.clientId | quote }}
-        - name: KeycloakAdmin__realm
-          value: {{ .Values.kcAdmin.realm | quote }}
-        - name: KeycloakAdmin__auth-server-url
-          value: {{ .Values.kcAdmin.authServerUrl | quote }}
-        - name: KeycloakAdmin__ssl-required
-          value: {{ .Values.kcAdmin.sslRequired | quote }}
-        - name: KeycloakAdmin__resource
-          value: {{ .Values.kcAdmin.resource | quote }}
-        - name: KeycloakAdmin__verify-token-audience
-          value: {{ .Values.kcAdmin.verifyTokenAudience | quote }}
-        - name: KeycloakAdmin__credentials__secret
-          valueFrom:
-            secretKeyRef:
-              name: freaks-dev-kc-admin
-              key: secret
-        - name: KeycloakAdmin__confidential-port
-          value: {{ .Values.kcAdmin.confidentialPort | quote }}
-        - name: RedisOptions__Host
-          valueFrom:
-            secretKeyRef:
-              name: freaks-dev-redis
-              key: host
-        - name: RedisOptions__Port
-          valueFrom:
-            secretKeyRef:
-              name: freaks-dev-redis
-              key: port
-        - name: RedisOptions__Password
-          valueFrom:
-            secretKeyRef:
-              name: freaks-dev-redis
-              key: password
-        - name: CentrifugoOptions__Url
-          valueFrom:
-            secretKeyRef:
-              name: freaks-dev-centrifugo
-              key: url
-        - name: CentrifugoOptions__ApiKey
-          valueFrom:
-            secretKeyRef:
-              name: freaks-dev-centrifugo
-              key: apiKey
+        - name: {{ .Values.service.name }}
+          image:  {{ index .Values.werf.image "portal-webapi" }}
+          ports:
+            - containerPort: {{ .Values.service.portHttp }}
+          resources:
+            requests:
+              cpu: {{ .Values.limits.cpuRequests }}
+              memory: {{ .Values.limits.memoryRequests }}
+            limits:
+              cpu: {{ .Values.limits.cpuLimits }}
+              memory: {{ .Values.limits.memoryLimits }}
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 80
+              scheme: HTTP
+            failureThreshold: 3
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: {{ .Values.environment | quote }}
+            - name: DbOptions__ConnectionString
+              valueFrom:
+                secretKeyRef:
+                  name: freaks-dev-db
+                  key: connectionString
+            - name: AuthOptions__Issuer
+              value: {{ .Values.auth.issuer | quote }}
+            - name: AuthOptions__ClientId
+              value: {{ .Values.auth.clientId | quote }}
+            - name: KeycloakAdmin__realm
+              value: {{ .Values.kcAdmin.realm | quote }}
+            - name: KeycloakAdmin__auth-server-url
+              value: {{ .Values.kcAdmin.authServerUrl | quote }}
+            - name: KeycloakAdmin__ssl-required
+              value: {{ .Values.kcAdmin.sslRequired | quote }}
+            - name: KeycloakAdmin__resource
+              value: {{ .Values.kcAdmin.resource | quote }}
+            - name: KeycloakAdmin__verify-token-audience
+              value: {{ .Values.kcAdmin.verifyTokenAudience | quote }}
+            - name: KeycloakAdmin__credentials__secret
+              valueFrom:
+                secretKeyRef:
+                  name: freaks-dev-kc-admin
+                  key: secret
+            - name: KeycloakAdmin__confidential-port
+              value: {{ .Values.kcAdmin.confidentialPort | quote }}
+            - name: RedisOptions__Host
+              valueFrom:
+                secretKeyRef:
+                  name: freaks-dev-redis
+                  key: host
+            - name: RedisOptions__Port
+              valueFrom:
+                secretKeyRef:
+                  name: freaks-dev-redis
+                  key: port
+            - name: RedisOptions__Password
+              valueFrom:
+                secretKeyRef:
+                  name: freaks-dev-redis
+                  key: password
+            - name: CentrifugoOptions__Url
+              valueFrom:
+                secretKeyRef:
+                  name: freaks-dev-centrifugo
+                  key: url
+            - name: CentrifugoOptions__ApiKey
+              valueFrom:
+                secretKeyRef:
+                  name: freaks-dev-centrifugo
+                  key: apiKey

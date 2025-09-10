@@ -13,14 +13,14 @@ spec:
         app: {{ .Values.service.name }}
     spec:
       containers:
-      - name: {{ .Values.service.name }}
-        image:  {{ index .Values.werf.image "centrifugo" }}
-        ports:
-        - containerPort: {{ .Values.service.portHttp }}
-        resources:
-          requests:
-            cpu: {{ .Values.limits.cpuRequests }}
-            memory: {{ .Values.limits.memoryRequests }}
-          limits:
-            cpu: {{ .Values.limits.cpuLimits }}
-            memory: {{ .Values.limits.memoryLimits }}
+        - name: {{ .Values.service.name }}
+          image:  {{ index .Values.werf.image "centrifugo" }}
+          ports:
+            - containerPort: {{ .Values.service.portHttp }}
+          resources:
+            requests:
+              cpu: {{ .Values.limits.cpuRequests }}
+              memory: {{ .Values.limits.memoryRequests }}
+            limits:
+              cpu: {{ .Values.limits.cpuLimits }}
+              memory: {{ .Values.limits.memoryLimits }}
