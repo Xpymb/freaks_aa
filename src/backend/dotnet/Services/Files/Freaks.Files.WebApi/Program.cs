@@ -7,6 +7,7 @@ using Mapster;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddDefaults(builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddNSwag();
 builder.Services.AddMapster();
@@ -34,6 +35,8 @@ if (app.Environment.IsDevelopment()
                         .AllowAnyHeader()
                         .WithExposedHeaders("Content-Disposition"));
 }
+
+app.UseDefaults();
 
 app.UseAuthentication();
 app.UseAuthorization();
