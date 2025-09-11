@@ -15,18 +15,15 @@ namespace Freaks.Files.Bll.Implementation.RaidFiles;
 public class RaidScreenshotFileService : IRaidFileService
 {
     private readonly IStorageProvider _storageProvider;
-    private readonly StorageOptions _storageOptions;
 
     /// <summary>
     ///     Создаёт новый экземпляр <see cref="RaidScreenshotFileService" />.
     /// </summary>
     /// <param name="storageProvider">Провайдер хранилища, используемый для операций с файлами.</param>
-    /// <param name="storageOptions">Настройки подключения к хранилищу объектов.</param>
     /// <exception cref="ArgumentNullException">Выбрасывается, если передан <c>null</c> в параметры конструктора.</exception>
-    public RaidScreenshotFileService(IStorageProvider storageProvider, IOptions<StorageOptions> storageOptions)
+    public RaidScreenshotFileService(IStorageProvider storageProvider)
     {
         _storageProvider = storageProvider ?? throw new ArgumentNullException(nameof(storageProvider));
-        _storageOptions = storageOptions.Value ?? throw new ArgumentNullException(nameof(storageOptions));
     }
 
     /// <inheritdoc />
@@ -38,7 +35,7 @@ public class RaidScreenshotFileService : IRaidFileService
         await _storageProvider.UploadAsync(request.Content, filePath, fileName, request.ContentType);
 
         return new FileDto(
-            StorageHelper.GetFileUri(_storageOptions.DefaultBucketName, filePath, fileName),
+            StorageHelper.GetFileUri(filePath, fileName),
             fileName,
             request.ContentType);
     }

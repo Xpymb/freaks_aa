@@ -46,12 +46,11 @@ public static class StorageHelper
     /// <summary>
     ///     Формирует относительный путь (URI) к файлу, который может использоваться для хранения или логики доступа.
     /// </summary>
-    /// <param name="bucketName">Наименование корзины (Bucket).</param>
     /// <param name="filePath">Путь внутри хранилища.</param>
     /// <param name="fileName">Имя файла.</param>
     /// <returns>Относительный URI к файлу, например: <c>raids/1/screenshots/image.png</c>.</returns>
-    public static string GetFileUri(string bucketName, string filePath, string fileName)
+    public static string GetFileUri(string filePath, string fileName)
     {
-        return $"{bucketName}/{filePath.TrimEnd('/')}/{fileName}";
+        return $"{filePath.TrimEnd('/')}/{fileName}";
     }
 }
