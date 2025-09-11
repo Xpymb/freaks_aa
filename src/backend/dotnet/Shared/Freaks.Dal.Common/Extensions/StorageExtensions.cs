@@ -33,7 +33,7 @@ public static class StorageExtensions
                               config.WithEndpoint(storageOptions.Host)
                                     .WithCredentials(storageOptions.AccessKey, storageOptions.SecretKey)
                                     .WithRegion(storageOptions.Region)
-                                    .WithSSL(false)
+                                    .WithSSL(storageOptions.WithSsl)
                                     .Build());
 
         return services;

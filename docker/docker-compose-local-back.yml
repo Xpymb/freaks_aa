@@ -12,8 +12,7 @@ services:
       context: "./dotnet/PortalService"
       dockerfile: "./Dockerfile"
       args:
-        - DOCKER_REGISTRY=${DOCKER_REGISTRY}
-        - APP_VERSION=${APP_VERSION}
+        - SOLUTION_IMAGE_NAME=${DOCKER_REGISTRY}/solution-build-artifacts:${APP_VERSION}
         - ASPNET_VERSION=${ASPNET_VERSION}
     ports:
       - "5100:8080"
@@ -32,8 +31,7 @@ services:
       context: "./dotnet/FileService"
       dockerfile: "./Dockerfile"
       args:
-        - DOCKER_REGISTRY=${DOCKER_REGISTRY}
-        - APP_VERSION=${APP_VERSION}
+        - SOLUTION_IMAGE_NAME=${DOCKER_REGISTRY}/solution-build-artifacts:${APP_VERSION}
         - ASPNET_VERSION=${ASPNET_VERSION}
     ports:
       - "5110:8080"

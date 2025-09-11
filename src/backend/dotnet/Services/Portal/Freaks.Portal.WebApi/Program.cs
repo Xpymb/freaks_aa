@@ -34,10 +34,6 @@ builder.Services
 
 var app = builder.Build();
 
-app.UsePathBase("/portal");
-
-app.UseDefaults();
-
 if (app.Environment.IsDevelopment()
     || app.Environment.IsCompose())
 {
@@ -53,6 +49,8 @@ if (app.Environment.IsDevelopment()
                         .AllowAnyHeader()
                         .WithExposedHeaders("Content-Disposition"));
 }
+
+app.UseDefaults();
 
 app.UseAuthentication();
 app.UseAuthorization();
