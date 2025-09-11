@@ -64,27 +64,18 @@ spec:
             - name: KeycloakAdmin__confidential-port
               value: {{ .Values.kcAdmin.confidentialPort | quote }}
             - name: RedisOptions__Host
-              valueFrom:
-                secretKeyRef:
-                  name: freaks-dev-redis
-                  key: host
+              value: {{ .Values.redis.host }}
             - name: RedisOptions__Port
-              valueFrom:
-                secretKeyRef:
-                  name: freaks-dev-redis
-                  key: port
+              value: {{ .Values.redis.port }}
             - name: RedisOptions__Password
               valueFrom:
                 secretKeyRef:
-                  name: freaks-dev-redis
-                  key: password
+                  name: redis
+                  key: redis-password
             - name: CentrifugoOptions__Url
-              valueFrom:
-                secretKeyRef:
-                  name: freaks-dev-centrifugo
-                  key: url
+              value: {{ .Values.centifugo.url }}
             - name: CentrifugoOptions__ApiKey
               valueFrom:
                 secretKeyRef:
-                  name: freaks-dev-centrifugo
+                  name: centrifugo
                   key: apiKey
