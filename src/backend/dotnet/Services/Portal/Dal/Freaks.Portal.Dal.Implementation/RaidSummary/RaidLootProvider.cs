@@ -48,7 +48,7 @@ public class RaidLootProvider : BaseCachedCompositeProvider<RaidLoot, RaidLootKe
 
         var result =
             await query
-                  .Include(l => l.LootItemId)
+                .Include(l => l.Loot)
                   .FirstOrDefaultAsync();
 
         await SetCachedValueAsync(result, TimeSpan.FromMinutes(5));
