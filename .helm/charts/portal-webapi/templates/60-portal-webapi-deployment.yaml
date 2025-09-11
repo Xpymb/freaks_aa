@@ -64,16 +64,16 @@ spec:
             - name: KeycloakAdmin__confidential-port
               value: {{ .Values.kcAdmin.confidentialPort | quote }}
             - name: RedisOptions__Host
-              value: {{ .Values.redis.host }}
+              value: {{ .Values.redis.host | quote }}
             - name: RedisOptions__Port
-              value: {{ .Values.redis.port }}
+              value: {{ .Values.redis.port | quote }}
             - name: RedisOptions__Password
               valueFrom:
                 secretKeyRef:
                   name: redis
                   key: redis-password
             - name: CentrifugoOptions__Url
-              value: {{ .Values.centifugo.url }}
+              value: {{ .Values.centifugo.url | quote }}
             - name: CentrifugoOptions__ApiKey
               valueFrom:
                 secretKeyRef:
