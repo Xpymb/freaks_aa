@@ -41,13 +41,6 @@ if (app.Environment.IsDevelopment()
 
     await app.ApplyMigrationsAsync<IUserDbContext>();
     await app.ApplyMigrationsAsync<IPortalDbContext>();
-
-    app.UseCors(options =>
-                    options
-                        .AllowAnyOrigin()
-                        .AllowAnyMethod()
-                        .AllowAnyHeader()
-                        .WithExposedHeaders("Content-Disposition"));
 }
 
 app.UseDefaults();

@@ -27,13 +27,6 @@ if (app.Environment.IsDevelopment()
     || app.Environment.IsCompose())
 {
     app.UseNSwag();
-
-    app.UseCors(options =>
-                    options
-                        .AllowAnyOrigin()
-                        .AllowAnyMethod()
-                        .AllowAnyHeader()
-                        .WithExposedHeaders("Content-Disposition"));
 }
 
 app.UseDefaults();
