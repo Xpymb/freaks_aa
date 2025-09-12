@@ -24,3 +24,9 @@ spec:
             limits:
               cpu: {{ .Values.limits.cpuLimits }}
               memory: {{ .Values.limits.memoryLimits }}
+          env:
+            - name: AUTH_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: freaks-dev-frontend
+                  key: auth_secret
