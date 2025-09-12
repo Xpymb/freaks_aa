@@ -1,9 +1,7 @@
 name: cleanup
 on:
-  push:
-    branches: [fix/cleanup]
-  #schedule:
-    #- cron: "0 3 * * *"
+  schedule:
+    - cron: "0 3 * * *"
 
 jobs:
   cleanup:
