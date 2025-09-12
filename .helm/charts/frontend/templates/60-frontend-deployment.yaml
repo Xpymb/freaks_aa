@@ -30,3 +30,5 @@ spec:
                 secretKeyRef:
                   name: freaks-dev-frontend
                   key: auth_secret
+            - name: KEYCLOAK_ID
+              value: {{ .Values.auth.clientId }}

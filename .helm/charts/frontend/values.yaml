@@ -6,6 +6,8 @@ service:
 ingress:
   enabled: true
   host: freaks-aa.ru
+auth:
+  clientId: frontend
 limits:
   memoryRequests: "500Mi"
   memoryLimits: "1Gi"
