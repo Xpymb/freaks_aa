@@ -2,7 +2,7 @@ replicaCount: 1
 
 service:
   name: "frontend"
-  portHttp: 3001
+  portHttp: 3000
 ingress:
   enabled: true
   host: freaks-aa.ru
