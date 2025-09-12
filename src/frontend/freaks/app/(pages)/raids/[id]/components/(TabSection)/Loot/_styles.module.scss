@@ -1,0 +1,492 @@
+// LootCard styles
+.lootCard {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  min-height: 80px;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+  }
+
+  // Rarity borders
+  &.common {
+    border-left: 4px solid #9e9e9e;
+  }
+
+  &.rare {
+    border-left: 4px solid #2196f3;
+  }
+
+  &.epic {
+    border-left: 4px solid #9c27b0;
+  }
+
+  &.legendary {
+    border-left: 4px solid #ff9800;
+  }
+}
+
+.iconWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  min-height: 48px;
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.iconContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.icon {
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.gradeMask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.colorIcon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.content {
+  flex: 1;
+  min-width: 0; // Для text-overflow
+}
+
+.itemName {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
+  margin-bottom: 4px;
+}
+
+.itemDescription {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0.7;
+  line-height: 1.2;
+}
+
+.synthesisExp {
+  color: #ffc107;
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+.quantity {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+// Loot tab container styles
+.lootContainer {
+  padding: 24px 0;
+}
+
+.lootGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 24px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.emptyIcon {
+  font-size: 64px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.loadingState {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.loadingCard {
+  height: 80px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+// Header styles
+.lootHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.lootStats {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.statLabel {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.statValue {
+  font-weight: 600;
+}
+
+// AddLootForm styles
+.addLootForm {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.formHeader {
+  margin-bottom: 20px;
+}
+
+.formContent {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.formErrors {
+  background: rgba(244, 67, 54, 0.1);
+  border: 1px solid rgba(244, 67, 54, 0.3);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+}
+
+.errorMessage {
+  color: #f44336;
+  font-size: 14px;
+  line-height: 1.4;
+  
+  &:not(:last-child) {
+    margin-bottom: 8px;
+  }
+}
+
+.formRow {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.autocompleteWrapper {
+  flex: 1;
+  min-width: 300px;
+
+  @media (max-width: 768px) {
+    min-width: 100%;
+  }
+}
+
+.quantityWrapper {
+  min-width: 140px;
+}
+
+.addButton {
+  height: 40px;
+  min-width: 120px;
+  
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+}
+
+.optionContent {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 4px 0;
+}
+
+.optionIcon {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
+}
+
+.optionIconContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.optionImage {
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.optionGradeMask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.optionColorIcon {
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.optionText {
+  flex: 1;
+  min-width: 0;
+}
+
+.optionName {
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 2px;
+}
+
+.optionSynthesis {
+  font-size: 0.75rem;
+  color: #ffc107;
+  font-weight: 500;
+}
+
+// Tooltip styles
+.tooltipContent {
+  background: rgba(0, 0, 0, 0.95) !important;
+  border: 2px solid !important; /* Цвет будет задаваться через style */
+  border-radius: 8px;
+  padding: 16px;
+  min-width: 280px;
+  max-width: 320px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  z-index: 9999 !important;
+}
+
+.tooltipHeader {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.tooltipIcon {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+}
+
+.tooltipIconContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.tooltipImage {
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.tooltipGradeMask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.tooltipColorIcon {
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.tooltipInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.tooltipType {
+  color: rgba(255, 255, 255, 0.7);
+  display: block;
+  margin-bottom: 2px;
+}
+
+.tooltipRarity {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.tooltipName {
+  font-weight: 700;
+  line-height: 1.2;
+  word-wrap: break-word;
+}
+
+.tooltipBody {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 12px;
+}
+
+.tooltipProperty {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.propertyLabel {
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
+}
+
+.propertyValue {
+  color: #ffc107;
+  font-weight: 600;
+}
+
+.tooltipDescription {
+  margin: 8px 0;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  border-left: 3px solid #ffc107;
+}
+
+.descriptionText {
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.4;
+  font-style: italic;
+}
+
+// Enhanced LootCard for manage mode
+.lootCard.manageable {
+  position: relative;
+  
+  &:hover .manageActions {
+    opacity: 1;
+  }
+}
+
+.manageActions {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.actionButton {
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 4px;
+  min-width: auto;
+  width: 32px;
+  height: 32px;
+  
+  &:hover {
+    background: rgba(0, 0, 0, 0.9);
+  }
+  
+  &.deleteButton:hover {
+    background: rgba(244, 67, 54, 0.9);
+  }
+}

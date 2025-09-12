@@ -1,6 +1,6 @@
-@import "/app/ThemeMUI/variables.module";
+@use "@/ThemeMUI/variables" as *;
 
 .error {
-  padding: $sectionPadding;
+  padding: $secondarySectionPadding;
   text-align: center;
 }

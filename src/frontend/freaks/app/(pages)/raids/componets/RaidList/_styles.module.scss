@@ -1,0 +1,22 @@
+@use "@/ThemeMUI/variables" as *;
+
+.wrapper {
+  .raids {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
+    .link {
+      text-decoration: none;
+      color: inherit;
+    }
+  }
+  .wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+
+    .createRaidInputs {
+    }
+  }
+}

@@ -1,16 +1,22 @@
 "use client";
 
-import useSWR, { SWRConfiguration, SWRResponse } from "swr";
+import useSWR, { Key, SWRConfiguration, SWRResponse } from "swr";
 import { useAppError } from "../errors/useAppError";
 import { useTokens } from "@/store/authTokenStore";
 import { mutateSession } from "@/store/SessionStoreProvider";
 import { signOut } from "next-auth/react";
 
-type ProtectedSWRResponse<T> = SWRResponse<T, any> & {
+export type HttpError = {
+  status?: number;
+  message?: string;
+  code?: string | number;
+};
+
+type ProtectedSWRResponse<T, E = HttpError> = SWRResponse<T, E> & {
   errorState: ReturnType<typeof useAppError>;
 };
 
-const defaultConfig: SWRConfiguration = {
+const defaultConfig: SWRConfiguration<unknown, HttpError> = {
   dedupingInterval: 1000 * 60 * 5,
   revalidateOnFocus: false,
   keepPreviousData: false,
@@ -30,24 +36,31 @@ const defaultConfig: SWRConfiguration = {
   },
 };
 
-export function useProtectedSWR<T>(
-  key: string | null,
+/**
+ * Типобезопасный врапер над SWR с автоматической авторизацией.
+ * T — тип данных, E — тип ошибки (по умолчанию HttpError).
+ */
+export function useProtectedSWR<T, E = HttpError>(
+  key: Key,
   fetcher: (token: string) => Promise<T>,
-  config?: SWRConfiguration
-): ProtectedSWRResponse<T> {
+  config?: SWRConfiguration<T, E>
+): ProtectedSWRResponse<T, E> {
   const { accessToken } = useTokens();
   const shouldFetch = !!accessToken && !!key;
 
-  const swr = useSWR<T>(
+  const mergedConfig: SWRConfiguration<T, E> = {
+    ...(defaultConfig as SWRConfiguration<T, E>),
+    ...(config ?? {}),
+  };
+
+  const swr = useSWR<T, E>(
     shouldFetch ? key : null,
-    () => {
-      const accessToken = useTokens.getState().accessToken;
-      return fetcher(accessToken!);
+    async () => {
+      const token = useTokens.getState().accessToken;
+      if (!token) throw new Error("No access token");
+      return fetcher(token);
     },
-    {
-      ...defaultConfig,
-      ...config,
-    }
+    mergedConfig
   );
 
   const errorState = useAppError(swr.error, !!swr.data);

@@ -7,11 +7,11 @@ export async function requestServer<T>(
 ): Promise<T | null> {
   try {
     return await fn();
-  } catch (error: any) {
-    const status = error?.response?.status ?? error?.status;
+  } catch (error: unknown) {
+    const status = (error as { response?: { status?: number }; status?: number })?.response?.status ?? (error as { status?: number })?.status;
 
     if (status === 401) {
-      const headerList = headers();
+      const headerList = await headers();
       const callbackUrl = headerList.get("x-forwarded-uri") || "/";
       redirect(`/logout?callbackUrl=${callbackUrl}`);
 

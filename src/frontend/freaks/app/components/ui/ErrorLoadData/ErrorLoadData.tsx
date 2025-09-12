@@ -1,12 +1,16 @@
 import { CustomTypography } from "../CustomTypography";
 import styles from "./_styles.module.scss";
 
-const ErrorLoadData = () => {
+type Props = {
+  message?: string | null;
+};
+
+const ErrorLoadData = ({
+  message = "Произошла ошибка при загрузке данных...",
+}: Props) => {
   return (
     <section className={styles.error}>
-      <CustomTypography variant="h3" color="error">
-        Произошла ошибка при загрузке данных...
-      </CustomTypography>
+      <CustomTypography variant="h3">{message}</CustomTypography>
     </section>
   );
 };

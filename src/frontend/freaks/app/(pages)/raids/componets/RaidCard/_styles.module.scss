@@ -1,0 +1,78 @@
+@use "@/ThemeMUI/variables" as *;
+
+.raid {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: 0.3s;
+  cursor: pointer;
+  &:hover {
+    background-color: rgba($mutedColor, 0.1);
+  }
+  .left {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 40%;
+    .bossChip {
+      &.jmg {
+        color: rgba($Jmg, 1);
+        border-color: rgba($Jmg, 1);
+        background-color: rgba($Jmg, 0.2);
+      }
+      &.abyssalJmg {
+        color: rgba($AbyssalJmg, 1);
+        border-color: rgba($AbyssalJmg, 1);
+        background-color: rgba($AbyssalJmg, 0.2);
+      }
+      &.rangora {
+        color: rgba($Rangora, 1);
+        border-color: rgba($Rangora, 1);
+        background-color: rgba($Rangora, 0.2);
+      }
+      &.morpheus {
+        color: rgba($Morpheus, 1);
+        border-color: rgba($Morpheus, 1);
+        background-color: rgba($Morpheus, 0.2);
+      }
+      &.kraken {
+        color: rgba($Kraken, 1);
+        border-color: rgba($Kraken, 1);
+        background-color: rgba($Kraken, 0.2);
+      }
+      &.blackDragon {
+        color: rgba($BlackDragon, 1);
+        border-color: rgba($BlackDragon, 1);
+        background-color: rgba($BlackDragon, 0.2);
+      }
+      &.charybdis {
+        color: rgba($Charybdis, 1);
+        border-color: rgba($Charybdis, 1);
+        background-color: rgba($Charybdis, 0.2);
+      }
+      &.leviathan {
+        color: rgba($Leviathan, 1);
+        border-color: rgba($Leviathan, 1);
+        background-color: rgba($Leviathan, 0.2);
+      }
+      &.anthalon {
+        color: rgba($Anthalon, 1);
+        border-color: rgba($Anthalon, 1);
+        background-color: rgba($Anthalon, 0.2);
+      }
+      &.abyssalSehekmet {
+        color: rgba($AbyssalSehekmet, 1);
+        border-color: rgba($AbyssalSehekmet, 1);
+        background-color: rgba($AbyssalSehekmet, 0.2);
+      }
+    }
+  }
+  .right {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 40%;
+  }
+}
