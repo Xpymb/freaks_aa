@@ -7,10 +7,11 @@ metadata:
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/server-snippet: |
-      large_client_header_buffers 8 64k;
-    nginx.ingress.kubernetes.io/proxy-buffer-size: "512k"
-    nginx.ingress.kubernetes.io/proxy-buffers-number: "16"
+    nginx.ingress.kubernetes.io/proxy-buffer-size: {{ .Values.ingress.proxyBufferSize | default "16k" | quote }}
+    nginx.ingress.kubernetes.io/proxy-buffers-number: {{ .Values.ingress.proxyBuffersNumber | default "8" | quote }}
+    nginx.ingress.kubernetes.io/proxy-busy-buffers-size: {{ .Values.ingress.proxyBusyBuffersSize | default "64k" | quote }}
+    nginx.ingress.kubernetes.io/client-header-buffer-size: {{ .Values.ingress.clientHeaderBufferSize | default "32k" | quote }}
+    nginx.ingress.kubernetes.io/large-client-header-buffers: {{ .Values.ingress.largeClientHeaderBuffers | default "4 32k" | quote }}
 spec:
   tls:
     - hosts:

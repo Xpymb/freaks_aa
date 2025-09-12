@@ -6,6 +6,14 @@ service:
 ingress:
   enabled: true
   host: freaks-aa.ru
+  proxyBufferSize: "16k"
+  proxyBuffersNumber: "8"
+  proxyBusyBuffersSize: "64k"
+  clientHeaderBufferSize: "32k"
+  largeClientHeaderBuffers: "4 32k"
+  proxyReadTimeout: "600"
+  proxySendTimeout: "600"
+  proxyConnectTimeout: "600"
 auth:
   clientId: frontend
 limits:
