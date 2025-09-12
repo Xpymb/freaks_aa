@@ -63,14 +63,14 @@ const Screenshots = ({ raid, screenshotData }: Props) => {
               onClick={() => {
                 onOpen();
                 setScreenshot(
-                  `${process.env.NEXT_PUBLIC_STORAGE_MEDIA_URL}/${s.screenshotUrl}`
+                  `${process.env.NEXT_PUBLIC_STORAGE_MEDIA_URL}/${s.screenshotUri}`
                 );
               }}
               className={styles.imageWrap}
             >
               <IconButton
                 className={styles.deleteBtn}
-                onClick={handleDelete(s.screenshotUrl)}
+                onClick={handleDelete(s.screenshotUri)}
                 disabled={isMutating}
                 aria-label="Удалить скриншот"
               >
@@ -84,7 +84,7 @@ const Screenshots = ({ raid, screenshotData }: Props) => {
               <CustomImage
                 className={styles.image}
                 alt="raid screenshot"
-                src={`${process.env.NEXT_PUBLIC_STORAGE_MEDIA_URL}/${s.screenshotUrl}`}
+                src={`${process.env.NEXT_PUBLIC_STORAGE_MEDIA_URL}/${s.screenshotUri}`}
                 fill
               />
             </div>

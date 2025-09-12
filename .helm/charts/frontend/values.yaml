@@ -1,0 +1,13 @@
+replicaCount: 1
+
+service:
+  name: "frontend"
+  portHttp: 3001
+ingress:
+  enabled: true
+  host: freaks-aa.ru
+limits:
+  memoryRequests: "500Mi"
+  memoryLimits: "1Gi"
+  cpuRequests: "500m"
+  cpuLimits: "500m"
