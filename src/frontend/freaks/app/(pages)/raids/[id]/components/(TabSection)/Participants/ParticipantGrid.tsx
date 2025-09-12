@@ -26,7 +26,7 @@ const ParticipantGrid = ({ raidId, participants, prefetchUsers, onParticipantsCh
   const [hasChanges, setHasChanges] = useState(false);
   const [raids, setRaids] = useState([{ id: 1, participants: participants }]);
   const { createParticipant, deleteParticipant } = useRaidParticipantMutations(raidId);
-  const { data: users = prefetchUsers, isLoading: usersLoading } = useGetUsers(prefetchUsers);
+  const { data: users = prefetchUsers, isLoading: usersLoading } = useGetUsers({fallbackData: prefetchUsers, includeWoRoles: false});
 
   // Создаем сетку участников
   const gridData = useMemo(() => {
