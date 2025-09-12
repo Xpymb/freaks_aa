@@ -9,7 +9,8 @@ metadata:
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/server-snippet: |
       large_client_header_buffers 8 64k;
-    nginx.ingress.kubernetes.io/proxy-buffer-size: "128k"
+    nginx.ingress.kubernetes.io/proxy-buffer-size: "512k"
+    nginx.ingress.kubernetes.io/proxy-buffers-number: "16"
 spec:
   tls:
     - hosts:
