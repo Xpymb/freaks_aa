@@ -1,5 +1,26 @@
 @use "@/ThemeMUI/variables" as *;
 
+/* CSS переменные для модальных окон */
+:root {
+  --modal-bg: #1f2937;
+  --modal-text: #f9fafb;
+  --modal-border: #374151;
+}
+
+/* Светлая тема */
+[data-theme="light"] {
+  --modal-bg: #ffffff;
+  --modal-text: #111827;
+  --modal-border: #e5e7eb;
+}
+
+/* Тёмная тема */
+[data-theme="dark"] {
+  --modal-bg: #1f2937;
+  --modal-text: #f9fafb;
+  --modal-border: #374151;
+}
+
 * {
   margin: 0;
   padding: 0;

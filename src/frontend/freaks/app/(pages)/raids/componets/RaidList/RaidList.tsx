@@ -12,7 +12,10 @@ import { RaidListQuery } from "@/domains/raids/raids.service";
 import CreateRaidForm from "../CreateRaidForm/CreateRaidForm";
 
 const RaidList = () => {
-  const [filters, setFilters] = useState<Partial<RaidListQuery>>({});
+  const [filters, setFilters] = useState<Partial<RaidListQuery>>({
+    SortBy: 2, // сортировка по дате создания (предполагаем, что 1 = createdDt)
+    SortMode: 2, // убывание (предполагаем, что 1 = DESC)
+  });
 
   const { raids, isLoading, errorState } = useGetRaids(filters);
 

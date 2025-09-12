@@ -74,54 +74,5 @@
     align-items: center;
     justify-content: space-between;
     width: 40%;
-    .statusChip {
-      &::before {
-        content: "";
-        margin-left: 11px;
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        animation: statusChip 1s ease-in-out infinite alternate;
-      }
-      &.planned {
-        color: $planned;
-        border-color: $planned;
-        &::before {
-          background-color: $planned;
-        }
-      }
-      &.waitingScreenshot {
-        color: $waitingScreenshot;
-        border-color: $waitingScreenshot;
-        &::before {
-          background-color: $waitingScreenshot;
-        }
-      }
-      &.waitingSubmit {
-        color: $waitingSubmit;
-        border-color: $waitingSubmit;
-        &::before {
-          background-color: $waitingSubmit;
-        }
-      }
-      &.ended {
-        color: $ended;
-        border-color: $ended;
-        &::before {
-          background-color: $ended;
-        }
-      }
-    }
-  }
-}
-
-@keyframes statusChip {
-  from {
-    opacity: 0.25;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
   }
 }

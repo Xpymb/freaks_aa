@@ -9,7 +9,6 @@ import type { BossType, RaidStatus } from "@/domains/raids/types";
 import type { RaidListQuery } from "@/domains/raids/raids.service";
 import { AutoMultiField } from "@/components/ui/formInputs/CustomAutocomplete";
 import { useDebounce } from "@/shared/hooks/useDebounce";
-import DateField from "@/components/ui/formInputs/DateField/DateField";
 import styles from "./_styles.module.scss";
 import DateOrRangeField from "@/components/ui/formInputs/DateField/DateField";
 
@@ -79,10 +78,13 @@ export default function RaidsFilters({ initial, onApply, onReset }: Props) {
       Statuses: debounced.statuses?.length ? debounced.statuses : undefined,
       From: toISO(debounced.from),
       To: toISO(debounced.to),
+      // Сохраняем параметры сортировки из initial
+      SortBy: initial?.SortBy,
+      SortMode: initial?.SortMode,
     };
 
     onApply(filters);
-  }, [debounced, onApply]);
+  }, [debounced, onApply, initial?.SortBy, initial?.SortMode]);
 
   const doReset = () => {
     reset({
@@ -91,7 +93,11 @@ export default function RaidsFilters({ initial, onApply, onReset }: Props) {
       from: "",
       to: "",
     });
-    onApply({});
+    onApply({
+      // Сохраняем параметры сортировки при сбросе
+      SortBy: initial?.SortBy,
+      SortMode: initial?.SortMode,
+    });
     onReset?.();
   };
 

@@ -10,6 +10,7 @@ import { CustomTypography } from "@/components/ui/CustomTypography";
 import { DateFormat, formatDate } from "@/utils/formateDate";
 import { Chip } from "@mui/material";
 import clsx from "clsx";
+import StatusChip from "../StatusChip/StatusChip";
 
 type Props = {
   raid: RaidListItem;
@@ -48,17 +49,7 @@ const RaidCard = ({ raid }: Props) => {
         <CustomTypography variant="subtitle1">
           {formatDate(raid.startDt, DateFormat.SHORT_DATE_SHORT_YEAR_TIME)}
         </CustomTypography>
-        <Chip
-          className={clsx(styles.statusChip, {
-            [styles.planned]: raid.status === RaidStatus.Planned,
-            [styles.waitingScreenshot]:
-              raid.status === RaidStatus.WaitingScreenshot,
-            [styles.waitingSubmit]: raid.status === RaidStatus.WaitingSubmit,
-            [styles.ended]: raid.status === RaidStatus.Ended,
-          })}
-          variant="outlined"
-          label={RAID_STATUS_LABEL[raid.status]}
-        />
+        <StatusChip status={raid.status} />
       </div>
     </div>
   );

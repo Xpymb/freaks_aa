@@ -19,6 +19,8 @@ export type MinimalModalProps = {
   bodyClassName?: string;
   footerClassName?: string;
 
+  theme?: "dark" | "light";
+
   minWidth?: string | number;
 };
 
@@ -45,12 +47,17 @@ const CustomModal = ({
   bodyClassName,
   footerClassName,
   minWidth = "min(700px, 92vw)",
+  theme = "dark",
 }: MinimalModalProps) => {
   const titleAttr = getTitleText(title);
 
   return (
     <Modal open={open} onClose={onClose}>
-      <div style={{ minWidth }} className={clsx(styles.card, className)}>
+      <div
+        style={{ minWidth }}
+        data-theme={theme}
+        className={clsx(styles.card, className)}
+      >
         {(title != null || showClose) && (
           <div className={clsx(styles.header, headerClassName)}>
             {title && (

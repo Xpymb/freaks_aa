@@ -1,0 +1,101 @@
+@use "@/ThemeMUI/variables" as *;
+
+.overview {
+  display: flex;
+  padding: $secondarySectionPadding;
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    row-gap: 2rem;
+    .raidDescription {
+      .description {
+        margin-top: 1rem;
+        padding: 1rem;
+        background-color: $secondaryBackgroundColor;
+        border-radius: 0.2rem;
+      }
+    }
+    .screenshots {
+      .screenshotsList {
+        display: flex;
+        flex-wrap: wrap;
+        column-gap: 2rem;
+        margin-top: 2rem;
+        .imageWrap {
+          position: relative;
+          width: 300px;
+          aspect-ratio: 16/9;
+          transition: transform 0.3s;
+          cursor: pointer;
+
+          .zoomBtn {
+            position: absolute;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: 0.3s;
+            will-change: opacity, transform;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            background-color: rgba(0, 0, 0, 0.6);
+            
+            &:hover {
+              background-color: rgba(0, 0, 0, 0.8);
+            }
+          }
+
+          &:hover {
+            transform: scale(1.02);
+            .image {
+              filter: brightness(0.5);
+            }
+            .zoomBtn {
+              z-index: 9999;
+              opacity: 1;
+              visibility: visible;
+              pointer-events: auto;
+            }
+          }
+          
+          .image {
+            object-fit: cover;
+            border-radius: 1rem;
+          }
+        }
+      }
+    }
+  }
+  .aside {
+    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+    row-gap: 2rem;
+    .participants {
+      .participantsList {
+        margin-top: 1rem;
+      }
+    }
+    .loot {
+      .lootList {
+        .lootItem {
+          display: flex;
+          justify-content: space-between;
+          .title {
+            display: flex;
+            align-items: center;
+            column-gap: 0.5rem;
+          }
+          .quantity {
+            padding: 1rem;
+            background-color: $secondaryBackgroundColor;
+            border-radius: 0.5rem;
+          }
+        }
+      }
+    }
+  }
+}
+

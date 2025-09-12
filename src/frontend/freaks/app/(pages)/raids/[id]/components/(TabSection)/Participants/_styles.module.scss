@@ -1,0 +1,326 @@
+.participantsContainer {
+  padding: 20px;
+  min-height: 400px;
+}
+
+.participantGrid {
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin: 16px 0;
+}
+
+.raidContainer {
+  margin-bottom: 30px;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.raidHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.raidTitle {
+  color: #fff !important;
+  font-weight: 600 !important;
+  margin: 0 !important;
+  font-size: 1.1rem !important;
+}
+
+.removeRaidButton {
+  color: rgba(255, 255, 255, 0.7) !important;
+  
+  &:hover {
+    color: #f44336 !important;
+    background: rgba(244, 67, 54, 0.1) !important;
+  }
+}
+
+.addRaidContainer {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  border: 2px dashed rgba(255, 255, 255, 0.2);
+}
+
+.addRaidButton {
+  color: #fff !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.5) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+  }
+}
+
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(2, auto);
+  gap: 20px 16px;
+  max-width: 100%;
+  justify-items: center;
+  margin-bottom: 20px;
+}
+
+.party {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-width: 80px;
+  width: 100%;
+}
+
+
+.partyLabel {
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
+  text-align: center;
+  font-size: 0.7rem;
+  margin-bottom: 4px;
+}
+
+.partyGrid {
+  display: grid;
+  grid-template-rows: repeat(5, 1fr);
+  row-gap: 10px;
+  width: 100%;
+  min-height: 250px;
+}
+
+.gridCell {
+  border: none !important;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  height: 100%;
+  
+  &:hover {
+    transform: scale(1.02);
+  }
+}
+
+.emptyCell {
+  border: none !important;
+  background: rgba(255, 255, 255, 0.05);
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
+
+.filledCell {
+  border: none !important;
+  background: rgba(255, 255, 255, 0.1);
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.15);
+    
+    .removeButton {
+      opacity: 1;
+    }
+  }
+}
+
+.selectedCell {
+  border-color: #1976d2 !important;
+  background: rgba(25, 118, 210, 0.2) !important;
+  border-style: solid !important;
+}
+
+.participantInfo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 1);
+  border-radius: 6px;
+  .participantName {
+    position: relative;
+    text-align: center;
+    max-width: calc(100% - 30px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  
+  .removeButton {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    background: rgba(158, 158, 158, 0.7) !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    padding: 0 !important;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    
+    &:hover {
+      background: rgba(158, 158, 158, 0.9) !important;
+      color: rgba(255, 255, 255, 0.9) !important;
+    }
+    
+    .MuiSvgIcon-root {
+      font-size: 12px;
+    }
+  }
+}
+
+
+
+.emptyLabel {
+  color: rgba(255, 255, 255, 0.5);
+  text-align: center;
+  font-size: 0.7rem;
+  line-height: 1.2;
+}
+
+.participantInput {
+  width: 100%;
+  height: 100%;
+  
+  .MuiOutlinedInput-root {
+    height: 100%;
+    font-size: 0.7rem;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    
+    .MuiOutlinedInput-notchedOutline {
+      border: none;
+    }
+    
+    &:hover .MuiOutlinedInput-notchedOutline {
+      border: none;
+    }
+    
+    &.Mui-focused .MuiOutlinedInput-notchedOutline {
+      border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+  }
+  
+  .MuiInputBase-input {
+    padding: 4px 8px;
+    text-align: center;
+    color: #fff;
+    
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+      opacity: 1;
+    }
+  }
+}
+
+.inputField {
+  height: 100% !important;
+}
+
+
+.cellAutocomplete {
+  width: 100%;
+  height: 100%;
+
+  
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.7);
+  }
+  
+  // 
+}
+
+.optionItem {
+  padding: 8px 12px;
+  cursor: pointer;
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
+
+
+
+.instruction {
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+  margin-top: 16px;
+  font-style: italic;
+}
+
+// Responsive design
+@media (max-width: 1200px) {
+  .gridContainer {
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .gridContainer {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+  }
+  
+  .party {
+    min-width: 50px;
+  }
+  
+  .partyGrid {
+    height: 150px;
+  }
+  
+  
+  .participantName {
+    font-size: 0.6rem;
+  }
+  
+  .participantInput {
+    .MuiInputBase-input {
+      font-size: 0.6rem;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .participantGrid {
+    padding: 16px;
+  }
+  
+  
+  .gridContainer {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+  }
+  
+  .partyGrid {
+    height: 120px;
+  }
+  
+  .gridCell {
+    padding: 2px;
+  }
+}

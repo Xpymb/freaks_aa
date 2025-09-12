@@ -8,7 +8,7 @@ export async function wrapRequest<T>(
   try {
     const { data } = await fn();
     return data;
-  } catch (error: any) {
+  } catch (error: unknown) {
     throw handleAxiosError(error);
   }
 }

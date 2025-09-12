@@ -1,77 +1,122 @@
 "use client";
 
 import * as React from "react";
-import { useForm, Controller } from "react-hook-form";
-import { TextField, IconButton, Button } from "@mui/material";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-
+import { useForm } from "react-hook-form";
+import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
 
 import styles from "./_styles.module.scss";
-import { AutoMultiField } from "@/components/ui/formInputs/CustomAutocomplete";
+
 import { useDisclosure } from "@/components/ui/useDisclosure";
+import { CustomTypography } from "@/components/ui/CustomTypography";
+import CustomModal from "@/components/ui/CustomModal/CustomModal";
+import { InputField } from "@/components/ui/formInputs/CustomInput";
+import { SelectField } from "@/components/ui/formInputs/CustomSelect";
+import { makeOptionsFromRecord } from "@/utils/makeOptionsFromRecord";
+import { BOSS_LABEL, BossType } from "@/domains/raids";
+import { CreateRaidRequest, RaidsService } from "@/domains/raids/raids.service";
+import { useTokens } from "@/store/authTokenStore";
+
+const pad = (n: number) => String(n).padStart(2, "0");
+const toLocalInput = (d: Date) =>
+  `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(
+    d.getHours()
+  )}:${pad(d.getMinutes())}`;
 
 type CreateRaidForm = {
-  bossType: number | null;
+  bossType: BossType | undefined;
   description: string;
-  startDt: string; // пока оставляем, позже добавим выбор даты
+  startDt: string;
 };
 
 export default function CreateRaid() {
   const { open, onOpen, onClose } = useDisclosure(false);
 
-  const { control, handleSubmit } = useForm<CreateRaidForm>({
+  const { accessToken } = useTokens();
+
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<CreateRaidForm>({
     defaultValues: {
-      bossType: null,
+      bossType: undefined,
       description: "",
-      startDt: new Date().toISOString(),
+      startDt: toLocalInput(new Date()),
     },
   });
 
+  const BOSS_OPTIONS = React.useMemo(
+    () => makeOptionsFromRecord<BossType>(BOSS_LABEL),
+    []
+  );
+
   const onSubmit = (data: CreateRaidForm) => {
-    console.log("Создание рейда:", data);
-    // TODO: RaidsService.postRaid(data)
+    const payload: CreateRaidRequest = {
+      bossType: Number(data.bossType!),
+      description: data.description,
+      startDt: new Date(data.startDt).toISOString(),
+    };
+    RaidsService.createRaid(accessToken!, payload);
+    onClose();
   };
 
   return (
     <div className={styles.createRaid}>
-      {!open && (
-        <IconButton className={styles.openBtn} size="large" onClick={onOpen}>
-          <AddCircleIcon />
-        </IconButton>
-      )}
+      <div className={styles.createBtn} onClick={onOpen}>
+        <CustomTypography variant="body2">Создать рейд</CustomTypography>
+      </div>
 
-      {open && (
+      <CustomModal className={styles.modal} open={open} onClose={onClose}>
         <form
           className={styles.createRaidInputs}
           onSubmit={handleSubmit(onSubmit)}
         >
           <div className={styles.inputs}>
-            <AutoMultiField<CreateRaidForm, number>
-              fullWidth
-              control={control}
-              name="bossType"
-              label="Тип босса"
-              options={[
-                { value: 1, label: "Кракен" },
-                { value: 2, label: "Левиафан" },
-                { value: 3, label: "Анталон" },
-              ]}
-            />
+            <div className={styles.top}>
+              <SelectField<CreateRaidForm, BossType>
+                className={styles.bossType}
+                control={control}
+                name="bossType"
+                // label="Тип босса"
+                options={BOSS_OPTIONS}
+                placeholder="Выберите босса"
+                required
+                rules={{
+                  required: "Необходимо выбрать тип босса"
+                }}
+              />
 
-            {/* Описание */}
-            <Controller
-              name="description"
+              <InputField<CreateRaidForm>
+                className={styles.date}
+                control={control}
+                name="startDt"
+                label="Дата и время начала"
+                type="datetime-local"
+                required
+                rules={{
+                  required: "Необходимо указать дату и время начала"
+                }}
+              />
+            </div>
+
+            <InputField<CreateRaidForm>
+              className={styles.description}
               control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Описание"
-                  placeholder="Введите описание рейда"
-                  fullWidth
-                />
-              )}
+              name="description"
+              label="Описание"
+              multiline
+              rows={3}
+              required
+              rules={{
+                required: "Необходимо указать описание",
+                minLength: {
+                  value: 3,
+                  message: "Описание должно содержать минимум 3 символа"
+                }
+              }}
             />
           </div>
 
@@ -79,13 +124,12 @@ export default function CreateRaid() {
             <IconButton type="submit">
               <CheckIcon />
             </IconButton>
-
             <IconButton onClick={onClose}>
               <CloseIcon />
             </IconButton>
           </div>
         </form>
-      )}
+      </CustomModal>
     </div>
   );
 }

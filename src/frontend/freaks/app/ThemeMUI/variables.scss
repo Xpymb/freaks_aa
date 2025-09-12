@@ -1,10 +1,16 @@
 //MAIN VARIABLES
-$secondaryBorderLineColor: rgba(216, 216, 216, 1);
-$primaryBackgroundColor: rgb(23, 23, 23);
-$secondaryBackgroundColor: rgb(30, 30, 30);
+
+//COLOR
 $mutedColor: rgb(126, 126, 126);
 
-//STATUS COLORs
+//BACKGROUND
+$primaryBackgroundColor: rgb(23, 23, 23);
+$secondaryBackgroundColor: rgb(30, 30, 30);
+
+//BORDER
+$secondaryBorderLineColor: rgb(60, 60, 60);
+
+//STATUS COLORS
 $planned: #fa6060;
 $waitingScreenshot: #fa9160;
 $waitingSubmit: #f7fa60;

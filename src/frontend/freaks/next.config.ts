@@ -1,9 +1,25 @@
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {};
+// Загружаем переменные окружения
+const STORAGE_URL = process.env.NEXT_PUBLIC_STORAGE_MEDIA_URL;
 
-module.exports = nextConfig;
+if (!STORAGE_URL) {
+  throw new Error("NEXT_PUBLIC_STORAGE_MEDIA_URL not defined");
+}
 
-module.exports = nextConfig;
+const storageUrl = new URL(STORAGE_URL);
+
+const nextConfig: NextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: storageUrl.protocol.replace(":", "") as "http" | "https",
+        hostname: storageUrl.hostname,
+        ...(storageUrl.port ? { port: storageUrl.port } : {}),
+        pathname: "/**",
+      },
+    ],
+  },
+};
 
 export default nextConfig;

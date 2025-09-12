@@ -13,6 +13,10 @@ export function buildRaidsQuery(filters: Partial<RaidListQuery> = {}): string {
 
   if (filters.From) p.set("From", filters.From);
   if (filters.To) p.set("To", filters.To);
+  if (filters.SortBy !== undefined) p.set("SortBy", String(filters.SortBy));
+  if (filters.SortMode !== undefined) p.set("SortMode", String(filters.SortMode));
+  if (filters.Take !== undefined) p.set("Take", String(filters.Take));
+  if (filters.Skip !== undefined) p.set("Skip", String(filters.Skip));
 
   return p.toString();
 }
