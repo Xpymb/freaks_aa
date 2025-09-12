@@ -39,4 +39,4 @@ args: { DOTNET_SDK_VERSION: "9.0-alpine3.22" }
 image: frontend
 dockerfile: Dockerfile
 context: ./src/frontend/freaks
-args: { NODE_VERSION: "node:22-alpine" }
+args: { NODE_VERSION: "node:18-alpine" }
