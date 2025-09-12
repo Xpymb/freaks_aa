@@ -64,6 +64,18 @@ public class RaidController : ControllerBase
     }
 
     /// <summary>
+    ///     Завершает существующий рейд.
+    /// </summary>
+    /// <param name="id">Идентификатор рейда.</param>
+    /// <returns>Завершенный рейд в виде <see cref="RaidDto" />.</returns>
+    [RequireRoles(UserRole.Admin, UserRole.GuildLeader)]
+    [HttpPost("{id:long}/finish")]
+    public async Task<RaidDto> FinishAsync([FromRoute] long id)
+    {
+        return await _service.FinishAsync(id);
+    }
+
+    /// <summary>
     ///     Обновляет существующий рейд.
     /// </summary>
     /// <param name="id">Идентификатор рейда, который нужно обновить.</param>
@@ -73,18 +85,6 @@ public class RaidController : ControllerBase
     public async Task<RaidDto> UpdateAsync([FromRoute] long id, [FromBody] UpdateRaidRequest request)
     {
         return await _service.UpdateAsync(id, request);
-    }
-
-    /// <summary>
-    ///     Завершает существующий рейд.
-    /// </summary>
-    /// <param name="id">Идентификатор рейда.</param>
-    /// <returns>Завершенный рейд в виде <see cref="RaidDto" />.</returns>
-    [RequireRoles(UserRole.Admin, UserRole.GuildLeader)]
-    [HttpPatch("{id:long}/finish")]
-    public async Task<RaidDto> FinishAsync([FromRoute] long id)
-    {
-        return await _service.FinishAsync(id);
     }
 
     /// <summary>

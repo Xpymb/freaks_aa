@@ -54,6 +54,6 @@ public class LootItem : IEntity<int>
     /// <summary>
     ///     Ссылка на иконку
     /// </summary>
-    [Column("icon_url")]
-    public required string IconUrl { get; init; }
+    [Column("icon_uri")]
+    public required string IconUri { get; init; }
 }

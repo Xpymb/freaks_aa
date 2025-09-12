@@ -1,0 +1,27 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: users-migrations
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "5"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  backoffLimit: 3
+  ttlSecondsAfterFinished: 3600
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: users-migrations
+          image: {{ index .Values.werf.image "users-migrations" }}
+          # если строка из секрета:
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: {{ .Values.environment | quote }}
+            - name: DB_CONNECTION
+              valueFrom:
+                secretKeyRef:
+                  name: freaks-dev-db
+                  key: connectionString
+          args: ["--connection", "$(DB_CONNECTION)", "--verbose"]

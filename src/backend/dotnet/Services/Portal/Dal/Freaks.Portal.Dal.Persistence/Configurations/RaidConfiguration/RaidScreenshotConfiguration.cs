@@ -13,7 +13,7 @@ public class RaidScreenshotConfiguration : IEntityTypeConfiguration<RaidScreensh
         builder.HasKey(s =>
                            new
                            {
-                               s.RaidId, s.ScreenshotUrl,
+                               s.RaidId, ScreenshotUrl = s.ScreenshotUri,
                            });
 
         builder

@@ -28,8 +28,8 @@ public class RaidScreenshot : ICompositeEntity<RaidScreenshotKey>
     /// <summary>
     ///     URL-адрес скриншота рейда.
     /// </summary>
-    [Column("screenshot_url")]
-    public required string ScreenshotUrl { get; init; }
+    [Column("screenshot_uri")]
+    public required string ScreenshotUri { get; init; }
 
     /// <summary>
     ///     Идентификатор пользователя, который создал запись
@@ -45,6 +45,6 @@ public class RaidScreenshot : ICompositeEntity<RaidScreenshotKey>
     /// <inheritdoc />
     public RaidScreenshotKey GetCompositeKey()
     {
-        return new RaidScreenshotKey(RaidId, ScreenshotUrl);
+        return new RaidScreenshotKey(RaidId, ScreenshotUri);
     }
 }

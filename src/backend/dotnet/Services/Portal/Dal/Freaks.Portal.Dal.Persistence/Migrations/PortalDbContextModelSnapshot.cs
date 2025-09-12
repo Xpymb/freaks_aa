@@ -125,10 +125,10 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("grade_type");
 
-                    b.Property<string>("IconUrl")
+                    b.Property<string>("IconUri")
                         .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("icon_url");
+                        .HasColumnName("icon_uri");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -322,15 +322,15 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("id");
 
-                    b.Property<string>("ScreenshotUrl")
+                    b.Property<string>("ScreenshotUri")
                         .HasColumnType("text")
-                        .HasColumnName("screenshot_url");
+                        .HasColumnName("screenshot_uri");
 
                     b.Property<Guid>("CreatorId")
                         .HasColumnType("uuid")
                         .HasColumnName("creator_id");
 
-                    b.HasKey("RaidId", "ScreenshotUrl");
+                    b.HasKey("RaidId", "ScreenshotUri");
 
                     b.ToTable("raid_screenshot", "portal");
                 });

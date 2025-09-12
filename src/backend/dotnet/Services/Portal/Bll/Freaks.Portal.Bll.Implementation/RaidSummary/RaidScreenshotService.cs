@@ -54,12 +54,12 @@ public class RaidScreenshotService : IRaidScreenshotService
     public async Task<IList<RaidScreenshotDto>> SetAsync(long raidId, SetRaidScreenshotRequest request)
     {
         var entities =
-            request.ScreenshotUrls
+            request.ScreenshotUris
                    .Select(s =>
                                new RaidScreenshot
                                {
                                    RaidId = raidId,
-                                   ScreenshotUrl = s,
+                                   ScreenshotUri = s,
                                    CreatorId = _userContext.Id,
                                })
                    .ToList();

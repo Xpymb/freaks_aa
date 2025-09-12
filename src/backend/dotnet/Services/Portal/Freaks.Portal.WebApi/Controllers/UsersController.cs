@@ -59,7 +59,7 @@ public class UsersController : ControllerBase
     /// <param name="request">Запрос, содержащий список новых ролей.</param>
     /// <returns>Обновлённый <see cref="UserDto" /> с актуальными ролями.</returns>
     [RequireRoles(UserRole.GuildLeader, UserRole.Admin)]
-    [HttpPatch("{id:Guid}")]
+    [HttpPatch("{id:Guid}/roles")]
     public async Task<UserDto> UpdateRolesAsync([FromRoute] Guid id, [FromBody] UpdateUserRolesRequest request)
     {
         return await _userService.UpdateRolesAsync(id, request);

@@ -5,7 +5,7 @@
 ///     Содержит идентификатор рейда и ссылку на изображение.
 /// </summary>
 /// <param name="RaidId">Идентификатор рейда, к которому относится скриншот.</param>
-/// <param name="ScreenshotUrl">URL-адрес скриншота, загруженного после рейда.</param>
+/// <param name="ScreenshotUri">URL-адрес скриншота, загруженного после рейда.</param>
 public record RaidScreenshotDto(
     long RaidId,
-    string ScreenshotUrl);
+    string ScreenshotUri);

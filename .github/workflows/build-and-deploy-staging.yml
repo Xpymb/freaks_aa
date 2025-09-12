@@ -1,0 +1,56 @@
+name: build-and-deploy-staging
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: werf-deploy-${{ github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build images (werf)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.ref }}
+
+      - uses: werf/actions/install@v2
+
+      - name: werf build
+        run: |
+          source "$(werf ci-env github --as-file)"
+          werf build --env "$WERF_ENV"
+        env:
+          WERF_ENV: dev
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  deploy:
+    name: Deploy to staging (werf converge)
+    needs: build
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.ref }}
+
+      - uses: werf/actions/install@v2
+
+      - name: werf converge
+        run: |
+          source "$(werf ci-env github --as-file)"
+          werf converge \
+            --env "$WERF_ENV" \
+            --kube-config-base64 "$WERF_KUBECONFIG_BASE64"
+        env:
+          WERF_ENV: dev
+          WERF_KUBECONFIG_BASE64: ${{ secrets.WERF_KUBECONFIG_BASE64 }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

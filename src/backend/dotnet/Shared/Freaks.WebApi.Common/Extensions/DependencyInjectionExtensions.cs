@@ -32,6 +32,8 @@ public static class DependencyInjectionExtensions
             options.Level = CompressionLevel.Optimal;
         });
 
+        services.AddHealthChecks();
+
         return services;
     }
 
@@ -44,6 +46,8 @@ public static class DependencyInjectionExtensions
     public static IApplicationBuilder UseDefaults(this IApplicationBuilder app)
     {
         app.UseResponseCompression();
+
+        app.UseHealthChecks("/healthz");
 
         return app;
     }
