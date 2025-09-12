@@ -1,15 +1,7 @@
-import { IProfile } from "@/domains/user/profile/types";
+import { IUser } from "@/types/user.types";
 
-export const formatProfileName = (profile: IProfile | undefined) => {
+export const formatProfileName = (profile: IUser | undefined) => {
   if (!profile) return "";
 
-  const { lastName, firstName, patronymic } = profile;
-
-  return [
-    lastName,
-    firstName?.[0] && `${firstName[0]}.`,
-    patronymic?.[0] && `${patronymic[0]}.`,
-  ]
-    .filter(Boolean)
-    .join(" ");
+  return profile.gameNickname || profile.username || "Unknown";
 };

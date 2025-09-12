@@ -2,13 +2,13 @@ export class AppError extends Error {
   code?: string;
   details?: object;
   status?: number;
-  originalError?: any;
+  originalError?: unknown;
   constructor(
     message: string,
     code?: string,
     details?: object,
     status?: number,
-    originalError?: any
+    originalError?: unknown
   ) {
     super(message);
     this.name = "AppError";

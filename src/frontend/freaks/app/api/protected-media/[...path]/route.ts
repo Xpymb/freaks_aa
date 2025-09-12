@@ -3,7 +3,7 @@ import { NextRequest } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { path: string[] } }
+  { params }: { params: Promise<{ path: string[] }> }
 ) {
   const session = await auth();
 
@@ -13,7 +13,8 @@ export async function GET(
     return new Response("Unauthorized", { status: 401 });
   }
 
-  const path = params.path.join("/");
+  const resolvedParams = await params;
+  const path = resolvedParams.path.join("/");
   const backendUrl = `${process.env.PROTECTED_MEDIA_URL}/${path}`;
 
   const backendRes = await fetch(backendUrl, {

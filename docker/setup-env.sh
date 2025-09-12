@@ -1,27 +1,26 @@
-@echo off
-setlocal enabledelayedexpansion
+#!/bin/bash
 
-echo Copying .env.local to .env...
-copy /Y .env.local .env >nul
+echo "Copying .env.local to .env..."
+cp .env.local .env
 
-echo Please enter the value for KEYCLOAK_ADMIN_CLIENT_SECRET:
-set /p secret=KEYCLOAK_ADMIN_CLIENT_SECRET=
+echo "Please enter the value for KEYCLOAK_ADMIN_CLIENT_SECRET:"
+read -r secret
 
-echo Updating .env file...
+echo "Updating .env file..."
 
-> temp_env (
-    for /f "usebackq delims=" %%A in (".env") do (
-        set line=%%A
-        echo !line! | findstr /B "KEYCLOAK_ADMIN_CLIENT_SECRET=" >nul
-        if !errorlevel! == 0 (
-            echo KEYCLOAK_ADMIN_CLIENT_SECRET=!secret!
-        ) else (
-            echo !line!
-        )
-    )
-)
+# Create temporary file
+temp_file=$(mktemp)
 
-move /Y temp_env .env >nul
+# Process .env file
+while IFS= read -r line; do
+    if [[ $line == KEYCLOAK_ADMIN_CLIENT_SECRET=* ]]; then
+        echo "KEYCLOAK_ADMIN_CLIENT_SECRET=$secret" >> "$temp_file"
+    else
+        echo "$line" >> "$temp_file"
+    fi
+done < .env
 
-echo Done! .env file is updated.
-pause
+# Replace original file
+mv "$temp_file" .env
+
+echo "Done! .env file is updated."

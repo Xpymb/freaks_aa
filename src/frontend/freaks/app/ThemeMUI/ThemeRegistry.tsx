@@ -1,19 +1,16 @@
 "use client";
-import { createTheme, ThemeProvider, alpha } from "@mui/material/styles"; // ✅ FIX: alpha пригодится для границ/фона
-import { CssBaseline } from "@mui/material/";
+
+import { createTheme, ThemeProvider, alpha } from "@mui/material/styles";
+import { CssBaseline } from "@mui/material";
 import { NextAppDirEmotionCacheProvider } from "./EmotionCache";
-import variables from "./_variables.module.scss";
 
-//TODO: полноценно донастраивать тему MUI, после утверждений и добавления ясности в структуру
-
-// Update the Button's color options to include option
+// ── Palette расширения (как у тебя)
 declare module "@mui/material/Button" {
   interface ButtonPropsColorOverrides {
     mainWhite: true;
     mainBlack: true;
   }
 }
-
 declare module "@mui/material/styles" {
   interface Palette {
     mainWhite: Palette["primary"];
@@ -23,41 +20,58 @@ declare module "@mui/material/styles" {
     mainWhite?: PaletteOptions["primary"];
     mainBlack?: PaletteOptions["primary"];
   }
-
-  // ✅ FIX: расширять TypographyVariants нужно в @mui/material/styles, а не в @mui/system
   interface TypographyVariants {
-    tableHead: React.CSSProperties; // ➕ NEW
-    tableBody: React.CSSProperties; // ➕ NEW
+    tableHead: React.CSSProperties;
+    tableBody: React.CSSProperties;
   }
   interface TypographyVariantsOptions {
-    tableHead?: React.CSSProperties; // ➕ NEW
-    tableBody?: React.CSSProperties; // ➕ NEW
+    tableHead?: React.CSSProperties;
+    tableBody?: React.CSSProperties;
   }
 }
-
 declare module "@mui/material/Typography" {
   interface TypographyPropsVariantOverrides {
-    tableHead: true; // ➕ NEW
-    tableBody: true; // ➕ NEW
+    tableHead: true;
+    tableBody: true;
   }
 }
 
-// 1) Базовая тема (палитра и т.п.)
+// ── 1) База: включаем dark, задаём фон/текст + произвольные бренды из scss
 const baseTheme = createTheme({
   palette: {
-    // mainBlack: { main: variables.mainBlack },
-    // mainWhite: { main: variables.mainWhite },
-    // primary: { main: variables.primaryMainColor },
+    mode: "dark",
+    // Если нужны бренд-цвета из scss — раскомментируй/замени на свои
+    // primary: { main: variables.primaryMainColor || '#90caf9' },
+    // secondary: { main: variables.secondaryMainColor || '#f48fb1' },
+    background: {
+      default: "#0e1116",
+      paper: "#121417",
+    },
+    text: {
+      primary: "#ffffff",
+      secondary: "rgba(255,255,255,0.72)",
+      disabled: "rgba(255,255,255,0.38)",
+    },
+    divider: "rgba(255,255,255,0.12)",
+    mainWhite: { main: "#ffffff" },
+    mainBlack: { main: "#000000" },
+  },
+  components: {
+    // color-scheme → чтобы браузерные контролы тоже были тёмные
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: { colorScheme: "dark" },
+      },
+    },
   },
 });
 
-// ➕ NEW: шрифтовые пары для таблиц
+// ── 2) Типографика (твою оставил)
 const HEADER_FONT =
-  '"Montserrat", "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif';
+  '"Montserrat","Inter",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif';
 const BODY_FONT =
-  '"Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif';
+  '"Inter",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif';
 
-// 2) Тема с типографикой (чтобы ниже можно было сослаться на theme.typography.tableHead)
 const tokensTheme = createTheme(baseTheme, {
   typography: {
     h1: {
@@ -136,8 +150,6 @@ const tokensTheme = createTheme(baseTheme, {
       lineHeight: 1.5,
       fontFamily: '"Open sans", sans-serif',
     },
-    button: {},
-    // ➕ NEW: таблицы — централизованные профили
     tableHead: {
       fontFamily: HEADER_FONT,
       fontWeight: 600,
@@ -165,59 +177,68 @@ const tokensTheme = createTheme(baseTheme, {
     },
     MuiTypography: {
       defaultProps: {
-        variantMapping: {
-          caption: "p",
-          tableHead: "span", // ➕ NEW
-          tableBody: "span", // ➕ NEW
-        },
+        variantMapping: { caption: "p", tableHead: "span", tableBody: "span" },
       },
     },
   },
 });
 
-// 3) Финальная тема: используем tokensTheme.typography.tableHead/tableBody в overrides
+// ── 3) Финальные overrides: поля/автокомплит/меню не «черные»
 const theme = createTheme(tokensTheme, {
   components: {
-    MuiTableCell: {
+    MuiOutlinedInput: {
       styleOverrides: {
-        // root: {
-        //   padding: "12px 16px",
-        //   borderBottom: `1px solid ${alpha(
-        //     tokensTheme.palette.text.primary,
-        //     0.06
-        //   )}`,
-        // },
-        head: {
-          ...tokensTheme.typography.tableHead,
-          // color: tokensTheme.palette.text.secondary,
-          // backgroundColor: alpha(tokensTheme.palette.primary.main, 0.03),
-          // borderBottom: `1px solid ${alpha(
-          //   tokensTheme.palette.text.primary,
-          //   0.12
-          // )}`,
+        root: {
+          backgroundColor: "rgba(255,255,255,0.04)",
+          "& .MuiOutlinedInput-notchedOutline": {
+            borderColor: "rgba(255,255,255,0.16)",
+          },
+          "&:hover .MuiOutlinedInput-notchedOutline": {
+            borderColor: "rgba(255,255,255,0.28)",
+          },
+          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+            borderColor: tokensTheme.palette.primary.main,
+          },
         },
-        body: {
-          ...tokensTheme.typography.tableBody,
-          // color: tokensTheme.palette.text.primary,
+        input: {
+          // чтобы плейсхолдер читался
+          "&::placeholder": { color: "rgba(255,255,255,0.6)" },
         },
       },
     },
-    // MuiTableRow: {
-    //   styleOverrides: {
-    //     root: { "&:last-child td, &:last-child th": { borderBottom: "none" } },
-    //   },
-    // },
-    // MuiTableContainer: {
-    //   styleOverrides: {
-    //     root: {
-    //       border: `1px solid ${alpha(tokensTheme.palette.text.primary, 0.08)}`,
-    //       borderRadius: 12,
-    //       overflow: "hidden",
-    //       backgroundColor: "#fff",
-    //     },
-    //   },
-    // },
-    // MuiTable: { defaultProps: { size: "medium" } },
+    MuiAutocomplete: {
+      styleOverrides: {
+        paper: { backgroundColor: "#1a1d22" },
+        option: {
+          '&[aria-selected="true"]': {
+            backgroundColor: "rgba(144,202,249,0.16)",
+          },
+          "&.Mui-focused": { backgroundColor: "rgba(144,202,249,0.12)" },
+        },
+      },
+    },
+    MuiMenu: {
+      styleOverrides: { paper: { backgroundColor: "#1a1d22" } },
+    },
+    MuiTableCell: {
+      styleOverrides: {
+        head: {
+          ...tokensTheme.typography.tableHead,
+          backgroundColor: alpha(tokensTheme.palette.primary.main, 0.06),
+          borderBottom: `1px solid ${alpha(
+            tokensTheme.palette.text.primary,
+            0.12
+          )}`,
+        },
+        body: {
+          ...tokensTheme.typography.tableBody,
+          borderBottom: `1px solid ${alpha(
+            tokensTheme.palette.text.primary,
+            0.06
+          )}`,
+        },
+      },
+    },
   },
 });
 

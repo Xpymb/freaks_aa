@@ -1,0 +1,72 @@
+.numberInputContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 12px;
+}
+
+.numberInput {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 4px;
+  gap: 4px;
+  min-width: 120px;
+}
+
+.button {
+  color: rgba(255, 255, 255, 0.7);
+  padding: 4px;
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.9);
+  }
+  
+  &:disabled {
+    color: rgba(255, 255, 255, 0.3);
+  }
+}
+
+.input {
+  flex: 1;
+  
+  .MuiOutlinedInput-root {
+    border: none;
+    background: transparent;
+    
+    &.Mui-focused .MuiOutlinedInput-notchedOutline {
+      border: none;
+    }
+    
+    .MuiOutlinedInput-notchedOutline {
+      border: none;
+    }
+  }
+  
+  .MuiOutlinedInput-input {
+    padding: 8px 4px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.9);
+    
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+  }
+}
+
+.errorText {
+  color: #f44336;
+  font-size: 12px;
+  margin-top: 4px;
+  margin-left: 8px;
+  line-height: 1.2;
+}

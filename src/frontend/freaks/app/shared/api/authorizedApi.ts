@@ -1,16 +1,21 @@
 import type { AxiosRequestConfig } from "axios";
 import { wrapRequest } from "./wrapRequest";
-import { baseApi } from "./baseApi";
+import { baseApi, fileApi } from "./baseApi";
 
-export const authorizedApi = (token: string) => {
+export const authorizedApi = (
+  token: string,
+  serviceType: "file" | "portal"
+) => {
   const authHeaders = {
     Authorization: `Bearer ${token}`,
   };
 
+  const apiClient = serviceType === "portal" ? baseApi : fileApi;
+
   return {
     get: <T = unknown>(url: string, config?: AxiosRequestConfig): Promise<T> =>
       wrapRequest(() =>
-        baseApi.get<T>(url, {
+        apiClient.get<T>(url, {
           ...config,
           headers: {
             ...config?.headers,
@@ -25,7 +30,7 @@ export const authorizedApi = (token: string) => {
       config?: AxiosRequestConfig
     ): Promise<T> =>
       wrapRequest(() =>
-        baseApi.post<T>(url, data, {
+        apiClient.post<T>(url, data, {
           ...config,
           headers: {
             ...config?.headers,
@@ -40,7 +45,7 @@ export const authorizedApi = (token: string) => {
       config?: AxiosRequestConfig
     ): Promise<T> =>
       wrapRequest(() =>
-        baseApi.put<T>(url, data, {
+        apiClient.put<T>(url, data, {
           ...config,
           headers: {
             ...config?.headers,
@@ -55,7 +60,7 @@ export const authorizedApi = (token: string) => {
       config?: AxiosRequestConfig
     ): Promise<T> =>
       wrapRequest(() =>
-        baseApi.patch<T>(url, data, {
+        apiClient.patch<T>(url, data, {
           ...config,
           headers: {
             ...config?.headers,
@@ -69,7 +74,7 @@ export const authorizedApi = (token: string) => {
       config?: AxiosRequestConfig
     ): Promise<T> =>
       wrapRequest(() =>
-        baseApi.delete<T>(url, {
+        apiClient.delete<T>(url, {
           ...config,
           headers: {
             ...config?.headers,

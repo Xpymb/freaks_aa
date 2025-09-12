@@ -1,0 +1,48 @@
+@use "@/ThemeMUI/variables" as *;
+
+.createRaid {
+  padding: $secondarySectionPadding;
+  .createBtn {
+    border: 2px dashed #aaa;
+    padding: 20px;
+    text-align: center;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    &:hover {
+      background-color: rgba($mutedColor, 0.1);
+    }
+  }
+}
+
+.modal {
+  .createRaidInputs {
+    display: flex;
+    flex-direction: column;
+    .inputs {
+      display: flex;
+      flex-direction: column;
+      row-gap: 1rem;
+      .top {
+        display: flex;
+        column-gap: 1rem;
+        .bossType {
+          flex: 1 1 0;
+          min-width: 0;
+        }
+        .date {
+          flex: 1 1 0;
+          min-width: 0;
+        }
+      }
+      .description {
+        width: 100%;
+      }
+    }
+    .btnWrapper {
+      display: flex;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+  }
+}
