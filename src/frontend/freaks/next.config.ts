@@ -10,6 +10,7 @@ if (!STORAGE_URL) {
 const storageUrl = new URL(STORAGE_URL);
 
 const nextConfig: NextConfig = {
+  output: "standalone",
   images: {
     remotePatterns: [
       {
