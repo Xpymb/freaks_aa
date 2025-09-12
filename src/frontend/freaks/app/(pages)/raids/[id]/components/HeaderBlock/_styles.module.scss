@@ -16,19 +16,33 @@
     .top {
       display: flex;
       justify-content: space-between;
+      align-items: flex-start;
       position: relative;
+    }
+    
+    .statusContainer {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
     }
     .middle {
     }
     .bottom {
       display: flex;
       column-gap: 0.5rem;
+      align-items: center;
       .infoBlock {
         display: flex;
         column-gap: 0.3rem;
         .muted {
           color: $mutedColor;
         }
+      }
+      
+      .completeButtonContainer {
+        margin-left: auto;
+        padding-left: 1rem;
       }
     }
   }

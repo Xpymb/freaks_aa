@@ -5,12 +5,14 @@ import StatusChip from "@/(pages)/raids/componets/StatusChip/StatusChip";
 import { CustomContainer } from "@/components/ui/CustomContainer";
 import { Divider } from "@mui/material";
 import { DateFormat, formatDate } from "@/utils/formateDate";
+import CompleteRaidButton from "../CompleteRaidButton/CompleteRaidButton";
 
 type Props = {
   raid: RaidItem;
+  onRaidUpdated?: () => void;
 };
 
-const HeaderBlock = ({ raid }: Props) => {
+const HeaderBlock = ({ raid, onRaidUpdated }: Props) => {
   return (
     <section className={styles.raidHeaderSection}>
       <CustomContainer maxWidth="lg">
@@ -19,7 +21,9 @@ const HeaderBlock = ({ raid }: Props) => {
             <CustomTypography variant="body1">
               Raid.ID: {raid.id}
             </CustomTypography>
-            <StatusChip status={raid.status} />
+            <div className={styles.statusContainer}>
+              <StatusChip status={raid.status} />
+            </div>
           </div>
           <div className={styles.middle}>
             <CustomTypography variant="h1">
@@ -80,6 +84,10 @@ const HeaderBlock = ({ raid }: Props) => {
                 </div>
               </>
             )}
+            
+            <div className={styles.completeButtonContainer}>
+              <CompleteRaidButton raid={raid} onRaidUpdated={onRaidUpdated} />
+            </div>
           </div>
         </div>
       </CustomContainer>

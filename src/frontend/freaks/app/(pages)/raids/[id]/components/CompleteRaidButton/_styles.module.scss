@@ -1,0 +1,31 @@
+.completeButton {
+  margin-top: 16px !important;
+  background: linear-gradient(45deg, #4caf50, #66bb6a) !important;
+  border: none !important;
+  color: white !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  border-radius: 8px !important;
+  padding: 12px 24px !important;
+  box-shadow: 0 3px 10px rgba(76, 175, 80, 0.3) !important;
+  transition: all 0.3s ease !important;
+
+  &:hover {
+    background: linear-gradient(45deg, #388e3c, #4caf50) !important;
+    box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4) !important;
+    transform: translateY(-2px);
+  }
+
+  &:disabled {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: rgba(255, 255, 255, 0.5) !important;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+}
+
+.warningText {
+  margin-top: 12px !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  font-style: italic !important;
+}

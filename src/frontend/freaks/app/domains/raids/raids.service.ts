@@ -47,6 +47,9 @@ export const RaidsService = {
 
   createRaid: (token: string, data: CreateRaidRequest) =>
     authorizedApi(token, "portal").post<RaidListItem>("/raids", data),
+
+  completeRaid: (token: string, raidId: number) =>
+    authorizedApi(token, "portal").post<RaidItem>(`/raids/${raidId}/finish`),
 };
 
 export const RaidScreenshotsService = {

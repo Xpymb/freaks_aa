@@ -12,9 +12,9 @@ import { requestServer } from "@/shared/api/serverRequest";
 import { DateFormat, formatDate } from "@/utils/formateDate";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import HeaderBlock from "./components/HeaderBlock/HeaderBlock";
-import BodyBlock from "./components/BodyBlock/BodyBlock";
+import RaidPageClient from "./components/RaidPageClient";
 import ErrorLoadData from "@/components/ui/ErrorLoadData/ErrorLoadData";
+import NotFound from "@/components/ui/NotFound/NotFound";
 
 type RaidPage = {
   params: Promise<{ id: string }>;
@@ -48,13 +48,13 @@ export default async function Page({ params }: RaidPage) {
   const session = await auth();
   const accessToken = session?.accessToken;
 
-  if (!accessToken) return ErrorLoadData;
+  if (!accessToken) return <ErrorLoadData />;
 
   const raid = await requestServer(() =>
     RaidsService.getRaidByID(accessToken, Number(id))
   );
 
-  if (!raid) notFound();
+  if (!raid) return <NotFound />;
 
   const prefetchScreenshots =
     (await requestServer(() =>
@@ -82,16 +82,13 @@ export default async function Page({ params }: RaidPage) {
     )) ?? [];
 
   return (
-    <>
-      <HeaderBlock raid={raid} />
-      <BodyBlock 
-        raid={raid} 
-        prefetchScreenshots={prefetchScreenshots}
-        prefetchLoot={prefetchLoot}
-        prefetchLootItems={prefetchLootItems}
-        prefetchParticipants={prefetchParticipants}
-        prefetchUsers={prefetchUsers}
-      />
-    </>
+    <RaidPageClient
+      initialRaid={raid}
+      prefetchScreenshots={prefetchScreenshots}
+      prefetchLoot={prefetchLoot}
+      prefetchLootItems={prefetchLootItems}
+      prefetchParticipants={prefetchParticipants}
+      prefetchUsers={prefetchUsers}
+    />
   );
 }
