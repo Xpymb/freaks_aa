@@ -2,7 +2,7 @@ name: build-and-deploy-staging
 
 on:
   push:
-    branches: [feat/frontend-helm]
+    branches: [fix/front-build]
   #workflow_dispatch: {}
 
 permissions:
