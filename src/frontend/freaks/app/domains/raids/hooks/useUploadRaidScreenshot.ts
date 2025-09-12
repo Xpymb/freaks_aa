@@ -46,7 +46,7 @@ export function useUploadRaidScreenshot() {
       if (optimistic) {
         const ghost: IRaidScreenshot = {
           raidId,
-          screenshotUrl: uploaded.fileUri, // имя поля из твоего ответа
+          screenshotUri: uploaded.fileUri, // имя поля из твоего ответа
         } as IRaidScreenshot;
 
         mutate(key, (prev: IRaidScreenshot[] = []) => [...prev, ghost], false);
@@ -54,7 +54,7 @@ export function useUploadRaidScreenshot() {
 
       // 3) привязка к рейду
       await RaidScreenshotsService.postScreenshot(token, raidId, {
-        screenshotUrls: [uploaded.fileUri],
+        screenshotUris: [uploaded.fileUri],
       });
 
       // 4) актуализируем список (твой сервис возвращает уже data)
