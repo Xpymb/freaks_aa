@@ -24,14 +24,16 @@ public class RaidParticipantConfiguration : IEntityTypeConfiguration<RaidPartici
 
         builder
             .HasOne(p => p.Participant)
-            .WithOne()
-            .HasForeignKey<RaidParticipant>(p => p.ParticipantId)
+            .WithMany()
+            .HasForeignKey(p => p.ParticipantId)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder
             .HasIndex(p =>
                           new
                           {
+                              p.RaidId,
+                              p.ParticipantId,
                               p.RaidNumber,
                               p.RaidPartyNumber,
                               p.RaidPartyPositionNumber,
