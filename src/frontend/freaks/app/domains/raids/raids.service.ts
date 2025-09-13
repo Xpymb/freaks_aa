@@ -6,7 +6,6 @@ import {
   CreateRaidParticipantRequest,
   IRaidScreenshot,
   LootItemDto,
-  RaidFormatType,
   RaidItem,
   RaidListItem,
   RaidLootDto,

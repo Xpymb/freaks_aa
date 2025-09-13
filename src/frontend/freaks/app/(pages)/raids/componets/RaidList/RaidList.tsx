@@ -17,7 +17,7 @@ const RaidList = () => {
     SortMode: 2, // убывание (предполагаем, что 1 = DESC)
   });
 
-  const { raids, isLoading, errorState } = useGetRaids(filters);
+  const { raids } = useGetRaids(filters);
 
   // как было: ранние return (знай, что они размонтируют фильтры)
   // if (isLoading || !raids) return <DefaultLoader />;

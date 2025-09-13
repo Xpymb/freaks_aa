@@ -6,7 +6,7 @@ import { Check as CheckIcon } from "@mui/icons-material";
 import { mutate } from "swr";
 import { useRouter } from "next/navigation";
 import { RaidItem, RaidStatus } from "@/domains/raids";
-import { useHasNumericRole } from "@/domains/auth/hooks/useHasNumericRole";
+import { useHasRole } from "@/domains/auth/hooks/useHasRole";
 import { useCompleteRaid } from "@/domains/raids/hooks/useCompleteRaid";
 import { CustomTypography } from "@/components/ui/CustomTypography";
 import styles from "./_styles.module.scss";
@@ -19,10 +19,9 @@ type Props = {
 const CompleteRaidButton = ({ raid, onRaidUpdated }: Props) => {
   const [open, setOpen] = useState(false);
   const router = useRouter();
-  const { hasAccess, userRoles, isLoading } = useHasNumericRole([30, 40]); // Администратор (30) и Гильд-лидер (40)
+  const { hasAccess } = useHasRole(['admin', 'guild_leader']);
   const { trigger: completeRaid, isMutating } = useCompleteRaid();
 
-  // Проверяем, можно ли завершить рейд
   const canComplete = hasAccess && raid.status !== RaidStatus.Ended;
 
   const handleOpen = () => setOpen(true);
@@ -33,10 +32,8 @@ const CompleteRaidButton = ({ raid, onRaidUpdated }: Props) => {
       await completeRaid({ raidId: raid.id });
       handleClose();
       
-      // Обновляем все связанные кеши
       onRaidUpdated?.();
       
-      // Инвалидируем кеши для всех SWR запросов связанных с этим рейдом
       await Promise.all([
         mutate(`/raids/${raid.id}`), // основные данные рейда
         mutate(`/raids/${raid.id}/screenshots`), // скриншоты
@@ -76,10 +73,10 @@ const CompleteRaidButton = ({ raid, onRaidUpdated }: Props) => {
         </DialogTitle>
         <DialogContent>
           <CustomTypography variant="body1">
-            Вы уверены, что хотите завершить рейд "{raid.id}"?
+            Вы уверены, что хотите завершить рейд {raid.id}?
           </CustomTypography>
           <CustomTypography variant="body2" className={styles.warningText}>
-            Это действие нельзя отменить. Рейд будет переведен в статус "Завершен".
+            Это действие нельзя отменить. Рейд будет переведен в статус &apos;Завершен&apos;.
           </CustomTypography>
         </DialogContent>
         <DialogActions>

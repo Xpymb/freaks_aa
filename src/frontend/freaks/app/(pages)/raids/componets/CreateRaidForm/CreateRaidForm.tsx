@@ -38,12 +38,7 @@ export default function CreateRaid() {
   const { accessToken } = useTokens();
   const [isCreating, setIsCreating] = React.useState(false);
 
-  const {
-    register,
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<CreateRaidForm>({
+  const { control, handleSubmit } = useForm<CreateRaidForm>({
     defaultValues: {
       bossType: undefined,
       description: "",
@@ -64,17 +59,18 @@ export default function CreateRaid() {
         description: data.description,
         startDt: new Date(data.startDt).toISOString(),
       };
-      
+
       const createdRaid = await RaidsService.createRaid(accessToken!, payload);
-      
+
       // Обновляем кеш списка рейдов
-      await mutate((key) => typeof key === "string" && key.startsWith("/raids"));
-      
+      await mutate(
+        (key) => typeof key === "string" && key.startsWith("/raids")
+      );
+
       onClose();
-      
+
       // Переходим на страницу созданного рейда
       router.push(`/raids/${createdRaid.id}`);
-      
     } catch (error) {
       console.error("Failed to create raid:", error);
       // Здесь можно добавить показ ошибки пользователю
@@ -105,7 +101,7 @@ export default function CreateRaid() {
                 placeholder="Выберите босса"
                 required
                 rules={{
-                  required: "Необходимо выбрать тип босса"
+                  required: "Необходимо выбрать тип босса",
                 }}
               />
 
@@ -117,7 +113,7 @@ export default function CreateRaid() {
                 type="datetime-local"
                 required
                 rules={{
-                  required: "Необходимо указать дату и время начала"
+                  required: "Необходимо указать дату и время начала",
                 }}
               />
             </div>
@@ -129,14 +125,6 @@ export default function CreateRaid() {
               label="Описание"
               multiline
               rows={3}
-              required
-              rules={{
-                required: "Необходимо указать описание",
-                minLength: {
-                  value: 3,
-                  message: "Описание должно содержать минимум 3 символа"
-                }
-              }}
             />
           </div>
 

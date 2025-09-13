@@ -12,7 +12,6 @@ import {
   FieldValues,
   Path,
   useController,
-  ControllerRenderProps,
 } from "react-hook-form";
 
 import CustomModal from "@/components/ui/CustomModal/CustomModal";
@@ -119,7 +118,7 @@ export default function DateOrRangeField<T extends FieldValues>({
   nameTo,
   label = "Дата",
   initialMonths = 1,
-  monthsOptions = [1, 2, 3, 4, 5, 6],
+  // monthsOptions = [1, 2, 3, 4, 5, 6],
   disabled,
 }: Props<T>) {
   const fromCtl = useController({ control, name: nameFrom });
@@ -132,7 +131,7 @@ export default function DateOrRangeField<T extends FieldValues>({
 
   // 👉 фиксируем сразу "range"
   const [mode] = React.useState<Mode>("range");
-  const [months, setMonths] = React.useState(initialMonths);
+  const [months] = React.useState(initialMonths);
 
   const [draftSingle, setDraftSingle] = React.useState<Date | undefined>();
   const [draftRange, setDraftRange] = React.useState<DateRange | undefined>();
@@ -155,21 +154,21 @@ export default function DateOrRangeField<T extends FieldValues>({
     onClose();
   };
 
-  const monthsField: ControllerRenderProps = React.useMemo(
-    () => ({
-      name: "months",
-      value: months,
-      onChange: (e) => setMonths(Number((e.target as HTMLInputElement).value)),
-      onBlur: () => {},
-      ref: () => {},
-    }),
-    [months]
-  );
+  // const monthsField: ControllerRenderProps = React.useMemo(
+  //   () => ({
+  //     name: "months",
+  //     value: months,
+  //     onChange: (e) => setMonths(Number((e.target as HTMLInputElement).value)),
+  //     onBlur: () => {},
+  //     ref: () => {},
+  //   }),
+  //   [months]
+  // );
 
-  const monthOptions = React.useMemo(
-    () => monthsOptions.map((n) => ({ value: n, label: String(n) })),
-    [monthsOptions]
-  );
+  // const monthOptions = React.useMemo(
+  //   () => monthsOptions.map((n) => ({ value: n, label: String(n) })),
+  //   [monthsOptions]
+  // );
 
   return (
     <div className={styles.wrapper}>

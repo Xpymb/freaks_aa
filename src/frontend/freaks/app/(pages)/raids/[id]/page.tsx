@@ -11,7 +11,6 @@ import { UserService } from "@/domains/user/user.service";
 import { requestServer } from "@/shared/api/serverRequest";
 import { DateFormat, formatDate } from "@/utils/formateDate";
 import { Metadata } from "next";
-import { notFound } from "next/navigation";
 import RaidPageClient from "./components/RaidPageClient";
 import ErrorLoadData from "@/components/ui/ErrorLoadData/ErrorLoadData";
 import NotFound from "@/components/ui/NotFound/NotFound";

@@ -2,7 +2,6 @@ import { CustomContainer } from "@/components/ui/CustomContainer";
 import styles from "./_styles.module.scss";
 import Profile from "./components/Profile/Profile";
 import { auth } from "@/api/auth/auth";
-import Image from "next/image";
 import CustomImage from "@/components/ui/CustomImage";
 
 const Header = async () => {

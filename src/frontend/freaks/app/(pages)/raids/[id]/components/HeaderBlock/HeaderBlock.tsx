@@ -18,20 +18,22 @@ const HeaderBlock = ({ raid, onRaidUpdated }: Props) => {
       <CustomContainer maxWidth="lg">
         <div className={styles.wrapper}>
           <div className={styles.top}>
-            <CustomTypography variant="body1">
+            <div className={styles.topLeft}>
+              <CustomTypography variant="caption" className={styles.muted}>
               Raid.ID: {raid.id}
             </CustomTypography>
-            <div className={styles.statusContainer}>
-              <StatusChip status={raid.status} />
-            </div>
-          </div>
-          <div className={styles.middle}>
             <CustomTypography variant="h1">
               {BOSS_LABEL[raid.bossType]}
             </CustomTypography>
+            </div>
+          
+            <div className={styles.topRight}>
+              <StatusChip status={raid.status} />
+            </div>
           </div>
           <div className={styles.bottom}>
-            <div className={styles.infoBlock}>
+            <div className={styles.infoWrapper}>
+<div className={styles.infoBlock}>
               <CustomTypography className={styles.muted} variant="subtitle1">
                 Создатель:
               </CustomTypography>
@@ -84,6 +86,8 @@ const HeaderBlock = ({ raid, onRaidUpdated }: Props) => {
                 </div>
               </>
             )}
+            </div>
+            
             
             <div className={styles.completeButtonContainer}>
               <CompleteRaidButton raid={raid} onRaidUpdated={onRaidUpdated} />

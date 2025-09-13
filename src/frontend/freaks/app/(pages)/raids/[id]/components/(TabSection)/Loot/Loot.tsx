@@ -56,28 +56,6 @@ const Loot = ({ raid, prefetchLoot, prefetchLootItems }: Props) => {
 
   return (
     <div className={styles.lootContainer}>
-      <div className={styles.lootHeader}>
-        <CustomTypography variant="h4">Лут</CustomTypography>
-        <div className={styles.lootStats}>
-          <div className={styles.statItem}>
-            <CustomTypography variant="caption" className={styles.statLabel}>
-              Уникальных предметов
-            </CustomTypography>
-            <CustomTypography variant="h6" className={styles.statValue}>
-              {uniqueItems}
-            </CustomTypography>
-          </div>
-          <div className={styles.statItem}>
-            <CustomTypography variant="caption" className={styles.statLabel}>
-              Всего предметов
-            </CustomTypography>
-            <CustomTypography variant="h6" className={styles.statValue}>
-              {totalItems}
-            </CustomTypography>
-          </div>
-        </div>
-      </div>
-
       {/* Форма для добавления лута */}
       <AddLootForm raidId={raid.id} onLootAdded={refresh} prefetchLootItems={prefetchLootItems} />
 

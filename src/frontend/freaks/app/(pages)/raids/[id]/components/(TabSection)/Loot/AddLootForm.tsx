@@ -80,14 +80,11 @@ const AddLootForm = ({ raidId, onLootAdded, prefetchLootItems }: Props) => {
                   fill
                   className={styles.optionImage}
                 />
-                <img
-                  src={`/images/masks/icon_grade${item.gradeType}.png`}
+                <CustomImage
+                  src={`/images/masks/icon_grade${item.gradeType - 1}.png`}
                   alt="Grade mask"
+                  fill
                   className={styles.optionGradeMask}
-                  onError={(e) => {
-                    // Fallback если маска не найдена
-                    e.currentTarget.style.display = 'none';
-                  }}
                 />
               </div>
             ) : (
@@ -133,11 +130,10 @@ const AddLootForm = ({ raidId, onLootAdded, prefetchLootItems }: Props) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className={styles.addLootForm}>
         <div className={styles.formHeader}>
-          <CustomTypography variant="h5">Добавить лут</CustomTypography>
+          <CustomTypography variant="h3">Добавить лут</CustomTypography>
         </div>
         
         <div className={styles.formContent}>
-          {/* Отображение общих ошибок формы */}
           {Object.keys(errors).length > 0 && (
             <div className={styles.formErrors}>
               {errors.lootId && (

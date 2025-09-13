@@ -11,6 +11,7 @@ export const useGetRaidParticipants = (
     (token) => RaidParticipantsService.getParticipants(token, raidId),
     {
       fallbackData,
+      revalidateOnMount: false,
     }
   );
 };

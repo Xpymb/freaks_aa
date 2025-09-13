@@ -20,22 +20,26 @@ type Props = {
 
 const PARTIES_PER_RAID = 10; // 10 отрядов на рейд
 const POSITIONS_PER_PARTY = 5; // 5 позиций в отряде
-const TOTAL_POSITIONS = PARTIES_PER_RAID * POSITIONS_PER_PARTY; // 50 позиций на рейд
+const TOTAL_POSITIONS = PARTIES_PER_RAID * POSITIONS_PER_PARTY;
 
-interface RaidGroup {
-  raidNumber: number;
-  participants: RaidParticipantDto[];
-}
+const ParticipantGrid = ({
+  raidId,
+  participants,
+  prefetchUsers,
+  onParticipantsChange,
+}: Props) => {
+  const { createParticipant, deleteParticipant } =
+    useRaidParticipantMutations(raidId);
+  const { data: users = prefetchUsers, isLoading: usersLoading } = useGetUsers({
+    fallbackData: prefetchUsers,
+    includeWoRoles: false,
+  });
 
-const ParticipantGrid = ({ raidId, participants, prefetchUsers, onParticipantsChange }: Props) => {
-  const { createParticipant, deleteParticipant } = useRaidParticipantMutations(raidId);
-  const { data: users = prefetchUsers, isLoading: usersLoading } = useGetUsers({fallbackData: prefetchUsers, includeWoRoles: false});
-  
   // Локальное состояние для дополнительных "заготовок" рейдов
   const [additionalRaids, setAdditionalRaids] = useState<number[]>([]);
   // Отслеживаем все рейды, которые когда-либо были созданы
   const [allCreatedRaids, setAllCreatedRaids] = useState<Set<number>>(() => {
-    const existingRaids = new Set(participants.map(p => p.raidNumber));
+    const existingRaids = new Set(participants.map((p) => p.raidNumber));
     existingRaids.add(1); // Первый рейд всегда существует
     return existingRaids;
   });
@@ -43,10 +47,10 @@ const ParticipantGrid = ({ raidId, participants, prefetchUsers, onParticipantsCh
   // Группируем участников по номеру рейда
   const raidGroups = useMemo(() => {
     const groups: Record<number, RaidParticipantDto[]> = {};
-    
+
     // Первый рейд всегда существует
     groups[1] = [];
-    
+
     participants.forEach((participant) => {
       const raidNumber = participant.raidNumber;
       if (!groups[raidNumber]) {
@@ -56,46 +60,59 @@ const ParticipantGrid = ({ raidId, participants, prefetchUsers, onParticipantsCh
     });
 
     // Добавляем дополнительные рейды
-    additionalRaids.forEach(raidNumber => {
+    additionalRaids.forEach((raidNumber) => {
       if (!groups[raidNumber]) {
         groups[raidNumber] = [];
       }
     });
 
-    return Object.keys(groups).map(raidNumber => ({
-      raidNumber: parseInt(raidNumber),
-      participants: groups[parseInt(raidNumber)]
-    })).sort((a, b) => a.raidNumber - b.raidNumber);
+    return Object.keys(groups)
+      .map((raidNumber) => ({
+        raidNumber: parseInt(raidNumber),
+        participants: groups[parseInt(raidNumber)],
+      }))
+      .sort((a, b) => a.raidNumber - b.raidNumber);
   }, [participants, additionalRaids]);
 
   // Создаем сетку участников для каждого рейда
   const createGridForRaid = (raidParticipants: RaidParticipantDto[]) => {
     const grid = new Array(TOTAL_POSITIONS).fill(null);
-    
+
     raidParticipants.forEach((participant) => {
-      const position = (participant.raidPartyNumber - 1) * POSITIONS_PER_PARTY + 
-                      (participant.raidPartyPositionNumber - 1);
+      const position =
+        (participant.raidPartyNumber - 1) * POSITIONS_PER_PARTY +
+        (participant.raidPartyPositionNumber - 1);
       if (position >= 0 && position < TOTAL_POSITIONS) {
         grid[position] = participant;
       }
     });
-    
+
     return grid;
   };
 
   // Обработчик для добавления участника в определенный рейд
-  const handleAddParticipant = async (user: IUser, position: number, raidNumber: number) => {
+  const handleAddParticipant = async (
+    user: IUser,
+    position: number,
+    raidNumber: number
+  ) => {
     const partyNumber = Math.floor(position / POSITIONS_PER_PARTY) + 1;
     const positionInParty = (position % POSITIONS_PER_PARTY) + 1;
-    
+
     // Проверяем, не участвует ли уже этот пользователь в любом рейде
-    const userInAnyRaid = participants.find(p => p.participant.id === user.id);
-    
+    const userInAnyRaid = participants.find(
+      (p) => p.participant.id === user.id
+    );
+
     if (userInAnyRaid) {
-      alert(`Пользователь ${formatProfileName(user)} уже участвует в рейде №${userInAnyRaid.raidNumber}`);
+      alert(
+        `Пользователь ${formatProfileName(user)} уже участвует в рейде №${
+          userInAnyRaid.raidNumber
+        }`
+      );
       return;
     }
-    
+
     try {
       await createParticipant.trigger({
         participantId: user.id,
@@ -103,7 +120,7 @@ const ParticipantGrid = ({ raidId, participants, prefetchUsers, onParticipantsCh
         raidPartyNumber: partyNumber,
         raidPartyPositionNumber: positionInParty,
       });
-      
+
       onParticipantsChange();
     } catch (error) {
       console.error("Failed to add participant:", error);
@@ -120,12 +137,11 @@ const ParticipantGrid = ({ raidId, participants, prefetchUsers, onParticipantsCh
     }
   };
 
-
   // Добавить новый рейд
   const handleAddRaid = () => {
     const newRaidNumber = maxRaidNumber + 1;
-    setAdditionalRaids(prev => [...prev, newRaidNumber]);
-    setAllCreatedRaids(prev => new Set([...prev, newRaidNumber]));
+    setAdditionalRaids((prev) => [...prev, newRaidNumber]);
+    setAllCreatedRaids((prev) => new Set([...prev, newRaidNumber]));
   };
 
   // Удалить рейд (удаляет всех участников данного рейда)
@@ -135,27 +151,30 @@ const ParticipantGrid = ({ raidId, participants, prefetchUsers, onParticipantsCh
       alert("Первый рейд не может быть удален");
       return;
     }
-    
-    const raidGroup = raidGroups.find(group => group.raidNumber === raidNumber);
+
+    const raidGroup = raidGroups.find(
+      (group) => group.raidNumber === raidNumber
+    );
     if (!raidGroup) return;
-    
+
     // Формируем сообщение в зависимости от наличия участников
-    const message = raidGroup.participants.length === 0 
-      ? `Удалить пустой рейд №${raidNumber}?`
-      : `Удалить рейд №${raidNumber} и всех его участников (${raidGroup.participants.length} чел.)?`;
-    
+    const message =
+      raidGroup.participants.length === 0
+        ? `Удалить пустой рейд №${raidNumber}?`
+        : `Удалить рейд №${raidNumber} и всех его участников (${raidGroup.participants.length} чел.)?`;
+
     const confirmDelete = window.confirm(message);
     if (!confirmDelete) return;
-    
+
     try {
       // Удаляем всех участников этого рейда (если есть)
       for (const participant of raidGroup.participants) {
         await deleteParticipant.trigger(participant.participant.id);
       }
-      
+
       // Удаляем рейд из дополнительных и из отслеживания
-      setAdditionalRaids(prev => prev.filter(num => num !== raidNumber));
-      setAllCreatedRaids(prev => {
+      setAdditionalRaids((prev) => prev.filter((num) => num !== raidNumber));
+      setAllCreatedRaids((prev) => {
         const newSet = new Set(prev);
         newSet.delete(raidNumber);
         return newSet;
@@ -168,26 +187,31 @@ const ParticipantGrid = ({ raidId, participants, prefetchUsers, onParticipantsCh
 
   // Фильтруем пользователей - исключаем всех, кто уже участвует в любом рейде
   const getAvailableUsers = () => {
-    const addedUserIds = new Set(participants.map(p => p.participant.id));
-    return users.filter(user => !addedUserIds.has(user.id));
+    const addedUserIds = new Set(participants.map((p) => p.participant.id));
+    return users.filter((user) => !addedUserIds.has(user.id));
   };
-
 
   // Следим за созданными рейдами и возвращаем пустые в additionalRaids
   useEffect(() => {
-    const raidsWithParticipants = new Set(participants.map(p => p.raidNumber));
+    const raidsWithParticipants = new Set(
+      participants.map((p) => p.raidNumber)
+    );
     const emptyCreatedRaids: number[] = [];
-    
+
     // Находим все созданные рейды, которые сейчас пусты
-    allCreatedRaids.forEach(raidNumber => {
-      if (raidNumber > 1 && !raidsWithParticipants.has(raidNumber) && !additionalRaids.includes(raidNumber)) {
+    allCreatedRaids.forEach((raidNumber) => {
+      if (
+        raidNumber > 1 &&
+        !raidsWithParticipants.has(raidNumber) &&
+        !additionalRaids.includes(raidNumber)
+      ) {
         emptyCreatedRaids.push(raidNumber);
       }
     });
-    
+
     // Добавляем пустые рейды обратно в additionalRaids
     if (emptyCreatedRaids.length > 0) {
-      setAdditionalRaids(prev => [...prev, ...emptyCreatedRaids]);
+      setAdditionalRaids((prev) => [...prev, ...emptyCreatedRaids]);
     }
   }, [participants, allCreatedRaids, additionalRaids]);
 
@@ -197,21 +221,24 @@ const ParticipantGrid = ({ raidId, participants, prefetchUsers, onParticipantsCh
       onParticipantsChange();
     };
 
-    window.addEventListener('refresh-participants', handleRefresh);
+    window.addEventListener("refresh-participants", handleRefresh);
     return () => {
-      window.removeEventListener('refresh-participants', handleRefresh);
+      window.removeEventListener("refresh-participants", handleRefresh);
     };
   }, [onParticipantsChange]);
 
   // Получаем максимальный номер рейда для кнопки добавления нового рейда
-  const maxRaidNumber = Math.max(...raidGroups.map(group => group.raidNumber), 0);
+  const maxRaidNumber = Math.max(
+    ...raidGroups.map((group) => group.raidNumber),
+    0
+  );
 
   return (
     <div className={styles.participantGrid}>
       {raidGroups.map((raidGroup) => {
         const gridData = createGridForRaid(raidGroup.participants);
         const availableUsers = getAvailableUsers();
-        
+
         return (
           <div key={raidGroup.raidNumber} className={styles.raidContainer}>
             <div className={styles.raidHeader}>
@@ -236,86 +263,108 @@ const ParticipantGrid = ({ raidId, participants, prefetchUsers, onParticipantsCh
                     Отряд {partyIndex + 1}
                   </CustomTypography>
                   <div className={styles.partyGrid}>
-                    {Array.from({ length: POSITIONS_PER_PARTY }, (_, positionIndex) => {
-                      const globalPosition = partyIndex * POSITIONS_PER_PARTY + positionIndex;
-                      const participant = gridData[globalPosition];
-                      const isEmpty = !participant;
+                    {Array.from(
+                      { length: POSITIONS_PER_PARTY },
+                      (_, positionIndex) => {
+                        const globalPosition =
+                          partyIndex * POSITIONS_PER_PARTY + positionIndex;
+                        const participant = gridData[globalPosition];
+                        const isEmpty = !participant;
 
-                      return (
-                        <div
-                          key={positionIndex}
-                          className={`${styles.gridCell} ${
-                            isEmpty ? styles.emptyCell : styles.filledCell
-                          }`}
-                        >
-                          {participant ? (
-                            <div className={styles.participantInfo}>
-                              <CustomTypography variant="subtitle1" className={styles.participantName}>
-                                {formatProfileName(participant.participant)}
-                              </CustomTypography>
-                              <IconButton
-                                size="small"
-                                className={styles.removeButton}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  handleRemoveParticipant(participant);
-                                }}
-                              >
-                                <CloseIcon fontSize="small" />
-                              </IconButton>
-                            </div>
-                          ) : (
-                            <div className={styles.cellAutocomplete}>
-                              <Autocomplete
-                                value={null}
-                                onChange={async (_, user) => {
-                                  if (user) {
-                                    await handleAddParticipant(user, globalPosition, raidGroup.raidNumber);
+                        return (
+                          <div
+                            key={positionIndex}
+                            className={`${styles.gridCell} ${
+                              isEmpty ? styles.emptyCell : styles.filledCell
+                            }`}
+                          >
+                            {participant ? (
+                              <div className={styles.participantInfo}>
+                                <CustomTypography
+                                  variant="subtitle1"
+                                  className={styles.participantName}
+                                >
+                                  {formatProfileName(participant.participant)}
+                                </CustomTypography>
+                                <IconButton
+                                  size="small"
+                                  className={styles.removeButton}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleRemoveParticipant(participant);
+                                  }}
+                                >
+                                  <CloseIcon fontSize="small" />
+                                </IconButton>
+                              </div>
+                            ) : (
+                              <div className={styles.cellAutocomplete}>
+                                <Autocomplete
+                                  value={null}
+                                  onChange={async (_, user) => {
+                                    if (user) {
+                                      await handleAddParticipant(
+                                        user,
+                                        globalPosition,
+                                        raidGroup.raidNumber
+                                      );
+                                    }
+                                  }}
+                                  options={availableUsers}
+                                  getOptionLabel={(user) =>
+                                    formatProfileName(user)
                                   }
-                                }}
-                                options={availableUsers}
-                                getOptionLabel={(user) => formatProfileName(user)}
-                                loading={usersLoading}
-                                renderInput={(params) => (
-                                  <TextField
-                                    {...params}
-                                    variant="outlined"
-                                    size="small"
-                                    className={styles.participantInput}
-                                    placeholder="Выберите участника"
-                                    sx={{
-                                      '& .MuiOutlinedInput-notchedOutline': {
-                                        borderStyle: 'dashed !important',
-                                        borderColor: 'rgba(255, 255, 255, 0.5) !important'
-                                      },
-                                      '&:hover .MuiOutlinedInput-notchedOutline': {
-                                        borderStyle: 'dashed !important',
-                                        borderColor: 'rgba(255, 255, 255, 0.7) !important'
-                                      },
-                                      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                        borderStyle: 'dashed !important',
-                                        borderColor: 'rgba(255, 255, 255, 0.7) !important'
-                                      }
-                                    }}
-                                    onClick={(e) => e.stopPropagation()}
-                                  />
-                                )}
-                                renderOption={(props, user) => {
-                                  const { key, ...otherProps } = props;
-                                  return (
-                                    <li key={key} className={styles.optionItem} {...otherProps}>
-                                      <CustomTypography variant="body2">
-                                        {formatProfileName(user)}
-                                      </CustomTypography>
-                                    </li>
-                                  );
-                                }}
-                              />
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })}
+                                  loading={usersLoading}
+                                  renderInput={(params) => (
+                                    <TextField
+                                      {...params}
+                                      variant="outlined"
+                                      size="small"
+                                      className={styles.participantInput}
+                                      placeholder="Выберите участника"
+                                      sx={{
+                                        "& .MuiOutlinedInput-notchedOutline": {
+                                          borderStyle: "dashed !important",
+                                          borderColor:
+                                            "rgba(255, 255, 255, 0.5) !important",
+                                        },
+                                        "&:hover .MuiOutlinedInput-notchedOutline":
+                                          {
+                                            borderStyle: "dashed !important",
+                                            borderColor:
+                                              "rgba(255, 255, 255, 0.7) !important",
+                                          },
+                                        "&.Mui-focused .MuiOutlinedInput-notchedOutline":
+                                          {
+                                            borderStyle: "dashed !important",
+                                            borderColor:
+                                              "rgba(255, 255, 255, 0.7) !important",
+                                          },
+                                      }}
+                                      onClick={(e) => e.stopPropagation()}
+                                    />
+                                  )}
+                                  renderOption={(props, user) => {
+                                    const { key, ...otherProps } = props;
+                                    return (
+                                      <li
+                                        key={key}
+                                        className={styles.optionItem}
+                                        {...otherProps}
+                                      >
+                                        <CustomTypography variant="body2">
+                                          {formatProfileName(user)}
+                                        </CustomTypography>
+                                      </li>
+                                    );
+                                  }}
+                                />
+                              </div>
+                            )}
+                          </div>
+                        );
+                      }
+                    )}
                   </div>
                 </div>
               ))}

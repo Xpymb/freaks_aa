@@ -2,7 +2,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { useDropzone, FileRejection } from "react-dropzone";
+import { useDropzone } from "react-dropzone";
 import CustomModal from "@/components/ui/CustomModal/CustomModal";
 import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
@@ -25,16 +25,21 @@ type Props = {
 
 export default function FileUploadWithPreview({ raidId, fileType = 1 }: Props) {
   const [draftFiles, setDraftFiles] = useState<FilePreview[]>([]);
+  
   const [currentIndex, setCurrentIndex] = useState(0);
   const { open, onOpen, onClose } = useDisclosure();
 
-  const { trigger, isMutating, progress, error, errorState } =
+  const { trigger, isMutating, progress, errorState } =
     useUploadRaidScreenshot();
 
-  const prev = () =>
-    setCurrentIndex((i) => (i === 0 ? draftFiles.length - 1 : i - 1));
-  const next = () =>
-    setCurrentIndex((i) => (i === draftFiles.length - 1 ? 0 : i + 1));
+  const prev = useCallback(
+    () => setCurrentIndex((i) => (i === 0 ? draftFiles.length - 1 : i - 1)),
+    [draftFiles.length]
+  );
+  const next = useCallback(
+    () => setCurrentIndex((i) => (i === draftFiles.length - 1 ? 0 : i + 1)),
+    [draftFiles.length]
+  );
 
   useEffect(() => {
     if (!open) return;
@@ -44,7 +49,7 @@ export default function FileUploadWithPreview({ raidId, fileType = 1 }: Props) {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [open, draftFiles.length]);
+  }, [open, draftFiles.length, next, prev]);
 
   const addFiles = useCallback(
     (newFiles: File[]) => {
@@ -63,7 +68,7 @@ export default function FileUploadWithPreview({ raidId, fileType = 1 }: Props) {
   );
 
   const onDrop = useCallback(
-    (accepted: File[], _rejected: FileRejection[]) => {
+    (accepted: File[]) => {
       if (accepted.length) addFiles(accepted);
     },
     [addFiles]
@@ -99,12 +104,13 @@ export default function FileUploadWithPreview({ raidId, fileType = 1 }: Props) {
     return () => window.removeEventListener("paste", handlePaste);
   }, [addFiles]);
 
-  // освобождаем blob-URL
-  useEffect(() => {
-    return () => {
-      draftFiles.forEach((f) => URL.revokeObjectURL(f.preview));
-    };
-  }, [draftFiles]);
+
+  const clearDrafts = useCallback(() => {
+    draftFiles.forEach((f) => URL.revokeObjectURL(f.preview));
+    setDraftFiles([]);
+    setCurrentIndex(0);
+  }, []);
+
 
   const handleUpload = async () => {
     if (!draftFiles.length || isMutating) return;
@@ -117,7 +123,7 @@ export default function FileUploadWithPreview({ raidId, fileType = 1 }: Props) {
         );
       }
 
-      setDraftFiles([]);
+      clearDrafts()
       onClose();
     } catch {
       console.error(
@@ -128,13 +134,12 @@ export default function FileUploadWithPreview({ raidId, fileType = 1 }: Props) {
   };
 
   const handleClose = () => {
-    setDraftFiles([]);
+    clearDrafts();
     onClose();
   };
 
   return (
     <div className={styles.wrapper}>
-      {/* зона на странице */}
       <div
         {...getRootProps()}
         onClick={openFileDialog}
@@ -150,7 +155,6 @@ export default function FileUploadWithPreview({ raidId, fileType = 1 }: Props) {
         </CustomTypography>
       </div>
 
-      {/* модалка превью + добавление ещё файлов */}
       <CustomModal
         title="Загрузка файлов"
         className={styles.modal}
@@ -190,7 +194,6 @@ export default function FileUploadWithPreview({ raidId, fileType = 1 }: Props) {
               </CustomTypography>
             )}
 
-            {/* в модалке тоже можно добавить ещё */}
             <div
               {...getRootProps()}
               onClick={openFileDialog}
@@ -204,7 +207,6 @@ export default function FileUploadWithPreview({ raidId, fileType = 1 }: Props) {
               </Typography>
             </div>
 
-            {/* прогресс/кнопки */}
             <div className={styles.btnWrapp}>
               <Button
                 variant="contained"

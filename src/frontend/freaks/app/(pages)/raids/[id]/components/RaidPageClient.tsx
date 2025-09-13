@@ -1,7 +1,13 @@
 "use client";
 
 import React from "react";
-import { RaidItem, IRaidScreenshot, RaidLootDto, LootItemDto, RaidParticipantDto } from "@/domains/raids";
+import {
+  RaidItem,
+  IRaidScreenshot,
+  RaidLootDto,
+  LootItemDto,
+  RaidParticipantDto,
+} from "@/domains/raids";
 import { IUser } from "@/types/user.types";
 import { useGetRaidByID } from "@/domains/raids/hooks/useGetRaidByID";
 import HeaderBlock from "./HeaderBlock/HeaderBlock";
@@ -27,16 +33,16 @@ const RaidPageClient = ({
   const { raid, mutate } = useGetRaidByID(initialRaid, initialRaid.id);
 
   const handleRaidUpdated = () => {
-    mutate(); // Re-fetch raid data
+    mutate();
   };
 
-  if (!raid) return null; // Or a loading state
+  if (!raid) return null;
 
   return (
     <>
       <HeaderBlock raid={raid} onRaidUpdated={handleRaidUpdated} />
-      <BodyBlock 
-        raid={raid} 
+      <BodyBlock
+        raid={raid}
         prefetchScreenshots={prefetchScreenshots}
         prefetchLoot={prefetchLoot}
         prefetchLootItems={prefetchLootItems}

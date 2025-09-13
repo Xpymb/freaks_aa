@@ -1,5 +1,4 @@
 import { AxiosResponse } from "axios";
-import { redirect } from "next/navigation";
 import { handleAxiosError } from "@/shared/errors";
 
 export async function wrapRequest<T>(

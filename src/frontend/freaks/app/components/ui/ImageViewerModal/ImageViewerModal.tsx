@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { IconButton, Backdrop } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import React, { useState, useEffect, useCallback } from "react";
+import { Backdrop } from "@mui/material";
 import Image from "next/image";
 import styles from "./_styles.module.scss";
 
@@ -57,11 +56,11 @@ const ImageViewerModal: React.FC<ImageViewerModalProps> = ({
     }
   };
 
-  const handleKeyDown = (event: KeyboardEvent) => {
+  const handleKeyDown = useCallback((event: KeyboardEvent) => {
     if (event.key === "Escape") {
       onClose();
     }
-  };
+  },[onClose]);
 
   useEffect(() => {
     if (open) {
@@ -73,7 +72,7 @@ const ImageViewerModal: React.FC<ImageViewerModalProps> = ({
       document.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "unset";
     };
-  }, [open]);
+  }, [open, handleKeyDown]);
 
   if (!open) return null;
 

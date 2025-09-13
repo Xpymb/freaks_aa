@@ -50,10 +50,8 @@ const STATUS_OPTIONS: Opt<RaidStatus>[] = Object.entries(RAID_STATUS_LABEL).map(
 export default function RaidsFilters({ initial, onApply, onReset }: Props) {
   const {
     control,
-    register,
     reset,
     watch,
-    formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
       bossTypes: initial?.BossTypes ?? [],

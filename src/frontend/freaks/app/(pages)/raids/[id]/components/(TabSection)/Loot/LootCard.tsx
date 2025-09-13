@@ -73,7 +73,7 @@ const LootCard = ({ lootItem, onDelete }: Props) => {
     <LootItemTooltip lootItem={item}>
       <div className={clsx(
         styles.lootCard, 
-        getGradeClass(item.gradeType),
+        // getGradeClass(item.gradeType),
         { [styles.manageable]: !!onDelete }
       )}>
         <div className={styles.iconWrapper}>
@@ -85,14 +85,11 @@ const LootCard = ({ lootItem, onDelete }: Props) => {
                 fill
                 className={styles.icon}
               />
-              <img
-                src={`/images/masks/icon_grade${item.gradeType}.png`}
+              <CustomImage
+                src={`/images/masks/icon_grade${item.gradeType - 1}.png`}
                 alt="Grade mask"
+                fill
                 className={styles.gradeMask}
-                onError={(e) => {
-                  // Fallback если маска не найдена
-                  e.currentTarget.style.display = 'none';
-                }}
               />
             </div>
           ) : (
