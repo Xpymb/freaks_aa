@@ -74,14 +74,15 @@ const BodyBlock = ({
       ),
     }),
     [
-      errorState,
-      isLoading,
       raid,
-      screenshots,
-      prefetchLoot,
-      prefetchLootItems,
+      prefetchScreenshots,
       prefetchParticipants,
+      prefetchLoot,
       prefetchUsers,
+      screenshots,
+      isLoading,
+      errorState,
+      prefetchLootItems,
     ]
   );
 

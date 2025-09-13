@@ -11,6 +11,7 @@ import { AutoMultiField } from "@/components/ui/formInputs/CustomAutocomplete";
 import { useDebounce } from "@/shared/hooks/useDebounce";
 import styles from "./_styles.module.scss";
 import DateOrRangeField from "@/components/ui/formInputs/DateField/DateField";
+import { DateFormat, formatDate } from "@/utils/formateDate";
 
 type FormValues = {
   bossTypes: BossType[];
@@ -25,18 +26,6 @@ type Props = {
   onReset?: () => void;
 };
 
-const toDatetimeLocal = (iso?: string) => {
-  if (!iso) return "";
-  const d = new Date(iso);
-  const pad = (n: number) => String(n).padStart(2, "0");
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(
-    d.getHours()
-  )}:${pad(d.getMinutes())}`;
-};
-
-const toISO = (local?: string) =>
-  local ? new Date(local).toISOString() : undefined;
-
 type Opt<T extends number> = { value: T; label: string };
 
 const BOSS_OPTIONS: Opt<BossType>[] = Object.entries(BOSS_LABEL).map(
@@ -47,17 +36,19 @@ const STATUS_OPTIONS: Opt<RaidStatus>[] = Object.entries(RAID_STATUS_LABEL).map(
   ([v, l]) => ({ value: Number(v) as RaidStatus, label: l })
 );
 
+const toISOorUndef = (v?: string) => {
+  if (!v) return undefined;
+  const d = new Date(v);
+  return Number.isNaN(d.getTime()) ? undefined : d.toISOString().slice(0, 10);
+};
+
 export default function RaidsFilters({ initial, onApply, onReset }: Props) {
-  const {
-    control,
-    reset,
-    watch,
-  } = useForm<FormValues>({
+  const { control, reset, watch } = useForm<FormValues>({
     defaultValues: {
       bossTypes: initial?.BossTypes ?? [],
       statuses: initial?.Statuses ?? [],
-      from: initial?.From ? toDatetimeLocal(initial.From) : "",
-      to: initial?.To ? toDatetimeLocal(initial.To) : "",
+      from: initial?.From ? initial.From : "",
+      to: initial?.To ? initial.To : "",
     },
   });
 
@@ -74,9 +65,8 @@ export default function RaidsFilters({ initial, onApply, onReset }: Props) {
     const filters: Partial<RaidListQuery> = {
       BossTypes: debounced.bossTypes?.length ? debounced.bossTypes : undefined,
       Statuses: debounced.statuses?.length ? debounced.statuses : undefined,
-      From: toISO(debounced.from),
-      To: toISO(debounced.to),
-      // Сохраняем параметры сортировки из initial
+      From: toISOorUndef(debounced.from),
+      To: toISOorUndef(debounced.to),
       SortBy: initial?.SortBy,
       SortMode: initial?.SortMode,
     };

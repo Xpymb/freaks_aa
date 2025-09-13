@@ -7,12 +7,7 @@ import "react-day-picker/dist/style.css";
 import { ru } from "date-fns/locale";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 
-import {
-  Control,
-  FieldValues,
-  Path,
-  useController,
-} from "react-hook-form";
+import { Control, FieldValues, Path, useController } from "react-hook-form";
 
 import CustomModal from "@/components/ui/CustomModal/CustomModal";
 import CheckIcon from "@mui/icons-material/Check";
@@ -99,8 +94,15 @@ function SmartDayPicker({
         range_middle: styles.rangBackgroundMiddle,
         range_end: styles.rangBackgroundEnd,
       }}
+      captionLayout="dropdown"
+      navLayout="after"
+      timeZone="UTC"
+      broadcastCalendar
+      animate
+      fixedWeeks
       {...getModeProps(
         mode,
+
         draftSingle,
         setDraftSingle,
         draftRange,
