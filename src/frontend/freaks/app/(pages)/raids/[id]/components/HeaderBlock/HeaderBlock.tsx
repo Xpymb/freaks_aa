@@ -15,25 +15,24 @@ type Props = {
 const HeaderBlock = ({ raid, onRaidUpdated }: Props) => {
   return (
     <section className={styles.raidHeaderSection}>
-      <CustomContainer maxWidth="lg">
-        <div className={styles.wrapper}>
-          <div className={styles.top}>
-            <div className={styles.topLeft}>
-              <CustomTypography variant="caption" className={styles.muted}>
+      <div className={styles.wrapper}>
+        <div className={styles.top}>
+          <div className={styles.topLeft}>
+            <CustomTypography variant="caption" className={styles.muted}>
               Raid.ID: {raid.id}
             </CustomTypography>
             <CustomTypography variant="h1">
               {BOSS_LABEL[raid.bossType]}
             </CustomTypography>
-            </div>
-          
-            <div className={styles.topRight}>
-              <StatusChip status={raid.status} />
-            </div>
           </div>
-          <div className={styles.bottom}>
-            <div className={styles.infoWrapper}>
-<div className={styles.infoBlock}>
+
+          <div className={styles.topRight}>
+            <StatusChip status={raid.status} />
+          </div>
+        </div>
+        <div className={styles.bottom}>
+          <div className={styles.infoWrapper}>
+            <div className={styles.infoBlock}>
               <CustomTypography className={styles.muted} variant="subtitle1">
                 Создатель:
               </CustomTypography>
@@ -86,15 +85,13 @@ const HeaderBlock = ({ raid, onRaidUpdated }: Props) => {
                 </div>
               </>
             )}
-            </div>
-            
-            
-            <div className={styles.completeButtonContainer}>
-              <CompleteRaidButton raid={raid} onRaidUpdated={onRaidUpdated} />
-            </div>
+          </div>
+
+          <div className={styles.completeButtonContainer}>
+            <CompleteRaidButton raid={raid} onRaidUpdated={onRaidUpdated} />
           </div>
         </div>
-      </CustomContainer>
+      </div>
     </section>
   );
 };

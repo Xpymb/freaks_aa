@@ -1,4 +1,203 @@
 @use "@/ThemeMUI/variables" as *;
 
-.sidebarSection {
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 60px;
+  background-color: $secondaryBackgroundColor;
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s ease-in-out, transform 0.3s ease-in-out;
+
+  &.expanded {
+    width: 240px;
+
+    @media (max-width: 768px) {
+      width: 80px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    width: 280px;
+    transform: translateX(-100%);
+    background-color: rgba(0, 0, 0, 0.95);
+
+    &.mobile:not(.collapsed) {
+      transform: translateX(0);
+    }
+  }
+
+  &.collapsed {
+    @media (max-width: 768px) {
+      transform: translateX(-100%);
+    }
+  }
+}
+
+.navigation {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem 0;
+  margin-top: 80px;
+
+  @media (max-width: 768px) {
+    margin-top: 70px;
+  }
+}
+
+.navLink {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.navItem {
+  width: 3rem;
+  height: 3rem;
+  margin: 0 auto;
+  color: rgba(255, 255, 255, 0.7);
+  border-radius: 12px;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0;
+
+  &:hover:not(.disabled) {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.9);
+    transform: scale(1.05);
+  }
+
+  &.active {
+    background-color: #2563eb; // синий цвет как на изображении
+    color: white;
+
+    &:hover {
+      background-color: #2563eb;
+      transform: scale(1.05);
+    }
+  }
+
+  &.disabled {
+    color: rgba(255, 255, 255, 0.3);
+    cursor: not-allowed;
+
+    &:hover {
+      background-color: transparent;
+      transform: none;
+    }
+  }
+
+  // Раздвинутое состояние
+  &.expandedItem {
+    width: calc(100% - 16px);
+    margin: 0 8px;
+    padding: 0 8px;
+    justify-content: flex-start;
+
+    &:hover:not(.disabled) {
+      transform: none; // убираем масштабирование для раздвинутого состояния
+    }
+
+    &.active:hover {
+      transform: none;
+    }
+  }
+}
+
+.iconButton {
+  width: 3rem;
+  height: 3rem;
+  color: inherit;
+
+  svg {
+    font-size: 24px;
+
+    @media (max-width: 768px) {
+      font-size: 20px;
+    }
+  }
+}
+
+.navLabel {
+  margin-left: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: inherit;
+}
+
+// Overlay для мобильных устройств
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+
+  @media (min-width: 769px) {
+    display: none;
+  }
+}
+
+// Кнопка переключения для мобильных
+.toggleButton {
+  position: absolute;
+  top: 20px;
+  right: -40px;
+  background-color: rgba(58, 70, 237, 1);
+  border-radius: 0 8px 8px 0;
+  padding: 4px;
+  z-index: 1001;
+
+  @media (min-width: 769px) {
+    display: none;
+  }
+}
+
+.menuButton {
+  color: white;
+  padding: 8px;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+// Кнопка раздвижения
+.expandToggle {
+  margin-top: auto;
+  padding: 16px 0;
+  display: flex;
+  justify-content: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.expandButton {
+  color: rgba(255, 255, 255, 0.7);
+  width: 40px;
+  height: 40px;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  svg {
+    font-size: 20px;
+  }
 }

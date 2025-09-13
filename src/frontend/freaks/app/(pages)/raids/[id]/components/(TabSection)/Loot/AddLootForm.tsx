@@ -6,7 +6,10 @@ import { Button } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import { CustomTypography } from "@/components/ui/CustomTypography";
 import { NumberInputField } from "@/components/ui/NumberInput/NumberInput";
-import { SingleAutoField, type Option } from "@/components/ui/formInputs/SingleAutocomplete";
+import {
+  SingleAutoField,
+  type Option,
+} from "@/components/ui/formInputs/SingleAutocomplete";
 import { LootItemDto, RaidLootService, LootGradeType } from "@/domains/raids";
 import { useTokens } from "@/store/authTokenStore";
 import { addLootSchema, type AddLootFormData } from "./addLootSchema";
@@ -40,7 +43,7 @@ const AddLootForm = ({ raidId, onLootAdded, prefetchLootItems }: Props) => {
   });
 
   // Конвертируем LootItemDto в Option для автокомплита
-  const lootOptions: Option<number>[] = 
+  const lootOptions: Option<number>[] =
     lootItems?.map((item) => ({
       value: item.id,
       label: item.name,
@@ -48,7 +51,10 @@ const AddLootForm = ({ raidId, onLootAdded, prefetchLootItems }: Props) => {
     })) || [];
 
   // Функция для рендеринга опций в автокомплите
-  const renderLootOption = (props: React.HTMLAttributes<HTMLLIElement>, option: Option<number>) => {
+  const renderLootOption = (
+    props: React.HTMLAttributes<HTMLLIElement>,
+    option: Option<number>
+  ) => {
     const item = option.data as LootItemDto;
     if (!item) return <li {...props}>{option.label}</li>;
 
@@ -56,15 +62,15 @@ const AddLootForm = ({ raidId, onLootAdded, prefetchLootItems }: Props) => {
       switch (gradeType) {
         case LootGradeType.Crude:
         case LootGradeType.Basic:
-          return '#9e9e9e';
+          return "#9e9e9e";
         case LootGradeType.Rare:
-          return '#2196f3';
+          return "#2196f3";
         case LootGradeType.Epic:
-          return '#9c27b0';
+          return "#9c27b0";
         case LootGradeType.Legendary:
-          return '#ff9800';
+          return "#ff9800";
         default:
-          return '#9e9e9e';
+          return "#9e9e9e";
       }
     };
 
@@ -88,7 +94,7 @@ const AddLootForm = ({ raidId, onLootAdded, prefetchLootItems }: Props) => {
                 />
               </div>
             ) : (
-              <div 
+              <div
                 className={styles.optionColorIcon}
                 style={{ backgroundColor: getGradeColor(item.gradeType) }}
               />
@@ -115,10 +121,10 @@ const AddLootForm = ({ raidId, onLootAdded, prefetchLootItems }: Props) => {
         lootId: data.lootId,
         quantity: data.quantity,
       });
-      
+
       // Сбрасываем форму
       reset();
-      
+
       // Уведомляем родительский компонент
       onLootAdded();
     } catch (error) {
@@ -132,7 +138,7 @@ const AddLootForm = ({ raidId, onLootAdded, prefetchLootItems }: Props) => {
         <div className={styles.formHeader}>
           <CustomTypography variant="h3">Добавить лут</CustomTypography>
         </div>
-        
+
         <div className={styles.formContent}>
           {Object.keys(errors).length > 0 && (
             <div className={styles.formErrors}>
@@ -148,7 +154,7 @@ const AddLootForm = ({ raidId, onLootAdded, prefetchLootItems }: Props) => {
               )}
             </div>
           )}
-          
+
           <div className={styles.formRow}>
             <div className={styles.autocompleteWrapper}>
               <SingleAutoField<AddLootFormData, number>
@@ -164,7 +170,7 @@ const AddLootForm = ({ raidId, onLootAdded, prefetchLootItems }: Props) => {
                 renderOption={renderLootOption}
               />
             </div>
-            
+
             <div className={styles.quantityWrapper}>
               <NumberInputField<AddLootFormData>
                 control={control}
@@ -175,7 +181,7 @@ const AddLootForm = ({ raidId, onLootAdded, prefetchLootItems }: Props) => {
                 disabled={isSubmitting}
               />
             </div>
-            
+
             <Button
               type="submit"
               variant="contained"

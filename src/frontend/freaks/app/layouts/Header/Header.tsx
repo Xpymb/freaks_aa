@@ -11,18 +11,16 @@ const Header = async () => {
 
   return (
     <header className={styles.header}>
-      <CustomContainer maxWidth="lg">
-        <div className={styles.wrapper}>
-          <div className={styles.imageWrapper}>
-            <CustomImage src={"/images/logo.png"} alt="logo" fill />
-          </div>
-          <Profile
-            session={session}
-            isAuthenticated={isAuthenticated}
-            idToken={idToken}
-          />
+      <div className={styles.wrapper}>
+        <div className={styles.imageWrapper}>
+          <CustomImage src={"/images/logo.png"} alt="logo" fill />
         </div>
-      </CustomContainer>
+        <Profile
+          session={session}
+          isAuthenticated={isAuthenticated}
+          idToken={idToken}
+        />
+      </div>
     </header>
   );
 };

@@ -373,15 +373,8 @@ const ParticipantGrid = ({
         );
       })}
 
-      <div className={styles.addRaidContainer}>
-        <Button
-          variant="outlined"
-          startIcon={<AddIcon />}
-          onClick={handleAddRaid}
-          className={styles.addRaidButton}
-        >
-          Добавить рейд №{maxRaidNumber + 1}
-        </Button>
+      <div className={styles.uploadZone} onClick={handleAddRaid}>
+        <CustomTypography variant="body2">Создать новый рейд</CustomTypography>
       </div>
     </div>
   );

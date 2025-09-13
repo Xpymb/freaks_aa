@@ -1,0 +1,24 @@
+.tabs {
+  :global(.MuiTabs-indicator) {
+    background-color: rgba(58, 70, 237, 1);
+    height: 3px;
+    border-radius: 3px;
+  }
+
+  :global(.MuiTab-root) {
+    min-height: 44px;
+    padding: 0 16px;
+    text-transform: none;
+    font-weight: 500;
+    color: #a4a5a7;
+
+    &:hover {
+      color: #e5e7eb;
+      background: rgba(58, 70, 237, 0.08);
+    }
+  }
+
+  :global(.MuiTab-root.Mui-selected) {
+    color: #ffffff;
+  }
+}

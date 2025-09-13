@@ -98,13 +98,27 @@ const Overview = ({
             {lootItems.map((item) => (
               <div key={item.loot.id} className={styles.lootItem}>
                 <div className={styles.title}>
-                  <div className={styles.imageWrapper}>
-                    <CustomImage
-                      src={`${process.env.NEXT_PUBLIC_STORAGE_MEDIA_URL}/${item.loot.iconUri}`}
-                      alt={item.loot.name}
-                      fill
-                      className={styles.icon}
-                    />
+                  <div className={styles.iconWrapper}>
+                    {item.loot.iconUri ? (
+                      <div className={styles.iconContainer}>
+                        <CustomImage
+                          src={`${process.env.NEXT_PUBLIC_STORAGE_MEDIA_URL}/${item.loot.iconUri}`}
+                          alt={item.loot.description}
+                          fill
+                          className={styles.icon}
+                        />
+                        <CustomImage
+                          src={`/images/masks/icon_grade${
+                            item.loot.gradeType - 1
+                          }.png`}
+                          alt="Grade mask"
+                          fill
+                          className={styles.gradeMask}
+                        />
+                      </div>
+                    ) : (
+                      <div className={styles.colorIcon} />
+                    )}
                   </div>
 
                   <CustomTypography variant="subtitle1">

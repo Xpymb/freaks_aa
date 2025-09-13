@@ -38,5 +38,21 @@ body {
   background-color: $primaryBackgroundColor;
   color: white;
 }
-main {
+
+.mainContent {
+  padding: 1rem;
+  flex: 1;
+  transition: margin-left 0.3s ease-in-out;
+
+  @media (max-width: 768px) {
+    margin-left: 0;
+    padding: 0.5rem;
+  }
+}
+
+// Дополнительный отступ для раздвинутого сайдбара
+.layoutWrapper.sidebarExpanded .mainContent {
+  @media (min-width: 769px) {
+    margin-left: 240px;
+  }
 }

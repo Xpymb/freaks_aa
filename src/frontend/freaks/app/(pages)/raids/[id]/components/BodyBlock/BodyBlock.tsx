@@ -90,12 +90,10 @@ const BodyBlock = ({
 
   return (
     <section className={styles.raidBodySection}>
-      <CustomContainer maxWidth="lg">
-        <div className={styles.wrapper}>
-          <RaidTabs value={tab} setValue={setTab} />
-          {content}
-        </div>
-      </CustomContainer>
+      <div className={styles.wrapper}>
+        <RaidTabs value={tab} setValue={setTab} />
+        {content}
+      </div>
     </section>
   );
 };

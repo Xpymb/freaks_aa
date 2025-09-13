@@ -1,3 +1,5 @@
+@use "@/ThemeMUI/variables" as *;
+
 .participantsContainer {
   padding: 20px;
   min-height: 400px;
@@ -12,7 +14,7 @@
 
 .raidContainer {
   margin-bottom: 30px;
-  
+
   &:last-child {
     margin-bottom: 0;
   }
@@ -38,33 +40,34 @@
 
 .removeRaidButton {
   color: rgba(255, 255, 255, 0.7) !important;
-  
+
   &:hover {
     color: #f44336 !important;
     background: rgba(244, 67, 54, 0.1) !important;
   }
 }
 
-.addRaidContainer {
-  display: flex;
-  justify-content: center;
-  margin: 20px 0;
-  padding: 16px;
-  background: rgba(0, 0, 0, 0.1);
+.uploadZone {
+  border: 2px dashed #aaa;
+  padding: 20px;
+  text-align: center;
   border-radius: 8px;
-  border: 2px dashed rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: 0.3s;
+  &:hover {
+    background-color: rgba($mutedColor, 0.1);
+  }
 }
 
 .addRaidButton {
   color: #fff !important;
   border-color: rgba(255, 255, 255, 0.3) !important;
-  
+
   &:hover {
     border-color: rgba(255, 255, 255, 0.5) !important;
     background: rgba(255, 255, 255, 0.1) !important;
   }
 }
-
 
 .gridContainer {
   display: grid;
@@ -84,7 +87,6 @@
   min-width: 80px;
   width: 100%;
 }
-
 
 .partyLabel {
   color: rgba(255, 255, 255, 0.8);
@@ -112,7 +114,7 @@
   transition: all 0.2s ease;
   position: relative;
   height: 100%;
-  
+
   &:hover {
     transform: scale(1.02);
   }
@@ -121,7 +123,7 @@
 .emptyCell {
   border: none !important;
   background: rgba(255, 255, 255, 0.05);
-  
+
   &:hover {
     background: rgba(255, 255, 255, 0.1);
   }
@@ -130,10 +132,10 @@
 .filledCell {
   border: none !important;
   background: rgba(255, 255, 255, 0.1);
-  
+
   &:hover {
     background: rgba(255, 255, 255, 0.15);
-    
+
     .removeButton {
       opacity: 1;
     }
@@ -164,8 +166,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  
-  
+
   .removeButton {
     position: absolute;
     top: 50%;
@@ -179,19 +180,17 @@
     padding: 0 !important;
     opacity: 0;
     transition: opacity 0.2s ease;
-    
+
     &:hover {
       background: rgba(158, 158, 158, 0.9) !important;
       color: rgba(255, 255, 255, 0.9) !important;
     }
-    
+
     .MuiSvgIcon-root {
       font-size: 12px;
     }
   }
 }
-
-
 
 .emptyLabel {
   color: rgba(255, 255, 255, 0.5);
@@ -203,33 +202,33 @@
 .participantInput {
   width: 100%;
   height: 100%;
-  
+
   .MuiOutlinedInput-root {
     height: 100%;
     font-size: 0.7rem;
     color: #fff;
     background: rgba(255, 255, 255, 0.1);
     border: none;
-    
+
     .MuiOutlinedInput-notchedOutline {
       border: none;
     }
-    
+
     &:hover .MuiOutlinedInput-notchedOutline {
       border: none;
     }
-    
+
     &.Mui-focused .MuiOutlinedInput-notchedOutline {
       border-style: dashed !important;
       border-color: rgba(255, 255, 255, 0.7) !important;
     }
   }
-  
+
   .MuiInputBase-input {
     padding: 4px 8px;
     text-align: center;
     color: #fff;
-    
+
     &::placeholder {
       color: rgba(255, 255, 255, 0.5);
       opacity: 1;
@@ -241,29 +240,25 @@
   height: 100% !important;
 }
 
-
 .cellAutocomplete {
   width: 100%;
   height: 100%;
 
-  
   &:hover {
     border-color: rgba(255, 255, 255, 0.7);
   }
-  
-  // 
+
+  //
 }
 
 .optionItem {
   padding: 8px 12px;
   cursor: pointer;
-  
+
   &:hover {
     background: rgba(255, 255, 255, 0.1);
   }
 }
-
-
 
 .instruction {
   color: rgba(255, 255, 255, 0.7);
@@ -285,20 +280,19 @@
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(4, 1fr);
   }
-  
+
   .party {
     min-width: 50px;
   }
-  
+
   .partyGrid {
     height: 150px;
   }
-  
-  
+
   .participantName {
     font-size: 0.6rem;
   }
-  
+
   .participantInput {
     .MuiInputBase-input {
       font-size: 0.6rem;
@@ -310,17 +304,16 @@
   .participantGrid {
     padding: 16px;
   }
-  
-  
+
   .gridContainer {
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(5, 1fr);
   }
-  
+
   .partyGrid {
     height: 120px;
   }
-  
+
   .gridCell {
     padding: 2px;
   }
