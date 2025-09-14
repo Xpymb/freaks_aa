@@ -1,9 +1,7 @@
 name: build-and-deploy-staging
 
 on:
-  push:
-    branches: [fix/front-build]
-  #workflow_dispatch: {}
+  workflow_dispatch: {}
 
 permissions:
   contents: read
