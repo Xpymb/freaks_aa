@@ -64,20 +64,14 @@ spec:
             - name: KeycloakAdmin__confidential-port
               value: {{ .Values.kcAdmin.confidentialPort | quote }}
             - name: RedisOptions__Host
-              valueFrom:
-                secretKeyRef:
-                  name: freaks-dev-redis
-                  key: host
+              value: {{ .Values.redis.host | quote }}
             - name: RedisOptions__Port
-              valueFrom:
-                secretKeyRef:
-                  name: freaks-dev-redis
-                  key: port
+              value: {{ .Values.redis.port | quote }}
             - name: RedisOptions__Password
               valueFrom:
                 secretKeyRef:
-                  name: freaks-dev-redis
-                  key: password
+                  name: redis
+                  key: redis-password
             - name: StorageOptions__Host
               value: {{ .Values.s3.serviceUrl | quote }}
             - name: StorageOptions__AccessKey

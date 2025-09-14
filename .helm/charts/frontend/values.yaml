@@ -2,10 +2,20 @@ replicaCount: 1
 
 service:
   name: "frontend"
-  portHttp: 3001
+  portHttp: 3000
 ingress:
   enabled: true
   host: freaks-aa.ru
+  proxyBufferSize: "16k"
+  proxyBuffersNumber: "8"
+  proxyBusyBuffersSize: "64k"
+  clientHeaderBufferSize: "32k"
+  largeClientHeaderBuffers: "4 32k"
+  proxyReadTimeout: "600"
+  proxySendTimeout: "600"
+  proxyConnectTimeout: "600"
+auth:
+  clientId: frontend
 limits:
   memoryRequests: "500Mi"
   memoryLimits: "1Gi"

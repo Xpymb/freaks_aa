@@ -1,9 +1,7 @@
 import {
   BOSS_LABEL,
   BossType,
-  RAID_STATUS_LABEL,
   RaidListItem,
-  RaidStatus,
 } from "@/domains/raids";
 import styles from "./_styles.module.scss";
 import { CustomTypography } from "@/components/ui/CustomTypography";

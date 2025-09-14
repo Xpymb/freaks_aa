@@ -163,7 +163,8 @@
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
@@ -234,7 +235,7 @@
   color: #f44336;
   font-size: 14px;
   line-height: 1.4;
-  
+
   &:not(:last-child) {
     margin-bottom: 8px;
   }
@@ -268,7 +269,8 @@
 .addButton {
   height: 40px;
   min-width: 120px;
-  
+  background: rgba(58, 70, 237, 1) !important;
+  color: white !important;
   @media (max-width: 768px) {
     width: 100%;
   }
@@ -425,7 +427,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 6px;
-  
+
   &:last-child {
     margin-bottom: 0;
   }
@@ -458,7 +460,7 @@
 // Enhanced LootCard for manage mode
 .lootCard.manageable {
   position: relative;
-  
+
   &:hover .manageActions {
     opacity: 1;
   }
@@ -481,11 +483,11 @@
   min-width: auto;
   width: 32px;
   height: 32px;
-  
+
   &:hover {
     background: rgba(0, 0, 0, 0.9);
   }
-  
+
   &.deleteButton:hover {
     background: rgba(244, 67, 54, 0.9);
   }

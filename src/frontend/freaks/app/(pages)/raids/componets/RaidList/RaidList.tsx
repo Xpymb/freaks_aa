@@ -10,18 +10,27 @@ import { Divider } from "@mui/material";
 import Link from "next/link";
 import { RaidListQuery } from "@/domains/raids/raids.service";
 import CreateRaidForm from "../CreateRaidForm/CreateRaidForm";
+import { RaidListItem } from "@/domains/raids/types";
+import { PaginatedList } from "@/types/paginated.types";
+import ErrorLoadData from "@/components/ui/ErrorLoadData/ErrorLoadData";
 
-const RaidList = () => {
+type Props = {
+  prefetchRaids: PaginatedList<RaidListItem> | null;
+};
+
+const RaidList = ({ prefetchRaids }: Props) => {
   const [filters, setFilters] = useState<Partial<RaidListQuery>>({
-    SortBy: 2, // сортировка по дате создания (предполагаем, что 1 = createdDt)
-    SortMode: 2, // убывание (предполагаем, что 1 = DESC)
+    SortBy: 2,
+    SortMode: 2,
   });
 
-  const { raids, isLoading, errorState } = useGetRaids(filters);
+  const { raids } = useGetRaids(prefetchRaids, filters);
 
-  // как было: ранние return (знай, что они размонтируют фильтры)
-  // if (isLoading || !raids) return <DefaultLoader />;
-  // if (errorState.isError) return <h1>{errorState.message}</h1>;
+  if (!prefetchRaids) {
+    return (
+      <ErrorLoadData message="Произошла ошибка при загрузке списка рейдов..." />
+    );
+  }
 
   return (
     <div className={styles.wrapper}>

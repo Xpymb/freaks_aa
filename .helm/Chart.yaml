@@ -13,3 +13,8 @@ dependencies:
       - parent: werf
         child: werf
     version: 1.0.0
+  - name: frontend
+    export-values:
+      - parent: werf
+        child: werf
+    version: 1.0.0

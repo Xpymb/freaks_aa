@@ -33,6 +33,7 @@ public static class DependencyInjectionExtensions
         });
 
         services.AddHealthChecks();
+        services.AddCorsWithConfiguration(configuration);
 
         return services;
     }
@@ -48,6 +49,7 @@ public static class DependencyInjectionExtensions
         app.UseResponseCompression();
 
         app.UseHealthChecks("/healthz");
+        app.UseCors();
 
         return app;
     }

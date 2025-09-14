@@ -5,6 +5,8 @@ import { useForm } from "react-hook-form";
 import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
+import { useRouter } from "next/navigation";
+import { mutate } from "swr";
 
 import styles from "./_styles.module.scss";
 
@@ -32,15 +34,11 @@ type CreateRaidForm = {
 
 export default function CreateRaid() {
   const { open, onOpen, onClose } = useDisclosure(false);
-
+  const router = useRouter();
   const { accessToken } = useTokens();
+  const [isCreating, setIsCreating] = React.useState(false);
 
-  const {
-    register,
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<CreateRaidForm>({
+  const { control, handleSubmit } = useForm<CreateRaidForm>({
     defaultValues: {
       bossType: undefined,
       description: "",
@@ -53,14 +51,32 @@ export default function CreateRaid() {
     []
   );
 
-  const onSubmit = (data: CreateRaidForm) => {
-    const payload: CreateRaidRequest = {
-      bossType: Number(data.bossType!),
-      description: data.description,
-      startDt: new Date(data.startDt).toISOString(),
-    };
-    RaidsService.createRaid(accessToken!, payload);
-    onClose();
+  const onSubmit = async (data: CreateRaidForm) => {
+    setIsCreating(true);
+    try {
+      const payload: CreateRaidRequest = {
+        bossType: Number(data.bossType!),
+        description: data.description,
+        startDt: new Date(data.startDt).toISOString(),
+      };
+
+      const createdRaid = await RaidsService.createRaid(accessToken!, payload);
+
+      // Обновляем кеш списка рейдов
+      await mutate(
+        (key) => typeof key === "string" && key.startsWith("/raids")
+      );
+
+      onClose();
+
+      // Переходим на страницу созданного рейда
+      router.push(`/raids/${createdRaid.id}`);
+    } catch (error) {
+      console.error("Failed to create raid:", error);
+      // Здесь можно добавить показ ошибки пользователю
+    } finally {
+      setIsCreating(false);
+    }
   };
 
   return (
@@ -85,7 +101,7 @@ export default function CreateRaid() {
                 placeholder="Выберите босса"
                 required
                 rules={{
-                  required: "Необходимо выбрать тип босса"
+                  required: "Необходимо выбрать тип босса",
                 }}
               />
 
@@ -97,7 +113,7 @@ export default function CreateRaid() {
                 type="datetime-local"
                 required
                 rules={{
-                  required: "Необходимо указать дату и время начала"
+                  required: "Необходимо указать дату и время начала",
                 }}
               />
             </div>
@@ -109,22 +125,14 @@ export default function CreateRaid() {
               label="Описание"
               multiline
               rows={3}
-              required
-              rules={{
-                required: "Необходимо указать описание",
-                minLength: {
-                  value: 3,
-                  message: "Описание должно содержать минимум 3 символа"
-                }
-              }}
             />
           </div>
 
           <div className={styles.btnWrapper}>
-            <IconButton type="submit">
+            <IconButton type="submit" disabled={isCreating}>
               <CheckIcon />
             </IconButton>
-            <IconButton onClick={onClose}>
+            <IconButton onClick={onClose} disabled={isCreating}>
               <CloseIcon />
             </IconButton>
           </div>

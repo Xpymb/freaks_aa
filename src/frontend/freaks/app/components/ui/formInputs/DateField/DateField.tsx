@@ -7,13 +7,7 @@ import "react-day-picker/dist/style.css";
 import { ru } from "date-fns/locale";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 
-import {
-  Control,
-  FieldValues,
-  Path,
-  useController,
-  ControllerRenderProps,
-} from "react-hook-form";
+import { Control, FieldValues, Path, useController } from "react-hook-form";
 
 import CustomModal from "@/components/ui/CustomModal/CustomModal";
 import CheckIcon from "@mui/icons-material/Check";
@@ -100,8 +94,15 @@ function SmartDayPicker({
         range_middle: styles.rangBackgroundMiddle,
         range_end: styles.rangBackgroundEnd,
       }}
+      captionLayout="dropdown"
+      navLayout="after"
+      timeZone="UTC"
+      broadcastCalendar
+      animate
+      fixedWeeks
       {...getModeProps(
         mode,
+
         draftSingle,
         setDraftSingle,
         draftRange,
@@ -119,7 +120,7 @@ export default function DateOrRangeField<T extends FieldValues>({
   nameTo,
   label = "Дата",
   initialMonths = 1,
-  monthsOptions = [1, 2, 3, 4, 5, 6],
+  // monthsOptions = [1, 2, 3, 4, 5, 6],
   disabled,
 }: Props<T>) {
   const fromCtl = useController({ control, name: nameFrom });
@@ -132,7 +133,7 @@ export default function DateOrRangeField<T extends FieldValues>({
 
   // 👉 фиксируем сразу "range"
   const [mode] = React.useState<Mode>("range");
-  const [months, setMonths] = React.useState(initialMonths);
+  const [months] = React.useState(initialMonths);
 
   const [draftSingle, setDraftSingle] = React.useState<Date | undefined>();
   const [draftRange, setDraftRange] = React.useState<DateRange | undefined>();
@@ -155,21 +156,21 @@ export default function DateOrRangeField<T extends FieldValues>({
     onClose();
   };
 
-  const monthsField: ControllerRenderProps = React.useMemo(
-    () => ({
-      name: "months",
-      value: months,
-      onChange: (e) => setMonths(Number((e.target as HTMLInputElement).value)),
-      onBlur: () => {},
-      ref: () => {},
-    }),
-    [months]
-  );
+  // const monthsField: ControllerRenderProps = React.useMemo(
+  //   () => ({
+  //     name: "months",
+  //     value: months,
+  //     onChange: (e) => setMonths(Number((e.target as HTMLInputElement).value)),
+  //     onBlur: () => {},
+  //     ref: () => {},
+  //   }),
+  //   [months]
+  // );
 
-  const monthOptions = React.useMemo(
-    () => monthsOptions.map((n) => ({ value: n, label: String(n) })),
-    [monthsOptions]
-  );
+  // const monthOptions = React.useMemo(
+  //   () => monthsOptions.map((n) => ({ value: n, label: String(n) })),
+  //   [monthsOptions]
+  // );
 
   return (
     <div className={styles.wrapper}>

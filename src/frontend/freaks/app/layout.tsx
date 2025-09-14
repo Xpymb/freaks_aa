@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "@/style/global.scss";
 import Header from "./layouts/Header/Header";
+import Sidebar from "./widgets/Sidebar/Sidebar";
 import { AppProviders } from "./providers";
 
 export const metadata: Metadata = {
@@ -20,10 +21,8 @@ export default async function Layout({
         <div className="layoutWrapper">
           <AppProviders>
             <Header />
-            <main>
-              {/* <Sidebar /> */}
-              {children}
-            </main>
+            <Sidebar />
+            <main className="mainContent">{children}</main>
             {/* <EducationFooter /> */}
           </AppProviders>
         </div>

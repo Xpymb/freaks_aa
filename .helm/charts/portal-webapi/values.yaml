@@ -18,7 +18,7 @@ kcAdmin:
   verifyTokenAudience: "true"
   confidentialPort: "0"
 redis:
-  host: "redis.freaks-dev.svc.cluster.local"
+  host: "redis-master.freaks-dev.svc.cluster.local"
   port: "6379"
   database: "0"
   connectTimeout: "60000"

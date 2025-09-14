@@ -4,7 +4,7 @@ import { CustomTypography } from "../CustomTypography";
 type Props = {
   message?: string;
   variant?: React.ComponentProps<typeof CustomTypography>["variant"];
-};
+}; 
 
 const NotFound = ({ message, variant = "h3" }: Props) => {
   return (

@@ -3,6 +3,9 @@ import styles from "./_styles.module.scss";
 import RaidList from "./componets/RaidList/RaidList";
 import { CustomContainer } from "@/components/ui/CustomContainer";
 import { CustomTypography } from "@/components/ui/CustomTypography";
+import { auth } from "@/api/auth/auth";
+import { requestServer } from "@/shared/api/serverRequest";
+import { RaidsService } from "@/domains/raids";
 
 export async function generateMetadata() {
   return {
@@ -11,7 +14,14 @@ export async function generateMetadata() {
   };
 }
 
-export default function Page() {
+export default async function Page() {
+  const session = await auth();
+  const accessToken = session?.accessToken;
+
+  const raids = accessToken
+    ? await requestServer(() => RaidsService.getRaids(accessToken))
+    : null;
+
   return (
     <section className={styles.raidListSection}>
       <CustomContainer maxWidth="lg">
@@ -28,7 +38,7 @@ export default function Page() {
           </CustomTypography>
         </div>
 
-        <RaidList />
+        <RaidList prefetchRaids={raids} />
       </CustomContainer>
     </section>
   );

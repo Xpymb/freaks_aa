@@ -1,8 +1,15 @@
 @use "@/ThemeMUI/variables" as *;
 
 .header {
-  border-bottom: 1px solid $mutedColor;
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  border-bottom: 0.2px solid $secondaryBorderLineColor;
   padding: 0.5rem 0;
+  z-index: 1001;
+  background-color: $secondaryBackgroundColor;
+  padding: 0.5rem 0.2rem 0.5rem 0.2rem;
   .wrapper {
     display: flex;
     align-items: center;

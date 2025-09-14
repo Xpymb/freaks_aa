@@ -150,13 +150,11 @@ const LootItemTooltip = ({ children, lootItem }: Props) => {
                     fill
                     className={styles.tooltipImage}
                   />
-                  <img
+                  <CustomImage
                     src={`/images/masks/icon_grade${lootItem.gradeType}.png`}
                     alt="Grade mask"
+                    fill
                     className={styles.tooltipGradeMask}
-                    onError={(e) => {
-                      e.currentTarget.style.display = 'none';
-                    }}
                   />
                 </div>
               ) : (

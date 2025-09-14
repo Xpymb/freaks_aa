@@ -273,8 +273,7 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
 
                     b.HasKey("RaidId", "LootItemId");
 
-                    b.HasIndex("LootItemId")
-                        .IsUnique();
+                    b.HasIndex("LootItemId");
 
                     b.ToTable("raid_loot", "portal");
                 });
@@ -307,10 +306,9 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
 
                     b.HasKey("RaidId", "ParticipantId");
 
-                    b.HasIndex("ParticipantId")
-                        .IsUnique();
+                    b.HasIndex("ParticipantId");
 
-                    b.HasIndex("RaidNumber", "RaidPartyNumber", "RaidPartyPositionNumber")
+                    b.HasIndex("RaidId", "ParticipantId", "RaidNumber", "RaidPartyNumber", "RaidPartyPositionNumber")
                         .IsUnique();
 
                     b.ToTable("raid_participant", "portal");
@@ -509,8 +507,8 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
             modelBuilder.Entity("Freaks.Portal.Contracts.Entities.RaidSummary.RaidLoot", b =>
                 {
                     b.HasOne("Freaks.Portal.Contracts.Entities.Loot.LootItem", "Loot")
-                        .WithOne()
-                        .HasForeignKey("Freaks.Portal.Contracts.Entities.RaidSummary.RaidLoot", "LootItemId")
+                        .WithMany()
+                        .HasForeignKey("LootItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -528,8 +526,8 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
             modelBuilder.Entity("Freaks.Portal.Contracts.Entities.RaidSummary.RaidParticipant", b =>
                 {
                     b.HasOne("Freaks.Users.Contracts.Entities.User", "Participant")
-                        .WithOne()
-                        .HasForeignKey("Freaks.Portal.Contracts.Entities.RaidSummary.RaidParticipant", "ParticipantId")
+                        .WithMany()
+                        .HasForeignKey("ParticipantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

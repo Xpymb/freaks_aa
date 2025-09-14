@@ -7,12 +7,16 @@ type GetUsersQuery = {
   includeWoRoles: boolean;
 };
 
-export const useGetUsers = ({fallbackData=[], includeWoRoles}: GetUsersQuery) => {
+export const useGetUsers = ({
+  fallbackData = [],
+  includeWoRoles,
+}: GetUsersQuery) => {
   return useProtectedSWR<IUser[]>(
     `/users?includeWoRoles=${includeWoRoles}`,
     (token) => UserService.getUsers(token, true),
     {
       fallbackData,
+      revalidateOnMount: false,
     }
   );
 };

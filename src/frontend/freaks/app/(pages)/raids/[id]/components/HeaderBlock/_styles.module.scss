@@ -16,19 +16,47 @@
     .top {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       position: relative;
+      
+      .topLeft{
+        .muted{
+          color: $mutedColor;
+        }
+      }
+      .topRight{
+
+      }
     }
-    .middle {
+    
+    .statusContainer {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;margin-left: auto;
     }
+
     .bottom {
       display: flex;
       column-gap: 0.5rem;
-      .infoBlock {
+      align-items: center;
+      .infoWrapper{
         display: flex;
-        column-gap: 0.3rem;
-        .muted {
-          color: $mutedColor;
+        column-gap: 0.5rem;
+
+        .infoBlock {
+          display: flex;
+          column-gap: 0.3rem;
+          .muted {
+            color: $mutedColor;
+          }
         }
+      }
+      
+      
+      .completeButtonContainer {
+        margin-left: auto;
+        padding-left: 1rem;
       }
     }
   }

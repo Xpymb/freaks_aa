@@ -24,8 +24,8 @@ public class RaidLootConfiguration : IEntityTypeConfiguration<RaidLoot>
 
         builder
             .HasOne(l => l.Loot)
-            .WithOne()
-            .HasForeignKey<RaidLoot>(l => l.LootItemId)
+            .WithMany()
+            .HasForeignKey(l => l.LootItemId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

@@ -23,7 +23,7 @@ function stringToColor(s: string) {
   return `#${((hash >>> 0) & 0xffffff).toString(16).padStart(6, "0")}`;
 }
 
-function stringAvatar(name: string) {
+export function stringAvatar(name: string) {
   const n = (name || "U").trim();
   const parts = n.split(/\s+/);
   const initials =
