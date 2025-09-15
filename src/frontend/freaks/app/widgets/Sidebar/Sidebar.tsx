@@ -1,9 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useSidebar } from "@/contexts/SidebarContext";
+import { useHasRole } from "@/domains/auth/hooks/useHasRole";
 import {
   AccessTimeOutlined,
   EmailOutlined,
@@ -13,6 +14,7 @@ import {
   MenuOutlined,
   ChevronRightOutlined,
   ChevronLeftOutlined,
+  AdminPanelSettings,
 } from "@mui/icons-material";
 import { Tooltip, IconButton } from "@mui/material";
 import clsx from "clsx";
@@ -27,6 +29,12 @@ type NavigationItem = {
 };
 
 const navigationItems: NavigationItem[] = [
+  {
+    id: "overview",
+    label: "Обзор",
+    icon: <HomeOutlined />,
+    href: "/overview",
+  },
   {
     id: "raids",
     label: "Рейды",

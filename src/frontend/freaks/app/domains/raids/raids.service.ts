@@ -36,7 +36,7 @@ export interface CreateScreenshotRequest {
 }
 
 export const RaidsService = {
-  getRaids: (token: string, query = "") =>
+  getRaids: (token: string, query = "SortBy=0&SortMode=2") =>
     authorizedApi(token, "portal").get<PaginatedList<RaidListItem>>(
       `/raids${query ? `?${query}` : ""}`
     ),
@@ -49,6 +49,9 @@ export const RaidsService = {
 
   completeRaid: (token: string, raidId: number) =>
     authorizedApi(token, "portal").post<RaidItem>(`/raids/${raidId}/finish`),
+
+  deleteRaid: (token: string, raidId: number) =>
+    authorizedApi(token, "portal").delete<void>(`/raids/${raidId}`),
 };
 
 export const RaidScreenshotsService = {
@@ -72,9 +75,7 @@ export const RaidScreenshotsService = {
 
 export const RaidLootService = {
   getRaidLoot: (token: string, raidId: number) =>
-    authorizedApi(token, "portal").get<RaidLootDto[]>(
-      `/raids/${raidId}/loots`
-    ),
+    authorizedApi(token, "portal").get<RaidLootDto[]>(`/raids/${raidId}/loots`),
 
   createRaidLoot: (
     token: string,

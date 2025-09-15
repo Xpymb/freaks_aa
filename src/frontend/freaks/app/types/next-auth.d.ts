@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 
 declare module "next-auth" {
   interface User {
+    id: string;
     game_nickname: string;
     roles: string[];
   }

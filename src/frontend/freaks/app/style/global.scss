@@ -40,7 +40,6 @@ body {
 }
 
 .mainContent {
-  padding: 1rem;
   flex: 1;
   transition: margin-left 0.3s ease-in-out;
 
@@ -48,6 +47,15 @@ body {
     margin-left: 0;
     padding: 0.5rem;
   }
+}
+
+// Чистый layout без навигации
+.cleanContent {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
 }
 
 // Дополнительный отступ для раздвинутого сайдбара
