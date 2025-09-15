@@ -72,30 +72,14 @@
   justify-content: flex-start;
   padding: 0;
 
-  &:hover:not(.disabled) {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.9);
-    transform: scale(1.05);
-  }
-
   &.active {
     background-color: #2563eb; // синий цвет как на изображении
     color: white;
-
-    &:hover {
-      background-color: #2563eb;
-      transform: scale(1.05);
-    }
   }
 
   &.disabled {
     color: rgba(255, 255, 255, 0.3);
     cursor: not-allowed;
-
-    &:hover {
-      background-color: transparent;
-      transform: none;
-    }
   }
 
   // Раздвинутое состояние

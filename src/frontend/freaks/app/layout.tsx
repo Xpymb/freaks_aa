@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import "@/style/global.scss";
-import Header from "./layouts/Header/Header";
-import Sidebar from "./widgets/Sidebar/Sidebar";
 import { AppProviders } from "./providers";
 
 export const metadata: Metadata = {
@@ -9,7 +7,7 @@ export const metadata: Metadata = {
   description: "",
 };
 
-export default async function Layout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -18,14 +16,7 @@ export default async function Layout({
     <html lang="en">
       <head></head>
       <body>
-        <div className="layoutWrapper">
-          <AppProviders>
-            <Header />
-            <Sidebar />
-            <main className="mainContent">{children}</main>
-            {/* <EducationFooter /> */}
-          </AppProviders>
-        </div>
+        <AppProviders>{children}</AppProviders>
       </body>
     </html>
   );

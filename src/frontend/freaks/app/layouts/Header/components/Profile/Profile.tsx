@@ -77,7 +77,7 @@ const Profile = ({ session, isAuthenticated, idToken }: Props) => {
       >
         <MenuItem onClick={handleClose}>Profile</MenuItem>
         <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+        <MenuItem onClick={handleLogout}>Выход</MenuItem>
       </Menu>
     </div>
   );

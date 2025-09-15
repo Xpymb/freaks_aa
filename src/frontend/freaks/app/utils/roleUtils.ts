@@ -1,25 +1,42 @@
-import { UserRole } from "@/domains/user/profile";
+import { USER_ROLES } from "@/domains/user/constants";
+import type { UserRole } from "@/types/roles.types";
 
-type RoleMeta = {
-  label: string;
-  // color: "primary" | "secondary" | "success" | "error";
-  // icon: React.ReactNode;
-};
+/**
+ * Преобразует роли (числовые или строковые) в валидные роли приложения
+ */
+export function mapUserRoles(roles: unknown): UserRole[] {
+  if (!Array.isArray(roles)) {
+    return [];
+  }
 
-export const ROLES_META: Record<UserRole, RoleMeta> = {
-  student: {
-    label: "Студент",
-    // color: "primary",
-    // icon: <SchoolIcon fontSize="small" />,
-  },
-  employee: {
-    label: "Сотрудник",
-    // color: "success",
-    // icon: <WorkIcon fontSize="small" />,
-  },
-  entrant: {
-    label: "Абитуриент",
-    // color: "secondary",
-    // icon: <PersonIcon fontSize="small" />,
-  },
-};
+  const roleMap: Record<number, UserRole> = {
+    [USER_ROLES.ADMIN]: "admin",
+    [USER_ROLES.GUILD_LEADER]: "guild_leader",
+    [USER_ROLES.EDITOR]: "editor",
+    [USER_ROLES.MEMBER]: "member",
+  };
+
+  // Валидные роли приложения
+  const validAppRoles: UserRole[] = [
+    "admin",
+    "guild_leader",
+    "editor",
+    "member",
+  ];
+
+  return roles
+    .map((role) => {
+      // Если роль уже строковая, проверяем что это валидная роль приложения
+      if (typeof role === "string") {
+        return validAppRoles.includes(role as UserRole)
+          ? (role as UserRole)
+          : undefined;
+      }
+      // Если роль числовая, конвертируем
+      if (typeof role === "number") {
+        return roleMap[role];
+      }
+      return undefined;
+    })
+    .filter((role): role is UserRole => role !== undefined);
+}

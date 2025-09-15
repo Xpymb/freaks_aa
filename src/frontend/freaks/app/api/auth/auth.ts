@@ -37,8 +37,10 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
       accessTokenExpires: Date.now() + data.expires_in * 1000,
       refreshToken: data.refresh_token ?? token.refreshToken,
       idToken: data.id_token ?? token.idToken,
-      // game_nickname/roles остаются прежними до следующего логина
-      // (если нужно обновлять на рефреше — можно дополнить декодом id/access token здесь)
+      // Сохраняем ID, game_nickname и roles при рефреше токена
+      id: token.id,
+      game_nickname: token.game_nickname,
+      roles: token.roles,
     };
   } catch (error) {
     console.error("🔄 RefreshAccessTokenError", handleAxiosError(error));
@@ -60,8 +62,8 @@ export const { handlers, auth } = NextAuth({
           id: profile.sub,
           name: profile.preferred_username ?? profile.name,
           email: profile.email,
-          game_nickname: profile.game_nickname, // <- из маппера User Attribute
-          roles: extractRolesFromProfile(profile), // <- роли (realm + client)
+          game_nickname: profile.game_nickname,
+          roles: extractRolesFromProfile(profile),
         } as any;
       },
     }),
@@ -77,6 +79,8 @@ export const { handlers, auth } = NextAuth({
           idToken: account.id_token,
           accessTokenExpires: (account.expires_at ?? 0) * 1000,
 
+          // Сохраняем ID пользователя в токен
+          id: (user as any).id,
           game_nickname: (user as any).game_nickname,
           roles: (user as any).roles ?? [],
           email: (user as any).email ?? token.email,
@@ -96,6 +100,22 @@ export const { handlers, auth } = NextAuth({
       (session as any).idToken = token.idToken;
 
       session.user = session.user ?? {};
+
+      // Используем актуальный sub из accessToken, а не кешированный ID
+      let actualUserId = (token as any).id;
+      if (token.accessToken) {
+        try {
+          const parts = (token.accessToken as string).split(".");
+          if (parts.length === 3) {
+            const payload = JSON.parse(atob(parts[1]));
+            actualUserId = payload.sub; // Берем актуальный sub из accessToken
+          }
+        } catch {
+          // fallback к кешированному ID
+        }
+      }
+
+      (session.user as any).id = actualUserId;
       (session.user as any).email = (token as any).email ?? session.user.email;
       (session.user as any).preferred_username = (
         token as any
