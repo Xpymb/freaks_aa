@@ -125,12 +125,6 @@ public class UserService : IUserService
                              .RoleMappings
                              .Realm
                              .PostAsync(newUserRoles);
-
-        await _keycloakClient.Admin
-                             .Realms[_keycloakOptions.Realm]
-                             .Users[userId.ToString()]
-                             .Logout
-                             .PostAsync();
     }
 
     /// <summary>
