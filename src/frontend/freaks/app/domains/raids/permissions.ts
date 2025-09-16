@@ -1,8 +1,14 @@
 import type { UserRole } from "@/types/roles.types";
 import { RaidItem, RaidStatus } from "./types";
 
-// Роли с правами администрирования
-const ADMIN_ROLES: UserRole[] = ["admin", "guild_leader", "editor"];
+// Роли с полными правами администрирования
+const SUPER_ADMIN_ROLES: UserRole[] = ["admin", "guild_leader"];
+
+// Роли с правами редактирования
+const EDITOR_ROLES: UserRole[] = ["admin", "guild_leader", "editor"];
+
+// Роли с базовыми правами
+const MEMBER_ROLES: UserRole[] = ["admin", "guild_leader", "editor", "member"];
 
 /**
  * Проверяет может ли пользователь редактировать содержимое рейда
@@ -13,19 +19,28 @@ export function canEditRaidContent(
   raid: RaidItem,
   userId?: string
 ): boolean {
-  // После завершения рейда никто не может редактировать
+  // ADMIN и GUILD_LEADER могут редактировать рейды в любом статусе
+  const hasSuperAdminRole = SUPER_ADMIN_ROLES.some((role) =>
+    userRoles.includes(role)
+  );
+  if (hasSuperAdminRole) {
+    return true;
+  }
+
+  // После завершения рейда больше никто не может редактировать
   if (raid.status === RaidStatus.Ended) {
     return false;
   }
 
-  // Админы, лидеры гильдии и редакторы могут редактировать
-  const hasAdminRole = ADMIN_ROLES.some((role) => userRoles.includes(role));
-  if (hasAdminRole) {
+  // EDITOR может редактировать любые незавершенные рейды
+  const hasEditorRole = userRoles.includes("editor");
+  if (hasEditorRole) {
     return true;
   }
 
-  // Создатель рейда может редактировать свой рейд
-  if (userId && raid.creator.id === userId) {
+  // MEMBER может редактировать только свои незавершенные рейды
+  const hasMemberRole = userRoles.includes("member");
+  if (hasMemberRole && userId && raid.creator.id === userId) {
     return true;
   }
 
@@ -33,31 +48,23 @@ export function canEditRaidContent(
 }
 
 /**
- * Проверяет может ли пользователь подтверждать рейд
- * Только админы, лидеры гильдии и редакторы
- * Создатель рейда НЕ может подтверждать свой рейд
+ * Проверяет может ли пользователь подтверждать/завершать рейд
+ * Только администраторы и лидеры гильдии
  */
 export function canCompleteRaid(
   userRoles: UserRole[],
   raid: RaidItem,
   userId?: string
 ): boolean {
-  // После завершения рейда нельзя подтверждать
-  if (raid.status === RaidStatus.Ended) {
+  // Только ADMIN и GUILD_LEADER могут завершать рейды
+  const hasSuperAdminRole = SUPER_ADMIN_ROLES.some((role) =>
+    userRoles.includes(role)
+  );
+  if (!hasSuperAdminRole) {
     return false;
   }
 
-  // Только админы, лидеры гильдии и редакторы
-  const hasAdminRole = ADMIN_ROLES.some((role) => userRoles.includes(role));
-  if (!hasAdminRole) {
-    return false;
-  }
-
-  // Создатель рейда НЕ может подтверждать свой рейд
-  if (userId && raid.creator.id === userId) {
-    return false;
-  }
-
+  // Могут завершать в любом статусе (даже уже завершенные для переоткрытия)
   return true;
 }
 
@@ -69,32 +76,43 @@ export function canDeleteRaid(
   raid: RaidItem,
   userId?: string
 ): boolean {
-  // После завершения рейда удалять могут только админы
-  if (raid.status === RaidStatus.Ended) {
-    return userRoles.includes("admin");
+  // ADMIN и GUILD_LEADER могут удалять рейды в любом статусе
+  const hasSuperAdminRole = SUPER_ADMIN_ROLES.some((role) =>
+    userRoles.includes(role)
+  );
+  if (hasSuperAdminRole) {
+    return true;
   }
 
-  // До завершения - админы, лидеры гильдии и редакторы или создатель
-  return (
-    ADMIN_ROLES.some((role) => userRoles.includes(role)) ||
-    (userId ? raid.creator.id === userId : false)
-  );
+  // После завершения рейда больше никто не может удалять
+  if (raid.status === RaidStatus.Ended) {
+    return false;
+  }
+
+  // EDITOR и MEMBER могут удалять только свои незавершенные рейды
+  const hasEditorOrMemberRole =
+    userRoles.includes("editor") || userRoles.includes("member");
+  if (hasEditorOrMemberRole && userId && raid.creator.id === userId) {
+    return true;
+  }
+
+  return false;
 }
 
 /**
  * Проверяет может ли пользователь создавать рейды
  */
 export function canCreateRaid(userRoles: UserRole[]): boolean {
-  // Создавать рейды могут все авторизованные пользователи
-  return userRoles.length > 0;
+  // Создавать рейды могут все пользователи с валидными ролями
+  return MEMBER_ROLES.some((role) => userRoles.includes(role));
 }
 
 /**
  * Проверяет может ли пользователь просматривать рейд
  */
 export function canViewRaid(userRoles: UserRole[]): boolean {
-  // Просматривать рейды могут все авторизованные пользователи
-  return userRoles.length > 0;
+  // Просматривать рейды могут все пользователи с валидными ролями
+  return MEMBER_ROLES.some((role) => userRoles.includes(role));
 }
 
 /**

@@ -10,8 +10,7 @@ import {
 } from "@mui/material";
 import { Delete as DeleteIcon } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
-import { RaidItem, RaidStatus } from "@/domains/raids";
-import { useDeleteRaid } from "@/domains/raids";
+import { RaidItem, useDeleteRaid, useRaidPermissions } from "@/domains/raids";
 import { CustomTypography } from "@/components/ui/CustomTypography";
 import styles from "./_styles.module.scss";
 
@@ -23,8 +22,7 @@ const DeleteRaidButton = ({ raid }: Props) => {
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const { trigger: deleteRaid, isMutating } = useDeleteRaid();
-
-  const canDelete = raid.status !== RaidStatus.Ended;
+  const { canDelete } = useRaidPermissions(raid);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
