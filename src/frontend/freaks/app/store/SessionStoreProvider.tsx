@@ -26,7 +26,7 @@ const SessionStoreProvider = () => {
       idToken: data.idToken,
     });
 
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}app-version`, {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/app-version`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${data.accessToken}`,
