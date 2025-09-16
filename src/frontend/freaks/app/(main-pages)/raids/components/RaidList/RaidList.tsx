@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useMemo, useCallback } from "react";
+import { motion } from "framer-motion";
 import styles from "./_styles.module.scss";
 import { useGetRaids } from "@/domains/raids/hooks/useGetRaids";
 import RaidsFilters from "@/(main-pages)/raids/components/RaidsFilters/RaidsFilters";
@@ -27,7 +28,7 @@ const RaidList = ({ prefetchRaids }: Props) => {
     SortMode: 2,
   });
   const [page, setPage] = useState(0);
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(10);
 
   // Обновляем фильтры с пагинацией - используем useMemo для предотвращения бесконечного цикла
   const filtersWithPagination = useMemo(
@@ -43,6 +44,30 @@ const RaidList = ({ prefetchRaids }: Props) => {
     prefetchRaids,
     filtersWithPagination
   );
+
+  // Анимационные варианты
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        delayChildren: 0.2,
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut" as const,
+      },
+    },
+  };
 
   // Сбрасываем страницу при изменении фильтров - используем useCallback для стабильной ссылки
   const handleFiltersChange = useCallback(
@@ -60,38 +85,57 @@ const RaidList = ({ prefetchRaids }: Props) => {
   }
 
   return (
-    <div className={styles.wrapper}>
-      <RaidsFilters initial={filters} onApply={handleFiltersChange} />
+    <section className={styles.raidsPage}>
+      <div className={styles.wrapper}>
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <motion.div variants={itemVariants}>
+            <RaidsFilters initial={filters} onApply={handleFiltersChange} />
+          </motion.div>
 
-      <CreateRaidForm />
+          <motion.div variants={itemVariants}>
+            <CreateRaidForm />
+          </motion.div>
 
-      <div className={styles.raids}>
-        {raids.length === 0 || isLoading
-          ? Array.from({ length: pageSize }).map((_, index) => (
-              <React.Fragment key={`skeleton-${index}`}>
-                <RaidCardSkeleton />
-                <Divider />
-              </React.Fragment>
-            ))
-          : raids.map((raid) => (
-              <React.Fragment key={raid.id}>
-                <Link href={`/raids/${raid.id}`} className={styles.link}>
-                  <RaidCard raid={raid} />
-                </Link>
-                <Divider />
-              </React.Fragment>
-            ))}
+          <motion.div className={styles.raids} variants={containerVariants}>
+            {raids.length === 0 || isLoading
+              ? Array.from({ length: pageSize }).map((_, index) => (
+                  <motion.div key={`skeleton-${index}`} variants={itemVariants}>
+                    <RaidCardSkeleton />
+                    <Divider />
+                  </motion.div>
+                ))
+              : raids.map((raid) => (
+                  <motion.div
+                    key={raid.id}
+                    variants={itemVariants}
+                    whileHover={{ scale: 1.02 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <Link href={`/raids/${raid.id}`} className={styles.link}>
+                      <RaidCard raid={raid} />
+                    </Link>
+                    <Divider />
+                  </motion.div>
+                ))}
+          </motion.div>
+
+          <motion.div variants={itemVariants}>
+            <RaidPagination
+              totalCount={totalCount}
+              page={page}
+              pageSize={pageSize}
+              onPageChange={setPage}
+              onPageSizeChange={setPageSize}
+              isLoading={isLoading}
+            />
+          </motion.div>
+        </motion.div>
       </div>
-
-      <RaidPagination
-        totalCount={totalCount}
-        page={page}
-        pageSize={pageSize}
-        onPageChange={setPage}
-        onPageSizeChange={setPageSize}
-        isLoading={isLoading}
-      />
-    </div>
+    </section>
   );
 };
 
