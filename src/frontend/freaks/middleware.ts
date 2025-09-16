@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/api/auth/auth";
 import type { UserRole } from "@/types/roles.types";
+import { AVAILABLE_ROLES } from "@/types/roles.types";
 
 const PUBLIC_PREFIXES = [
   "/login",
@@ -15,7 +16,7 @@ const PUBLIC_PREFIXES = [
 
 // Маршруты, требующие специальных ролей
 const ROLE_PROTECTED_ROUTES: Record<string, UserRole[]> = {
-  "/admin-panel": ["admin"],
+  "/admin-panel": ["admin", "guild_leader"],
   // Добавить другие защищенные маршруты по мере необходимости
   // "/guild-management": ["admin", "guild_leader"],
   // "/editor-panel": ["admin", "guild_leader", "editor"],
@@ -41,20 +42,28 @@ function hasRequiredRole(
   return requiredRoles.some((role) => userRoles.includes(role));
 }
 
+function hasValidRole(userRoles: UserRole[]): boolean {
+  return userRoles.some((role) => AVAILABLE_ROLES.includes(role));
+}
+
 export default auth((request) => {
   const { pathname, search } = request.nextUrl;
 
-  // Проверка авторизации
   if (!isPublic(pathname) && !request.auth) {
     const url = new URL("/login", request.nextUrl);
     url.searchParams.set("callbackUrl", pathname + (search || ""));
     return NextResponse.redirect(url);
   }
 
-  if (request.auth) {
+  if (request.auth && !isPublic(pathname)) {
+    const userRoles = (request.auth.user?.roles || []) as UserRole[];
+
+    if (!hasValidRole(userRoles)) {
+      return NextResponse.redirect(new URL("/forbidden", request.nextUrl));
+    }
+
     const requiredRoles = getRequiredRoles(pathname);
     if (requiredRoles) {
-      const userRoles = (request.auth.user?.roles || []) as UserRole[];
       if (!hasRequiredRole(userRoles, requiredRoles)) {
         return NextResponse.redirect(new URL("/forbidden", request.nextUrl));
       }

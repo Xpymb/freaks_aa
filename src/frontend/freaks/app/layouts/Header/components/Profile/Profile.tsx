@@ -60,7 +60,7 @@ const Profile = ({ session, isAuthenticated, idToken }: Props) => {
       >
         <Avatar
           alt="User avatar"
-          {...stringAvatar(session?.user.game_nickname)}
+          {...stringAvatar(session?.user.game_nickname || "")}
         />
       </IconButton>
 

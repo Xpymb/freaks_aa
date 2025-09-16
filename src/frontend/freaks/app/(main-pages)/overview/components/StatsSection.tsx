@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { CustomTypography } from "@/components/ui/CustomTypography";
-import { CustomContainer } from "@/components/ui/CustomContainer";
 import { RaidListItem } from "@/domains/raids";
 import { RaidsService, RaidListQuery } from "@/domains/raids/raids.service";
 import { buildRaidsQuery } from "@/domains/raids/hooks/useGetRaids";

@@ -25,9 +25,10 @@ import { USER_ROLES, ROLE_LABELS, ROLE_COLORS } from "@/domains/user/constants";
 import { CustomTypography } from "@/components/ui/CustomTypography";
 import ErrorLoadData from "@/components/ui/ErrorLoadData/ErrorLoadData";
 import DefaultLoader from "@/components/ui/DefaultLoader/DefaultLoader";
-import type { IUser } from "@/types/user.types";
+
 import styles from "./_styles.module.scss";
 import { HelpHint } from "@/components/ui/HelpHint/HelpHint";
+import { IUser } from "@/domains/user/types";
 
 type UserWithPendingChanges = IUser & {
   pendingRoles?: number[];

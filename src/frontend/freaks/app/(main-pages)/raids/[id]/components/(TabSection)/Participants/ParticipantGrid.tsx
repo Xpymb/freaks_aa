@@ -8,12 +8,12 @@ import {
   RaidItem,
   useRaidPermissions,
 } from "@/domains/raids";
-import { IUser } from "@/types/user.types";
 import { useRaidParticipantMutations } from "@/domains/raids/hooks/useRaidParticipantMutations";
 import { useGetUsers } from "@/domains/user/hooks/useGetUsers";
 import { formatProfileName } from "@/utils/formatProfileName";
 import { CustomTypography } from "@/components/ui/CustomTypography";
 import styles from "./_styles.module.scss";
+import { IUser } from "@/domains/user/types";
 
 type Props = {
   raidId: number;

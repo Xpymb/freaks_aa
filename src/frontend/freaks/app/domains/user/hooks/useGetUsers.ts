@@ -1,5 +1,5 @@
 import { useProtectedSWR } from "@/shared/api/useProtectedSWR";
-import { IUser } from "@/types/user.types";
+import { IUser } from "@/domains/user/types";
 import { UserService } from "../user.service";
 
 type GetUsersQuery = {

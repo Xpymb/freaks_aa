@@ -11,11 +11,11 @@ import {
   LootItemDto,
   RaidParticipantDto,
 } from "@/domains/raids";
-import { IUser } from "@/types/user.types";
 import Screenshots from "../(TabSection)/Screenshots/Screenshots";
 import Loot from "../(TabSection)/Loot/Loot";
 import Participants from "../(TabSection)/Participants/Participants";
 import { useGetRaidScreenshots } from "@/domains/raids/hooks/useGetScreenshot";
+import { IUser } from "@/domains/user/types";
 
 type Props = {
   raid: RaidItem;

@@ -4,7 +4,7 @@ import { useCallback } from "react";
 import { useProtectedSWR } from "@/shared/api/useProtectedSWR";
 import { useProtectedSWRMutation } from "@/shared/api/useProtectedSWRMutation";
 import { UserService, UpdateUserRolesRequest } from "../user.service";
-import type { IUser } from "@/types/user.types";
+import { IUser } from "../types";
 
 export function useAdminUsers() {
   const {

@@ -8,7 +8,9 @@ export async function requestServer<T>(
   try {
     return await fn();
   } catch (error: unknown) {
-    const status = (error as { response?: { status?: number }; status?: number })?.response?.status ?? (error as { status?: number })?.status;
+    const status =
+      (error as { response?: { status?: number }; status?: number })?.response
+        ?.status ?? (error as { status?: number })?.status;
 
     if (status === 401) {
       const headerList = await headers();

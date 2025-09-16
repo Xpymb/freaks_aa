@@ -1,6 +1,6 @@
-export interface IUser {
-  id: string;
-  username: string;
-  gameNickname: string;
-  roles: number[];
+import { KeycloakProfile } from "next-auth/providers/keycloak";
+
+export interface IKeycloakUser extends KeycloakProfile {
+  game_nickname?: string;
+  roles?: string[];
 }

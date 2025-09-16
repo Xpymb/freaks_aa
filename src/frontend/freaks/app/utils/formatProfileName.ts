@@ -1,4 +1,4 @@
-import { IUser } from "@/types/user.types";
+import { IUser } from "@/domains/user/types";
 
 export const formatProfileName = (profile: IUser | undefined) => {
   if (!profile) return "";

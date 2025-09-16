@@ -2,12 +2,12 @@
 
 import React, { useState, useEffect } from "react";
 import { RaidItem, RaidParticipantDto } from "@/domains/raids";
-import { IUser } from "@/types/user.types";
 import { useGetRaidParticipants } from "@/domains/raids/hooks/useGetRaidParticipants";
 import ErrorLoadData from "@/components/ui/ErrorLoadData/ErrorLoadData";
 import DefaultLoader from "@/components/ui/DefaultLoader/DefaultLoader";
 import ParticipantGrid from "./ParticipantGrid";
 import styles from "./_styles.module.scss";
+import { IUser } from "@/domains/user/types";
 
 type Props = {
   raid: RaidItem;
