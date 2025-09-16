@@ -16,6 +16,7 @@ import Loot from "../(TabSection)/Loot/Loot";
 import Participants from "../(TabSection)/Participants/Participants";
 import { useGetRaidScreenshots } from "@/domains/raids/hooks/useGetScreenshot";
 import { IUser } from "@/domains/user/types";
+import { motion, AnimatePresence } from "framer-motion";
 
 type Props = {
   raid: RaidItem;
@@ -87,13 +88,53 @@ const BodyBlock = ({
 
   const content = tabContent[tab];
 
+  const containerVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut" as const,
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut" as const,
+      },
+    },
+  };
+
   return (
-    <section className={styles.raidBodySection}>
-      <div className={styles.wrapper}>
+    <motion.section
+      className={styles.raidBodySection}
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
+      <motion.div className={styles.wrapper} variants={itemVariants}>
         <RaidTabs value={tab} setValue={setTab} />
-        {content}
-      </div>
-    </section>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={tab}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3, ease: "easeInOut" as const }}
+          >
+            {content}
+          </motion.div>
+        </AnimatePresence>
+      </motion.div>
+    </motion.section>
   );
 };
 

@@ -16,12 +16,12 @@ type Props = {
   isAuthenticated: boolean;
 };
 
-function stringToColor(s: string) {
-  let hash = 0;
-  for (let i = 0; i < s.length; i++)
-    hash = s.charCodeAt(i) + ((hash << 5) - hash);
-  return `#${((hash >>> 0) & 0xffffff).toString(16).padStart(6, "0")}`;
-}
+// function stringToColor(s: string) {
+//   let hash = 0;
+//   for (let i = 0; i < s.length; i++)
+//     hash = s.charCodeAt(i) + ((hash << 5) - hash);
+//   return `#${((hash >>> 0) & 0xffffff).toString(16).padStart(6, "0")}`;
+// }
 
 export function stringAvatar(name: string) {
   const n = (name || "U").trim();
@@ -29,7 +29,7 @@ export function stringAvatar(name: string) {
   const initials =
     (parts[0]?.[0] ?? "U") + (parts[1]?.[0] ?? parts[0]?.[1] ?? "");
   return {
-    sx: { bgcolor: stringToColor(n) },
+    // sx: { bgcolor: stringToColor(n) },
     children: initials.toUpperCase(),
   };
 }

@@ -1,4 +1,7 @@
 .detailContainer {
   margin: 0 1rem 0 calc(1rem + 60px);
-  padding: 0 1rem 0;
+  padding: 2rem 1rem;
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
 }

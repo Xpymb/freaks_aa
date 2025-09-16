@@ -2,21 +2,61 @@ import { BOSS_LABEL, RaidItem } from "@/domains/raids";
 import styles from "./_styles.module.scss";
 import { CustomTypography } from "@/components/ui/CustomTypography";
 import StatusChip from "@/(main-pages)/raids/components/StatusChip/StatusChip";
-import { Divider } from "@mui/material";
+import { Divider, IconButton, Link } from "@mui/material";
 import { DateFormat, formatDate } from "@/utils/formateDate";
 import CompleteRaidButton from "../CompleteRaidButton/CompleteRaidButton";
 import DeleteRaidButton from "../DeleteRaidButton/DeleteRaidButton";
 import { RaidConditionalRender } from "@/components/ui";
+import ReplyIcon from "@mui/icons-material/Reply";
+import { motion } from "framer-motion";
 
 type Props = {
   raid: RaidItem;
 };
 
 const HeaderBlock = ({ raid }: Props) => {
+  const containerVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut" as const,
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut" as const,
+      },
+    },
+  };
+
   return (
-    <section className={styles.raidHeaderSection}>
+    <motion.section
+      className={styles.raidHeaderSection}
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
       <div className={styles.wrapper}>
-        <div className={styles.top}>
+        <motion.div className={styles.top} variants={itemVariants}>
+          <Link href="/raids">
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <IconButton className={styles.returnIcon}>
+                <ReplyIcon />
+              </IconButton>
+            </motion.div>
+          </Link>
+
           <div className={styles.topLeft}>
             <CustomTypography variant="caption" className={styles.muted}>
               Raid.ID: {raid.id}
@@ -29,21 +69,29 @@ const HeaderBlock = ({ raid }: Props) => {
           <div className={styles.topRight}>
             <StatusChip status={raid.status} />
           </div>
-        </div>
-        <div className={styles.bottom}>
+        </motion.div>
+        <motion.div className={styles.bottom} variants={itemVariants}>
           <div className={styles.infoWrapper}>
-            <div className={styles.infoBlock}>
+            <motion.div
+              className={styles.infoBlock}
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.2 }}
+            >
               <CustomTypography className={styles.muted} variant="subtitle1">
                 Создатель:
               </CustomTypography>
               <CustomTypography variant="subtitle1">
                 {raid.creator.gameNickname}
               </CustomTypography>
-            </div>
+            </motion.div>
 
             <Divider orientation="vertical" flexItem />
 
-            <div className={styles.infoBlock}>
+            <motion.div
+              className={styles.infoBlock}
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.2 }}
+            >
               <CustomTypography className={styles.muted} variant="subtitle1">
                 Начало:
               </CustomTypography>
@@ -53,11 +101,15 @@ const HeaderBlock = ({ raid }: Props) => {
                   DateFormat.SHORT_DATE_SHORT_YEAR_TIME
                 )}
               </CustomTypography>
-            </div>
+            </motion.div>
 
             <Divider orientation="vertical" flexItem />
 
-            <div className={styles.infoBlock}>
+            <motion.div
+              className={styles.infoBlock}
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.2 }}
+            >
               <CustomTypography className={styles.muted} variant="subtitle1">
                 Дата создания:
               </CustomTypography>
@@ -67,12 +119,16 @@ const HeaderBlock = ({ raid }: Props) => {
                   DateFormat.SHORT_DATE_SHORT_YEAR_TIME
                 )}
               </CustomTypography>
-            </div>
+            </motion.div>
             {raid.updatedDt && (
               <>
                 <Divider orientation="vertical" flexItem />
 
-                <div className={styles.infoBlock}>
+                <motion.div
+                  className={styles.infoBlock}
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.2 }}
+                >
                   <CustomTypography
                     className={styles.muted}
                     variant="subtitle1"
@@ -82,13 +138,16 @@ const HeaderBlock = ({ raid }: Props) => {
                   <CustomTypography variant="subtitle1">
                     {raid.updatedDt}
                   </CustomTypography>
-                </div>
+                </motion.div>
               </>
             )}
           </div>
 
           <RaidConditionalRender raid={raid} permission="canManage">
-            <div className={styles.buttonsContainer}>
+            <motion.div
+              className={styles.buttonsContainer}
+              variants={itemVariants}
+            >
               <RaidConditionalRender raid={raid} permission="canComplete">
                 <CompleteRaidButton raid={raid} />
               </RaidConditionalRender>
@@ -96,11 +155,11 @@ const HeaderBlock = ({ raid }: Props) => {
               <RaidConditionalRender raid={raid} permission="canDelete">
                 <DeleteRaidButton raid={raid} />
               </RaidConditionalRender>
-            </div>
+            </motion.div>
           </RaidConditionalRender>
-        </div>
+        </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

@@ -5,10 +5,11 @@
   top: 0;
   left: 0;
   right: 0;
-  border-bottom: 0.2px solid $secondaryBorderLineColor;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   padding: 0.5rem 0;
   z-index: 1001;
-  background-color: $secondaryBackgroundColor;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
   padding: 0.5rem 0.2rem 0.5rem 0.2rem;
   .wrapper {
     display: flex;

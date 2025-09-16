@@ -1,5 +1,6 @@
 import { Tab, Tabs } from "@mui/material";
 import styles from "./_styles.module.scss";
+import { motion } from "framer-motion";
 
 type Props = {
   value: number;
@@ -31,25 +32,31 @@ const RaidTabs = ({ value, setValue }: Props) => {
   };
 
   return (
-    <Tabs
-      value={value}
-      onChange={handleChange}
-      textColor="secondary"
-      indicatorColor="secondary"
-      className={styles.tabs}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: "easeOut" as const }}
     >
-      {tabs.map((tab) => (
-        <Tab
-          className={styles.tab}
-          classes={{
-            selected: styles.selectedTab,
-          }}
-          key={tab.value}
-          value={tab.value}
-          label={tab.label}
-        />
-      ))}
-    </Tabs>
+      <Tabs
+        value={value}
+        onChange={handleChange}
+        textColor="secondary"
+        indicatorColor="secondary"
+        className={styles.tabs}
+      >
+        {tabs.map((tab) => (
+          <Tab
+            key={tab.value}
+            className={styles.tab}
+            classes={{
+              selected: styles.selectedTab,
+            }}
+            value={tab.value}
+            label={tab.label}
+          />
+        ))}
+      </Tabs>
+    </motion.div>
   );
 };
 

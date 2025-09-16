@@ -9,11 +9,10 @@
 
 // Hero Section
 .heroSection {
-  min-height: 100vh;
+  min-height: calc(100vh - 72.5px);
   position: relative;
   display: flex;
   align-items: center;
-  padding: 2rem 0;
 }
 
 .heroBackground {

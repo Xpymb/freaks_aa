@@ -1,18 +1,50 @@
 @use "@/ThemeMUI/variables" as *;
 
+.raidsPage {
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  padding: 2rem 0;
+}
+
 .wrapper {
-  .raids {
-    display: flex;
-    flex-direction: column;
-    row-gap: 0.5rem;
-    .link {
-      text-decoration: none;
-      color: inherit;
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.raids {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 2rem;
+
+  .link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+      transform: translateY(-2px);
     }
   }
+}
+
+// Адаптивность
+@media (max-width: 768px) {
+  .raidsPage {
+    padding: 1rem 0;
+  }
+
   .wrapper {
-    display: flex;
-    justify-content: center;
-    margin-top: 2rem;
+    padding: 0 0.5rem;
+  }
+
+  .raids {
+    gap: 0.75rem;
+    margin-top: 1.5rem;
   }
 }

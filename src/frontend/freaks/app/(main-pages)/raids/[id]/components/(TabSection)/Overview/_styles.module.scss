@@ -12,10 +12,22 @@
     .raidDescription {
       .description {
         margin-top: 1rem;
-        padding: 1rem;
-        background-color: $secondaryBackgroundColor;
-        border-radius: 0.4rem;
+        padding: 1.5rem;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
         min-height: 8rem;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+          border-color: rgba(255, 255, 255, 0.15);
+        }
       }
     }
   }
@@ -52,7 +64,17 @@
               width: 40px;
               height: 40px;
               border-radius: 8px;
-              background: rgba(255, 255, 255, 0.1);
+              background: rgba(255, 255, 255, 0.05);
+              backdrop-filter: blur(10px);
+              border: 1px solid rgba(255, 255, 255, 0.1);
+              box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+              transition: all 0.3s ease;
+
+              &:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+                border-color: rgba(255, 255, 255, 0.15);
+              }
               .iconContainer {
                 position: relative;
                 width: 100%;
@@ -76,8 +98,18 @@
           }
           .quantity {
             padding: 0.5rem 1rem;
-            background-color: $secondaryBackgroundColor;
-            border-radius: 0.3rem;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+
+            &:hover {
+              transform: translateY(-1px);
+              box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+              border-color: rgba(255, 255, 255, 0.15);
+            }
           }
         }
       }

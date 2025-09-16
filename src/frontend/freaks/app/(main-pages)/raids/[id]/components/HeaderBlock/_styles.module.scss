@@ -2,12 +2,19 @@
 
 .raidHeaderSection {
   position: relative;
-  padding: $secondarySectionPadding;
-  border-bottom: 1px solid $secondaryBorderLineColor;
-  .returnIcon {
-    position: absolute;
-    left: 0;
-    top: 0;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.2);
   }
   .wrapper {
     display: flex;
@@ -18,13 +25,28 @@
       justify-content: space-between;
       align-items: center;
       position: relative;
-
+      column-gap: 1rem;
       .topLeft {
         .muted {
-          color: $mutedColor;
+          color: rgba(255, 255, 255, 0.6);
+        }
+      }
+
+      .returnIcon {
+        color: rgba(255, 255, 255, 0.7);
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+
+        &:hover {
+          color: #2196f3;
+          background: rgba(33, 150, 243, 0.1);
+          border-color: rgba(33, 150, 243, 0.3);
+          transform: translateX(-2px);
         }
       }
       .topRight {
+        margin-left: auto;
       }
     }
 
@@ -47,8 +69,20 @@
         .infoBlock {
           display: flex;
           column-gap: 0.3rem;
+          padding: 0.5rem 1rem;
+          background: rgba(255, 255, 255, 0.03);
+          border-radius: 8px;
+          border: 1px solid rgba(255, 255, 255, 0.05);
+          transition: all 0.3s ease;
+
+          &:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-1px);
+          }
+
           .muted {
-            color: $mutedColor;
+            color: rgba(255, 255, 255, 0.6);
           }
         }
       }
@@ -59,6 +93,8 @@
         display: flex;
         gap: 0.5rem;
         align-items: center;
+
+        // Стили для кнопок будут применены через MUI sx prop
       }
     }
   }

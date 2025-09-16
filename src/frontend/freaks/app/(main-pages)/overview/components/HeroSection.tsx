@@ -134,7 +134,7 @@ const HeroSection = () => {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.5, duration: 0.8 }}
                 >
-                  Добро пожаловать в
+                  Управление гильдией
                 </motion.span>
                 <motion.span
                   className={styles.guildName}
@@ -147,16 +147,17 @@ const HeroSection = () => {
                   }}
                 >
                   {" "}
-                  Freaks Guild
+                  нового уровня
                 </motion.span>
               </CustomTypography>
             </motion.div>
 
             <motion.div variants={itemVariants}>
               <CustomTypography variant="h5" className={styles.heroSubtitle}>
-                Элитная гильдия, покоряющая самые сложные рейды.
+                Планируй рейды, отслеживай прогресс, координируй участников.
                 <br />
-                Присоединяйся к легендарным приключениям!
+                Все инструменты для эффективного управления гильдией в одном
+                месте.
               </CustomTypography>
             </motion.div>
 
@@ -170,7 +171,7 @@ const HeroSection = () => {
                 }}
               >
                 <RocketIcon className={styles.featureIcon} />
-                <span>Эпические рейды</span>
+                <span>Планирование рейдов</span>
               </motion.div>
               <motion.div
                 className={styles.feature}
@@ -181,7 +182,7 @@ const HeroSection = () => {
                 }}
               >
                 <TrendingIcon className={styles.featureIcon} />
-                <span>Прогрессивное развитие</span>
+                <span>Аналитика прогресса</span>
               </motion.div>
             </motion.div>
 
@@ -196,21 +197,7 @@ const HeroSection = () => {
                   onClick={() => router.push("/raids")}
                   className={styles.heroPrimaryButton}
                 >
-                  Начать приключение
-                </Button>
-              </motion.div>
-
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Button
-                  variant="outlined"
-                  size="large"
-                  onClick={() => router.push("/raids")}
-                  className={styles.heroSecondaryButton}
-                >
-                  Смотреть рейды
+                  Перейти к рейдам
                 </Button>
               </motion.div>
             </motion.div>
