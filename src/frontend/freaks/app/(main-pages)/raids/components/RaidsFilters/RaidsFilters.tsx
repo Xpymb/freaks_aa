@@ -55,6 +55,8 @@ export default function RaidsFilters({ initial, onApply, onReset }: Props) {
   const debounced = useDebounce<FormValues>(watched, 300);
 
   const first = React.useRef(true);
+  const prevFilters = React.useRef<Partial<RaidListQuery>>({});
+
   React.useEffect(() => {
     if (first.current) {
       first.current = false;
@@ -70,7 +72,14 @@ export default function RaidsFilters({ initial, onApply, onReset }: Props) {
       SortMode: initial?.SortMode,
     };
 
-    onApply(filters);
+    // Проверяем, действительно ли фильтры изменились
+    const filtersChanged =
+      JSON.stringify(filters) !== JSON.stringify(prevFilters.current);
+
+    if (filtersChanged) {
+      prevFilters.current = filters;
+      onApply(filters);
+    }
   }, [debounced, onApply, initial?.SortBy, initial?.SortMode]);
 
   const doReset = () => {

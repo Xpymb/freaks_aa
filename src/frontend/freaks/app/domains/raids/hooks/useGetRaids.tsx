@@ -4,6 +4,7 @@ import { useProtectedSWR } from "@/shared/api/useProtectedSWR";
 import { RaidListQuery, RaidsService } from "../raids.service";
 import type { PaginatedList } from "@/types/paginated.types";
 import type { RaidListItem } from "../types";
+import { useMemo } from "react";
 
 export function buildRaidsQuery(filters: Partial<RaidListQuery> = {}): string {
   const p = new URLSearchParams();
@@ -23,18 +24,19 @@ export function buildRaidsQuery(filters: Partial<RaidListQuery> = {}): string {
 }
 
 export function useGetRaids(
-  prefetchData: PaginatedList<RaidListItem> | null,
+  prefetchData: PaginatedList<RaidListItem> | undefined,
   filters?: Partial<RaidListQuery>
 ) {
-  const query = buildRaidsQuery(filters);
+  const query = useMemo(() => buildRaidsQuery(filters), [filters]);
 
-  const key = `/raids${query ? `?${query}` : ""}`;
+  const key = useMemo(() => `/raids${query ? `?${query}` : ""}`, [query]);
 
   const { data, isLoading, errorState, mutate } = useProtectedSWR<
     PaginatedList<RaidListItem>
   >(key, (token) => RaidsService.getRaids(token, query), {
-    fallbackData: prefetchData || undefined,
+    fallbackData: prefetchData,
     revalidateOnMount: false,
+    dedupingInterval: 0,
   });
 
   return {

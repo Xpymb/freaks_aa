@@ -36,7 +36,7 @@ export interface CreateScreenshotRequest {
 }
 
 export const RaidsService = {
-  getRaids: (token: string, query = "SortBy=0&SortMode=2") =>
+  getRaids: (token: string, query = "SortBy=0&SortMode=2&Take=5&Skip=0") =>
     authorizedApi(token, "portal").get<PaginatedList<RaidListItem>>(
       `/raids${query ? `?${query}` : ""}`
     ),
