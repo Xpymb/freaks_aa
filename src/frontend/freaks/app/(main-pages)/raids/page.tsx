@@ -38,7 +38,7 @@ export default async function Page() {
           </CustomTypography>
         </div>
 
-        <RaidList prefetchRaids={raids} />
+        <RaidList prefetchRaids={raids ?? undefined} />
       </CustomContainer>
     </section>
   );

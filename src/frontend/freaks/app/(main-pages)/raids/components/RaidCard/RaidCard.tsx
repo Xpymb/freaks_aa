@@ -1,8 +1,4 @@
-import {
-  BOSS_LABEL,
-  BossType,
-  RaidListItem,
-} from "@/domains/raids";
+import { BOSS_LABEL, BossType, RaidListItem } from "@/domains/raids";
 import styles from "./_styles.module.scss";
 import { CustomTypography } from "@/components/ui/CustomTypography";
 import { DateFormat, formatDate } from "@/utils/formateDate";
