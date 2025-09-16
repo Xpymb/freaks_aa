@@ -8,11 +8,11 @@ import {
   LootItemDto,
   RaidParticipantDto,
 } from "@/domains/raids";
-import { IUser } from "@/types/user.types";
 import { useGetRaidByID } from "@/domains/raids/hooks/useGetRaidByID";
 import HeaderBlock from "./HeaderBlock/HeaderBlock";
 import BodyBlock from "./BodyBlock/BodyBlock";
 import DetailContainer from "@/components/ui/DetailContainer/DetailContainer";
+import { IUser } from "@/domains/user/types";
 
 type Props = {
   initialRaid: RaidItem;

@@ -1,5 +1,5 @@
 import { authorizedApi } from "@/shared/api/authorizedApi";
-import { IUser } from "@/types/user.types";
+import { IUser } from "@/domains/user/types";
 
 export interface UpdateUserRolesRequest {
   userId: string;

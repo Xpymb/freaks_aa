@@ -8,12 +8,31 @@ import {
   ArrowBack as ArrowBackIcon,
 } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { CustomTypography } from "@/components/ui/CustomTypography";
 import { CustomContainer } from "@/components/ui/CustomContainer";
 import styles from "./_styles.module.scss";
+import { useAuthActions } from "@/domains/auth/hooks/ useAuthActions";
+import DefaultLoader from "@/components/ui/DefaultLoader/DefaultLoader";
 
 const ForbiddenPage = () => {
   const router = useRouter();
+  const { data: session, status } = useSession();
+
+  const { handleLogout } = useAuthActions({
+    idToken: session?.idToken || null,
+    isAuthenticated: !!session,
+  });
+
+  React.useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/login");
+    }
+  }, [status, router]);
+
+  if (status === "loading") {
+    return <DefaultLoader />;
+  }
 
   return (
     <div className={styles.container}>
@@ -49,14 +68,16 @@ const ForbiddenPage = () => {
                   На главную
                 </Button>
 
-                <Button
-                  variant="outlined"
-                  startIcon={<ArrowBackIcon />}
-                  onClick={() => router.back()}
-                  className={styles.secondaryButton}
-                >
-                  Назад
-                </Button>
+                {session && (
+                  <Button
+                    variant="outlined"
+                    startIcon={<ArrowBackIcon />}
+                    onClick={handleLogout}
+                    className={styles.secondaryButton}
+                  >
+                    Выйти
+                  </Button>
+                )}
               </div>
             </div>
           </div>

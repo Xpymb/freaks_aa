@@ -1,21 +1,24 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import NextAuth from "next-auth";
 import KeycloakProvider from "next-auth/providers/keycloak";
 import type { JWT } from "next-auth/jwt";
 import axios from "axios";
 import { handleAxiosError } from "@/shared/errors";
+import { IKeycloakUser } from "@/types";
 
 const keycloakTokenUrl = `${process.env.NEXT_PUBLIC_KEYCLOAK_ISSUER}/protocol/openid-connect/token`;
+const keycloakUserInfoUrl = `${process.env.NEXT_PUBLIC_KEYCLOAK_ISSUER}/protocol/openid-connect/userinfo`;
 
-/** Собираем роли из profile (realm + client) */
-function extractRolesFromProfile(p: any) {
-  const set = new Set<string>();
-  const clientId = process.env.KEYCLOAK_ID!;
-  p?.realm_access?.roles?.forEach((r: string) => set.add(r));
-  p?.resource_access?.[clientId]?.roles?.forEach((r: string) => set.add(r));
-  // если ты добавишь плоский массив roles в userinfo — тоже подхватим:
-  if (Array.isArray(p?.roles)) p.roles.forEach((r: string) => set.add(r));
-  return [...set];
+async function getUserInfo(accessToken: string) {
+  try {
+    const response = await axios.get(keycloakUserInfoUrl, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    return response.data;
+  } catch {
+    return null;
+  }
 }
 
 async function refreshAccessToken(token: JWT): Promise<JWT> {
@@ -54,17 +57,14 @@ export const { handlers, auth } = NextAuth({
     KeycloakProvider({
       clientId: process.env.KEYCLOAK_ID!,
       issuer: process.env.NEXT_PUBLIC_KEYCLOAK_ISSUER!,
-      // Просим нужные скоупы (если не повешены как default клиент-скоупы)
       authorization: { params: { scope: "openid profile email roles" } },
-      // Забираем клеймы из userinfo/id_token и формируем user-объект
-      profile(profile) {
+      profile(profile: IKeycloakUser) {
         return {
           id: profile.sub,
-          name: profile.preferred_username ?? profile.name,
-          email: profile.email,
           game_nickname: profile.game_nickname,
-          roles: extractRolesFromProfile(profile),
-        } as any;
+          username: profile.preferred_username,
+          roles: profile.roles || [],
+        };
       },
     }),
   ],
@@ -78,16 +78,10 @@ export const { handlers, auth } = NextAuth({
           refreshToken: account.refresh_token!,
           idToken: account.id_token,
           accessTokenExpires: (account.expires_at ?? 0) * 1000,
-
-          // Сохраняем ID пользователя в токен
-          id: (user as any).id,
-          game_nickname: (user as any).game_nickname,
-          roles: (user as any).roles ?? [],
-          email: (user as any).email ?? token.email,
-          preferred_username:
-            (user as any).name ??
-            (user as any).preferred_username ??
-            (token as any).preferred_username,
+          id: user.id,
+          game_nickname: user.game_nickname,
+          username: user.username,
+          roles: user.roles ?? [],
         };
       }
 
@@ -96,33 +90,37 @@ export const { handlers, auth } = NextAuth({
     },
 
     async session({ session, token }) {
-      (session as any).accessToken = token.accessToken;
-      (session as any).idToken = token.idToken;
-
+      let currentToken = token;
       session.user = session.user ?? {};
-
-      // Используем актуальный sub из accessToken, а не кешированный ID
-      let actualUserId = (token as any).id;
       if (token.accessToken) {
-        try {
-          const parts = (token.accessToken as string).split(".");
-          if (parts.length === 3) {
-            const payload = JSON.parse(atob(parts[1]));
-            actualUserId = payload.sub; // Берем актуальный sub из accessToken
-          }
-        } catch {
-          // fallback к кешированному ID
+        if (Date.now() >= (token.accessTokenExpires as number)) {
+          currentToken = await refreshAccessToken(token);
+        }
+
+        const userInfo = await getUserInfo(currentToken.accessToken as string);
+
+        if (userInfo) {
+          session.user.id = userInfo.sub;
+          session.user.username = userInfo.preferred_username;
+          session.user.game_nickname = userInfo.game_nickname;
+          session.user.roles = userInfo.roles || [];
+        } else {
+          let actualUserId = token.id as string;
+          try {
+            const parts = (token.accessToken as string).split(".");
+            if (parts.length === 3) {
+              const payload = JSON.parse(atob(parts[1]));
+              actualUserId = payload.sub;
+            }
+          } catch {}
+          session.user.id = actualUserId;
+          session.user.username = token.preferred_username;
+          session.user.game_nickname = token.game_nickname;
+          session.user.roles = token.roles ?? [];
         }
       }
-
-      (session.user as any).id = actualUserId;
-      (session.user as any).email = (token as any).email ?? session.user.email;
-      (session.user as any).preferred_username = (
-        token as any
-      ).preferred_username;
-      (session.user as any).game_nickname = (token as any).game_nickname;
-      (session.user as any).roles = (token as any).roles ?? [];
-
+      session.accessToken = currentToken.accessToken;
+      session.idToken = currentToken.idToken;
       return session;
     },
   },
