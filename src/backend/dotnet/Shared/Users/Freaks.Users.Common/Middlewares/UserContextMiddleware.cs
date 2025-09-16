@@ -63,7 +63,7 @@ public class UserContextMiddleware
                     Id = userId,
                     Roles = GetUserRoles(user!),
                     Username = user!.FindFirst("preferred_username")!.Value,
-                    Email = user.FindFirst(ClaimTypes.Email)!.Value,
+                    Email = user.FindFirst(ClaimTypes.Email)?.Value ?? string.Empty,
                     GameNickname = user.FindFirst("game_nickname")!.Value,
                     CreatedDt = DateTimeOffset.UtcNow,
                 };
