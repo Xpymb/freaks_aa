@@ -57,6 +57,7 @@ const BodyBlock = ({
           raid={raid}
           prefetchParticipants={prefetchParticipants}
           prefetchUsers={prefetchUsers}
+          prefetchScreenshots={prefetchScreenshots}
         />
       ),
       2: (

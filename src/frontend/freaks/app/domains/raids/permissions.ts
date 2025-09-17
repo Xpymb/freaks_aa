@@ -4,8 +4,8 @@ import { RaidItem, RaidStatus } from "./types";
 // Роли с полными правами администрирования
 const SUPER_ADMIN_ROLES: UserRole[] = ["admin", "guild_leader"];
 
-// Роли с правами редактирования
-const EDITOR_ROLES: UserRole[] = ["admin", "guild_leader", "editor"];
+// Роли с правами редактирования (используется в комментариях)
+// const EDITOR_ROLES: UserRole[] = ["admin", "guild_leader", "editor"];
 
 // Роли с базовыми правами
 const MEMBER_ROLES: UserRole[] = ["admin", "guild_leader", "editor", "member"];
@@ -19,17 +19,17 @@ export function canEditRaidContent(
   raid: RaidItem,
   userId?: string
 ): boolean {
-  // ADMIN и GUILD_LEADER могут редактировать рейды в любом статусе
+  // После завершения рейда больше никто не может редактировать
+  if (raid.status === RaidStatus.Ended) {
+    return false;
+  }
+
+  // ADMIN и GUILD_LEADER могут редактировать незавершенные рейды
   const hasSuperAdminRole = SUPER_ADMIN_ROLES.some((role) =>
     userRoles.includes(role)
   );
   if (hasSuperAdminRole) {
     return true;
-  }
-
-  // После завершения рейда больше никто не может редактировать
-  if (raid.status === RaidStatus.Ended) {
-    return false;
   }
 
   // EDITOR может редактировать любые незавершенные рейды
@@ -53,8 +53,10 @@ export function canEditRaidContent(
  */
 export function canCompleteRaid(
   userRoles: UserRole[],
-  raid: RaidItem,
-  userId?: string
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _raid: RaidItem,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _userId?: string
 ): boolean {
   // Только ADMIN и GUILD_LEADER могут завершать рейды
   const hasSuperAdminRole = SUPER_ADMIN_ROLES.some((role) =>

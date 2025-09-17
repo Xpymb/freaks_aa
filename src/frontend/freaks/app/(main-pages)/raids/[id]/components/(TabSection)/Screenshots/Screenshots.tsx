@@ -9,7 +9,7 @@ import DefaultLoader from "@/components/ui/DefaultLoader/DefaultLoader";
 import NotFound from "@/components/ui/NotFound/NotFound";
 import ErrorLoadData from "@/components/ui/ErrorLoadData/ErrorLoadData";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import { IconButton } from "@mui/material";
+import { IconButton, Portal } from "@mui/material";
 import ZoomOutMapIcon from "@mui/icons-material/ZoomOutMap";
 import { useDeleteRaidScreenshot } from "@/domains/raids/hooks/useDeleteRaidScreenshot";
 import { useAppError } from "@/shared/errors";
@@ -29,7 +29,6 @@ type Props = {
 const Screenshots = ({ raid, screenshotData, overview, maxOnPage }: Props) => {
   const [screenshot, setScreenshot] = useState<string | null>(null);
   const { open, onOpen, onClose } = useDisclosure();
-
   const { trigger: deleteShot, isMutating } = useDeleteRaidScreenshot();
 
   const handleDelete =
@@ -51,7 +50,6 @@ const Screenshots = ({ raid, screenshotData, overview, maxOnPage }: Props) => {
 
   return (
     <div className={styles.screenshots}>
-      {/* Форма загрузки скриншотов - только для пользователей с правами на редактирование */}
       {!overview && (
         <RaidConditionalRender raid={raid} permission="canEdit">
           <FileUploadWithPreview raidId={raid.id} />
@@ -79,7 +77,6 @@ const Screenshots = ({ raid, screenshotData, overview, maxOnPage }: Props) => {
               }}
               className={styles.imageWrap}
             >
-              {/* Кнопка удаления скриншота - только для пользователей с правами на редактирование */}
               {!overview && (
                 <RaidConditionalRender raid={raid} permission="canEdit">
                   <IconButton
@@ -104,14 +101,17 @@ const Screenshots = ({ raid, screenshotData, overview, maxOnPage }: Props) => {
               />
             </div>
           ))}
-          <ImageViewerModal
-            open={open}
-            onClose={onClose}
-            imageUrl={screenshot || ""}
-            alt="Скриншот рейда"
-          />
         </div>
       </div>
+
+      <Portal>
+        <ImageViewerModal
+          open={open}
+          onClose={onClose}
+          imageUrl={screenshot || ""}
+          alt="Скриншот рейда"
+        />
+      </Portal>
     </div>
   );
 };

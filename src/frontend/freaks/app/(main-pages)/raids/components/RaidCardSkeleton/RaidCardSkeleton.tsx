@@ -1,4 +1,4 @@
-import { Box, Skeleton } from "@mui/material";
+import { Skeleton } from "@mui/material";
 import styles from "./_styles.module.scss";
 
 const RaidCardSkeleton = () => {

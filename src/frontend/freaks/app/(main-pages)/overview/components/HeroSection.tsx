@@ -129,13 +129,7 @@ const HeroSection = () => {
 
             <motion.div variants={itemVariants}>
               <CustomTypography variant="h1" className={styles.heroTitle}>
-                <motion.span
-                  initial={{ opacity: 0, x: -50 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.5, duration: 0.8 }}
-                >
-                  Управление гильдией
-                </motion.span>
+                Управление гильдией
                 <motion.span
                   className={styles.guildName}
                   initial={{ opacity: 0, scale: 0.8 }}

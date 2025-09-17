@@ -9,6 +9,7 @@ import DeleteRaidButton from "../DeleteRaidButton/DeleteRaidButton";
 import { RaidConditionalRender } from "@/components/ui";
 import ReplyIcon from "@mui/icons-material/Reply";
 import { motion } from "framer-motion";
+import { HelpHint } from "@/components/ui/HelpHint/HelpHint";
 
 type Props = {
   raid: RaidItem;
@@ -100,6 +101,7 @@ const HeaderBlock = ({ raid }: Props) => {
                   raid.startDt,
                   DateFormat.SHORT_DATE_SHORT_YEAR_TIME
                 )}
+                <HelpHint title="Дата указывается в вашем локальном часовом поясе" />
               </CustomTypography>
             </motion.div>
 
@@ -118,6 +120,7 @@ const HeaderBlock = ({ raid }: Props) => {
                   raid.createdDt,
                   DateFormat.SHORT_DATE_SHORT_YEAR_TIME
                 )}
+                <HelpHint title="Дата указывается в вашем локальном часовом поясе" />
               </CustomTypography>
             </motion.div>
             {raid.updatedDt && (
@@ -136,7 +139,11 @@ const HeaderBlock = ({ raid }: Props) => {
                     Обновлено:
                   </CustomTypography>
                   <CustomTypography variant="subtitle1">
-                    {raid.updatedDt}
+                    {formatDate(
+                      raid.updatedDt,
+                      DateFormat.SHORT_DATE_SHORT_YEAR_TIME
+                    )}
+                    <HelpHint title="Дата указывается в вашем локальном часовом поясе" />
                   </CustomTypography>
                 </motion.div>
               </>

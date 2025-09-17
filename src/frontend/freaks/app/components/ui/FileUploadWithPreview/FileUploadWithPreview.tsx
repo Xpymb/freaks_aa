@@ -25,7 +25,7 @@ type Props = {
 
 export default function FileUploadWithPreview({ raidId, fileType = 1 }: Props) {
   const [draftFiles, setDraftFiles] = useState<FilePreview[]>([]);
-  
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const { open, onOpen, onClose } = useDisclosure();
 
@@ -104,13 +104,11 @@ export default function FileUploadWithPreview({ raidId, fileType = 1 }: Props) {
     return () => window.removeEventListener("paste", handlePaste);
   }, [addFiles]);
 
-
   const clearDrafts = useCallback(() => {
     draftFiles.forEach((f) => URL.revokeObjectURL(f.preview));
     setDraftFiles([]);
     setCurrentIndex(0);
-  }, []);
-
+  }, [draftFiles]);
 
   const handleUpload = async () => {
     if (!draftFiles.length || isMutating) return;
@@ -123,7 +121,7 @@ export default function FileUploadWithPreview({ raidId, fileType = 1 }: Props) {
         );
       }
 
-      clearDrafts()
+      clearDrafts();
       onClose();
     } catch {
       console.error(

@@ -173,11 +173,12 @@ const UsersTable = () => {
         <Table className={styles.table}>
           <TableHead className={styles.tableHead}>
             <TableRow className={styles.headRow}>
+              <TableCell className={styles.headCell}>Игровой ник</TableCell>
               <TableCell className={styles.headCell}>
                 Имя пользователя
                 <HelpHint title="Имя пользователя в Discord" />
               </TableCell>
-              <TableCell className={styles.headCell}>Игровой ник</TableCell>
+
               <TableCell className={styles.headCell}>Роли</TableCell>
               <TableCell className={styles.headCell}>Действия</TableCell>
             </TableRow>
@@ -186,10 +187,10 @@ const UsersTable = () => {
             {usersWithChanges.map((user) => (
               <TableRow key={user.id} className={styles.bodyRow}>
                 <TableCell className={styles.bodyCell}>
-                  {user.username}
+                  {user.gameNickname}
                 </TableCell>
                 <TableCell className={styles.bodyCell}>
-                  {user.gameNickname}
+                  {user.username}
                 </TableCell>
                 <TableCell className={styles.bodyCell}>
                   <FormControl className={styles.roleSelect}>
