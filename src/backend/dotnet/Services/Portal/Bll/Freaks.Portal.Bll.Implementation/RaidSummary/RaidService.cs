@@ -27,12 +27,14 @@ public class RaidService : IRaidService
     private readonly IMessageService _messageService;
     private readonly IMapper _mapper;
     private readonly IUserContext _userContext;
+    private readonly IRaidAccessService _raidAccessService;
 
     /// <summary>
     ///     Инициализирует новый экземпляр сервиса <see cref="RaidParticipantService" />.
     /// </summary>
     /// <param name="mapper">Сервис AutoMapper для преобразования между моделями.</param>
     /// <param name="userContext">Контекст текущего пользователя.</param>
+    /// <param name="raidAccessService">Сервис проверки прав на действия с рейдом.</param>
     /// <param name="provider">Провайдер доступа к данным участников рейда.</param>
     /// <param name="jobClient">Клиент фоновых задач.</param>
     /// <param name="messageService">Сервис для публикации сообщений в систему обмена сообщениями.</param>
@@ -40,15 +42,17 @@ public class RaidService : IRaidService
     public RaidService(
         IMapper mapper,
         IUserContext userContext,
+        IRaidAccessService raidAccessService,
         IRaidProvider provider,
         IBackgroundJobClient jobClient,
         IMessageService messageService)
     {
+        _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+        _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
+        _raidAccessService = raidAccessService ?? throw new ArgumentNullException(nameof(raidAccessService));
         _provider = provider ?? throw new ArgumentNullException(nameof(provider));
         _jobClient = jobClient ?? throw new ArgumentNullException(nameof(jobClient));
         _messageService = messageService ?? throw new ArgumentNullException(nameof(messageService));
-        _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-        _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
     }
 
     /// <inheritdoc />
@@ -115,6 +119,8 @@ public class RaidService : IRaidService
             throw new EntityNotFoundException();
         }
 
+        _raidAccessService.CheckAccess(entity, EntityAccessType.Update);
+        
         entity.BossType = request.BossType;
         entity.FormatType = request.FormatType;
         entity.Description = request.Description;
@@ -134,8 +140,11 @@ public class RaidService : IRaidService
         {
             throw new EntityNotFoundException();
         }
+        
+        _raidAccessService.CheckAccess(entity, EntityAccessType.Update);
 
         entity.Status = RaidStatus.Ended;
+        entity.UpdatedDt = DateTimeOffset.UtcNow;
         
         var result = await _provider.UpdateAsync(entity);
         
@@ -147,6 +156,8 @@ public class RaidService : IRaidService
     /// <inheritdoc />
     public async Task DeleteAsync(long id)
     {
+        await _raidAccessService.CheckAccessAsync(id, EntityAccessType.Delete);
+        
         await _provider.DeleteAsync(id);
 
         await PublishMessageAsync(id, EntityActionType.Deleted);

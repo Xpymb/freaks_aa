@@ -29,6 +29,7 @@ public static class ConfigureServices
         services.AddHangfireCommon(configuration);
         
         // Raid
+        services.AddScoped<IRaidAccessService, RaidAccessService>();
         services.AddScoped<IRaidService, RaidService>();
         services.AddScoped<IRaidParticipantService, RaidParticipantService>();
         services.AddScoped<IRaidScreenshotService, RaidScreenshotService>();

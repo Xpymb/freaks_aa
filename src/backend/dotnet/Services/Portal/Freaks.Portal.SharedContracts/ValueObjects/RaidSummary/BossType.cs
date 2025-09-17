@@ -55,4 +55,9 @@ public enum BossType
     /// Кошка (Abyssal Sehekmet).
     /// </summary>
     AbyssalSehekmet = 10,
+    
+    /// <summary>
+    /// Калиель.
+    /// </summary>
+    Kaliel = 11,
 }

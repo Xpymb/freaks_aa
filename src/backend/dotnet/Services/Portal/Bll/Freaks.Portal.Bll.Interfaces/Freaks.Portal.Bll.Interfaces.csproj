@@ -8,6 +8,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\..\..\Shared\Freaks.SharedContracts.Common\Freaks.SharedContracts.Common.csproj"/>
+        <ProjectReference Include="..\..\Freaks.Portal.Contracts\Freaks.Portal.Contracts.csproj"/>
         <ProjectReference Include="..\..\Freaks.Portal.SharedContracts\Freaks.Portal.SharedContracts.csproj"/>
     </ItemGroup>
 
