@@ -7,6 +7,7 @@ using Freaks.Portal.Contracts.Entities.RaidSummary;
 using Freaks.Portal.Dal.Interfaces.RaidSummary;
 using Freaks.Portal.SharedContracts.Dto.RaidSummary;
 using Freaks.Portal.SharedContracts.Requests.RaidSummary.RaidLoot;
+using Freaks.SharedContracts.Common;
 using Freaks.Users.Contracts.ValueObjects;
 using Freaks.WebApi.Common.Exceptions;
 using MapsterMapper;
@@ -22,6 +23,7 @@ public class RaidLootService : IRaidLootService
 {
     private readonly IMapper _mapper;
     private readonly IUserContext _userContext;
+    private readonly IRaidAccessService _raidAccessService;
     private readonly IRaidLootProvider _provider;
     private readonly IMessageService _messageService;
 
@@ -30,17 +32,20 @@ public class RaidLootService : IRaidLootService
     /// </summary>
     /// <param name="mapper">Сервис AutoMapper для преобразования сущностей в DTO и обратно.</param>
     /// <param name="userContext">Контекст текущего пользователя.</param>
+    /// <param name="raidAccessService">Сервис проверки прав на действия с рейдом.</param>
     /// <param name="provider">Провайдер доступа к данным рейдового лута.</param>
     /// <param name="messageService">Сервис для публикации сообщений в систему обмена сообщениями.</param>
     /// <exception cref="ArgumentNullException">Выбрасывается, если любой из аргументов равен null.</exception>
     public RaidLootService(
         IMapper mapper,
         IUserContext userContext,
+        IRaidAccessService raidAccessService,
         IRaidLootProvider provider,
         IMessageService messageService)
     {
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
+        _raidAccessService = raidAccessService ?? throw new ArgumentNullException(nameof(raidAccessService));
         _provider = provider ?? throw new ArgumentNullException(nameof(provider));
         _messageService = messageService ?? throw new ArgumentNullException(nameof(messageService));
     }
@@ -56,6 +61,8 @@ public class RaidLootService : IRaidLootService
     /// <inheritdoc />
     public async Task<RaidLootDto> CreateAsync(long raidId, CreateRaidLootRequest request)
     {
+        await _raidAccessService.CheckAccessAsync(raidId, EntityAccessType.Update);
+        
         var entity =
             new RaidLoot
             {
@@ -75,12 +82,14 @@ public class RaidLootService : IRaidLootService
     /// <inheritdoc />
     public async Task<RaidLootDto> UpdateAsync(long raidId, int lootId, UpdateRaidLootRequest request)
     {
+        await _raidAccessService.CheckAccessAsync(raidId, EntityAccessType.Update);
+        
         var entity = await _provider.GetAsync(new RaidLootKey(raidId, lootId), EntityTrackingType.NoTracking);
         if (entity is null)
         {
             throw new EntityNotFoundException();
         }
-
+        
         entity.Quantity = request.Quantity;
 
         var result = await _provider.UpdateAsync(entity);
@@ -93,6 +102,8 @@ public class RaidLootService : IRaidLootService
     /// <inheritdoc />
     public async Task DeleteAsync(long raidId, int lootId)
     {
+        await _raidAccessService.CheckAccessAsync(raidId, EntityAccessType.Update);
+        
         await _provider.DeleteAsync(new RaidLootKey(raidId, lootId));
 
         await PublishMessageAsync(raidId, EntityActionType.Deleted);

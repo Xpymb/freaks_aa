@@ -43,6 +43,12 @@ public class RaidScreenshotProvider : BaseCachedCompositeProvider<RaidScreenshot
     }
 
     /// <inheritdoc />
+    public async Task<int> CountByRaidAsync(long raidId)
+    {
+        return await Set.CountAsync(r => r.RaidId == raidId);
+    }
+
+    /// <inheritdoc />
     protected override IQueryable<RaidScreenshot> FilterByKey(RaidScreenshotKey key, IQueryable<RaidScreenshot> queryable)
     {
         return queryable.Where(s => s.RaidId == key.RaidId && s.ScreenshotUri == key.ScreenshotUrl);
