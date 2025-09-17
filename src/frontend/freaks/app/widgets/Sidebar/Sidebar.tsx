@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useSidebar } from "@/contexts/SidebarContext";
-import { useHasRole } from "@/domains/auth/hooks/useHasRole";
+
 import {
   AccessTimeOutlined,
   EmailOutlined,
@@ -14,7 +14,6 @@ import {
   MenuOutlined,
   ChevronRightOutlined,
   ChevronLeftOutlined,
-  AdminPanelSettings,
 } from "@mui/icons-material";
 import { Tooltip, IconButton } from "@mui/material";
 import clsx from "clsx";
@@ -93,7 +92,6 @@ const Sidebar = () => {
 
   return (
     <>
-      {/* Mobile overlay */}
       {isMobile && !isCollapsed && (
         <div className={styles.overlay} onClick={() => setIsCollapsed(true)} />
       )}
@@ -105,7 +103,6 @@ const Sidebar = () => {
           [styles.expanded]: isExpanded && !isMobile,
         })}
       >
-        {/* Toggle button for mobile */}
         {isMobile && (
           <div className={styles.toggleButton}>
             <IconButton
@@ -172,7 +169,6 @@ const Sidebar = () => {
           })}
         </nav>
 
-        {/* Кнопка раздвижения для десктопа */}
         {!isMobile && (
           <div className={styles.expandToggle}>
             <IconButton

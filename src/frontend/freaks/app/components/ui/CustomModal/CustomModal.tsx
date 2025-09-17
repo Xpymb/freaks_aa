@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Modal, IconButton } from "@mui/material";
+import { Modal, IconButton, Fade, Backdrop } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import clsx from "clsx";
 import styles from "./_styles.module.scss";
@@ -52,33 +52,52 @@ const CustomModal = ({
   const titleAttr = getTitleText(title);
 
   return (
-    <Modal open={open} onClose={onClose}>
-      <div
-        style={{ minWidth }}
-        data-theme={theme}
-        className={clsx(styles.card, className)}
-      >
-        {(title != null || showClose) && (
-          <div className={clsx(styles.header, headerClassName)}>
-            {title && (
-              <div className={styles.title} title={titleAttr}>
-                {title}
-              </div>
-            )}
-            {showClose && (
-              <IconButton size="small" aria-label="close" onClick={onClose}>
-                <CloseIcon />
-              </IconButton>
-            )}
-          </div>
-        )}
+    <Modal
+      open={open}
+      onClose={onClose}
+      closeAfterTransition
+      BackdropComponent={Backdrop}
+      BackdropProps={{
+        timeout: 300,
+        sx: {
+          backgroundColor: "rgba(0, 0, 0, 0.7)",
+          backdropFilter: "blur(8px)",
+        },
+      }}
+    >
+      <Fade in={open} timeout={300}>
+        <div
+          style={{ minWidth }}
+          data-theme={theme}
+          className={clsx(styles.card, className)}
+        >
+          {(title != null || showClose) && (
+            <div className={clsx(styles.header, headerClassName)}>
+              {title && (
+                <div className={styles.title} title={titleAttr}>
+                  {title}
+                </div>
+              )}
+              {showClose && (
+                <IconButton
+                  className={styles.closeButton}
+                  size="small"
+                  aria-label="close"
+                  onClick={onClose}
+                >
+                  <CloseIcon />
+                </IconButton>
+              )}
+            </div>
+          )}
 
-        <div className={clsx(styles.body, bodyClassName)}>{children}</div>
+          <div className={clsx(styles.body, bodyClassName)}>{children}</div>
 
-        {footer && (
-          <div className={clsx(styles.footer, footerClassName)}>{footer}</div>
-        )}
-      </div>
+          {footer && (
+            <div className={clsx(styles.footer, footerClassName)}>{footer}</div>
+          )}
+        </div>
+      </Fade>
     </Modal>
   );
 };

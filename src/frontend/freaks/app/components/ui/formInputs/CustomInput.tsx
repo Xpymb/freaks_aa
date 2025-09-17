@@ -13,8 +13,7 @@ import {
 type BaseInputProps = {
   value: string;
   onChange: (next: string) => void;
-
-  label?: string;
+  label?: string | React.ReactNode;
   placeholder?: string;
   size?: "small" | "medium";
   fullWidth?: boolean;

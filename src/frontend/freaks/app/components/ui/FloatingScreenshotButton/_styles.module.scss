@@ -1,0 +1,400 @@
+@use "@/ThemeMUI/variables" as *;
+
+.floatingButton {
+  position: fixed;
+  bottom: 30px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.button {
+  background: linear-gradient(135deg, #2196f3, #1976d2) !important;
+  color: white !important;
+  width: 64px !important;
+  height: 64px !important;
+  box-shadow: 0 8px 32px rgba(33, 150, 243, 0.4) !important;
+  border: 2px solid rgba(255, 255, 255, 0.2) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  position: relative !important;
+
+  &:hover {
+    transform: translateY(-4px) scale(1.05) !important;
+    box-shadow: 0 12px 40px rgba(33, 150, 243, 0.6) !important;
+    background: linear-gradient(135deg, #1976d2, #1565c0) !important;
+  }
+
+  &:active {
+    transform: translateY(-2px) scale(1.02) !important;
+  }
+
+  .MuiSvgIcon-root {
+    font-size: 1.8rem !important;
+  }
+}
+
+.badge {
+  position: absolute !important;
+  top: -8px !important;
+  right: -8px !important;
+  background: #ff4444 !important;
+  color: white !important;
+  font-weight: 600 !important;
+  font-size: 0.7rem !important;
+  min-width: 20px !important;
+  height: 20px !important;
+  border: 2px solid white !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+.menu {
+  position: absolute;
+  bottom: 80px;
+  right: -10px;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.95) 0%,
+    rgba(0, 0, 0, 0.9) 100%
+  );
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+}
+
+.screenshotList {
+  padding: 8px 0 !important;
+  max-height: 400px;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(33, 150, 243, 0.5);
+    border-radius: 3px;
+
+    &:hover {
+      background: rgba(33, 150, 243, 0.7);
+    }
+  }
+}
+
+.screenshotItem {
+  padding: 0 !important;
+  margin: 4px 8px !important;
+  border-radius: 8px !important;
+  transition: all 0.3s ease !important;
+
+  &:hover {
+    background: rgba(33, 150, 243, 0.1) !important;
+    transform: scale(1.05);
+  }
+}
+
+.thumbnailContainer {
+  min-width: 60px !important;
+  width: 60px !important;
+  height: 40px !important;
+  position: relative !important;
+  border-radius: 6px !important;
+  overflow: hidden !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.thumbnail {
+  object-fit: cover !important;
+  border-radius: 5px !important;
+}
+
+.screenshotText {
+  .MuiListItemText-primary {
+    color: white !important;
+    font-weight: 500 !important;
+    font-size: 0.9rem !important;
+  }
+}
+
+.overlayControls {
+  position: fixed;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1001;
+}
+
+.controlPanel {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.9) 0%,
+    rgba(0, 0, 0, 0.85) 100%
+  );
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 25px;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  min-width: 600px;
+}
+
+.controlGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.counter {
+  background: rgba(33, 150, 243, 0.1) !important;
+  color: #2196f3 !important;
+  border: 1px solid rgba(33, 150, 243, 0.3) !important;
+  font-weight: 500 !important;
+  font-size: 0.75rem !important;
+  margin: 0 8px !important;
+}
+
+.sizeCounter {
+  background: rgba(255, 193, 7, 0.1) !important;
+  color: #ffc107 !important;
+  border: 1px solid rgba(255, 193, 7, 0.3) !important;
+  font-weight: 500 !important;
+  font-size: 0.75rem !important;
+  margin: 0 8px !important;
+}
+
+.controlButton {
+  color: rgba(255, 255, 255, 0.7) !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  transition: all 0.3s ease !important;
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+
+  &:hover {
+    color: white !important;
+    background: rgba(33, 150, 243, 0.1) !important;
+    border-color: rgba(33, 150, 243, 0.3) !important;
+    transform: scale(1.05);
+  }
+
+  &.active {
+    color: #2196f3 !important;
+    background: rgba(33, 150, 243, 0.15) !important;
+    border-color: rgba(33, 150, 243, 0.4) !important;
+  }
+
+  .MuiSvgIcon-root {
+    font-size: 18px !important;
+  }
+}
+
+.opacityControl {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 200px;
+}
+
+.sliderLabel {
+  color: rgba(255, 255, 255, 0.8) !important;
+  font-size: 0.8rem !important;
+  font-weight: 500 !important;
+  white-space: nowrap;
+}
+
+.slider {
+  flex: 1 !important;
+
+  .MuiSlider-thumb {
+    width: 18px !important;
+    height: 18px !important;
+    margin-top: -7px !important;
+    margin-left: -7px !important;
+  }
+
+  .MuiSlider-track {
+    height: 4px !important;
+    border-radius: 2px !important;
+  }
+
+  .MuiSlider-rail {
+    height: 4px !important;
+    border-radius: 2px !important;
+  }
+}
+
+.overlay {
+  position: fixed;
+  z-index: 999;
+  pointer-events: auto;
+  user-select: none;
+  transition: opacity 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  border: 2px solid rgba(33, 150, 243, 0.3);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(4px);
+
+  &:hover {
+    border-color: rgba(33, 150, 243, 0.5);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  }
+
+  &.dragging {
+    border-color: rgba(33, 150, 243, 0.8);
+    box-shadow: 0 16px 48px rgba(33, 150, 243, 0.3);
+    transform: scale(1.02);
+  }
+
+  &.resizing {
+    border-color: rgba(255, 193, 7, 0.8);
+    box-shadow: 0 16px 48px rgba(255, 193, 7, 0.3);
+  }
+}
+
+.overlayImage {
+  object-fit: contain !important;
+  object-position: center !important;
+  width: 100% !important;
+  height: 100% !important;
+  pointer-events: none; // Prevent image from interfering with drag
+}
+
+.resizeHandle {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  background: linear-gradient(135deg, #2196f3, #1976d2);
+  border-radius: 0 0 8px 0;
+  cursor: se-resize;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+
+  &::before {
+    content: "";
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid white;
+    transform: rotate(45deg);
+  }
+
+  &:hover {
+    background: linear-gradient(135deg, #1976d2, #1565c0);
+    transform: scale(1.1);
+  }
+}
+
+// Адаптивность
+@media (max-width: 768px) {
+  .floatingButton {
+    bottom: 20px;
+    right: 20px;
+  }
+
+  .button {
+    width: 56px !important;
+    height: 56px !important;
+
+    .MuiSvgIcon-root {
+      font-size: 1.5rem !important;
+    }
+  }
+
+  .menu {
+    min-width: 280px;
+    max-width: 320px;
+    bottom: 70px;
+  }
+
+  .controlPanel {
+    min-width: 400px;
+    width: 400px;
+    padding: 10px 16px;
+    gap: 12px;
+  }
+
+  .opacityControl {
+    min-width: 150px;
+  }
+
+  .controlButton {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+
+    .MuiSvgIcon-root {
+      font-size: 16px !important;
+    }
+  }
+
+  .overlay {
+    min-width: 200px;
+    min-height: 150px;
+    max-width: 90vw;
+    max-height: 70vh;
+  }
+
+  .resizeHandle {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .floatingButton {
+    bottom: 15px;
+    right: 15px;
+  }
+
+  .button {
+    width: 48px !important;
+    height: 48px !important;
+
+    .MuiSvgIcon-root {
+      font-size: 1.3rem !important;
+    }
+  }
+
+  .menu {
+    min-width: 260px;
+    max-width: 300px;
+    bottom: 60px;
+  }
+
+  .controlPanel {
+    min-width: 320px;
+    width: 320px;
+    padding: 8px 12px;
+    gap: 8px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .opacityControl {
+    min-width: auto;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .controlGroup {
+    justify-content: center;
+  }
+}

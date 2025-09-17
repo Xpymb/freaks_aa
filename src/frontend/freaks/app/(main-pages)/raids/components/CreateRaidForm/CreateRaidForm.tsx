@@ -19,6 +19,7 @@ import { makeOptionsFromRecord } from "@/utils/makeOptionsFromRecord";
 import { BOSS_LABEL, BossType } from "@/domains/raids";
 import { CreateRaidRequest, RaidsService } from "@/domains/raids/raids.service";
 import { useTokens } from "@/store/authTokenStore";
+import { HelpHint } from "@/components/ui/HelpHint/HelpHint";
 
 const pad = (n: number) => String(n).padStart(2, "0");
 const toLocalInput = (d: Date) =>
@@ -109,7 +110,12 @@ export default function CreateRaid() {
                 className={styles.date}
                 control={control}
                 name="startDt"
-                label="Дата и время начала"
+                label={
+                  <CustomTypography variant="subtitle1">
+                    Дата и время начала
+                    <HelpHint title="Дата указывается в вашем локальном часовом поясе" />
+                  </CustomTypography>
+                }
                 type="datetime-local"
                 required
                 rules={{

@@ -16,7 +16,7 @@ const ImageViewerModal: React.FC<ImageViewerModalProps> = ({
   open,
   onClose,
   imageUrl,
-  alt = "Image"
+  alt = "Image",
 }) => {
   const [imageDimensions, setImageDimensions] = useState<{
     width: number;
@@ -29,38 +29,40 @@ const ImageViewerModal: React.FC<ImageViewerModalProps> = ({
 
     setIsLoading(true);
     const img = new window.Image();
-    
+
     img.onload = () => {
-      // Фиксированные размеры модального окна (80% от viewport)
-      const fixedWidth = Math.min(window.innerWidth * 0.8, 1200); // максимум 1200px
-      const fixedHeight = Math.min(window.innerHeight * 0.8, 800); // максимум 800px
-      
+      const fixedWidth = Math.min(window.innerWidth * 0.8, 1200);
+      const fixedHeight = Math.min(window.innerHeight * 0.8, 800);
+
       setImageDimensions({
         width: Math.round(fixedWidth),
-        height: Math.round(fixedHeight)
+        height: Math.round(fixedHeight),
       });
       setIsLoading(false);
     };
-    
+
     img.onerror = () => {
       setIsLoading(false);
     };
-    
+
     img.src = imageUrl;
   }, [open, imageUrl]);
 
   const handleBackdropClick = (event: React.MouseEvent) => {
     const target = event.target as HTMLElement;
-    if (!target.closest('[data-close-button]')) {
+    if (!target.closest("[data-close-button]")) {
       onClose();
     }
   };
 
-  const handleKeyDown = useCallback((event: KeyboardEvent) => {
-    if (event.key === "Escape") {
-      onClose();
-    }
-  },[onClose]);
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    },
+    [onClose]
+  );
 
   useEffect(() => {
     if (open) {
@@ -77,7 +79,11 @@ const ImageViewerModal: React.FC<ImageViewerModalProps> = ({
   if (!open) return null;
 
   return (
-    <Backdrop open={open} className={styles.backdrop} onClick={handleBackdropClick}>
+    <Backdrop
+      open={open}
+      className={styles.backdrop}
+      onClick={handleBackdropClick}
+    >
       <div className={styles.container}>
         {isLoading ? (
           <div className={styles.loader}>
@@ -85,11 +91,11 @@ const ImageViewerModal: React.FC<ImageViewerModalProps> = ({
           </div>
         ) : imageDimensions ? (
           <>
-            <div 
+            <div
               className={styles.imageContainer}
               style={{
                 width: imageDimensions.width,
-                height: imageDimensions.height
+                height: imageDimensions.height,
               }}
             >
               <Image
