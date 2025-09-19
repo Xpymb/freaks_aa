@@ -3,7 +3,7 @@ import { CustomTypography } from "@/components/ui/CustomTypography";
 import CustomImage from "@/components/ui/CustomImage";
 import { IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
-import { useTokens } from "@/store/authTokenStore";
+import { useAuth } from "@/store/authTokenStore";
 import { useState } from "react";
 import LootItemTooltip from "./LootItemTooltip";
 import styles from "./_styles.module.scss";
@@ -17,7 +17,7 @@ type Props = {
 const LootCard = ({ lootItem, onDelete }: Props) => {
   const { loot: item, quantity } = lootItem;
   const [isDeleting, setIsDeleting] = useState(false);
-  const { accessToken } = useTokens();
+  const { accessToken } = useAuth();
 
   // Защита от null
   if (!item) {

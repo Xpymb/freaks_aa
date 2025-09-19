@@ -2,7 +2,8 @@
 
 import React, { useState, useRef } from "react";
 import { Tooltip, Paper } from "@mui/material";
-import { LootItemDto, LootGradeType, LootType } from "@/domains/raids";
+import { LootGradeType, LootType } from "@/domains/raids";
+import { LootItemDto } from "@/domains/loot";
 import CustomImage from "@/components/ui/CustomImage";
 import { CustomTypography } from "@/components/ui/CustomTypography";
 import styles from "./_styles.module.scss";
@@ -22,7 +23,7 @@ const LootItemTooltip = ({ children, lootItem }: Props) => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
-    
+
     // Небольшая задержка перед показом
     timeoutRef.current = setTimeout(() => {
       setAnchorEl(event.currentTarget);
@@ -102,33 +103,33 @@ const LootItemTooltip = ({ children, lootItem }: Props) => {
   const getGradeColor = (gradeType: LootGradeType) => {
     switch (gradeType) {
       case LootGradeType.Crude:
-        return '#9e9e9e'; // Серый
+        return "#9e9e9e"; // Серый
       case LootGradeType.Basic:
-        return '#ffffff'; // Белый
+        return "#ffffff"; // Белый
       case LootGradeType.Grand:
-        return '#4caf50'; // Зеленый
+        return "#4caf50"; // Зеленый
       case LootGradeType.Rare:
-        return '#2196f3'; // Синий
+        return "#2196f3"; // Синий
       case LootGradeType.Arcane:
-        return '#9c27b0'; // Фиолетовый
+        return "#9c27b0"; // Фиолетовый
       case LootGradeType.Heroic:
-        return '#ff5722'; // Оранжевый
+        return "#ff5722"; // Оранжевый
       case LootGradeType.Unique:
-        return '#ff9800'; // Темно-оранжевый
+        return "#ff9800"; // Темно-оранжевый
       case LootGradeType.Celestial:
-        return '#00bcd4'; // Голубой
+        return "#00bcd4"; // Голубой
       case LootGradeType.Divine:
-        return '#e91e63'; // Розовый
+        return "#e91e63"; // Розовый
       case LootGradeType.Epic:
-        return '#9c27b0'; // Фиолетовый
+        return "#9c27b0"; // Фиолетовый
       case LootGradeType.Legendary:
-        return '#ff9800'; // Оранжевый
+        return "#ff9800"; // Оранжевый
       case LootGradeType.Mythic:
-        return '#f44336'; // Красный
+        return "#f44336"; // Красный
       case LootGradeType.Eternal:
-        return '#ffeb3b'; // Желтый
+        return "#ffeb3b"; // Желтый
       default:
-        return '#9e9e9e';
+        return "#9e9e9e";
     }
   };
 
@@ -136,7 +137,7 @@ const LootItemTooltip = ({ children, lootItem }: Props) => {
     <Tooltip
       open={open}
       title={
-        <Paper 
+        <Paper
           className={styles.tooltipContent}
           style={{ borderColor: getGradeColor(lootItem.gradeType) }}
         >
@@ -158,31 +159,31 @@ const LootItemTooltip = ({ children, lootItem }: Props) => {
                   />
                 </div>
               ) : (
-                <div 
+                <div
                   className={styles.tooltipColorIcon}
                   style={{ backgroundColor: getGradeColor(lootItem.gradeType) }}
                 />
               )}
             </div>
-            
+
             <div className={styles.tooltipInfo}>
-              <CustomTypography 
-                variant="caption" 
+              <CustomTypography
+                variant="caption"
                 className={styles.tooltipType}
               >
                 {getTypeName(lootItem.type)}
               </CustomTypography>
-              
-              <CustomTypography 
-                variant="body2" 
+
+              <CustomTypography
+                variant="body2"
                 className={styles.tooltipRarity}
                 style={{ color: getGradeColor(lootItem.gradeType) }}
               >
                 {getGradeName(lootItem.gradeType)}
               </CustomTypography>
-              
-              <CustomTypography 
-                variant="h6" 
+
+              <CustomTypography
+                variant="h6"
                 className={styles.tooltipName}
                 style={{ color: getGradeColor(lootItem.gradeType) }}
               >
@@ -190,22 +191,31 @@ const LootItemTooltip = ({ children, lootItem }: Props) => {
               </CustomTypography>
             </div>
           </div>
-          
+
           <div className={styles.tooltipBody}>
             {lootItem.synthesisExp && (
               <div className={styles.tooltipProperty}>
-                <CustomTypography variant="caption" className={styles.propertyLabel}>
+                <CustomTypography
+                  variant="caption"
+                  className={styles.propertyLabel}
+                >
                   Опыт:
                 </CustomTypography>
-                <CustomTypography variant="caption" className={styles.propertyValue}>
+                <CustomTypography
+                  variant="caption"
+                  className={styles.propertyValue}
+                >
                   {lootItem.synthesisExp}
                 </CustomTypography>
               </div>
             )}
-            
+
             {lootItem.description && (
               <div className={styles.tooltipDescription}>
-                <CustomTypography variant="caption" className={styles.descriptionText}>
+                <CustomTypography
+                  variant="caption"
+                  className={styles.descriptionText}
+                >
                   {lootItem.description}
                 </CustomTypography>
               </div>
@@ -220,10 +230,7 @@ const LootItemTooltip = ({ children, lootItem }: Props) => {
         onMouseLeave: handleMouseLeave,
       }}
     >
-      <div
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
+      <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
         {children}
       </div>
     </Tooltip>

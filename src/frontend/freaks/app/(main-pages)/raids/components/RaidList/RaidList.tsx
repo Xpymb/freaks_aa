@@ -108,7 +108,7 @@ const RaidList = ({ prefetchRaids }: Props) => {
                     <Divider />
                   </motion.div>
                 ))
-              : raids.map((raid) => (
+              : raids.map((raid: RaidListItem) => (
                   <motion.div
                     key={raid.id}
                     variants={itemVariants}

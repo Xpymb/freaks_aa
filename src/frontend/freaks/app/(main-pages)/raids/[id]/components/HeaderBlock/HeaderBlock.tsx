@@ -8,7 +8,6 @@ import CompleteRaidButton from "../CompleteRaidButton/CompleteRaidButton";
 import DeleteRaidButton from "../DeleteRaidButton/DeleteRaidButton";
 import { RaidConditionalRender } from "@/components/ui";
 import ReplyIcon from "@mui/icons-material/Reply";
-import { motion } from "framer-motion";
 import { HelpHint } from "@/components/ui/HelpHint/HelpHint";
 
 type Props = {
@@ -16,46 +15,16 @@ type Props = {
 };
 
 const HeaderBlock = ({ raid }: Props) => {
-  const containerVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut" as const,
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut" as const,
-      },
-    },
-  };
-
   return (
-    <motion.section
-      className={styles.raidHeaderSection}
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-    >
+    <section className={styles.raidHeaderSection}>
       <div className={styles.wrapper}>
-        <motion.div className={styles.top} variants={itemVariants}>
+        <div className={styles.top}>
           <Link href="/raids">
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <div>
               <IconButton className={styles.returnIcon}>
                 <ReplyIcon />
               </IconButton>
-            </motion.div>
+            </div>
           </Link>
 
           <div className={styles.topLeft}>
@@ -70,29 +39,21 @@ const HeaderBlock = ({ raid }: Props) => {
           <div className={styles.topRight}>
             <StatusChip status={raid.status} />
           </div>
-        </motion.div>
-        <motion.div className={styles.bottom} variants={itemVariants}>
+        </div>
+        <div className={styles.bottom}>
           <div className={styles.infoWrapper}>
-            <motion.div
-              className={styles.infoBlock}
-              whileHover={{ scale: 1.02 }}
-              transition={{ duration: 0.2 }}
-            >
+            <div className={styles.infoBlock}>
               <CustomTypography className={styles.muted} variant="subtitle1">
                 Создатель:
               </CustomTypography>
               <CustomTypography variant="subtitle1">
                 {raid.creator.gameNickname}
               </CustomTypography>
-            </motion.div>
+            </div>
 
             <Divider orientation="vertical" flexItem />
 
-            <motion.div
-              className={styles.infoBlock}
-              whileHover={{ scale: 1.02 }}
-              transition={{ duration: 0.2 }}
-            >
+            <div className={styles.infoBlock}>
               <CustomTypography className={styles.muted} variant="subtitle1">
                 Начало:
               </CustomTypography>
@@ -103,15 +64,11 @@ const HeaderBlock = ({ raid }: Props) => {
                 )}
                 <HelpHint title="Дата указывается в вашем локальном часовом поясе" />
               </CustomTypography>
-            </motion.div>
+            </div>
 
             <Divider orientation="vertical" flexItem />
 
-            <motion.div
-              className={styles.infoBlock}
-              whileHover={{ scale: 1.02 }}
-              transition={{ duration: 0.2 }}
-            >
+            <div className={styles.infoBlock}>
               <CustomTypography className={styles.muted} variant="subtitle1">
                 Дата создания:
               </CustomTypography>
@@ -122,16 +79,12 @@ const HeaderBlock = ({ raid }: Props) => {
                 )}
                 <HelpHint title="Дата указывается в вашем локальном часовом поясе" />
               </CustomTypography>
-            </motion.div>
+            </div>
             {raid.updatedDt && (
               <>
                 <Divider orientation="vertical" flexItem />
 
-                <motion.div
-                  className={styles.infoBlock}
-                  whileHover={{ scale: 1.02 }}
-                  transition={{ duration: 0.2 }}
-                >
+                <div className={styles.infoBlock}>
                   <CustomTypography
                     className={styles.muted}
                     variant="subtitle1"
@@ -145,16 +98,13 @@ const HeaderBlock = ({ raid }: Props) => {
                     )}
                     <HelpHint title="Дата указывается в вашем локальном часовом поясе" />
                   </CustomTypography>
-                </motion.div>
+                </div>
               </>
             )}
           </div>
 
           <RaidConditionalRender raid={raid} permission="canManage">
-            <motion.div
-              className={styles.buttonsContainer}
-              variants={itemVariants}
-            >
+            <div className={styles.buttonsContainer}>
               <RaidConditionalRender raid={raid} permission="canComplete">
                 <CompleteRaidButton raid={raid} />
               </RaidConditionalRender>
@@ -162,11 +112,11 @@ const HeaderBlock = ({ raid }: Props) => {
               <RaidConditionalRender raid={raid} permission="canDelete">
                 <DeleteRaidButton raid={raid} />
               </RaidConditionalRender>
-            </motion.div>
+            </div>
           </RaidConditionalRender>
-        </motion.div>
+        </div>
       </div>
-    </motion.section>
+    </section>
   );
 };
 

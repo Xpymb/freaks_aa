@@ -10,8 +10,9 @@ import {
   SingleAutoField,
   type Option,
 } from "@/components/ui/formInputs/SingleAutocomplete";
-import { LootItemDto, RaidLootService, LootGradeType } from "@/domains/raids";
-import { useTokens } from "@/store/authTokenStore";
+import { RaidLootService, LootGradeType } from "@/domains/raids";
+import { LootItemDto } from "@/domains/loot";
+import { useAuth } from "@/store/authTokenStore";
 import { addLootSchema, type AddLootFormData } from "./addLootSchema";
 import CustomImage from "@/components/ui/CustomImage";
 import styles from "./_styles.module.scss";
@@ -23,7 +24,7 @@ type Props = {
 };
 
 const AddLootForm = ({ raidId, onLootAdded, prefetchLootItems }: Props) => {
-  const { accessToken } = useTokens();
+  const { accessToken } = useAuth();
 
   // Используем префетч данные вместо клиентского запроса
   const lootItems = prefetchLootItems;

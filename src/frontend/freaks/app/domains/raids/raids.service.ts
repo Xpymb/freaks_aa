@@ -5,7 +5,6 @@ import {
   CreateRaidLootRequest,
   CreateRaidParticipantRequest,
   IRaidScreenshot,
-  LootItemDto,
   RaidItem,
   RaidListItem,
   RaidLootDto,
@@ -102,11 +101,6 @@ export const RaidLootService = {
     authorizedApi(token, "portal").delete<void>(
       `/raids/${raidId}/loots/${lootId}`
     ),
-};
-
-export const LootItemsService = {
-  getLootItems: (token: string) =>
-    authorizedApi(token, "portal").get<LootItemDto[]>("/loot-items"),
 };
 
 export const RaidParticipantsService = {

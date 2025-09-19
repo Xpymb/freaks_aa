@@ -7,49 +7,41 @@ import {
   RaidItem,
   RaidLootDto,
   RaidParticipantDto,
-  useGetRaidLoot,
 } from "@/domains/raids";
 import { Avatar, AvatarGroup } from "@mui/material";
 import Screenshots from "../Screenshots/Screenshots";
-import { useGetRaidParticipants } from "@/domains/raids/hooks/useGetRaidParticipants";
 import { stringAvatar } from "@/layouts/Header/components/Profile/Profile";
 import CustomImage from "@/components/ui/CustomImage";
-import { useGetRaidScreenshots } from "@/domains/raids/hooks/useGetScreenshot";
 import DefaultLoader from "@/components/ui/DefaultLoader/DefaultLoader";
 import ErrorLoadData from "@/components/ui/ErrorLoadData/ErrorLoadData";
 import NotFound from "@/components/ui/NotFound/NotFound";
+import { useAppError } from "@/shared/errors";
 
 type Props = {
   raid: RaidItem;
-  prefetchParticipants: RaidParticipantDto[];
-  prefetchLoot: RaidLootDto[];
-  prefetchScreenshots: IRaidScreenshot[];
+  participants: RaidParticipantDto[];
+  participantsLoading: boolean;
+  participantsError: { isError: boolean; message?: string } | null;
+  loot: RaidLootDto[];
+  lootLoading: boolean;
+  lootError: { isError: boolean; message?: string } | null;
+  screenshots: IRaidScreenshot[];
+  screenshotsLoading: boolean;
+  screenshotsError: ReturnType<typeof useAppError>;
 };
 
 const Overview = ({
   raid,
-  prefetchScreenshots,
-  prefetchParticipants,
-  prefetchLoot,
+  participants,
+  participantsLoading,
+  participantsError,
+  loot,
+  lootLoading,
+  lootError,
+  screenshots,
+  screenshotsLoading,
+  screenshotsError,
 }: Props) => {
-  const {
-    data: participants,
-    isLoading: participantsLoading,
-    errorState: participantsErrorState,
-  } = useGetRaidParticipants(prefetchParticipants, raid.id);
-
-  const {
-    lootItems,
-    isLoading: lootLoading,
-    errorState: lootErrorState,
-  } = useGetRaidLoot(prefetchLoot, raid.id);
-
-  const {
-    screenshots,
-    isLoading: screenshotsLoading,
-    errorState: screenshotsErrorState,
-  } = useGetRaidScreenshots(prefetchScreenshots, raid.id);
-
   return (
     <div className={styles.overview}>
       <div className={styles.wrapper}>
@@ -74,7 +66,7 @@ const Overview = ({
             screenshotData={{
               screenshots,
               isLoading: screenshotsLoading,
-              errorState: screenshotsErrorState,
+              errorState: screenshotsError,
             }}
             overview={true}
             maxOnPage={3}
@@ -87,8 +79,8 @@ const Overview = ({
           <div className={styles.participantsList}>
             <AvatarGroup max={4} className={styles.avatarGroup}>
               {participantsLoading && <DefaultLoader />}
-              {participantsErrorState.isError && (
-                <ErrorLoadData message={lootErrorState.message} />
+              {participantsError?.isError && (
+                <ErrorLoadData message={participantsError?.message} />
               )}
               {participants?.length === 0 && (
                 <NotFound
@@ -111,17 +103,17 @@ const Overview = ({
           <CustomTypography variant="h3">Лут</CustomTypography>
           <div className={styles.lootList}>
             {lootLoading && <DefaultLoader />}
-            {lootErrorState.isError && (
-              <ErrorLoadData message={lootErrorState.message} />
+            {lootError?.isError && (
+              <ErrorLoadData message={lootError?.message} />
             )}
-            {lootItems.length === 0 && (
+            {loot.length === 0 && (
               <NotFound
                 message="Не указано"
                 variant="subtitle1"
                 align="start"
               />
             )}
-            {lootItems.map((item) => (
+            {loot.map((item) => (
               <div key={item.loot.id} className={styles.lootItem}>
                 <div className={styles.title}>
                   <div className={styles.iconWrapper}>

@@ -3,14 +3,16 @@ import {
   RaidLootService,
   RaidScreenshotsService,
   RaidsService,
-  LootItemsService,
   RaidParticipantsService,
 } from "@/domains/raids/raids.service";
+import { LootService } from "@/domains/loot";
 import { UserService } from "@/domains/user/user.service";
 import { requestServer } from "@/shared/api/serverRequest";
 import { DateFormat, formatDate } from "@/utils/formateDate";
 import { Metadata } from "next";
-import RaidPageClient from "./components/RaidPageClient";
+import BodyBlock from "./components/BodyBlock/BodyBlock";
+import HeaderBlock from "./components/HeaderBlock/HeaderBlock";
+import DetailContainer from "@/components/ui/DetailContainer/DetailContainer";
 import ErrorLoadData from "@/components/ui/ErrorLoadData/ErrorLoadData";
 import NotFound from "@/components/ui/NotFound/NotFound";
 import { auth } from "@/api/auth/auth";
@@ -66,8 +68,7 @@ export default async function Page({ params }: RaidPage) {
     )) ?? [];
 
   const prefetchLootItems =
-    (await requestServer(() => LootItemsService.getLootItems(accessToken))) ??
-    [];
+    (await requestServer(() => LootService.getLootItems(accessToken))) ?? [];
 
   const prefetchParticipants =
     (await requestServer(() =>
@@ -78,13 +79,17 @@ export default async function Page({ params }: RaidPage) {
     (await requestServer(() => UserService.getUsers(accessToken, true))) ?? [];
 
   return (
-    <RaidPageClient
-      initialRaid={raid}
-      prefetchScreenshots={prefetchScreenshots}
-      prefetchLoot={prefetchLoot}
-      prefetchLootItems={prefetchLootItems}
-      prefetchParticipants={prefetchParticipants}
-      prefetchUsers={prefetchUsers}
-    />
+    <DetailContainer>
+      <HeaderBlock raid={raid} />
+      <BodyBlock
+        // key={id}
+        initialRaid={raid}
+        prefetchScreenshots={prefetchScreenshots}
+        prefetchLoot={prefetchLoot}
+        prefetchLootItems={prefetchLootItems}
+        prefetchParticipants={prefetchParticipants}
+        prefetchUsers={prefetchUsers}
+      />
+    </DetailContainer>
   );
 }

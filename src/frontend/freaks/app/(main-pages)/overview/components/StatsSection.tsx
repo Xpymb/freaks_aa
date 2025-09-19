@@ -6,7 +6,7 @@ import { CustomTypography } from "@/components/ui/CustomTypography";
 import { RaidListItem } from "@/domains/raids";
 import { RaidsService, RaidListQuery } from "@/domains/raids/raids.service";
 import { buildRaidsQuery } from "@/domains/raids/hooks/useGetRaids";
-import { useTokens } from "@/store/authTokenStore";
+import { useAuth } from "@/store/authTokenStore";
 import UpcomingRaidsCard from "./UpcomingRaidsCard";
 import DisabledFeatureCard from "./DisabledFeatureCard";
 import styles from "./_styles.module.scss";
@@ -16,7 +16,7 @@ import DetailContainer from "@/components/ui/DetailContainer/DetailContainer";
 const StatsSection = () => {
   const [upcomingRaids, setUpcomingRaids] = useState<RaidListItem[]>([]);
   const [isLoadingRaids, setIsLoadingRaids] = useState(true);
-  const { accessToken } = useTokens();
+  const { accessToken } = useAuth();
 
   useEffect(() => {
     const fetchUpcomingRaids = async () => {

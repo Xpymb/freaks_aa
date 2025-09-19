@@ -1,10 +1,12 @@
 "use client";
 
-import { useProtectedSWR } from "@/shared/api/useProtectedSWR";
 import { RaidListQuery, RaidsService } from "../raids.service";
 import type { PaginatedList } from "@/types/paginated.types";
 import type { RaidListItem } from "../types";
 import { useMemo } from "react";
+import { useProtectedSWR } from "@/shared/api/useProtectedSWR";
+import type { SSEMessage, RaidChangedMessage } from "@/types/sse.types";
+import type { Key } from "swr";
 
 export function buildRaidsQuery(filters: Partial<RaidListQuery> = {}): string {
   const p = new URLSearchParams();
@@ -28,15 +30,25 @@ export function useGetRaids(
   filters?: Partial<RaidListQuery>
 ) {
   const query = useMemo(() => buildRaidsQuery(filters), [filters]);
-
   const key = useMemo(() => `/raids${query ? `?${query}` : ""}`, [query]);
 
   const { data, isLoading, errorState, mutate } = useProtectedSWR<
     PaginatedList<RaidListItem>
-  >(key, (token) => RaidsService.getRaids(token, query), {
+  >(key, (token: string) => RaidsService.getRaids(token, query), {
     fallbackData: prefetchData,
     revalidateOnMount: false,
-    dedupingInterval: 0,
+    websocket: {
+      channel: "raid",
+      enabled: true,
+      onMessage: (data: SSEMessage, key: Key, mutate: () => void) => {
+        const raidData = data?.pub?.data as RaidChangedMessage;
+
+        // Для списка рейдов обновляем всегда при любом изменении рейда
+        if (raidData?.Id) {
+          mutate();
+        }
+      },
+    },
   });
 
   return {
