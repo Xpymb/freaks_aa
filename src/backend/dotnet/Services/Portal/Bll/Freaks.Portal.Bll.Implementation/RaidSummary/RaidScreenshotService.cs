@@ -91,6 +91,13 @@ public class RaidScreenshotService : IRaidScreenshotService
             raid.UpdatedDt = DateTimeOffset.UtcNow;
             
             await _raidProvider.UpdateAsync(raid);
+            
+            var raidChangedMessage = new RaidChangedMessage
+            {
+                Id = raid.Id,
+                ActionType = EntityActionType.Updated,
+            };
+            await _messageService.Publish(raidChangedMessage);
         }
         
         var result = await _provider.GetByRaidIdAsync(raidId);
@@ -119,6 +126,13 @@ public class RaidScreenshotService : IRaidScreenshotService
             raid.UpdatedDt = DateTimeOffset.UtcNow;
             
             await _raidProvider.UpdateAsync(raid);
+            
+            var raidChangedMessage = new RaidChangedMessage
+            {
+                Id = raid.Id,
+                ActionType = EntityActionType.Updated,
+            };
+            await _messageService.Publish(raidChangedMessage);
         }
 
         await PublishMessageAsync(raidId, EntityActionType.Deleted);
