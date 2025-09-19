@@ -18,7 +18,7 @@ import { SelectField } from "@/components/ui/formInputs/CustomSelect";
 import { makeOptionsFromRecord } from "@/utils/makeOptionsFromRecord";
 import { BOSS_LABEL, BossType } from "@/domains/raids";
 import { CreateRaidRequest, RaidsService } from "@/domains/raids/raids.service";
-import { useTokens } from "@/store/authTokenStore";
+import { useAuth } from "@/store/authTokenStore";
 import { HelpHint } from "@/components/ui/HelpHint/HelpHint";
 
 const pad = (n: number) => String(n).padStart(2, "0");
@@ -36,7 +36,7 @@ type CreateRaidForm = {
 export default function CreateRaid() {
   const { open, onOpen, onClose } = useDisclosure(false);
   const router = useRouter();
-  const { accessToken } = useTokens();
+  const { accessToken } = useAuth();
   const [isCreating, setIsCreating] = React.useState(false);
 
   const { control, handleSubmit } = useForm<CreateRaidForm>({

@@ -4,11 +4,12 @@ import { useEffect, memo } from "react";
 import useSWR, { mutate } from "swr";
 
 import type { Session } from "next-auth";
-import { useTokens } from "./authTokenStore";
+import { useAuth } from "./authTokenStore";
 import { fetcher } from "@/utils/fetcher";
+import { disconnectAllChannels } from "@/shared/api/sseChannelClient";
 
 const SessionStoreProvider = () => {
-  const { setTokens } = useTokens();
+  const { setAuth } = useAuth();
 
   const { data, isLoading } = useSWR<Session | null>(
     "/api/auth/session",
@@ -19,11 +20,18 @@ const SessionStoreProvider = () => {
   );
 
   useEffect(() => {
-    if (isLoading || !data?.accessToken || !data.idToken) return;
+    if (isLoading) return;
 
-    setTokens({
+    // Если нет токенов (logout), очищаем все SSE соединения
+    if (!data?.accessToken || !data.idToken) {
+      disconnectAllChannels();
+      return;
+    }
+
+    setAuth({
       accessToken: data.accessToken,
       idToken: data.idToken,
+      user: data.user,
     });
 
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/app-version`, {
@@ -32,7 +40,7 @@ const SessionStoreProvider = () => {
         Authorization: `Bearer ${data.accessToken}`,
       },
     });
-  }, [data?.accessToken, data?.idToken, isLoading, setTokens]);
+  }, [data?.accessToken, data?.idToken, isLoading]);
 
   return null;
 };

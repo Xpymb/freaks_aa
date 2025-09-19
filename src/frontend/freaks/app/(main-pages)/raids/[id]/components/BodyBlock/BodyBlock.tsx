@@ -14,12 +14,15 @@ import {
 import Screenshots from "../(TabSection)/Screenshots/Screenshots";
 import Loot from "../(TabSection)/Loot/Loot";
 import Participants from "../(TabSection)/Participants/Participants";
-import { useGetRaidScreenshots } from "@/domains/raids/hooks/useGetScreenshot";
 import { IUser } from "@/domains/user/types";
 import { motion, AnimatePresence } from "framer-motion";
+import { useGetRaidByID } from "@/domains/raids/hooks/useGetRaidByID";
+import { useGetRaidScreenshots } from "@/domains/raids/hooks/useGetScreenshot";
+import { useGetRaidParticipants } from "@/domains/raids/hooks/useGetRaidParticipants";
+import { useGetRaidLoot } from "@/domains/raids/hooks/useGetRaidLoot";
 
 type Props = {
-  raid: RaidItem;
+  initialRaid: RaidItem;
   prefetchScreenshots: IRaidScreenshot[];
   prefetchLoot: RaidLootDto[];
   prefetchLootItems: LootItemDto[];
@@ -28,7 +31,7 @@ type Props = {
 };
 
 const BodyBlock = ({
-  raid,
+  initialRaid,
   prefetchScreenshots,
   prefetchLoot,
   prefetchLootItems,
@@ -37,57 +40,96 @@ const BodyBlock = ({
 }: Props) => {
   const [tab, setTab] = useState<number>(0);
 
-  const { screenshots, isLoading, errorState } = useGetRaidScreenshots(
-    prefetchScreenshots,
-    raid.id
-  );
+  // Хуки для получения данных
+  const { raid } = useGetRaidByID(initialRaid, initialRaid.id);
+  const {
+    screenshots,
+    isLoading: screenshotsLoading,
+    errorState: screenshotsError,
+  } = useGetRaidScreenshots(prefetchScreenshots, initialRaid.id);
+  const {
+    data: participants,
+    isLoading: participantsLoading,
+    errorState: participantsError,
+  } = useGetRaidParticipants(prefetchParticipants, initialRaid.id);
+  const {
+    lootItems,
+    isLoading: lootLoading,
+    errorState: lootError,
+  } = useGetRaidLoot(prefetchLoot, initialRaid.id);
 
   const tabContent: Record<number, JSX.Element> = useMemo(
     () => ({
       0: (
         <Overview
-          raid={raid}
-          prefetchScreenshots={prefetchScreenshots}
-          prefetchParticipants={prefetchParticipants}
-          prefetchLoot={prefetchLoot}
+          raid={raid || initialRaid}
+          participants={participants || []}
+          participantsLoading={participantsLoading}
+          participantsError={participantsError}
+          loot={lootItems || []}
+          lootLoading={lootLoading}
+          lootError={lootError}
+          screenshots={screenshots || []}
+          screenshotsLoading={screenshotsLoading}
+          screenshotsError={screenshotsError}
         />
       ),
       1: (
         <Participants
-          raid={raid}
-          prefetchParticipants={prefetchParticipants}
+          raid={raid || initialRaid}
+          participants={participants || []}
+          participantsLoading={participantsLoading}
+          participantsError={participantsError}
           prefetchUsers={prefetchUsers}
-          prefetchScreenshots={prefetchScreenshots}
+          screenshots={screenshots || []}
+          onParticipantsChange={() => {
+            // Можно добавить логику обновления если нужно
+          }}
         />
       ),
       2: (
         <Screenshots
-          raid={raid}
-          screenshotData={{ screenshots, isLoading, errorState }}
+          raid={raid || initialRaid}
+          screenshotData={{
+            screenshots,
+            isLoading: screenshotsLoading,
+            errorState: screenshotsError,
+          }}
         />
       ),
       3: (
         <Loot
-          raid={raid}
-          prefetchLoot={prefetchLoot}
+          raid={raid || initialRaid}
+          loot={lootItems || []}
+          lootLoading={lootLoading}
+          lootError={lootError}
           prefetchLootItems={prefetchLootItems}
+          onLootChange={() => {
+            // Можно добавить логику обновления если нужно
+          }}
         />
       ),
     }),
     [
       raid,
-      prefetchScreenshots,
-      prefetchParticipants,
-      prefetchLoot,
+      initialRaid,
       prefetchUsers,
       screenshots,
-      isLoading,
-      errorState,
+      screenshotsLoading,
+      screenshotsError,
+      participants,
+      participantsLoading,
+      participantsError,
+      lootItems,
+      lootLoading,
+      lootError,
       prefetchLootItems,
     ]
   );
 
   const content = tabContent[tab];
+
+  if (!raid) return null;
 
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },

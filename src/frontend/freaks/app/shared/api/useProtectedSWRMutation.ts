@@ -4,7 +4,7 @@ import useSWRMutation, {
   SWRMutationConfiguration,
   SWRMutationResponse,
 } from "swr/mutation";
-import { useTokens } from "@/store/authTokenStore";
+import { useAuth } from "@/store/authTokenStore";
 import { mutateSession } from "@/store/SessionStoreProvider";
 import { signOut } from "next-auth/react";
 import { useAppError } from "../errors/useAppError";
@@ -34,7 +34,7 @@ function with401Retry<T, Args>(fn: (token: string, args: Args) => Promise<T>) {
 
       try {
         await mutateSession();
-        const newToken = useTokens.getState().accessToken;
+        const newToken = useAuth.getState().accessToken;
         if (!newToken) throw handleAxiosError(err);
         return await fn(newToken, args);
       } catch (refreshErr) {
@@ -60,7 +60,7 @@ export function useProtectedSWRMutation<T, Args>(
   const swr = useSWRMutation<T, AppError, string, Args>(
     key,
     async (_key, { arg }) => {
-      const token = useTokens.getState().accessToken;
+      const token = useAuth.getState().accessToken;
       if (!token) {
         throw new AppError("No access token", "AUTH_ERROR");
       }

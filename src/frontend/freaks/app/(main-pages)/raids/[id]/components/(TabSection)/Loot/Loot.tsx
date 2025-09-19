@@ -3,30 +3,36 @@
 import { CustomTypography } from "@/components/ui/CustomTypography";
 import ErrorLoadData from "@/components/ui/ErrorLoadData/ErrorLoadData";
 import { RaidConditionalRender } from "@/components/ui";
-import { RaidItem, RaidLootDto, LootItemDto } from "@/domains/raids";
-import { useGetRaidLoot } from "@/domains/raids/hooks/useGetRaidLoot";
+import { RaidItem, RaidLootDto } from "@/domains/raids";
+import { LootItemDto } from "@/domains/loot";
 import { useRaidPermissions } from "@/domains/raids";
 import styles from "./_styles.module.scss";
 import LootCard from "./LootCard";
 import AddLootForm from "./AddLootForm";
 import InventoryIcon from "@mui/icons-material/Inventory";
+import { useAppError } from "@/shared/errors";
 
 type Props = {
   raid: RaidItem;
-  prefetchLoot: RaidLootDto[];
+  loot: RaidLootDto[];
+  lootLoading: boolean;
+  lootError: ReturnType<typeof useAppError>;
   prefetchLootItems: LootItemDto[];
+  onLootChange?: () => void;
 };
 
-const Loot = ({ raid, prefetchLoot, prefetchLootItems }: Props) => {
-  const { lootItems, isLoading, errorState, refresh } = useGetRaidLoot(
-    prefetchLoot,
-    raid.id
-  );
-
+const Loot = ({
+  raid,
+  loot,
+  lootLoading,
+  lootError,
+  prefetchLootItems,
+  onLootChange,
+}: Props) => {
   // Получаем права доступа к рейду
   const { canEdit } = useRaidPermissions(raid);
 
-  if (isLoading) {
+  if (lootLoading) {
     return (
       <div className={styles.lootContainer}>
         <div className={styles.lootHeader}>
@@ -41,19 +47,19 @@ const Loot = ({ raid, prefetchLoot, prefetchLootItems }: Props) => {
     );
   }
 
-  if (errorState.isError) {
+  if (lootError?.isError) {
     return (
       <div className={styles.lootContainer}>
         <div className={styles.lootHeader}>
           <CustomTypography variant="h4">Лут</CustomTypography>
         </div>
-        <ErrorLoadData message={errorState.message} />
+        <ErrorLoadData message={lootError?.message} />
       </div>
     );
   }
 
   // Фильтруем поврежденные данные
-  const validLootItems = lootItems.filter((item) => item && item.loot);
+  const validLootItems = loot.filter((item) => item && item.loot);
 
   return (
     <div className={styles.lootContainer}>
@@ -61,7 +67,7 @@ const Loot = ({ raid, prefetchLoot, prefetchLootItems }: Props) => {
       <RaidConditionalRender raid={raid} permission="canEdit">
         <AddLootForm
           raidId={raid.id}
-          onLootAdded={refresh}
+          onLootAdded={onLootChange || (() => {})}
           prefetchLootItems={prefetchLootItems}
         />
       </RaidConditionalRender>
@@ -83,7 +89,7 @@ const Loot = ({ raid, prefetchLoot, prefetchLootItems }: Props) => {
             <LootCard
               key={`${lootItem.raidId}-${lootItem.loot?.id || "unknown"}`}
               lootItem={lootItem}
-              onDelete={canEdit ? refresh : undefined}
+              onDelete={canEdit ? onLootChange || (() => {}) : undefined}
             />
           ))}
         </div>

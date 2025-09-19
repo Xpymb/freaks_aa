@@ -2,64 +2,47 @@
 
 import React, { useState, useEffect } from "react";
 import { RaidItem, RaidParticipantDto, IRaidScreenshot } from "@/domains/raids";
-import { useGetRaidParticipants } from "@/domains/raids/hooks/useGetRaidParticipants";
-import { useGetRaidScreenshots } from "@/domains/raids/hooks/useGetScreenshot";
 import ErrorLoadData from "@/components/ui/ErrorLoadData/ErrorLoadData";
 import DefaultLoader from "@/components/ui/DefaultLoader/DefaultLoader";
 import ParticipantGrid from "./ParticipantGrid";
 import FloatingScreenshotButton from "@/components/ui/FloatingScreenshotButton/FloatingScreenshotButton";
 import styles from "./_styles.module.scss";
 import { IUser } from "@/domains/user/types";
+import { useAppError } from "@/shared/errors";
 
 type Props = {
   raid: RaidItem;
-  prefetchParticipants: RaidParticipantDto[];
+  participants: RaidParticipantDto[];
+  participantsLoading: boolean;
+  participantsError: ReturnType<typeof useAppError>;
   prefetchUsers: IUser[];
-  prefetchScreenshots?: IRaidScreenshot[];
+  screenshots: IRaidScreenshot[];
+  onParticipantsChange?: () => void;
 };
 
 const Participants = ({
   raid,
-  prefetchParticipants,
+  participants,
+  participantsLoading,
+  participantsError,
   prefetchUsers,
-  prefetchScreenshots = [],
+  screenshots,
+  onParticipantsChange,
 }: Props) => {
   const [refreshKey, setRefreshKey] = useState(0);
-
-  const {
-    data: participants = prefetchParticipants,
-    isLoading,
-    errorState,
-    mutate,
-  } = useGetRaidParticipants(prefetchParticipants, raid.id);
-
-  // Получаем скриншоты для плавающей кнопки
-  const { screenshots } = useGetRaidScreenshots(prefetchScreenshots, raid.id);
 
   // Обработчик изменения участников
   const handleParticipantsChange = () => {
     setRefreshKey((prev) => prev + 1);
-    // Перезагружаем данные участников
-    mutate();
+    // Уведомляем родительский компонент об изменении
+    onParticipantsChange?.();
   };
 
-  // Слушаем события обновления участников
-  useEffect(() => {
-    const handleRefresh = () => {
-      mutate();
-    };
-
-    window.addEventListener("refresh-participants", handleRefresh);
-    return () => {
-      window.removeEventListener("refresh-participants", handleRefresh);
-    };
-  }, [mutate]);
-
-  if (isLoading) {
+  if (participantsLoading) {
     return <DefaultLoader />;
   }
 
-  if (errorState.isError) {
+  if (participantsError?.isError) {
     return <ErrorLoadData />;
   }
 
