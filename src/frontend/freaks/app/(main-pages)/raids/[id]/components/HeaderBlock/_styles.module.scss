@@ -32,6 +32,29 @@
         }
       }
 
+      .bossTitleContainer {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-top: 8px;
+
+        .editButton {
+          color: rgba(255, 255, 255, 0.6);
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          transition: all 0.3s ease;
+          opacity: 0.7;
+
+          &:hover {
+            color: #2196f3;
+            background: rgba(33, 150, 243, 0.1);
+            border-color: rgba(33, 150, 243, 0.3);
+            opacity: 1;
+            transform: scale(1.05);
+          }
+        }
+      }
+
       .returnIcon {
         color: rgba(255, 255, 255, 0.7);
         background: rgba(255, 255, 255, 0.05);

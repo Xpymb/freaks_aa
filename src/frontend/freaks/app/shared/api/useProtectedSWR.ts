@@ -86,7 +86,9 @@ export function useProtectedSWR<T, E = HttpError>(
 
     const unsubscribe = client.subscribe((data: SSEMessage) => {
       if (config?.websocket?.onMessage) {
-        config.websocket.onMessage(data, key, () => swr.mutate());
+        config.websocket.onMessage(data, key, () => {
+          swr.mutate();
+        });
       } else {
         swr.mutate();
       }

@@ -57,13 +57,13 @@ function CustomSelectComponent<T = string | number>({
   variant = "outlined",
   className,
   ...rest
-}: CustomSelectProps<T> & Omit<SelectProps, 'value' | 'onChange' | 'error'>) {
+}: CustomSelectProps<T> & Omit<SelectProps, "value" | "onChange" | "error">) {
   const labelId = id ? `${id}-label` : undefined;
 
   const handleChange = React.useCallback(
     (event: SelectChangeEvent<unknown>) => {
       const selectedValue = event.target.value as string;
-      
+
       if (selectedValue === "") {
         onChange("");
         return;
@@ -73,7 +73,7 @@ function CustomSelectComponent<T = string | number>({
       const foundOption = options.find(
         (option) => String(option.value) === selectedValue
       );
-      
+
       if (foundOption) {
         onChange(foundOption.value);
       } else {
@@ -113,7 +113,7 @@ function CustomSelectComponent<T = string | number>({
           {label}
         </InputLabel>
       )}
-      
+
       <Select
         {...rest}
         id={id}
@@ -129,7 +129,7 @@ function CustomSelectComponent<T = string | number>({
             <em>{placeholder}</em>
           </MenuItem>
         )}
-        
+
         {options.map((option) => (
           <MenuItem
             key={String(option.value)}
@@ -141,15 +141,15 @@ function CustomSelectComponent<T = string | number>({
         ))}
       </Select>
 
-      {helperText && (
-        <FormHelperText>{helperText}</FormHelperText>
-      )}
+      {helperText && <FormHelperText>{helperText}</FormHelperText>}
     </FormControl>
   );
 }
 
 // Memoized export of the custom select wrapper
-export const CustomSelect = React.memo(CustomSelectComponent) as <T = string | number>(
+export const CustomSelect = React.memo(CustomSelectComponent) as <
+  T = string | number
+>(
   props: CustomSelectProps<T> & { ref?: React.Ref<HTMLDivElement> }
 ) => React.ReactElement;
 
@@ -157,7 +157,10 @@ export const CustomSelect = React.memo(CustomSelectComponent) as <T = string | n
 export interface SelectFieldProps<
   TFieldValues extends FieldValues = FieldValues,
   TValue = string | number
-> extends Omit<CustomSelectProps<TValue>, "value" | "onChange" | "error" | "helperText"> {
+> extends Omit<
+    CustomSelectProps<TValue>,
+    "value" | "onChange" | "error" | "helperText"
+  > {
   name: FieldPath<TFieldValues>;
   control: Control<TFieldValues>;
   rules?: ControllerProps<TFieldValues, FieldPath<TFieldValues>>["rules"];

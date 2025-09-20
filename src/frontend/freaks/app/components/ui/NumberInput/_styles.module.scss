@@ -25,12 +25,12 @@
 .button {
   color: rgba(255, 255, 255, 0.7);
   padding: 4px;
-  
+
   &:hover {
     background: rgba(255, 255, 255, 0.08);
     color: rgba(255, 255, 255, 0.9);
   }
-  
+
   &:disabled {
     color: rgba(255, 255, 255, 0.3);
   }
@@ -38,25 +38,25 @@
 
 .input {
   flex: 1;
-  
+
   .MuiOutlinedInput-root {
     border: none;
     background: transparent;
-    
+
     &.Mui-focused .MuiOutlinedInput-notchedOutline {
       border: none;
     }
-    
+
     .MuiOutlinedInput-notchedOutline {
       border: none;
     }
   }
-  
+
   .MuiOutlinedInput-input {
     padding: 8px 4px;
     text-align: center;
     color: rgba(255, 255, 255, 0.9);
-    
+
     &::placeholder {
       color: rgba(255, 255, 255, 0.5);
     }

@@ -1,0 +1,24 @@
+@use "@/ThemeMUI/variables" as *;
+
+.modal {
+  .editRaidInputs {
+    display: flex;
+    flex-direction: column;
+    .inputs {
+      display: flex;
+      flex-direction: column;
+      row-gap: 1rem;
+      .bossType {
+        width: 100%;
+      }
+      .description {
+        width: 100%;
+      }
+    }
+    .btnWrapper {
+      display: flex;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+  }
+}

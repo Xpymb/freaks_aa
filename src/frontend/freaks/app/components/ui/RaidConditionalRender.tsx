@@ -7,7 +7,13 @@ import type { RaidItem } from "@/domains/raids/types";
 interface RaidConditionalRenderProps {
   children: ReactNode;
   raid: RaidItem;
-  permission: "canView" | "canEdit" | "canComplete" | "canDelete" | "canManage";
+  permission:
+    | "canView"
+    | "canEdit"
+    | "canEditInfo"
+    | "canComplete"
+    | "canDelete"
+    | "canManage";
   fallback?: ReactNode;
 }
 

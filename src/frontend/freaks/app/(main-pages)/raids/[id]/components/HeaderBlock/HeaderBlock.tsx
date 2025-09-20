@@ -1,4 +1,7 @@
+"use client";
+
 import { BOSS_LABEL, RaidItem } from "@/domains/raids";
+import { useGetRaidByID } from "@/domains/raids/hooks/useGetRaidByID";
 import styles from "./_styles.module.scss";
 import { CustomTypography } from "@/components/ui/CustomTypography";
 import StatusChip from "@/(main-pages)/raids/components/StatusChip/StatusChip";
@@ -8,13 +11,31 @@ import CompleteRaidButton from "../CompleteRaidButton/CompleteRaidButton";
 import DeleteRaidButton from "../DeleteRaidButton/DeleteRaidButton";
 import { RaidConditionalRender } from "@/components/ui";
 import ReplyIcon from "@mui/icons-material/Reply";
+import EditIcon from "@mui/icons-material/Edit";
 import { HelpHint } from "@/components/ui/HelpHint/HelpHint";
+import EditRaidModal from "../EditRaidModal/EditRaidModal";
+import { useDisclosure } from "@/components/ui/useDisclosure";
 
 type Props = {
   raid: RaidItem;
 };
 
-const HeaderBlock = ({ raid }: Props) => {
+const HeaderBlock = ({ raid: initialRaid }: Props) => {
+  const { raid } = useGetRaidByID(initialRaid, initialRaid.id);
+  const {
+    open: isEditModalOpen,
+    onOpen: handleEditClick,
+    onClose: handleEditClose,
+  } = useDisclosure();
+
+  const handleEditSuccess = () => {
+    // Данные обновятся автоматически через SSE
+    handleEditClose();
+  };
+
+  // Используем данные из SWR или fallback на initialRaid
+  const currentRaid = raid || initialRaid;
+
   return (
     <section className={styles.raidHeaderSection}>
       <div className={styles.wrapper}>
@@ -29,15 +50,29 @@ const HeaderBlock = ({ raid }: Props) => {
 
           <div className={styles.topLeft}>
             <CustomTypography variant="caption" className={styles.muted}>
-              Raid.ID: {raid.id}
+              Raid.ID: {currentRaid.id}
             </CustomTypography>
-            <CustomTypography variant="h1">
-              {BOSS_LABEL[raid.bossType]}
-            </CustomTypography>
+            <div className={styles.bossTitleContainer}>
+              <CustomTypography variant="h1">
+                {BOSS_LABEL[currentRaid.bossType]}
+              </CustomTypography>
+              <RaidConditionalRender
+                raid={currentRaid}
+                permission="canEditInfo"
+              >
+                <IconButton
+                  onClick={handleEditClick}
+                  className={styles.editButton}
+                  size="small"
+                >
+                  <EditIcon />
+                </IconButton>
+              </RaidConditionalRender>
+            </div>
           </div>
 
           <div className={styles.topRight}>
-            <StatusChip status={raid.status} />
+            <StatusChip status={currentRaid.status} />
           </div>
         </div>
         <div className={styles.bottom}>
@@ -47,7 +82,7 @@ const HeaderBlock = ({ raid }: Props) => {
                 Создатель:
               </CustomTypography>
               <CustomTypography variant="subtitle1">
-                {raid.creator.gameNickname}
+                {currentRaid.creator.gameNickname}
               </CustomTypography>
             </div>
 
@@ -59,7 +94,7 @@ const HeaderBlock = ({ raid }: Props) => {
               </CustomTypography>
               <CustomTypography variant="subtitle1">
                 {formatDate(
-                  raid.startDt,
+                  currentRaid.startDt,
                   DateFormat.SHORT_DATE_SHORT_YEAR_TIME
                 )}
                 <HelpHint title="Дата указывается в вашем локальном часовом поясе" />
@@ -74,13 +109,13 @@ const HeaderBlock = ({ raid }: Props) => {
               </CustomTypography>
               <CustomTypography variant="subtitle1">
                 {formatDate(
-                  raid.createdDt,
+                  currentRaid.createdDt,
                   DateFormat.SHORT_DATE_SHORT_YEAR_TIME
                 )}
                 <HelpHint title="Дата указывается в вашем локальном часовом поясе" />
               </CustomTypography>
             </div>
-            {raid.updatedDt && (
+            {currentRaid.updatedDt && (
               <>
                 <Divider orientation="vertical" flexItem />
 
@@ -93,7 +128,7 @@ const HeaderBlock = ({ raid }: Props) => {
                   </CustomTypography>
                   <CustomTypography variant="subtitle1">
                     {formatDate(
-                      raid.updatedDt,
+                      currentRaid.updatedDt,
                       DateFormat.SHORT_DATE_SHORT_YEAR_TIME
                     )}
                     <HelpHint title="Дата указывается в вашем локальном часовом поясе" />
@@ -103,19 +138,29 @@ const HeaderBlock = ({ raid }: Props) => {
             )}
           </div>
 
-          <RaidConditionalRender raid={raid} permission="canManage">
+          <RaidConditionalRender raid={currentRaid} permission="canManage">
             <div className={styles.buttonsContainer}>
-              <RaidConditionalRender raid={raid} permission="canComplete">
-                <CompleteRaidButton raid={raid} />
+              <RaidConditionalRender
+                raid={currentRaid}
+                permission="canComplete"
+              >
+                <CompleteRaidButton raid={currentRaid} />
               </RaidConditionalRender>
 
-              <RaidConditionalRender raid={raid} permission="canDelete">
-                <DeleteRaidButton raid={raid} />
+              <RaidConditionalRender raid={currentRaid} permission="canDelete">
+                <DeleteRaidButton raid={currentRaid} />
               </RaidConditionalRender>
             </div>
           </RaidConditionalRender>
         </div>
       </div>
+
+      <EditRaidModal
+        open={isEditModalOpen}
+        onClose={handleEditClose}
+        raid={currentRaid}
+        onSuccess={handleEditSuccess}
+      />
     </section>
   );
 };
