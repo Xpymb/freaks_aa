@@ -37,9 +37,8 @@ export default async function Page() {
             Создание, редактирование и управление рейдами гильдии
           </CustomTypography>
         </div>
-
-        <RaidList prefetchRaids={raids ?? undefined} />
       </CustomContainer>
+      <RaidList prefetchRaids={raids ?? undefined} />
     </section>
   );
 }

@@ -1,50 +1,41 @@
 @use "@/ThemeMUI/variables" as *;
 
-.raidsPage {
-  min-height: 100vh;
-  position: relative;
-  overflow-x: hidden;
-  padding: 2rem 0;
-}
-
 .wrapper {
-  position: relative;
-  z-index: 1;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1rem;
-}
-
-.raids {
   display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-top: 2rem;
+  gap: 2rem;
+  .raidsList {
+    width: 100%;
+    .raids {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      padding: 2rem;
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.02) 0%,
+        rgba(255, 255, 255, 0.01) 100%
+      );
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 
-  .link {
-    text-decoration: none;
-    color: inherit;
-    display: block;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+      .link {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        border-radius: 16px;
+        overflow: hidden;
 
-    &:hover {
-      transform: translateY(-2px);
+        &:hover {
+          transform: translateY(-2px);
+          filter: brightness(1.05);
+        }
+      }
     }
   }
-}
-
-// Адаптивность
-@media (max-width: 768px) {
-  .raidsPage {
-    padding: 1rem 0;
-  }
-
-  .wrapper {
-    padding: 0 0.5rem;
-  }
-
-  .raids {
-    gap: 0.75rem;
-    margin-top: 1.5rem;
+  .filters {
+    width: 25%;
   }
 }

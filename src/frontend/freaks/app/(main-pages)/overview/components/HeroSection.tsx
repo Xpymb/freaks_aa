@@ -129,7 +129,7 @@ const HeroSection = () => {
 
             <motion.div variants={itemVariants}>
               <CustomTypography variant="h1" className={styles.heroTitle}>
-                Управление гильдией
+                Гэри продает
                 <motion.span
                   className={styles.guildName}
                   initial={{ opacity: 0, scale: 0.8 }}
@@ -141,7 +141,7 @@ const HeroSection = () => {
                   }}
                 >
                   {" "}
-                  нового уровня
+                  ТАНДЕМ (писать в лс - vellialhelheim)
                 </motion.span>
               </CustomTypography>
             </motion.div>

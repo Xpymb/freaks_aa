@@ -100,6 +100,17 @@ function SmartDayPicker({
       broadcastCalendar
       animate
       fixedWeeks
+      style={
+        {
+          "--rdp-accent-color": "#00ff88",
+          "--rdp-selected-color": "white",
+          "--rdp-text-color": "rgba(255, 255, 255, 0.8)",
+          "--rdp-text-color-disabled": "rgba(255, 255, 255, 0.3)",
+          "--rdp-background-color": "transparent",
+          "--rdp-outline": "none",
+          "--rdp-outline-selected": "none",
+        } as React.CSSProperties
+      }
       {...getModeProps(
         mode,
 
@@ -131,7 +142,6 @@ export default function DateOrRangeField<T extends FieldValues>({
 
   const { open, onOpen, onClose } = useDisclosure(false);
 
-  // 👉 фиксируем сразу "range"
   const [mode] = React.useState<Mode>("range");
   const [months] = React.useState(initialMonths);
 
@@ -156,6 +166,12 @@ export default function DateOrRangeField<T extends FieldValues>({
     onClose();
   };
 
+  const reset = () => {
+    setDraftRange(undefined);
+    fromCtl.field.onChange(undefined);
+    toCtl.field.onChange(undefined);
+  };
+
   // const monthsField: ControllerRenderProps = React.useMemo(
   //   () => ({
   //     name: "months",
@@ -172,13 +188,25 @@ export default function DateOrRangeField<T extends FieldValues>({
   //   [monthsOptions]
   // );
 
+  const formatDateRange = () => {
+    if (currentFrom && currentTo) {
+      const fromStr = currentFrom.toLocaleDateString("ru-RU");
+      const toStr = currentTo.toLocaleDateString("ru-RU");
+      return `${fromStr} - ${toStr}`;
+    }
+    return label;
+  };
+
   return (
     <div className={styles.wrapper}>
       <Button
         onClick={!disabled ? handleOpen : undefined}
         className={styles.modalOpen}
+        disabled={disabled}
       >
-        <CustomTypography variant="caption">{label}</CustomTypography>
+        <CustomTypography variant="subtitle1">
+          {formatDateRange()}
+        </CustomTypography>
         <CalendarMonthIcon />
       </Button>
 
@@ -242,13 +270,13 @@ export default function DateOrRangeField<T extends FieldValues>({
         </div>
 
         <div className={styles.btnWrapp}>
-          <IconButton onClick={apply}>
+          <IconButton onClick={apply} title="Применить">
             <CheckIcon />
           </IconButton>
-          <IconButton onClick={onClose}>
+          <IconButton onClick={onClose} title="Закрыть">
             <CloseIcon />
           </IconButton>
-          <IconButton>
+          <IconButton onClick={reset} title="Сбросить">
             <RestartAltIcon />
           </IconButton>
         </div>
