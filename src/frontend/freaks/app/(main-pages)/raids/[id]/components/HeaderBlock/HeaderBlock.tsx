@@ -29,11 +29,9 @@ const HeaderBlock = ({ raid: initialRaid }: Props) => {
   } = useDisclosure();
 
   const handleEditSuccess = () => {
-    // Данные обновятся автоматически через SSE
     handleEditClose();
   };
 
-  // Используем данные из SWR или fallback на initialRaid
   const currentRaid = raid || initialRaid;
 
   return (

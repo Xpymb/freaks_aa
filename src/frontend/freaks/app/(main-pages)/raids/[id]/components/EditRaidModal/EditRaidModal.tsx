@@ -5,24 +5,16 @@ import { useForm } from "react-hook-form";
 import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
-import { mutate } from "swr";
 
 import styles from "./_styles.module.scss";
 
-import { CustomTypography } from "@/components/ui/CustomTypography";
 import CustomModal from "@/components/ui/CustomModal/CustomModal";
 import { InputField } from "@/components/ui/formInputs/CustomInput";
 import { SelectField } from "@/components/ui/formInputs/CustomSelect";
 import { makeOptionsFromRecord } from "@/utils/makeOptionsFromRecord";
-import {
-  BOSS_LABEL,
-  BossType,
-  RaidFormatType,
-  RaidItem,
-} from "@/domains/raids";
+import { BOSS_LABEL, BossType, RaidItem } from "@/domains/raids";
 import { UpdateRaidRequest, RaidsService } from "@/domains/raids/raids.service";
 import { useAuth } from "@/store/authTokenStore";
-import { HelpHint } from "@/components/ui/HelpHint/HelpHint";
 
 type EditRaidForm = {
   bossType: BossType;
@@ -47,7 +39,6 @@ const EditRaidModal = ({ open, onClose, raid, onSuccess }: Props) => {
     },
   });
 
-  // Сбрасываем форму при изменении рейда
   React.useEffect(() => {
     reset({
       bossType: raid.bossType,
@@ -70,42 +61,8 @@ const EditRaidModal = ({ open, onClose, raid, onSuccess }: Props) => {
         description: data.description,
       };
 
-      // Оптимистичное обновление - сразу обновляем кэш
-      const updatedRaid = {
-        ...raid,
-        bossType: data.bossType,
-        description: data.description,
-      };
-
-      // Обновляем кэш SWR оптимистично
-      mutate(`/raids/${raid.id}`, updatedRaid, false);
-      mutate(
-        "/raids",
-        (currentData: any) => {
-          if (!currentData) return currentData;
-          return {
-            ...currentData,
-            items: currentData.items.map((item: any) =>
-              item.id === raid.id
-                ? {
-                    ...item,
-                    bossType: data.bossType,
-                    description: data.description,
-                  }
-                : item
-            ),
-          };
-        },
-        false
-      );
-
       await RaidsService.updateRaid(accessToken, raid.id, updateData);
 
-      // Обновляем данные через SWR (ревалидация)
-      await mutate(`/raids/${raid.id}`);
-      await mutate("/raids");
-
-      // Обновляем форму с новыми данными
       reset({
         bossType: data.bossType,
         description: data.description,

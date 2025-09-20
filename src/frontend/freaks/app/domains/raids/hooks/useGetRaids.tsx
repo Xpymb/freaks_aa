@@ -36,14 +36,13 @@ export function useGetRaids(
     PaginatedList<RaidListItem>
   >(key, (token: string) => RaidsService.getRaids(token, query), {
     fallbackData: prefetchData,
-    revalidateOnMount: false,
+    revalidateOnMount: true,
     websocket: {
       channel: "raid",
       enabled: true,
       onMessage: (data: SSEMessage, key: Key, mutate: () => void) => {
         const raidData = data?.pub?.data as RaidChangedMessage;
 
-        // Для списка рейдов обновляем всегда при любом изменении рейда
         if (raidData?.Id) {
           mutate();
         }

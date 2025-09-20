@@ -14,6 +14,7 @@ import { RaidItem, RaidStatus } from "@/domains/raids";
 import { useCompleteRaid } from "@/domains/raids/hooks/useCompleteRaid";
 import { CustomTypography } from "@/components/ui/CustomTypography";
 import styles from "./_styles.module.scss";
+import { mutate } from "swr";
 
 type Props = {
   raid: RaidItem;
@@ -32,8 +33,11 @@ const CompleteRaidButton = ({ raid }: Props) => {
   const handleComplete = async () => {
     try {
       await completeRaid({ raidId: raid.id });
-      handleClose();
+      await mutate(
+        (key) => typeof key === "string" && key.startsWith("/raids")
+      );
 
+      handleClose();
       router.push("/raids");
     } catch (error) {
       console.error("Failed to complete raid:", error);
