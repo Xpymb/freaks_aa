@@ -30,7 +30,6 @@ const RaidList = ({ prefetchRaids }: Props) => {
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
 
-  // Обновляем фильтры с пагинацией - используем useMemo для предотвращения бесконечного цикла
   const filtersWithPagination = useMemo(
     () => ({
       ...filters,
