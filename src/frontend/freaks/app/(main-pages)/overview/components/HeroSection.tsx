@@ -129,7 +129,7 @@ const HeroSection = () => {
 
             <motion.div variants={itemVariants}>
               <CustomTypography variant="h1" className={styles.heroTitle}>
-                Гери продает
+                Гэри продает
                 <motion.span
                   className={styles.guildName}
                   initial={{ opacity: 0, scale: 0.8 }}
