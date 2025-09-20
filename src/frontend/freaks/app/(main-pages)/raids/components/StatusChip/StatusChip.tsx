@@ -5,12 +5,13 @@ import { RAID_STATUS_LABEL, RaidStatus } from "@/domains/raids";
 
 type Props = {
   status: RaidStatus;
+  className?: string;
 };
 
-const StatusChip = ({ status }: Props) => {
+const StatusChip = ({ status, className }: Props) => {
   return (
     <Chip
-      className={clsx(styles.statusChip, {
+      className={clsx(styles.statusChip, className, {
         [styles.planned]: status === RaidStatus.Planned,
         [styles.waitingScreenshot]: status === RaidStatus.WaitingScreenshot,
         [styles.waitingSubmit]: status === RaidStatus.WaitingSubmit,

@@ -5,6 +5,7 @@ import { DateFormat, formatDate } from "@/utils/formateDate";
 import { Chip } from "@mui/material";
 import clsx from "clsx";
 import StatusChip from "../StatusChip/StatusChip";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 type Props = {
   raid: RaidListItem;
@@ -30,7 +31,7 @@ const RaidCard = ({ raid }: Props) => {
           })}
           variant="outlined"
           label={
-            <CustomTypography fontWeight={600} variant="subtitle2">
+            <CustomTypography fontWeight={600} variant="subtitle1">
               {BOSS_LABEL[raid.bossType]}
             </CustomTypography>
           }
@@ -43,7 +44,8 @@ const RaidCard = ({ raid }: Props) => {
         <CustomTypography variant="subtitle1">
           {formatDate(raid.startDt, DateFormat.SHORT_DATE_SHORT_YEAR_TIME)}
         </CustomTypography>
-        <StatusChip status={raid.status} />
+        <StatusChip status={raid.status} className={styles.statusChip} />
+        <ArrowForwardIosIcon sx={{ fontSize: 10 }} />
       </div>
     </div>
   );

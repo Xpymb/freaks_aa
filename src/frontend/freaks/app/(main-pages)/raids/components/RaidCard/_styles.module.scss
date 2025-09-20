@@ -4,68 +4,317 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  transition: 0.3s;
+  padding: 1.5rem;
+  border-radius: 16px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.03) 0%,
+    rgba(255, 255, 255, 0.01) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.05) 0%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.02) 100%
+    );
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.1),
+      transparent
+    );
+    transition: left 0.8s ease;
+  }
+
   &:hover {
-    background-color: rgba($mutedColor, 0.1);
+    transform: translateY(-4px) scale(1.02);
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.06) 0%,
+      rgba(255, 255, 255, 0.02) 100%
+    );
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+
+    &::before {
+      opacity: 1;
+    }
+
+    &::after {
+      left: 100%;
+    }
   }
   .left {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 40%;
+    gap: 1rem;
+    width: 35%;
+    position: relative;
+    z-index: 2;
     .bossChip {
+      border-radius: 20px !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      background: rgba(255, 255, 255, 0.05) !important;
+      backdrop-filter: blur(8px) !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.3px !important;
+      position: relative !important;
+      overflow: hidden !important;
+      transition: all 0.3s ease !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.1),
+          transparent,
+          rgba(255, 255, 255, 0.05)
+        );
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.1),
+          transparent
+        );
+        transition: left 0.8s ease;
+      }
+
+      &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+
+        &::before {
+          opacity: 1;
+        }
+
+        &::after {
+          left: 100%;
+        }
+      }
+
       &.jmg {
-        color: rgba($Jmg, 1);
-        border-color: rgba($Jmg, 1);
-        background-color: rgba($Jmg, 0.2);
+        background: linear-gradient(
+          135deg,
+          rgba($Jmg, 0.15),
+          rgba($Jmg, 0.05)
+        ) !important;
+        border-color: rgba($Jmg, 0.3) !important;
+        color: rgba($Jmg, 0.9) !important;
+
+        &:hover {
+          background: linear-gradient(
+            135deg,
+            rgba($Jmg, 0.25),
+            rgba($Jmg, 0.1)
+          ) !important;
+          box-shadow: 0 4px 16px rgba($Jmg, 0.2) !important;
+        }
       }
       &.abyssalJmg {
-        color: rgba($AbyssalJmg, 1);
-        border-color: rgba($AbyssalJmg, 1);
-        background-color: rgba($AbyssalJmg, 0.2);
+        background: linear-gradient(
+          135deg,
+          rgba($AbyssalJmg, 0.15),
+          rgba($AbyssalJmg, 0.05)
+        ) !important;
+        border-color: rgba($AbyssalJmg, 0.3) !important;
+        color: rgba($AbyssalJmg, 0.9) !important;
+
+        &:hover {
+          background: linear-gradient(
+            135deg,
+            rgba($AbyssalJmg, 0.25),
+            rgba($AbyssalJmg, 0.1)
+          ) !important;
+          box-shadow: 0 4px 16px rgba($AbyssalJmg, 0.2) !important;
+        }
       }
       &.rangora {
-        color: rgba($Rangora, 1);
-        border-color: rgba($Rangora, 1);
-        background-color: rgba($Rangora, 0.2);
+        background: linear-gradient(
+          135deg,
+          rgba($Rangora, 0.15),
+          rgba($Rangora, 0.05)
+        ) !important;
+        border-color: rgba($Rangora, 0.3) !important;
+        color: rgba($Rangora, 0.9) !important;
+
+        &:hover {
+          background: linear-gradient(
+            135deg,
+            rgba($Rangora, 0.25),
+            rgba($Rangora, 0.1)
+          ) !important;
+          box-shadow: 0 4px 16px rgba($Rangora, 0.2) !important;
+        }
       }
       &.morpheus {
-        color: rgba($Morpheus, 1);
-        border-color: rgba($Morpheus, 1);
-        background-color: rgba($Morpheus, 0.2);
+        background: linear-gradient(
+          135deg,
+          rgba($Morpheus, 0.15),
+          rgba($Morpheus, 0.05)
+        ) !important;
+        border-color: rgba($Morpheus, 0.3) !important;
+        color: rgba($Morpheus, 0.9) !important;
+
+        &:hover {
+          background: linear-gradient(
+            135deg,
+            rgba($Morpheus, 0.25),
+            rgba($Morpheus, 0.1)
+          ) !important;
+          box-shadow: 0 4px 16px rgba($Morpheus, 0.2) !important;
+        }
       }
       &.kraken {
-        color: rgba($Kraken, 1);
-        border-color: rgba($Kraken, 1);
-        background-color: rgba($Kraken, 0.2);
+        background: linear-gradient(
+          135deg,
+          rgba($Kraken, 0.15),
+          rgba($Kraken, 0.05)
+        ) !important;
+        border-color: rgba($Kraken, 0.3) !important;
+        color: rgba($Kraken, 0.9) !important;
+
+        &:hover {
+          background: linear-gradient(
+            135deg,
+            rgba($Kraken, 0.25),
+            rgba($Kraken, 0.1)
+          ) !important;
+          box-shadow: 0 4px 16px rgba($Kraken, 0.2) !important;
+        }
       }
       &.blackDragon {
-        color: rgba($BlackDragon, 1);
-        border-color: rgba($BlackDragon, 1);
-        background-color: rgba($BlackDragon, 0.2);
+        background: linear-gradient(
+          135deg,
+          rgba($BlackDragon, 0.15),
+          rgba($BlackDragon, 0.05)
+        ) !important;
+        border-color: rgba($BlackDragon, 0.3) !important;
+        color: rgba($BlackDragon, 0.9) !important;
+
+        &:hover {
+          background: linear-gradient(
+            135deg,
+            rgba($BlackDragon, 0.25),
+            rgba($BlackDragon, 0.1)
+          ) !important;
+          box-shadow: 0 4px 16px rgba($BlackDragon, 0.2) !important;
+        }
       }
       &.charybdis {
-        color: rgba($Charybdis, 1);
-        border-color: rgba($Charybdis, 1);
-        background-color: rgba($Charybdis, 0.2);
+        background: linear-gradient(
+          135deg,
+          rgba($Charybdis, 0.15),
+          rgba($Charybdis, 0.05)
+        ) !important;
+        border-color: rgba($Charybdis, 0.3) !important;
+        color: rgba($Charybdis, 0.9) !important;
+
+        &:hover {
+          background: linear-gradient(
+            135deg,
+            rgba($Charybdis, 0.25),
+            rgba($Charybdis, 0.1)
+          ) !important;
+          box-shadow: 0 4px 16px rgba($Charybdis, 0.2) !important;
+        }
       }
       &.leviathan {
-        color: rgba($Leviathan, 1);
-        border-color: rgba($Leviathan, 1);
-        background-color: rgba($Leviathan, 0.2);
+        background: linear-gradient(
+          135deg,
+          rgba($Leviathan, 0.15),
+          rgba($Leviathan, 0.05)
+        ) !important;
+        border-color: rgba($Leviathan, 0.3) !important;
+        color: rgba($Leviathan, 0.9) !important;
+
+        &:hover {
+          background: linear-gradient(
+            135deg,
+            rgba($Leviathan, 0.25),
+            rgba($Leviathan, 0.1)
+          ) !important;
+          box-shadow: 0 4px 16px rgba($Leviathan, 0.2) !important;
+        }
       }
       &.anthalon {
-        color: rgba($Anthalon, 1);
-        border-color: rgba($Anthalon, 1);
-        background-color: rgba($Anthalon, 0.2);
+        background: linear-gradient(
+          135deg,
+          rgba($Anthalon, 0.15),
+          rgba($Anthalon, 0.05)
+        ) !important;
+        border-color: rgba($Anthalon, 0.3) !important;
+        color: rgba($Anthalon, 0.9) !important;
+
+        &:hover {
+          background: linear-gradient(
+            135deg,
+            rgba($Anthalon, 0.25),
+            rgba($Anthalon, 0.1)
+          ) !important;
+          box-shadow: 0 4px 16px rgba($Anthalon, 0.2) !important;
+        }
       }
       &.abyssalSehekmet {
-        color: rgba($AbyssalSehekmet, 1);
-        border-color: rgba($AbyssalSehekmet, 1);
-        background-color: rgba($AbyssalSehekmet, 0.2);
+        background: linear-gradient(
+          135deg,
+          rgba($AbyssalSehekmet, 0.15),
+          rgba($AbyssalSehekmet, 0.05)
+        ) !important;
+        border-color: rgba($AbyssalSehekmet, 0.3) !important;
+        color: rgba($AbyssalSehekmet, 0.9) !important;
+
+        &:hover {
+          background: linear-gradient(
+            135deg,
+            rgba($AbyssalSehekmet, 0.25),
+            rgba($AbyssalSehekmet, 0.1)
+          ) !important;
+          box-shadow: 0 4px 16px rgba($AbyssalSehekmet, 0.2) !important;
+        }
       }
     }
   }
@@ -73,6 +322,12 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 40%;
+    gap: 1rem;
+    width: 50%;
+    position: relative;
+    z-index: 2;
+    .statusChip {
+      margin-left: auto;
+    }
   }
 }

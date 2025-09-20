@@ -17,6 +17,7 @@ import ErrorLoadData from "@/components/ui/ErrorLoadData/ErrorLoadData";
 import CreateRaidForm from "@/(main-pages)/raids/components/CreateRaidForm/CreateRaidForm";
 import RaidPagination from "../RaidPagination/RaidPagination";
 import RaidCardSkeleton from "../RaidCardSkeleton/RaidCardSkeleton";
+import DetailContainer from "@/components/ui/DetailContainer/DetailContainer";
 
 type Props = {
   prefetchRaids: PaginatedList<RaidListItem> | undefined;
@@ -84,57 +85,61 @@ const RaidList = ({ prefetchRaids }: Props) => {
   }
 
   return (
-    <section className={styles.raidsPage}>
+    <DetailContainer>
+      <motion.div variants={itemVariants}>
+        <CreateRaidForm />
+      </motion.div>
       <div className={styles.wrapper}>
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <motion.div variants={itemVariants}>
-            <RaidsFilters initial={filters} onApply={handleFiltersChange} />
+        <div className={styles.raidsList}>
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <motion.div
+              className={styles.raids}
+              style={{ minHeight: `${pageSize * 80}px` }}
+              variants={containerVariants}
+            >
+              {isLoading
+                ? Array.from({ length: pageSize }).map((_, index) => (
+                    <motion.div
+                      key={`skeleton-${index}`}
+                      variants={itemVariants}
+                    >
+                      <RaidCardSkeleton />
+                    </motion.div>
+                  ))
+                : raids.map((raid: RaidListItem) => (
+                    <motion.div
+                      key={raid.id}
+                      variants={itemVariants}
+                      whileHover={{ scale: 1.02 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <Link href={`/raids/${raid.id}`} className={styles.link}>
+                        <RaidCard raid={raid} />
+                      </Link>
+                    </motion.div>
+                  ))}
+            </motion.div>
           </motion.div>
-
-          <motion.div variants={itemVariants}>
-            <CreateRaidForm />
-          </motion.div>
-
-          <motion.div className={styles.raids} variants={containerVariants}>
-            {raids.length === 0 || isLoading
-              ? Array.from({ length: pageSize }).map((_, index) => (
-                  <motion.div key={`skeleton-${index}`} variants={itemVariants}>
-                    <RaidCardSkeleton />
-                    <Divider />
-                  </motion.div>
-                ))
-              : raids.map((raid: RaidListItem) => (
-                  <motion.div
-                    key={raid.id}
-                    variants={itemVariants}
-                    whileHover={{ scale: 1.02 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <Link href={`/raids/${raid.id}`} className={styles.link}>
-                      <RaidCard raid={raid} />
-                    </Link>
-                    <Divider />
-                  </motion.div>
-                ))}
-          </motion.div>
-
-          <motion.div variants={itemVariants}>
-            <RaidPagination
-              totalCount={totalCount}
-              page={page}
-              pageSize={pageSize}
-              onPageChange={setPage}
-              onPageSizeChange={setPageSize}
-              isLoading={isLoading}
-            />
-          </motion.div>
+        </div>
+        <motion.div variants={itemVariants} transition={{ duration: 0.2 }}>
+          <RaidsFilters initial={filters} onApply={handleFiltersChange} />
         </motion.div>
       </div>
-    </section>
+      <motion.div variants={itemVariants}>
+        <RaidPagination
+          totalCount={totalCount}
+          page={page}
+          pageSize={pageSize}
+          onPageChange={setPage}
+          onPageSizeChange={setPageSize}
+          isLoading={isLoading}
+        />
+      </motion.div>
+    </DetailContainer>
   );
 };
 

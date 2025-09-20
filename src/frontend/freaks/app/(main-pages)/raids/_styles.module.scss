@@ -1,15 +1,66 @@
 @use "@/ThemeMUI/variables" as *;
 
 .raidListSection {
-  padding: $mainSectionPadding;
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.02) 0%,
+    rgba(255, 255, 255, 0.01) 100%
+  );
+  min-height: 100vh;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+        circle at 20% 80%,
+        rgba(120, 119, 198, 0.03) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 80% 20%,
+        rgba(255, 119, 198, 0.03) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 40% 40%,
+        rgba(120, 219, 255, 0.02) 0%,
+        transparent 50%
+      );
+    pointer-events: none;
+    z-index: 0;
+  }
 
   .heading {
-    padding-bottom: 1rem;
-    border-bottom: 1px solid $secondaryBorderLineColor;
+    padding: 2rem 0 3rem 0;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
     .title {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 700;
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.9) 0%,
+        rgba(255, 255, 255, 0.6) 100%
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     }
+
     .subtitle {
-      color: $mutedColor;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 1.2rem;
+      font-weight: 300;
+      letter-spacing: 0.5px;
     }
   }
 }

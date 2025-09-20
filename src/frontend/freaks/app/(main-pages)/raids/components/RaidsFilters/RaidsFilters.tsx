@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { IconButton } from "@mui/material";
+import { IconButton, Box, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { BOSS_LABEL, RAID_STATUS_LABEL } from "@/domains/raids/constants";
@@ -11,6 +11,7 @@ import { AutoMultiField } from "@/components/ui/formInputs/CustomAutocomplete";
 import { useDebounce } from "@/shared/hooks/useDebounce";
 import styles from "./_styles.module.scss";
 import DateOrRangeField from "@/components/ui/formInputs/DateField/DateField";
+import { CustomTypography } from "@/components";
 
 type FormValues = {
   bossTypes: BossType[];
@@ -98,8 +99,17 @@ export default function RaidsFilters({ initial, onApply, onReset }: Props) {
   };
 
   return (
-    <div className={styles.filters}>
-      <div className={styles.wrapper}>
+    <Box className={styles.filtersPanel}>
+      <Box className={styles.panelHeader}>
+        <CustomTypography variant="h6" className={styles.panelTitle}>
+          Фильтры рейдов
+        </CustomTypography>
+        <IconButton onClick={doReset} className={styles.resetButton}>
+          <RestartAltIcon />
+        </IconButton>
+      </Box>
+
+      <Box className={styles.panelContent}>
         <AutoMultiField<FormValues, BossType>
           control={control}
           name="bossTypes"
@@ -122,11 +132,7 @@ export default function RaidsFilters({ initial, onApply, onReset }: Props) {
           nameTo="to"
           label="Период"
         />
-
-        <IconButton onClick={doReset}>
-          <RestartAltIcon />
-        </IconButton>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
