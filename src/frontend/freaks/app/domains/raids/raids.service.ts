@@ -5,6 +5,7 @@ import {
   CreateRaidLootRequest,
   CreateRaidParticipantRequest,
   IRaidScreenshot,
+  RaidFormatType,
   RaidItem,
   RaidListItem,
   RaidLootDto,
@@ -30,6 +31,12 @@ export interface CreateRaidRequest {
   description: string;
 }
 
+export interface UpdateRaidRequest {
+  bossType?: number;
+  formatType?: RaidFormatType;
+  description?: string;
+}
+
 export interface CreateScreenshotRequest {
   screenshotUris: string[];
 }
@@ -45,6 +52,9 @@ export const RaidsService = {
 
   createRaid: (token: string, data: CreateRaidRequest) =>
     authorizedApi(token, "portal").post<RaidListItem>("/raids", data),
+
+  updateRaid: (token: string, raidId: number, data: UpdateRaidRequest) =>
+    authorizedApi(token, "portal").put<RaidItem>(`/raids/${raidId}`, data),
 
   completeRaid: (token: string, raidId: number) =>
     authorizedApi(token, "portal").post<RaidItem>(`/raids/${raidId}/finish`),

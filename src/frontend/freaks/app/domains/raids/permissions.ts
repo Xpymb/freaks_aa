@@ -102,6 +102,43 @@ export function canDeleteRaid(
 }
 
 /**
+ * Проверяет может ли пользователь редактировать основные данные рейда
+ * (название босса, формат, описание)
+ */
+export function canEditRaidInfo(
+  userRoles: UserRole[],
+  raid: RaidItem,
+  userId?: string
+): boolean {
+  // После завершения рейда больше никто не может редактировать
+  if (raid.status === RaidStatus.Ended) {
+    return false;
+  }
+
+  // ADMIN и GUILD_LEADER могут редактировать незавершенные рейды
+  const hasSuperAdminRole = SUPER_ADMIN_ROLES.some((role) =>
+    userRoles.includes(role)
+  );
+  if (hasSuperAdminRole) {
+    return true;
+  }
+
+  // EDITOR может редактировать любые незавершенные рейды
+  const hasEditorRole = userRoles.includes("editor");
+  if (hasEditorRole) {
+    return true;
+  }
+
+  // MEMBER может редактировать только свои незавершенные рейды
+  const hasMemberRole = userRoles.includes("member");
+  if (hasMemberRole && userId && raid.creator.id === userId) {
+    return true;
+  }
+
+  return false;
+}
+
+/**
  * Проверяет может ли пользователь создавать рейды
  */
 export function canCreateRaid(userRoles: UserRole[]): boolean {
@@ -128,6 +165,7 @@ export function getRaidPermissions(
   return {
     canView: canViewRaid(userRoles),
     canEdit: canEditRaidContent(userRoles, raid, userId),
+    canEditInfo: canEditRaidInfo(userRoles, raid, userId),
     canComplete: canCompleteRaid(userRoles, raid, userId),
     canDelete: canDeleteRaid(userRoles, raid, userId),
     canCreate: canCreateRaid(userRoles),
