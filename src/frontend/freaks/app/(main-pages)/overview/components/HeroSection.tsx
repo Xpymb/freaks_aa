@@ -129,7 +129,7 @@ const HeroSection = () => {
 
             <motion.div variants={itemVariants}>
               <CustomTypography variant="h1" className={styles.heroTitle}>
-                Продам жопу бробоха посуточно (писать - Kiqshaxd)
+                Место для вашей рекламы
                 <motion.span
                   className={styles.guildName}
                   initial={{ opacity: 0, scale: 0.8 }}
