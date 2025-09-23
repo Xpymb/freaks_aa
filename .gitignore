@@ -217,3 +217,7 @@ target
 
 # Ignore minio data folder
 /docker/MinIO/data/
+
+# misc
+.DS_Store
+*.pem
