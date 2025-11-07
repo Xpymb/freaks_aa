@@ -3,6 +3,7 @@ import { auth } from "@/api/auth/auth";
 import type { UserRole } from "@/types/roles.types";
 import { AVAILABLE_ROLES } from "@/types/roles.types";
 
+// Публичные роуты - без авторизации
 const PUBLIC_PREFIXES = [
   "/login",
   "/logout",
@@ -11,6 +12,10 @@ const PUBLIC_PREFIXES = [
   "/favicon.ico",
   "/robots.txt",
   "/sitemap.xml",
+];
+
+// Роуты только с проверкой авторизации (без проверки ролей)
+const AUTH_ONLY_PREFIXES = [
   "/forbidden",
 ];
 
@@ -24,6 +29,10 @@ const ROLE_PROTECTED_ROUTES: Record<string, UserRole[]> = {
 
 function isPublic(pathname: string) {
   return PUBLIC_PREFIXES.some((p) => pathname.startsWith(p));
+}
+
+function isAuthOnly(pathname: string) {
+  return AUTH_ONLY_PREFIXES.some((p) => pathname.startsWith(p));
 }
 
 function getRequiredRoles(pathname: string): UserRole[] | null {
@@ -48,32 +57,43 @@ function hasValidRole(userRoles: UserRole[]): boolean {
 
 export default auth((request) => {
   const { pathname, search } = request.nextUrl;
+  const headers = new Headers(request.headers);
 
-  if (!isPublic(pathname) && !request.auth) {
+  if (process.env.NODE_ENV == "development") {
+    headers.set("x-forwarded-uri", request.nextUrl.pathname);
+  }
+
+  // 1. PUBLIC роуты → пропустить без проверок
+  if (isPublic(pathname)) {
+    return NextResponse.next({ headers });
+  }
+
+  // 2. Нет авторизации → редирект на /login
+  if (!request.auth) {
     const url = new URL("/login", request.nextUrl);
     url.searchParams.set("callbackUrl", pathname + (search || ""));
     return NextResponse.redirect(url);
   }
 
-  if (request.auth && !isPublic(pathname)) {
-    const userRoles = (request.auth.user?.roles || []) as UserRole[];
-
-    if (!hasValidRole(userRoles)) {
-      return NextResponse.redirect(new URL("/forbidden", request.nextUrl));
-    }
-
-    const requiredRoles = getRequiredRoles(pathname);
-    if (requiredRoles) {
-      if (!hasRequiredRole(userRoles, requiredRoles)) {
-        return NextResponse.redirect(new URL("/forbidden", request.nextUrl));
-      }
-    }
+  // 3. AUTH_ONLY роуты → пропустить (авторизация уже проверена)
+  if (isAuthOnly(pathname)) {
+    return NextResponse.next({ headers });
   }
 
-  const headers = new Headers(request.headers);
+  // 4. PROTECTED роуты → проверка ролей
+  const userRoles = (request.auth.user?.roles || []) as UserRole[];
 
-  if (process.env.NODE_ENV == "development") {
-    headers.set("x-forwarded-uri", request.nextUrl.pathname);
+  // Проверяем что у юзера есть хоть одна валидная роль
+  if (!hasValidRole(userRoles)) {
+    return NextResponse.redirect(new URL("/forbidden", request.nextUrl));
+  }
+
+  // 5. Проверяем специфичные требования к ролям для конкретных роутов
+  const requiredRoles = getRequiredRoles(pathname);
+  if (requiredRoles) {
+    if (!hasRequiredRole(userRoles, requiredRoles)) {
+      return NextResponse.redirect(new URL("/forbidden", request.nextUrl));
+    }
   }
 
   return NextResponse.next({ headers });

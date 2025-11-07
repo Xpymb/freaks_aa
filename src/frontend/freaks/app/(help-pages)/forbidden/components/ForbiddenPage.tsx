@@ -1,38 +1,23 @@
 "use client";
 
 import React from "react";
-import { Button } from "@mui/material";
-import {
-  Block as BlockIcon,
-  Home as HomeIcon,
-  ArrowBack as ArrowBackIcon,
-} from "@mui/icons-material";
-import { useRouter } from "next/navigation";
-import { useAuth } from "@/store/authTokenStore";
-import { CustomTypography } from "@/components/ui/CustomTypography";
-import { CustomContainer } from "@/components/ui/CustomContainer";
+import {Button} from "@mui/material";
+import {ArrowBack as ArrowBackIcon, Block as BlockIcon, Home as HomeIcon,} from "@mui/icons-material";
+import {useRouter} from "next/navigation";
+import {useAuth} from "@/store/authTokenStore";
+import {CustomTypography} from "@/components/ui/CustomTypography";
+import {CustomContainer} from "@/components/ui/CustomContainer";
 import styles from "./_styles.module.scss";
-import { useAuthActions } from "@/domains/auth/hooks/ useAuthActions";
-import DefaultLoader from "@/components/ui/DefaultLoader/DefaultLoader";
+import {useAuthActions} from "@/domains/auth/hooks/ useAuthActions";
 
 const ForbiddenPage = () => {
   const router = useRouter();
-  const { user, isAuthenticated, idToken } = useAuth();
+  const { isAuthenticated, idToken } = useAuth();
 
   const { handleLogout } = useAuthActions({
     idToken: idToken || null,
     isAuthenticated,
   });
-
-  React.useEffect(() => {
-    if (!isAuthenticated) {
-      router.push("/login");
-    }
-  }, [isAuthenticated, router]);
-
-  if (!isAuthenticated && user === null) {
-    return <DefaultLoader />;
-  }
 
   return (
     <div className={styles.container}>
