@@ -1,0 +1,106 @@
+services:
+  solution-build-artifacts:
+    image: ${DOCKER_REGISTRY}/solution-build-artifacts:${APP_VERSION}
+    build: 
+      context: "./../src/backend/dotnet"
+      dockerfile: "./Dockerfile"
+      args:
+        - DOTNET_SDK_VERSION=${DOTNET_SDK_VERSION}
+  portal-web-api:
+    image: ${DOCKER_REGISTRY}/portal-web-api:${APP_VERSION}
+    build: 
+      context: "./dotnet/PortalService"
+      dockerfile: "./Dockerfile"
+      args:
+        - SOLUTION_IMAGE_NAME=${DOCKER_REGISTRY}/solution-build-artifacts:${APP_VERSION}
+        - ASPNET_VERSION=${ASPNET_VERSION}
+    ports:
+      - "5100:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Compose
+      - KeycloakAdmin__resource=realm_admin
+      - KeycloakAdmin__credentials__secret=${KEYCLOAK_ADMIN_CLIENT_SECRET}
+      - DbOptions__ConnectionString=Server=94.228.125.101;Port=5432;Database=freaks;User Id=portal;Password=Mtq<2Yr^0NH!@$;CommandTimeout=300;Include Error Detail=true; Search Path=public
+    depends_on:
+      - solution-build-artifacts
+      - rabbitmq
+      - redis
+      - centrifugo
+  files-web-api:
+    image: ${DOCKER_REGISTRY}/files-web-api:${APP_VERSION}
+    build: 
+      context: "./dotnet/FileService"
+      dockerfile: "./Dockerfile"
+      args:
+        - SOLUTION_IMAGE_NAME=${DOCKER_REGISTRY}/solution-build-artifacts:${APP_VERSION}
+        - ASPNET_VERSION=${ASPNET_VERSION}
+    ports:
+      - "5110:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Compose
+      - DbOptions__ConnectionString=Server=94.228.125.101;Port=5432;Database=freaks;User Id=portal;Password=Mtq<2Yr^0NH!@$;CommandTimeout=300;Include Error Detail=true; Search Path=public
+      - StorageOptions__Host=s3.twcstorage.ru
+      - StorageOptions__AccessKey=5IN3NI3AC4IZ1SQ5QK48
+      - StorageOptions__SecretKey=KSUh01bFRlHoLDxAVCeuOLlQRxTNKiuppHJBTFmh
+      - StorageOptions__DefaultBucketName=3b49aa04-dfa87595-9ac1-49da-82e3-ebabea7b3c0f
+      - StorageOptions__Region=ru-1
+      - StorageOptions__WithSsl=true
+    depends_on:
+      - solution-build-artifacts
+      - rabbitmq
+      - redis
+      - centrifugo
+  frontend:
+    image: ${DOCKER_REGISTRY}/frontend:${APP_VERSION}
+    build:
+      context: "./../src/frontend/freaks"
+      dockerfile: "./Dockerfile"
+      args:
+        - NODE_VERSION=node:22-alpine
+    ports:
+      - "3000:3000"
+    environment:
+      - AUTH_SECRET=OSQu0Lcij+vgH7VLr7BUtjezVJgLlgzGKHiX/UcNo3w=
+      - KEYCLOAK_ID=frontend
+  rabbitmq:
+    image: ${DOCKER_REGISTRY}/rabbitmq:${RABBITMQ_VERSION}
+    build: 
+      context: "./RabbitMQ"
+      dockerfile: "./Dockerfile"
+      args:
+        - RABBITMQ_VERSION=${RABBITMQ_VERSION}
+    ports:
+      - "18672:15672"
+      - "8672:5672"
+      - "8671:5671"
+      - "18671:15671"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq:rw
+    depends_on:
+      - solution-build-artifacts
+  redis:
+    image: redis:${REDIS_VERSION}
+    ports:
+      - "9379:6379"
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+  centrifugo:
+    image: ${DOCKER_REGISTRY}/centrifugo:${CENTRIFUGO_VERSION}
+    build:
+      context: "./Centrifugo"
+      dockerfile: "./Dockerfile"
+      args:
+        - CENTRIFUGO_VERSION=${CENTRIFUGO_VERSION}
+    command: centrifugo -c config.json
+    ports:
+      - 9000:8000
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535
+    depends_on:
+      - solution-build-artifacts
+volumes:
+  postgres_data: null
+  minio_data: null
+  rabbitmq_data: null
