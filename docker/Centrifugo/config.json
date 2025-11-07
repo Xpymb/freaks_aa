@@ -4,7 +4,7 @@
   },
   "client": {
     "token": {
-      "rsa_public_key": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApp35QgpFdeZB3scMM7HhA5XThuVx2mENH3vgyHhAFX4H9je8o4F8k81vairThgki3h+gDOvMbcGjWnihD2ZnJwvU+IX7+IOv5HG2zg/O2rv0z03XI/Ciqhmzq1evgmKJSyJRsNEvdE+fPAKj3uV8iUEUmchSAvx6ZxHHFm2+QwM29D25yRJ664G0FG6teTPK981poTYl278UT1ga9O0n1YfNB50VhFLk+2p6m21ulkT/ftfPvKC5yTITMrFoH/nPS/gm60v3BPf36erETlIDdjEeJqo1KwjSVihvkFiRXVQ/zawrr4xGnINt/EuYA5BcttEtvh7F0GYazm29fq5bYQIDAQAB\n-----END PUBLIC KEY-----",
+      "rsa_public_key": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzWJTTKqb0iR//Ux4NT/mPkei+xz+KZWpeszHmM6JQRjU6XjLRa+WfmZE5AQyxbyXvKy72sM+7ZsCL7ZlgYZ95PMcxvf4nwsBWZNQUKGzvpjYAXJbR5mnN2lm/Ng14j7LKTIJxj9+1i0wFIjOwB15sHD/O6F+e6/YpUi03YH+v4Pk5a5Qbm+Rwry0ixy2gxVvEpQtz26izXsqs4lq8pdOuCDAdfroZNcoCq6lWhJNgOwknNMwSWds5iMDS94ZHSMXK0kfzlVaNaJpJ0RziVp8aEDtoYc2Q9UmCBrJ5t1KYMcKibUJDPURvLyZn0JtNWQB5D7txbLOuXTfuDDH5yD2lwIDAQAB\n-----END PUBLIC KEY-----",
       "issuer": "https://auth.freaks-aa.ru/realms/freaks-dev"
     },
     "allowed_origins": ["*"]
