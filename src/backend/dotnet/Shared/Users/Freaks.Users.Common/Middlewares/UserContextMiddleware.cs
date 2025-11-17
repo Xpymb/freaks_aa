@@ -64,7 +64,7 @@ public class UserContextMiddleware
                     Roles = GetUserRoles(user!),
                     Username = user!.FindFirst("preferred_username")!.Value,
                     Email = user.FindFirst(ClaimTypes.Email)?.Value ?? string.Empty,
-                    GameNickname = user.FindFirst("game_nickname")!.Value,
+                    GameNickname = user.FindFirst("game_nickname")?.Value ?? "",
                     CreatedDt = DateTimeOffset.UtcNow,
                 };
 
@@ -100,7 +100,7 @@ public class UserContextMiddleware
     private static List<UserRole> GetUserRoles(ClaimsPrincipal user)
     {
         var roles = new List<UserRole>();
-
+        
         foreach (var claim in user.Claims)
         {
             var userRole = UserRoleExtensions.GetRoleType(claim.Value);
