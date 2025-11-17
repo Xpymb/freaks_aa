@@ -1,4 +1,5 @@
-﻿using Freaks.Dal.Common.Extensions;
+﻿using Duende.AccessTokenManagement;
+using Freaks.Dal.Common.Extensions;
 using Freaks.Users.Bll.Implementations;
 using Freaks.Users.Bll.Interfaces;
 using Freaks.Users.Contracts.ValueObjects;
@@ -65,15 +66,15 @@ public static class ConfigureServices
                 tokenName,
                 client =>
                 {
-                    client.ClientId = options.Resource;
-                    client.ClientSecret = options.Credentials.Secret;
-                    client.TokenEndpoint = options.KeycloakTokenEndpoint;
+                    client.ClientId = ClientId.Parse(options.Resource);
+                    client.ClientSecret = ClientSecret.Parse(options.Credentials.Secret);
+                    client.TokenEndpoint = new Uri(options.KeycloakTokenEndpoint);
                 }
             );
 
         services
             .AddKeycloakAdminHttpClient(configuration, keycloakClientSectionName: keycloakConfigSectionName)
-            .AddClientCredentialsTokenHandler(tokenName);
+            .AddClientCredentialsTokenHandler(ClientCredentialsClientName.Parse(tokenName));
         
         return services;
     }
