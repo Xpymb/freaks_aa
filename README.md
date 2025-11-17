@@ -51,9 +51,9 @@ run_docker-compose-local-db.cmd      # for Windows
 ---
 
 ### 📦 Dependencies
-- .NET 9 SDK
+- .NET 10 SDK
 - Docker + Docker Compose
-- Node.js (for frontend development)
+- Next.js (for frontend development)
 - Keycloak (runs via docker)
 - PostgreSQL, Redis, RabbitMQ, MinIO (included in docker-compose)
 
