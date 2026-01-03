@@ -1,0 +1,78 @@
+<Solution>
+  <Folder Name="/Services/" />
+  <Folder Name="/Services/Bots/" />
+  <Folder Name="/Services/Bots/DiscordBot/">
+    <Project Path="Services/Bots/DiscordBot/Freaks.Bots.DiscordBot.Contracts/Freaks.Bots.DiscordBot.Contracts.csproj" />
+    <Project Path="Services/Bots/DiscordBot/Freaks.Bots.DiscordBot.SharedContracts/Freaks.Bots.DiscordBot.SharedContracts.csproj" />
+    <Project Path="Services/Bots/DiscordBot/Freaks.Bots.DiscordBot.WebApi/Freaks.Bots.DiscordBot.WebApi.csproj" />
+  </Folder>
+  <Folder Name="/Services/Bots/DiscordBot/Bll/">
+    <Project Path="Services/Bots/DiscordBot/Bll/Freaks.Bots.DiscordBot.Bll.Implementation/Freaks.Bots.DiscordBot.Bll.Implementation.csproj" />
+    <Project Path="Services/Bots/DiscordBot/Bll/Freaks.Bots.DiscordBot.Bll.Interfaces/Freaks.Bots.DiscordBot.Bll.Interfaces.csproj" />
+  </Folder>
+  <Folder Name="/Services/Bots/DiscordBot/Dal/">
+    <Project Path="Services/Bots/DiscordBot/Dal/Freaks.Bots.DiscordBot.Dal.Implemetation/Freaks.Bots.DiscordBot.Dal.Implemetation.csproj" />
+    <Project Path="Services/Bots/DiscordBot/Dal/Freaks.Bots.DiscordBot.Dal.Interfaces/Freaks.Bots.DiscordBot.Dal.Interfaces.csproj" />
+  </Folder>
+  <Folder Name="/Services/Bots/TelegramBot/">
+    <Project Path="Services/Bots/TelegramBot/Freaks.Bots.TelegramBot.Contracts/Freaks.Bots.TelegramBot.Contracts.csproj" />
+    <Project Path="Services/Bots/TelegramBot/Freaks.Bots.TelegramBot.SharedContracts/Freaks.Bots.TelegramBot.SharedContracts.csproj" />
+    <Project Path="Services/Bots/TelegramBot/Freaks.Bots.TelegramBot.WebApi/Freaks.Bots.TelegramBot.WebApi.csproj" />
+  </Folder>
+  <Folder Name="/Services/Bots/TelegramBot/Bll/">
+    <Project Path="Services/Bots/TelegramBot/Bll/Freaks.Bots.TelegramBot.Bll.Implementation/Freaks.Bots.TelegramBot.Bll.Implementation.csproj" />
+    <Project Path="Services/Bots/TelegramBot/Bll/Freaks.Bots.TelegramBot.Bll.Interfaces/Freaks.Bots.TelegramBot.Bll.Interfaces.csproj" />
+  </Folder>
+  <Folder Name="/Services/Bots/TelegramBot/Dal/">
+    <Project Path="Services/Bots/TelegramBot/Dal/Freaks.Bots.TelegramBot.Dal.Implementation/Freaks.Bots.TelegramBot.Dal.Implementation.csproj" />
+    <Project Path="Services/Bots/TelegramBot/Dal/Freaks.Bots.TelegramBot.Dal.Interfaces/Freaks.Bots.TelegramBot.Dal.Interfaces.csproj" />
+  </Folder>
+  <Folder Name="/Services/Files/">
+    <Project Path="Services/Files/Freaks.Files.Contracts/Freaks.Files.Contracts.csproj" />
+    <Project Path="Services/Files/Freaks.Files.SharedContracts/Freaks.Files.SharedContracts.csproj" />
+    <Project Path="Services/Files/Freaks.Files.WebApi/Freaks.Files.WebApi.csproj" />
+  </Folder>
+  <Folder Name="/Services/Files/Bll/">
+    <Project Path="Services/Files/Bll/Freaks.Files.Bll.Implementation/Freaks.Files.Bll.Implementation.csproj" />
+    <Project Path="Services/Files/Bll/Freaks.Files.Bll.Interfaces/Freaks.Files.Bll.Interfaces.csproj" />
+  </Folder>
+  <Folder Name="/Services/Files/Dal/">
+    <Project Path="Services/Files/Dal/Freaks.Files.Dal.Implementation/Freaks.Files.Dal.Implementation.csproj" />
+    <Project Path="Services/Files/Dal/Freaks.Files.Dal.Interfaces/Freaks.Files.Dal.Interfaces.csproj" />
+  </Folder>
+  <Folder Name="/Services/Portal/">
+    <Project Path="Services/Portal/Freaks.Portal.Contracts/Freaks.Portal.Contracts.csproj" />
+    <Project Path="Services/Portal/Freaks.Portal.SharedContracts/Freaks.Portal.SharedContracts.csproj" />
+    <Project Path="Services/Portal/Freaks.Portal.WebApi/Freaks.Portal.WebApi.csproj" />
+  </Folder>
+  <Folder Name="/Services/Portal/Bll/">
+    <Project Path="Services/Portal/Bll/Freaks.Portal.Bll.Implementation/Freaks.Portal.Bll.Implementation.csproj" />
+    <Project Path="Services/Portal/Bll/Freaks.Portal.Bll.Interfaces/Freaks.Portal.Bll.Interfaces.csproj" />
+  </Folder>
+  <Folder Name="/Services/Portal/Dal/">
+    <Project Path="Services/Portal/Dal/Freaks.Portal.Dal.Implementation/Freaks.Portal.Dal.Implementation.csproj" />
+    <Project Path="Services/Portal/Dal/Freaks.Portal.Dal.Interfaces/Freaks.Portal.Dal.Interfaces.csproj" />
+    <Project Path="Services/Portal/Dal/Freaks.Portal.Dal.Persistence/Freaks.Portal.Dal.Persistence.csproj" />
+  </Folder>
+  <Folder Name="/Shared/">
+    <Project Path="Shared/Freaks.Bll.Common/Freaks.Bll.Common.csproj" />
+    <Project Path="Shared/Freaks.Contracts.Common/Freaks.Contracts.Common.csproj" />
+    <Project Path="Shared/Freaks.Dal.Common/Freaks.Dal.Common.csproj" />
+    <Project Path="Shared/Freaks.Options.Common/Freaks.Options.Common.csproj" />
+    <Project Path="Shared/Freaks.SharedContracts.Common/Freaks.SharedContracts.Common.csproj" />
+    <Project Path="Shared/Freaks.WebApi.Common/Freaks.WebApi.Common.csproj" />
+  </Folder>
+  <Folder Name="/Shared/Messages/">
+    <Project Path="Shared/Messages/Freaks.Messages.Bll/Freaks.Messages.Bll.csproj" />
+    <Project Path="Shared/Messages/Freaks.Messages.Centrifugo/Freaks.Messages.Centrifugo.csproj" />
+    <Project Path="Shared/Messages/Freaks.Messages.Common/Freaks.Messages.Common.csproj" />
+    <Project Path="Shared/Messages/Freaks.Messages.SharedContracts/Freaks.Messages.SharedContracts.csproj" />
+  </Folder>
+  <Folder Name="/Shared/Users/">
+    <Project Path="Shared/Users/Freaks.Users.Bll/Freaks.Users.Bll.csproj" />
+    <Project Path="Shared/Users/Freaks.Users.Common/Freaks.Users.Common.csproj" />
+    <Project Path="Shared/Users/Freaks.Users.Contracts/Freaks.Users.Contracts.csproj" />
+    <Project Path="Shared/Users/Freaks.Users.Dal/Freaks.Users.Dal.csproj" />
+    <Project Path="Shared/Users/Freaks.Users.SharedContracts/Freaks.Users.SharedContracts.csproj" />
+  </Folder>
+</Solution>
