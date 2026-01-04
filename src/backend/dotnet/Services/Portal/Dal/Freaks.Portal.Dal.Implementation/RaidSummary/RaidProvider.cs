@@ -115,12 +115,11 @@ public class RaidProvider : BaseCachedProvider<Raid, long, IPortalDbContext>, IR
                 _ => throw new ArgumentOutOfRangeException(),
             };
 
+        var resultCount = await query.CountAsync();
         var result =
             await query
                   .UseTakeSkip(request.Take, request.Skip)
                   .ToListAsync();
-
-        var resultCount = await query.CountAsync();
 
         var paginatedResult = new PaginatedList<Raid>(result, request.Take, request.Skip, resultCount);
 

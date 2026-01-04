@@ -50,11 +50,11 @@ public class NotificationChannelMessageProvider : BaseCachedProvider<Notificatio
             _ => throw new ArgumentOutOfRangeException(),
         };
 
+        var resultCount = await query.CountAsync();
         var result =
             await query.UseTakeSkip(request.Take, request.Skip)
                        .ToListAsync();
-        
-        var resultCount = await query.CountAsync();
+
         var paginatedResult = new PaginatedList<NotificationChannelMessage>(result,  request.Take, request.Skip, resultCount);
         
         await SetCachedValueAsync(cacheKey, paginatedResult, TimeSpan.FromMinutes(5));

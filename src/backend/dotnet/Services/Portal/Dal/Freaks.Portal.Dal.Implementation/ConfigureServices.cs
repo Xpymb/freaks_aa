@@ -3,11 +3,13 @@ using Freaks.Portal.Dal.Implementation.Auction;
 using Freaks.Portal.Dal.Implementation.Loot;
 using Freaks.Portal.Dal.Implementation.Notification;
 using Freaks.Portal.Dal.Implementation.RaidSummary;
+using Freaks.Portal.Dal.Implementation.SalarySummary;
 using Freaks.Portal.Dal.Implementation.Shop;
 using Freaks.Portal.Dal.Interfaces.Auction;
 using Freaks.Portal.Dal.Interfaces.Loot;
 using Freaks.Portal.Dal.Interfaces.Notification;
 using Freaks.Portal.Dal.Interfaces.RaidSummary;
+using Freaks.Portal.Dal.Interfaces.SalarySummary;
 using Freaks.Portal.Dal.Interfaces.Shop;
 using Freaks.Portal.Dal.Persistence;
 using Microsoft.Extensions.Configuration;
@@ -49,7 +51,15 @@ public static class ConfigureServices
         // Notification
         services.AddScoped<INotificationChannelMessageProvider, NotificationChannelMessageProvider>();
         services.AddScoped<INotificationChannelProvider, NotificationChannelProvider>();
-        
+
+        // Salary Summary
+        services.AddScoped<ISalaryProvider, SalaryProvider>();
+        services.AddScoped<ISalaryParametersProvider, SalaryParametersProvider>();
+        services.AddScoped<ISalaryMemberProvider, SalaryMemberProvider>();
+        services.AddScoped<ISalaryExpensesProvider, SalaryExpensesProvider>();
+        services.AddScoped<ISalaryGuildLeaderProvider, SalaryGuildLeaderProvider>();
+        services.AddScoped<ISalaryLootProvider, SalaryLootProvider>();
+
         return services;
     }
 }

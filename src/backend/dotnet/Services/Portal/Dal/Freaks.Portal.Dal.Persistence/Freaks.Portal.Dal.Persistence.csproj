@@ -21,6 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Configurations\SalarySummary\" />
       <Folder Include="Migrations\" />
     </ItemGroup>
 
