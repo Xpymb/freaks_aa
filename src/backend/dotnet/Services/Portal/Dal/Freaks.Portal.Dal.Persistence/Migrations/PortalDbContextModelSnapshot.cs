@@ -17,7 +17,7 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.8")
+                .HasAnnotation("ProductVersion", "10.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -333,6 +333,226 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
                     b.ToTable("raid_screenshot", "portal");
                 });
 
+            modelBuilder.Entity("Freaks.Portal.Contracts.Entities.SalarySummary.Salary", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid")
+                        .HasColumnName("created_by");
+
+                    b.Property<DateTime>("CreatedDt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_dt");
+
+                    b.Property<DateOnly>("EndDt")
+                        .HasColumnType("date")
+                        .HasColumnName("end_dt");
+
+                    b.Property<int>("FillStatus")
+                        .HasColumnType("integer")
+                        .HasColumnName("fill_status");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.Property<int>("RegistrationStatus")
+                        .HasColumnType("integer")
+                        .HasColumnName("registration_status");
+
+                    b.Property<DateOnly>("StartDt")
+                        .HasColumnType("date")
+                        .HasColumnName("start_dt");
+
+                    b.Property<DateTime?>("UpdatedDt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_dt");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("salary", "portal");
+                });
+
+            modelBuilder.Entity("Freaks.Portal.Contracts.Entities.SalarySummary.SalaryExpenses", b =>
+                {
+                    b.Property<long>("SalaryId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("salary_id");
+
+                    b.Property<int>("ExpensesType")
+                        .HasColumnType("integer")
+                        .HasColumnName("expenses_type");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric")
+                        .HasColumnName("amount");
+
+                    b.Property<decimal>("Percentage")
+                        .HasColumnType("numeric")
+                        .HasColumnName("percentage");
+
+                    b.HasKey("SalaryId", "ExpensesType");
+
+                    b.ToTable("salary_expenses", "portal");
+                });
+
+            modelBuilder.Entity("Freaks.Portal.Contracts.Entities.SalarySummary.SalaryGuildLeader", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric")
+                        .HasColumnName("amount");
+
+                    b.Property<int>("LootId")
+                        .HasColumnType("integer")
+                        .HasColumnName("loot_id");
+
+                    b.Property<decimal>("PricePerLoot")
+                        .HasColumnType("numeric")
+                        .HasColumnName("price_per_loot");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer")
+                        .HasColumnName("quantity");
+
+                    b.Property<long>("SalaryId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("salary_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LootId");
+
+                    b.HasIndex("SalaryId");
+
+                    b.ToTable("salary_guild_leader", "portal");
+                });
+
+            modelBuilder.Entity("Freaks.Portal.Contracts.Entities.SalarySummary.SalaryLoot", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric")
+                        .HasColumnName("amount");
+
+                    b.Property<decimal>("DiscountPercent")
+                        .HasColumnType("numeric")
+                        .HasColumnName("discount_percent");
+
+                    b.Property<int>("LootId")
+                        .HasColumnType("integer")
+                        .HasColumnName("loot_id");
+
+                    b.Property<decimal>("PricePerLoot")
+                        .HasColumnType("numeric")
+                        .HasColumnName("price_per_loot");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer")
+                        .HasColumnName("quantity");
+
+                    b.Property<long>("SalaryId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("salary_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LootId");
+
+                    b.HasIndex("SalaryId");
+
+                    b.ToTable("salary_loot", "portal");
+                });
+
+            modelBuilder.Entity("Freaks.Portal.Contracts.Entities.SalarySummary.SalaryMember", b =>
+                {
+                    b.Property<long>("SalaryId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("salary_id");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.Property<decimal?>("ActivityGold")
+                        .HasColumnType("numeric")
+                        .HasColumnName("activity_gold");
+
+                    b.Property<decimal>("ActivityPercentage")
+                        .HasColumnType("numeric")
+                        .HasColumnName("activity_percentage");
+
+                    b.Property<decimal?>("AmountGold")
+                        .HasColumnType("numeric")
+                        .HasColumnName("amount_gold");
+
+                    b.Property<decimal?>("AmountWorldBossInfusion")
+                        .HasColumnType("numeric")
+                        .HasColumnName("amount_world_boss_infusion");
+
+                    b.Property<decimal?>("Coefficient")
+                        .HasColumnType("numeric")
+                        .HasColumnName("coefficient");
+
+                    b.Property<int>("PaymentType")
+                        .HasColumnType("integer")
+                        .HasColumnName("payment_type");
+
+                    b.Property<decimal?>("ResponsibilityGold")
+                        .HasColumnType("numeric")
+                        .HasColumnName("responsibility_gold");
+
+                    b.HasKey("SalaryId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("salary_member", "portal");
+                });
+
+            modelBuilder.Entity("Freaks.Portal.Contracts.Entities.SalarySummary.SalaryParameters", b =>
+                {
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint")
+                        .HasColumnName("salary_id");
+
+                    b.PrimitiveCollection<int[]>("AllowedPaymentTypes")
+                        .IsRequired()
+                        .HasColumnType("integer[]")
+                        .HasColumnName("allowed_payment_types");
+
+                    b.PrimitiveCollection<int[]>("BossTypes")
+                        .IsRequired()
+                        .HasColumnType("integer[]")
+                        .HasColumnName("boss_types");
+
+                    b.Property<bool>("UseCoefficients")
+                        .HasColumnType("boolean")
+                        .HasColumnName("use_coefficients");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("salary_parameters", "portal");
+                });
+
             modelBuilder.Entity("Freaks.Portal.Contracts.Entities.Shop.ShopItem", b =>
                 {
                     b.Property<int>("Id")
@@ -551,6 +771,85 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Raid");
+                });
+
+            modelBuilder.Entity("Freaks.Portal.Contracts.Entities.SalarySummary.SalaryExpenses", b =>
+                {
+                    b.HasOne("Freaks.Portal.Contracts.Entities.SalarySummary.Salary", "Salary")
+                        .WithMany()
+                        .HasForeignKey("SalaryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Salary");
+                });
+
+            modelBuilder.Entity("Freaks.Portal.Contracts.Entities.SalarySummary.SalaryGuildLeader", b =>
+                {
+                    b.HasOne("Freaks.Portal.Contracts.Entities.Loot.LootItem", "LootItem")
+                        .WithMany()
+                        .HasForeignKey("LootId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Freaks.Portal.Contracts.Entities.SalarySummary.Salary", "Salary")
+                        .WithMany()
+                        .HasForeignKey("SalaryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("LootItem");
+
+                    b.Navigation("Salary");
+                });
+
+            modelBuilder.Entity("Freaks.Portal.Contracts.Entities.SalarySummary.SalaryLoot", b =>
+                {
+                    b.HasOne("Freaks.Portal.Contracts.Entities.Loot.LootItem", "LootItem")
+                        .WithMany()
+                        .HasForeignKey("LootId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Freaks.Portal.Contracts.Entities.SalarySummary.Salary", "Salary")
+                        .WithMany()
+                        .HasForeignKey("SalaryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("LootItem");
+
+                    b.Navigation("Salary");
+                });
+
+            modelBuilder.Entity("Freaks.Portal.Contracts.Entities.SalarySummary.SalaryMember", b =>
+                {
+                    b.HasOne("Freaks.Portal.Contracts.Entities.SalarySummary.Salary", "Salary")
+                        .WithMany()
+                        .HasForeignKey("SalaryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Freaks.Users.Contracts.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Salary");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Freaks.Portal.Contracts.Entities.SalarySummary.SalaryParameters", b =>
+                {
+                    b.HasOne("Freaks.Portal.Contracts.Entities.SalarySummary.Salary", "Salary")
+                        .WithMany()
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Salary");
                 });
 
             modelBuilder.Entity("Freaks.Portal.Contracts.Entities.Shop.ShopItem", b =>

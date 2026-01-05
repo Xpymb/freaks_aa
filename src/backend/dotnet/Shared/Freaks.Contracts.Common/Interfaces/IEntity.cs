@@ -4,11 +4,11 @@
 ///     Базовый интерфейс для всех сущностей в доменной модели.
 ///     Предоставляет уникальный идентификатор.
 /// </summary>
-public interface IEntity<out TKey>
+public interface IEntity<TKey>
     where TKey : IEquatable<TKey>
 {
     /// <summary>
     ///     Уникальный идентификатор сущности.
     /// </summary>
-    TKey Id { get; }
+    TKey Id { get; init; }
 }

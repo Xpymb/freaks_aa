@@ -4,6 +4,7 @@ using Freaks.Portal.Contracts.Entities.Auction;
 using Freaks.Portal.Contracts.Entities.Loot;
 using Freaks.Portal.Contracts.Entities.Notification;
 using Freaks.Portal.Contracts.Entities.RaidSummary;
+using Freaks.Portal.Contracts.Entities.SalarySummary;
 using Freaks.Portal.Contracts.Entities.Shop;
 using Freaks.Users.Contracts.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -60,6 +61,24 @@ public class PortalDbContext : DbContext, IPortalDbContext
     
     /// <inheritdoc />
     public DbSet<NotificationChannelMessage> NotificationChannelMessages { get; init; }
+
+    /// <inheritdoc />
+    public DbSet<Salary> Salaries { get; init; }
+
+    /// <inheritdoc />
+    public DbSet<SalaryParameters> SalaryParameters { get; init; }
+
+    /// <inheritdoc />
+    public DbSet<SalaryMember> SalaryMembers { get; init; }
+
+    /// <inheritdoc />
+    public DbSet<SalaryLoot> SalaryLoots { get; init; }
+
+    /// <inheritdoc />
+    public DbSet<SalaryGuildLeader> SalaryGuildLeaders { get; init; }
+
+    /// <inheritdoc />
+    public DbSet<SalaryExpenses> SalaryExpenses { get; init; }
 
     /// <inheritdoc />
     protected override void OnModelCreating(ModelBuilder modelBuilder)

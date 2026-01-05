@@ -3,11 +3,13 @@ using Freaks.Portal.Bll.Implementation.Auction;
 using Freaks.Portal.Bll.Implementation.Loot;
 using Freaks.Portal.Bll.Implementation.Notification;
 using Freaks.Portal.Bll.Implementation.RaidSummary;
+using Freaks.Portal.Bll.Implementation.SalarySummary;
 using Freaks.Portal.Bll.Implementation.Shop;
 using Freaks.Portal.Bll.Interfaces.Auction;
 using Freaks.Portal.Bll.Interfaces.Loot;
 using Freaks.Portal.Bll.Interfaces.Notification;
 using Freaks.Portal.Bll.Interfaces.RaidSummary;
+using Freaks.Portal.Bll.Interfaces.SalarySummary;
 using Freaks.Portal.Bll.Interfaces.Shop;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,6 +36,14 @@ public static class ConfigureServices
         services.AddScoped<IRaidParticipantService, RaidParticipantService>();
         services.AddScoped<IRaidScreenshotService, RaidScreenshotService>();
         services.AddScoped<IRaidLootService, RaidLootService>();
+
+        // Salary
+        services.AddScoped<ISalaryService, SalaryService>();
+        services.AddScoped<ISalaryLootService, SalaryLootService>();
+        services.AddScoped<ISalaryGuildLeaderService, SalaryGuildLeaderService>();
+        services.AddScoped<ISalaryExpensesService, SalaryExpensesService>();
+        services.AddScoped<ISalaryMemberService, SalaryMemberService>();
+        services.AddScoped<ISalaryParametersService, SalaryParametersService>();
 
         // Loot items
         services.AddScoped<ILootItemService, LootItemService>();
