@@ -9,7 +9,7 @@ namespace Freaks.WebApi.Common.Exceptions;
 public class ForbiddenException : BadRequestApiException
 {
     /// <inheritdoc />
-    public override HttpStatusCode StatusCode => HttpStatusCode.NotFound;
+    public override HttpStatusCode StatusCode => HttpStatusCode.Forbidden;
 
     /// <inheritdoc />
     public override string ErrorCode => "FORBIDDEN";

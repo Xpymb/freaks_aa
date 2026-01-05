@@ -3,6 +3,7 @@ using Freaks.Portal.Contracts.Entities.Auction;
 using Freaks.Portal.Contracts.Entities.Loot;
 using Freaks.Portal.Contracts.Entities.Notification;
 using Freaks.Portal.Contracts.Entities.RaidSummary;
+using Freaks.Portal.Contracts.Entities.SalarySummary;
 using Freaks.Portal.Contracts.Entities.Shop;
 using Microsoft.EntityFrameworkCore;
 
@@ -69,4 +70,34 @@ public interface IPortalDbContext : IBaseDbContext
     ///    Набор сообщений отправляемых пользователями.
     /// </summary>
     DbSet<NotificationChannelMessage> NotificationChannelMessages { get; }
+
+    /// <summary>
+    ///    Набор зарплатных отчётов.
+    /// </summary>
+    DbSet<Salary> Salaries { get; }
+
+    /// <summary>
+    ///    Набор параметров зарплатных отчётов.
+    /// </summary>
+    DbSet<SalaryParameters> SalaryParameters { get; }
+
+    /// <summary>
+    ///    Набор участников зарплатных отчётов.
+    /// </summary>
+    DbSet<SalaryMember> SalaryMembers { get; }
+
+    /// <summary>
+    ///    Набор проданных предметов зарплатного отчёта.
+    /// </summary>
+    DbSet<SalaryLoot> SalaryLoots { get; }
+
+    /// <summary>
+    ///    Набор доли гильд лидера в зарплатных отчётах.
+    /// </summary>
+    DbSet<SalaryGuildLeader> SalaryGuildLeaders { get; }
+
+    /// <summary>
+    ///    Набор расходов в зарплатных отчётах.
+    /// </summary>
+    DbSet<SalaryExpenses> SalaryExpenses { get; }
 }

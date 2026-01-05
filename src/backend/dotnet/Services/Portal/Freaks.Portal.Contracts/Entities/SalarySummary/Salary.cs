@@ -28,13 +28,13 @@ public class Salary : IEntity<long>
     ///     Дата начала периода
     /// </summary>
     [Column("start_dt")]
-    public required DateOnly StartDt { get; init; }
+    public required DateOnly StartDt { get; set; }
 
     /// <summary>
     ///     Дата окончания периода
     /// </summary>
     [Column("end_dt")]
-    public required DateOnly EndDt { get; init; }
+    public required DateOnly EndDt { get; set; }
 
     /// <summary>
     ///     Статус заполнения зарплаты
@@ -47,4 +47,22 @@ public class Salary : IEntity<long>
     /// </summary>
     [Column("registration_status")]
     public required SalaryRegistrationStatus RegistrationStatus { get; set; }
+
+    /// <summary>
+    ///     Создатель зарплатного периода
+    /// </summary>
+    [Column("created_by")]
+    public required Guid CreatedBy { get; init; }
+
+    /// <summary>
+    ///     Дата создания
+    /// </summary>
+    [Column("created_dt")]
+    public required DateTime CreatedDt { get; init; }
+
+    /// <summary>
+    ///     Дата обновления
+    /// </summary>
+    [Column("updated_dt")]
+    public DateTime? UpdatedDt { get; set; }
 }

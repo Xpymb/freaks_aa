@@ -17,7 +17,7 @@ public record AuctionItemShortDto
     /// <summary>
     ///     Информация о предмете лота.
     /// </summary>
-    public LootItemDto LootItem { get; init; }
+    public LootItemDto? LootItem { get; init; }
 
     /// <summary>
     ///     Дата и время окончания аукциона по лоту.
@@ -32,7 +32,7 @@ public record AuctionItemShortDto
     /// <summary>
     ///     Информация о пользователе, предложившем лот.
     /// </summary>
-    public UserDto Creator { get; init; }
+    public UserDto? Creator { get; init; }
 
     /// <summary>
     ///     Текущий статус лота.

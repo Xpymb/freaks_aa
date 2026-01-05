@@ -22,17 +22,22 @@ public class SalaryParameters : IEntity<long>
     ///     Разрешенные типы выплат зарплаты
     /// </summary>
     [Column("allowed_payment_types")]
-    public required IList<SalaryPaymentType> AllowedPaymentTypes { get; init; }
+    public required IList<SalaryPaymentType> AllowedPaymentTypes { get; set; }
 
     /// <summary>
     ///     Использовать коэффициенты при расчете
     /// </summary>
     [Column("use_coefficients")]
-    public required bool UseCoefficients { get; init; }
+    public required bool UseCoefficients { get; set; }
 
     /// <summary>
     ///     Типы боссов для расчета зарплаты
     /// </summary>
     [Column("boss_types")]
-    public required IList<BossType> BossTypes { get; init; }
+    public required IList<BossType> BossTypes { get; set; }
+
+    /// <summary>
+    ///     Навигационное свойство для доступа к информации о зарплатном периоде.
+    /// </summary>
+    public Salary? Salary { get; init; }
 }

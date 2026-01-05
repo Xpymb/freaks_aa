@@ -1,5 +1,6 @@
 ﻿using Freaks.Dal.Common.Implementations;
 using Freaks.Dal.Common.Interfaces;
+using Freaks.Dal.Common.ValueObjects;
 using Freaks.Portal.Contracts.Entities.SalarySummary;
 using Freaks.Portal.Dal.Interfaces.SalarySummary;
 using Freaks.Portal.Dal.Persistence;
@@ -21,6 +22,35 @@ public class SalaryGuildLeaderProvider : BaseCachedProvider<SalaryGuildLeader, l
     {
     }
 
+    public override async Task<SalaryGuildLeader?> GetAsync(long key, EntityTrackingType trackingType)
+    {
+        var cachedValue = await GetCachedValueAsync(key);
+        if (cachedValue is not null)
+        {
+            if (trackingType is EntityTrackingType.Tracking)
+            {
+                Set.Attach(cachedValue);
+            }
+
+            return cachedValue;
+        }
+
+        var query = Set.AsQueryable();
+
+        if (trackingType is EntityTrackingType.NoTracking)
+        {
+            query = query.AsNoTracking();
+        }
+
+        var result =
+            await query
+                .Include(x => x.LootItem)
+                .FirstOrDefaultAsync(x => x.Id == key);
+
+        await SetCachedValueAsync(result, TimeSpan.FromMinutes(5));
+        return result;
+    }
+
     /// <inheritdoc />
     public async Task<IList<SalaryGuildLeader>> GetBySalaryIdAsync(long salaryId)
     {
@@ -33,6 +63,7 @@ public class SalaryGuildLeaderProvider : BaseCachedProvider<SalaryGuildLeader, l
 
         var result = await Set
             .AsNoTracking()
+            .Include(sql => sql.LootItem)
             .Where(sgl => sgl.SalaryId == salaryId)
             .ToListAsync();
 

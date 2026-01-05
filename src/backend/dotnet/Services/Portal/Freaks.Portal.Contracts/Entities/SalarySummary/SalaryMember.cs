@@ -2,6 +2,7 @@
 using Freaks.Contracts.Common.Interfaces;
 using Freaks.Dal.Common.Consts;
 using Freaks.Portal.SharedContracts.ValueObjects.SalarySummary;
+using Freaks.Users.Contracts.Entities;
 
 namespace Freaks.Portal.Contracts.Entities.SalarySummary;
 
@@ -34,13 +35,13 @@ public class SalaryMember : ICompositeEntity<SalaryMemberKey>
     ///     Тип выплаты
     /// </summary>
     [Column("payment_type")]
-    public required SalaryPaymentType PaymentType { get; init; }
+    public required SalaryPaymentType PaymentType { get; set; }
 
     /// <summary>
     ///     Процент активности
     /// </summary>
     [Column("activity_percentage")]
-    public required decimal ActivityPercentage { get; init; }
+    public required decimal ActivityPercentage { get; set; }
 
     /// <summary>
     ///     Коэффициент
@@ -71,6 +72,16 @@ public class SalaryMember : ICompositeEntity<SalaryMemberKey>
     /// </summary>
     [Column("amount_world_boss_infusion")]
     public decimal? AmountWorldBossInfusion { get; set; }
+
+    /// <summary>
+    ///     Навигационное свойство для доступа к информации о зарплатном периоде.
+    /// </summary>
+    public Salary? Salary { get; init; }
+
+    /// <summary>
+    ///     Навигационное свойство для доступа к информации о пользователе.
+    /// </summary>
+    public User? User { get; init; }
 
     /// <inheritdoc />
     public SalaryMemberKey GetCompositeKey()

@@ -34,13 +34,18 @@ public class SalaryExpenses : ICompositeEntity<SalaryExpensesKey>
     ///     Процент от общей суммы
     /// </summary>
     [Column("percentage")]
-    public required decimal Percentage { get; init; }
+    public required decimal Percentage { get; set; }
 
     /// <summary>
     ///     Сумма расхода
     /// </summary>
     [Column("amount")]
-    public required decimal Amount { get; init; }
+    public required decimal Amount { get; set; }
+
+    /// <summary>
+    ///     Навигационное свойство для доступа к информации о зарплатном периоде.
+    /// </summary>
+    public Salary? Salary { get; init; }
 
     /// <inheritdoc />
     public SalaryExpensesKey GetCompositeKey()

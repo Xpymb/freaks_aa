@@ -6,12 +6,17 @@
 public enum SalaryRegistrationStatus
 {
     /// <summary>
+    ///     Ещё не открыта
+    /// </summary>
+    NotStarted = 1,
+
+    /// <summary>
     ///     Открыта
     /// </summary>
-    Opened = 1,
+    Opened = 2,
 
     /// <summary>
     ///     Завершена
     /// </summary>
-    Ended = 2,
+    Ended = 3,
 }

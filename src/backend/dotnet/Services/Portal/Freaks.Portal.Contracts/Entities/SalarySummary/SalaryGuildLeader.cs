@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Freaks.Contracts.Common.Interfaces;
 using Freaks.Dal.Common.Consts;
+using Freaks.Portal.Contracts.Entities.Loot;
 
 namespace Freaks.Portal.Contracts.Entities.SalarySummary;
 
@@ -46,4 +47,14 @@ public class SalaryGuildLeader : IEntity<long>
     /// </summary>
     [Column("amount")]
     public required decimal Amount { get; set; }
+
+    /// <summary>
+    ///     Навигационное свойство для доступа к информации о зарплатном периоде.
+    /// </summary>
+    public Salary? Salary { get; init; }
+
+    /// <summary>
+    ///     Навигационное свойство для доступа к информации о предмете добычи.
+    /// </summary>
+    public LootItem? LootItem { get; init; }
 }
