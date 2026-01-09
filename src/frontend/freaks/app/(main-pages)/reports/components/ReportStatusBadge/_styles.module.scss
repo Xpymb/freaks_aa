@@ -1,0 +1,21 @@
+@use "@/ThemeMUI/variables" as *;
+
+.statusBadge {
+  padding: 0.5rem 1rem !important;
+  border-radius: 20px !important;
+  font-weight: 600 !important;
+  backdrop-filter: blur(8px) !important;
+  transition: all 0.3s ease !important;
+
+  &.completed {
+    color: $ended !important;
+    border-color: rgba($ended, 0.5) !important;
+    background: rgba($ended, 0.1) !important;
+  }
+
+  &.awaitingParameters {
+    color: $waitingSubmit !important;
+    border-color: rgba($waitingSubmit, 0.5) !important;
+    background: rgba($waitingSubmit, 0.1) !important;
+  }
+}
