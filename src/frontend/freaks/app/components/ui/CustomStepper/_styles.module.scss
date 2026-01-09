@@ -1,0 +1,146 @@
+@use "@/ThemeMUI/variables" as *;
+
+.stepperWrapper {
+  width: 100%;
+  padding: 8px 0;
+  background: transparent !important;
+
+  // Жестко переопределяем стили MUI Stepper
+  :global(.MuiStepper-root) {
+    background: transparent !important;
+    padding: 0 !important;
+  }
+
+  :global(.MuiStep-root) {
+    padding: 0 !important;
+    flex: 1 !important;
+  }
+
+  :global(.MuiStepLabel-root) {
+    padding: 0 !important;
+    cursor: pointer !important;
+  }
+
+  :global(.MuiStepLabel-labelContainer) {
+    width: 100% !important;
+  }
+
+  :global(.MuiStepLabel-label) {
+    margin-top: 0 !important;
+  }
+
+  // Скрываем иконку и коннектор MUI
+  :global(.MuiStepLabel-iconContainer) {
+    display: none !important;
+  }
+
+  :global(.MuiStepConnector-root) {
+    display: none !important;
+  }
+}
+
+.step {
+  flex: 1 !important;
+  padding: 0 !important;
+}
+
+.stepLabel {
+  cursor: pointer !important;
+  padding: 0 !important;
+  width: 100% !important;
+
+  :global(.MuiStepLabel-labelContainer) {
+    width: 100% !important;
+  }
+}
+
+.stepContent {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  background: transparent;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.02);
+  }
+}
+
+// Прогресс-бар сверху
+.progressBar {
+  width: 100%;
+  height: 6px;
+  background: #454351;
+  border-radius: 21px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  width: 0;
+  background: #454351;
+  border-radius: 21px;
+  transition: all 0.4s ease;
+}
+
+.progressActive {
+  width: 100%;
+  background: linear-gradient(171.77deg, #4acb7e 0.9%, #22b5a4 100%);
+}
+
+// Номер и название шага
+.stepInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.stepNumber {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Manrope", sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  background: #5e5c71;
+  color: #25252b;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.numberActive {
+  background: #32303e;
+  color: #c5cae9;
+}
+
+.stepName {
+  font-family: "Manrope", sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  color: #5e5c71;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+// Активный шаг
+.stepLabel.active {
+  .stepContent {
+    background: #32303e;
+  }
+
+  .stepName {
+    color: #c5cae9;
+  }
+}
+
+// Завершенный шаг
+.stepLabel.completed {
+  .stepName {
+    color: #9fa8da;
+  }
+}

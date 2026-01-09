@@ -1,0 +1,121 @@
+@use "@/ThemeMUI/variables" as *;
+
+.report {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem;
+  border-radius: 16px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  position: relative;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.05) 0%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.02) 100%
+    );
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.8s ease;
+  }
+
+  &:hover {
+    transform: translateY(-4px) scale(1.02);
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.06) 0%,
+      rgba(255, 255, 255, 0.02) 100%
+    );
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+
+    &::before {
+      opacity: 1;
+    }
+
+    &::after {
+      left: 100%;
+    }
+  }
+
+  .left {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+    width: 75%;
+    .period {
+      display: flex;
+      align-items: center;
+    }
+    .steps {
+      display: flex;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+      flex-wrap: wrap;
+      column-gap: 0.5rem;
+      .parameter {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        .iconCompleted {
+          color: $ended;
+          font-size: 1rem;
+        }
+        .iconPending {
+          color: $mutedColor;
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+
+  .right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1rem;
+    width: 25%;
+    justify-content: flex-end;
+    position: relative;
+    z-index: 2;
+    .controlBtn {
+      display: flex;
+      column-gap: 0.5rem;
+      .fillButton {
+        white-space: nowrap;
+      }
+      .iconButton {
+        opacity: 0.7;
+        transition: opacity 0.3s ease;
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
+  }
+}
