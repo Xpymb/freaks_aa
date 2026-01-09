@@ -12,7 +12,9 @@
   z-index: 1000;
   display: flex;
   flex-direction: column;
-  transition: width 0.3s ease-in-out, transform 0.3s ease-in-out;
+  transition:
+    width 0.3s ease-in-out,
+    transform 0.3s ease-in-out;
   &.expanded {
     width: 240px;
     @media (max-width: 768px) {
@@ -65,7 +67,7 @@
   height: 3rem;
   margin: 0 auto;
   color: rgba(255, 255, 255, 0.7);
-  border-radius: 12px;
+  border-radius: 50%;
   transition: all 0.2s ease-in-out;
   display: flex;
   align-items: center;
@@ -88,14 +90,15 @@
     margin: 0 8px;
     padding: 0 8px;
     justify-content: flex-start;
+    border-radius: 10px;
 
-    &:hover:not(.disabled) {
-      transform: none; // убираем масштабирование для раздвинутого состояния
-    }
-
-    &.active:hover {
-      transform: none;
-    }
+    //&:hover:not(.disabled) {
+    //  transform: none; // убираем масштабирование для раздвинутого состояния
+    //}
+    //
+    //&.active:hover {
+    //  transform: none;
+    //}
   }
 }
 
@@ -147,7 +150,6 @@
   border-radius: 0 8px 8px 0;
   padding: 4px;
   z-index: 1001;
-
   @media (min-width: 769px) {
     display: none;
   }

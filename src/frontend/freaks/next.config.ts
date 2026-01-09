@@ -1,4 +1,4 @@
-import type { NextConfig } from "next";
+import type {NextConfig} from "next";
 
 // Загружаем переменные окружения
 const STORAGE_URL = process.env.NEXT_PUBLIC_STORAGE_MEDIA_URL;

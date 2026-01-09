@@ -1,7 +1,7 @@
-import { NextResponse } from "next/server";
-import { auth } from "@/api/auth/auth";
-import type { UserRole } from "@/types/roles.types";
-import { AVAILABLE_ROLES } from "@/types/roles.types";
+import {NextResponse} from "next/server";
+import {auth} from "@/api/auth/auth";
+import type {UserRole} from "@/types/roles.types";
+import {AVAILABLE_ROLES} from "@/types/roles.types";
 
 // Публичные роуты - без авторизации
 const PUBLIC_PREFIXES = [
@@ -100,5 +100,7 @@ export default auth((request) => {
 });
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
-};
+  matcher: [
+    "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|.*\\.[^/]+$).*)",
+  ],
+}

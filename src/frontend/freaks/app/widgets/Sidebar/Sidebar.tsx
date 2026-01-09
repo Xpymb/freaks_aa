@@ -3,19 +3,19 @@
 import React from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { useSidebar } from "@/contexts/SidebarContext";
 
 import {
-  AccessTimeOutlined,
-  EmailOutlined,
-  ShoppingCartOutlined,
-  HomeOutlined,
-  PeopleOutlined,
-  MenuOutlined,
-  ChevronRightOutlined,
   ChevronLeftOutlined,
+  ChevronRightOutlined,
+  EmailOutlined,
+  HomeOutlined,
+  MenuOutlined,
+  PeopleOutlined,
+  ShoppingCartOutlined,
 } from "@mui/icons-material";
-import { Tooltip, IconButton } from "@mui/material";
+import { IconButton, Tooltip } from "@mui/material";
 import clsx from "clsx";
 import styles from "./_styles.module.scss";
 
@@ -30,15 +30,42 @@ type NavigationItem = {
 const navigationItems: NavigationItem[] = [
   {
     id: "overview",
-    label: "Обзор",
-    icon: <HomeOutlined />,
+    label: "Главная",
+    icon: (
+      <Image
+        src={"/icons/home.svg"}
+        alt="overviewIcon"
+        width={16}
+        height={16}
+      />
+    ),
     href: "/overview",
   },
   {
     id: "raids",
     label: "Рейды",
-    icon: <AccessTimeOutlined />,
+    icon: (
+      <Image
+        src={"/icons/raids.svg"}
+        alt="overviewIcon"
+        width={16}
+        height={16}
+      />
+    ),
     href: "/raids",
+  },
+  {
+    id: "reports",
+    label: "Отчеты",
+    icon: (
+      <Image
+        src={"/icons/reports.svg"}
+        alt="overviewIcon"
+        width={16}
+        height={16}
+      />
+    ),
+    href: "/reports",
   },
   {
     id: "mail",
@@ -141,30 +168,33 @@ const Sidebar = () => {
               </div>
             );
 
+            // Если сайдбар развернут - тултип не нужен
+            const shouldShowTooltip = !isExpanded || isMobile;
+
             if (isDisabled) {
-              return (
+              return shouldShowTooltip ? (
                 <Tooltip
                   key={item.id}
                   title={`${item.label} (скоро)`}
                   placement="right"
-                  disableInteractive={isExpanded && !isMobile}
                 >
                   <div>{buttonContent}</div>
                 </Tooltip>
+              ) : (
+                <div key={item.id}>{buttonContent}</div>
               );
             }
 
-            return (
-              <Tooltip
-                key={item.id}
-                title={item.label}
-                placement="right"
-                disableInteractive={isExpanded && !isMobile}
-              >
+            return shouldShowTooltip ? (
+              <Tooltip key={item.id} title={item.label} placement="right">
                 <Link href={item.href} className={styles.navLink}>
                   {buttonContent}
                 </Link>
               </Tooltip>
+            ) : (
+              <Link key={item.id} href={item.href} className={styles.navLink}>
+                {buttonContent}
+              </Link>
             );
           })}
         </nav>
