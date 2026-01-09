@@ -56,7 +56,7 @@ services:
       context: "./../src/frontend/freaks"
       dockerfile: "./Dockerfile"
       args:
-        - NODE_VERSION=node:22-alpine
+        - NODE_VERSION=node:25-alpine3.23
     ports:
       - "3000:3000"
     environment:
