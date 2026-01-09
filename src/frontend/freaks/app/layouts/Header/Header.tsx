@@ -1,7 +1,7 @@
 import Link from "next/link";
 import styles from "./_styles.module.scss";
 import Profile from "./components/Profile/Profile";
-import { auth } from "@/api/auth/auth";
+import {auth} from "@/api/auth/auth";
 import CustomImage from "@/components/ui/CustomImage";
 
 const Header = async () => {
