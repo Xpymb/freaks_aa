@@ -1,0 +1,8 @@
+services:
+  solution-build-artifacts:
+    image: ${DOCKER_REGISTRY}/solution-build-artifacts:${APP_VERSION}
+    build: 
+      context: "./../src/backend/dotnet"
+      dockerfile: "./Dockerfile"
+      args:
+        - DOTNET_SDK_VERSION=${DOTNET_SDK_VERSION}

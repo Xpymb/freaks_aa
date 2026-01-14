@@ -19,6 +19,7 @@ export $(cat .env | grep -v '^#' | xargs)
 export DOCKER_BUILDKIT=0
 
 echo "Starting backend services..."
+docker-compose -f ./docker-compose-back-base.yml build
 docker-compose -f ./docker-compose-local-back.yml -p freaks-back up --build -d --remove-orphans
 
 echo "Backend services started successfully!"

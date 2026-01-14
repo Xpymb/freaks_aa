@@ -1,13 +1,7 @@
 services:
-  solution-build-artifacts:
-    image: ${DOCKER_REGISTRY}/solution-build-artifacts:${APP_VERSION}
-    build: 
-      context: "./../src/backend/dotnet"
-      dockerfile: "./Dockerfile"
-      args:
-        - DOTNET_SDK_VERSION=${DOTNET_SDK_VERSION}
   portal-web-api:
     image: ${DOCKER_REGISTRY}/portal-web-api:${APP_VERSION}
+    restart: always
     build: 
       context: "./dotnet/PortalService"
       dockerfile: "./Dockerfile"
@@ -28,6 +22,7 @@ services:
       - centrifugo
   files-web-api:
     image: ${DOCKER_REGISTRY}/files-web-api:${APP_VERSION}
+    restart: always
     build: 
       context: "./dotnet/FileService"
       dockerfile: "./Dockerfile"
@@ -52,6 +47,7 @@ services:
       - centrifugo
   frontend:
     image: ${DOCKER_REGISTRY}/frontend:${APP_VERSION}
+    restart: always
     build:
       context: "./../src/frontend/freaks"
       dockerfile: "./Dockerfile"
@@ -64,6 +60,7 @@ services:
       - KEYCLOAK_ID=frontend
   rabbitmq:
     image: ${DOCKER_REGISTRY}/rabbitmq:${RABBITMQ_VERSION}
+    restart: always
     build: 
       context: "./RabbitMQ"
       dockerfile: "./Dockerfile"
@@ -80,12 +77,14 @@ services:
       - solution-build-artifacts
   redis:
     image: redis:${REDIS_VERSION}
+    restart: always
     ports:
       - "9379:6379"
     environment:
       - REDIS_PASSWORD=${REDIS_PASSWORD}
   centrifugo:
     image: ${DOCKER_REGISTRY}/centrifugo:${CENTRIFUGO_VERSION}
+    restart: always
     build:
       context: "./Centrifugo"
       dockerfile: "./Dockerfile"
