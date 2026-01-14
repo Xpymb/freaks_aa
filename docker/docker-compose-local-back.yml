@@ -13,7 +13,6 @@ services:
       - ASPNETCORE_ENVIRONMENT=Compose
       - KeycloakAdmin__credentials__secret=${KEYCLOAK_ADMIN_CLIENT_SECRET}
     depends_on:
-      - solution-build-artifacts
       - postgres
       - rabbitmq
       - redis
@@ -31,7 +30,6 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Compose
     depends_on:
-      - solution-build-artifacts
       - postgres
       - minio
       - rabbitmq
@@ -50,8 +48,6 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_ADMIN_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    depends_on:
-      - solution-build-artifacts
   minio:
     image: ${DOCKER_REGISTRY}/minio:${MINIO_VERSION}
     build: 
@@ -69,8 +65,6 @@ services:
       - MINIO_CONSOLE_ADDRESS=:9001
     volumes:
       - ./MinIO/data:/data
-    depends_on:
-      - solution-build-artifacts
   rabbitmq:
     image: ${DOCKER_REGISTRY}/rabbitmq:${RABBITMQ_VERSION}
     build: 
@@ -85,8 +79,6 @@ services:
       - "18671:15671"
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq:rw
-    depends_on:
-      - solution-build-artifacts
   redis:
     image: redis:${REDIS_VERSION}
     ports:
@@ -107,8 +99,6 @@ services:
       nofile:
         soft: 65535
         hard: 65535
-    depends_on:
-      - solution-build-artifacts
 volumes:
   postgres_data: null
   minio_data: null
