@@ -16,7 +16,6 @@ services:
       - KeycloakAdmin__credentials__secret=${KEYCLOAK_ADMIN_CLIENT_SECRET}
       - DbOptions__ConnectionString=${DB_OPTIONS}
     depends_on:
-      - solution-build-artifacts
       - rabbitmq
       - redis
       - centrifugo
@@ -41,7 +40,6 @@ services:
       - StorageOptions__Region=${STORAGE_OPTIONS_REGION}
       - StorageOptions__WithSsl=${STORAGE_OPTIONS_WITH_SSL}
     depends_on:
-      - solution-build-artifacts
       - rabbitmq
       - redis
       - centrifugo
@@ -73,8 +71,6 @@ services:
       - "18671:15671"
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq:rw
-    depends_on:
-      - solution-build-artifacts
   redis:
     image: redis:${REDIS_VERSION}
     restart: always
@@ -97,8 +93,6 @@ services:
       nofile:
         soft: 65535
         hard: 65535
-    depends_on:
-      - solution-build-artifacts
 volumes:
   postgres_data: null
   minio_data: null
