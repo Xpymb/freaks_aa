@@ -13,15 +13,20 @@ public enum SalaryExpensesType
     /// <summary>
     ///     Зп заполняющим АГЛ
     /// </summary>
-    FillingJMG = 2,
+    FillingJmg = 2,
 
     /// <summary>
     ///     ЗП заполняющим ВБ
     /// </summary>
-    FillingWB = 3,
+    FillingWb = 3,
 
     /// <summary>
     ///     Отчисления в ги банк
     /// </summary>
     GuildBank = 4,
+
+    /// <summary>
+    ///     Поощрение конкретному участнику
+    /// </summary>
+    TargetMember = 100,
 }

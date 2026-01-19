@@ -23,7 +23,6 @@ namespace Freaks.Portal.Bll.Implementation.SalarySummary;
 public class SalaryService : ISalaryService
 {
     private readonly ISalaryProvider _provider;
-    private readonly ISalaryParametersProvider _parametersProvider;
     private readonly IMessageService _messageService;
     private readonly IMapper _mapper;
     private readonly IUserContext _userContext;
@@ -34,20 +33,17 @@ public class SalaryService : ISalaryService
     /// <param name="mapper">Сервис Mapster для преобразования между моделями.</param>
     /// <param name="userContext">Контекст текущего пользователя.</param>
     /// <param name="provider">Провайдер доступа к данным зарплатных периодов.</param>
-    /// <param name="parametersProvider">Провайдер доступа к данным параметров зарплатных периодов.</param>
     /// <param name="messageService">Сервис для публикации сообщений в систему обмена сообщениями.</param>
     /// <exception cref="ArgumentNullException">Выбрасывается, если один из аргументов равен null.</exception>
     public SalaryService(
         IMapper mapper,
         IUserContext userContext,
         ISalaryProvider provider,
-        ISalaryParametersProvider parametersProvider,
         IMessageService messageService)
     {
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
         _provider = provider ?? throw new ArgumentNullException(nameof(provider));
-        _parametersProvider = parametersProvider ?? throw new ArgumentNullException(nameof(parametersProvider));
         _messageService = messageService ?? throw new ArgumentNullException(nameof(messageService));
     }
 
@@ -80,36 +76,16 @@ public class SalaryService : ISalaryService
                 Name = request.Name,
                 StartDt = request.StartDt,
                 EndDt = request.EndDt,
-                FillStatus = SalaryFillStatus.PeriodParameters,
+                FillStatus = SalaryFillStatus.Parameters,
                 RegistrationStatus = SalaryRegistrationStatus.NotStarted,
+                AllowedPaymentTypes = request.AllowedPaymentTypes,
+                UseCoefficients = request.UseCoefficients,
+                BossTypes = request.BossTypes,
                 CreatedBy = _userContext.Id,
                 CreatedDt = DateTime.UtcNow,
             };
 
         var result = await _provider.CreateAsync(entity);
-
-        var parameters =
-            new SalaryParameters
-            {
-                Id = result.Id,
-                AllowedPaymentTypes = new List<SalaryPaymentType> { SalaryPaymentType.Gold },
-                UseCoefficients = false,
-                BossTypes =
-                    new List<BossType>
-                    {
-                        BossType.Jmg,
-                        BossType.AbyssalJmg,
-                        BossType.Kraken,
-                        BossType.BlackDragon,
-                        BossType.Charybdis,
-                        BossType.Leviathan,
-                        BossType.Anthalon,
-                        BossType.AbyssalSehekmet,
-                        BossType.Kaliel,
-                    },
-            };
-
-        await _parametersProvider.CreateAsync(parameters);
 
         await PublishMessageAsync(result.Id, EntityActionType.Created);
 

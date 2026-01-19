@@ -58,30 +58,30 @@ public class SalaryExpensesController : ControllerBase
     ///     Обновляет информацию о расходе гильдии в указанном зарплатном периоде.
     /// </summary>
     /// <param name="salaryId">Идентификатор зарплатного периода.</param>
-    /// <param name="expensesType">Тип расхода (часть составного ключа).</param>
+    /// <param name="id">Идентификатор статьи расхода.</param>
     /// <param name="request">Обновлённые данные о расходе гильдии.</param>
     /// <returns>Информация об обновлённом расходе гильдии.</returns>
     [RequireRoles(UserRole.Admin, UserRole.Editor, UserRole.GuildLeader)]
-    [HttpPut("{expensesType:int}")]
+    [HttpPut("{id:long}")]
     public async Task<SalaryExpensesDto> UpdateAsync(
         [FromRoute] long salaryId,
-        [FromRoute] SalaryExpensesType expensesType,
+        [FromRoute] long id,
         [FromBody] UpdateSalaryExpensesRequest request)
     {
-        return await _service.UpdateAsync(salaryId, expensesType, request);
+        return await _service.UpdateAsync(id, salaryId, request);
     }
 
     /// <summary>
     ///     Удаляет запись о расходе гильдии из указанного зарплатного периода.
     /// </summary>
     /// <param name="salaryId">Идентификатор зарплатного периода.</param>
-    /// <param name="expensesType">Тип расхода (часть составного ключа).</param>
+    /// <param name="id">Идентификатор статьи расхода.</param>
     /// <returns>Результат выполнения операции.</returns>
     [RequireRoles(UserRole.Admin, UserRole.Editor, UserRole.GuildLeader)]
-    [HttpDelete("{expensesType:int}")]
-    public async Task<ActionResult> DeleteAsync([FromRoute] long salaryId, [FromRoute] SalaryExpensesType expensesType)
+    [HttpDelete("{id:long}")]
+    public async Task<ActionResult> DeleteAsync([FromRoute] long salaryId, [FromRoute] long id)
     {
-        await _service.DeleteAsync(salaryId, expensesType);
+        await _service.DeleteAsync(id);
         return Ok();
     }
 }

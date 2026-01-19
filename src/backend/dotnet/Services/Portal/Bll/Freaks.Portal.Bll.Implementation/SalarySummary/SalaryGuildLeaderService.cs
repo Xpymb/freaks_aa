@@ -51,7 +51,7 @@ public class SalaryGuildLeaderService : ISalaryGuildLeaderService
     /// <inheritdoc />
     public async Task<SalaryGuildLeaderDto> CreateAsync(long salaryId, CreateSalaryGuildLeaderRequest request)
     {
-        var amount = request.Quantity * request.PricePerLoot;
+        var amount = request.Quantity * request.PricePerItem;
 
         var entity =
             new SalaryGuildLeader
@@ -59,7 +59,7 @@ public class SalaryGuildLeaderService : ISalaryGuildLeaderService
                 SalaryId = salaryId,
                 LootId = request.LootId,
                 Quantity = request.Quantity,
-                PricePerLoot = request.PricePerLoot,
+                PricePerItem = request.PricePerItem,
                 Amount = amount,
             };
 
@@ -81,9 +81,9 @@ public class SalaryGuildLeaderService : ISalaryGuildLeaderService
 
         entity.LootId = request.LootId;
         entity.Quantity = request.Quantity;
-        entity.PricePerLoot = request.PricePerLoot;
+        entity.PricePerItem = request.PricePerItem;
 
-        entity.Amount = entity.Quantity * entity.PricePerLoot;
+        entity.Amount = entity.Quantity * entity.PricePerItem;
 
         var result = await _provider.UpdateAsync(entity);
 

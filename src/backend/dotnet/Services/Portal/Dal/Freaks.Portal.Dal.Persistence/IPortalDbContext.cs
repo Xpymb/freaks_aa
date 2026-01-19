@@ -77,11 +77,6 @@ public interface IPortalDbContext : IBaseDbContext
     DbSet<Salary> Salaries { get; }
 
     /// <summary>
-    ///    Набор параметров зарплатных отчётов.
-    /// </summary>
-    DbSet<SalaryParameters> SalaryParameters { get; }
-
-    /// <summary>
     ///    Набор участников зарплатных отчётов.
     /// </summary>
     DbSet<SalaryMember> SalaryMembers { get; }

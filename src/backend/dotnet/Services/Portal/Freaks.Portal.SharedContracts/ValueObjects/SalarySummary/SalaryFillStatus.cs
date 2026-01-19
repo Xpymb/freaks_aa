@@ -8,7 +8,7 @@ public enum SalaryFillStatus
     /// <summary>
     ///     Параметры периода
     /// </summary>
-    PeriodParameters = 1,
+    Parameters = 1,
 
     /// <summary>
     ///     Продано за период
@@ -26,7 +26,7 @@ public enum SalaryFillStatus
     Expenses = 4,
 
     /// <summary>
-    ///     Итоговый отчёты
+    ///     Итоговый отчёт
     /// </summary>
     FinalReports = 5,
 }

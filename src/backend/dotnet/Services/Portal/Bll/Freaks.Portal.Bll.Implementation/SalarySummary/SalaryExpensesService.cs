@@ -9,6 +9,7 @@ using Freaks.Portal.SharedContracts.Dto.SalarySummary;
 using Freaks.Portal.SharedContracts.Requests.SalarySummary.SalaryExpenses;
 using Freaks.Portal.SharedContracts.ValueObjects.SalarySummary;
 using Freaks.WebApi.Common.Exceptions;
+using Freaks.WebApi.Common.Exceptions.Salary;
 using MapsterMapper;
 
 namespace Freaks.Portal.Bll.Implementation.SalarySummary;
@@ -52,11 +53,17 @@ public class SalaryExpensesService : ISalaryExpensesService
     /// <inheritdoc />
     public async Task<SalaryExpensesDto> CreateAsync(long salaryId, CreateSalaryExpensesRequest request)
     {
+        if (request.ExpensesType is SalaryExpensesType.TargetMember && request.UserId is null)
+        {
+            throw new SalaryExpensesUserShouldBeAssignedException();
+        }
+
         var entity =
             new SalaryExpenses
             {
                 SalaryId = salaryId,
                 ExpensesType = request.ExpensesType,
+                UserId = request.UserId,
                 Percentage = request.Percentage,
                 Amount = request.Amount,
             };
@@ -69,10 +76,9 @@ public class SalaryExpensesService : ISalaryExpensesService
     }
 
     /// <inheritdoc />
-    public async Task<SalaryExpensesDto> UpdateAsync(long salaryId, SalaryExpensesType expensesType, UpdateSalaryExpensesRequest request)
+    public async Task<SalaryExpensesDto> UpdateAsync(long id, long salaryId, UpdateSalaryExpensesRequest request)
     {
-        var key = new SalaryExpensesKey(salaryId, expensesType);
-        var entity = await _provider.GetAsync(key, EntityTrackingType.NoTracking);
+        var entity = await _provider.GetAsync(id, EntityTrackingType.NoTracking);
         if (entity is null)
         {
             throw new EntityNotFoundException();
@@ -89,26 +95,25 @@ public class SalaryExpensesService : ISalaryExpensesService
     }
 
     /// <inheritdoc />
-    public async Task DeleteAsync(long salaryId, SalaryExpensesType expensesType)
+    public async Task DeleteAsync(long id)
     {
-        var key = new SalaryExpensesKey(salaryId, expensesType);
-        var entity = await _provider.GetAsync(key, EntityTrackingType.NoTracking);
+        var entity = await _provider.GetAsync(id, EntityTrackingType.NoTracking);
         if (entity is null)
         {
             throw new EntityNotFoundException();
         }
 
-        await _provider.DeleteAsync(key);
+        await _provider.DeleteAsync(id);
 
-        await PublishMessageAsync(salaryId, EntityActionType.Deleted);
+        await PublishMessageAsync(id, EntityActionType.Deleted);
     }
 
-    private async Task PublishMessageAsync(long salaryId, EntityActionType actionType)
+    private async Task PublishMessageAsync(long id, EntityActionType actionType)
     {
         var message =
             new SalaryExpensesChangedMessage
             {
-                SalaryId = salaryId, ActionType = actionType,
+                Id = id, ActionType = actionType,
             };
 
         await _messageService.Publish(message);

@@ -54,7 +54,6 @@ public static class ConfigureServices
 
         // Salary Summary
         services.AddScoped<ISalaryProvider, SalaryProvider>();
-        services.AddScoped<ISalaryParametersProvider, SalaryParametersProvider>();
         services.AddScoped<ISalaryMemberProvider, SalaryMemberProvider>();
         services.AddScoped<ISalaryExpensesProvider, SalaryExpensesProvider>();
         services.AddScoped<ISalaryGuildLeaderProvider, SalaryGuildLeaderProvider>();

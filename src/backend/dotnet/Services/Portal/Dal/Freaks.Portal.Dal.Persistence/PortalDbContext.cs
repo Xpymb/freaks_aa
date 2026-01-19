@@ -66,9 +66,6 @@ public class PortalDbContext : DbContext, IPortalDbContext
     public DbSet<Salary> Salaries { get; init; }
 
     /// <inheritdoc />
-    public DbSet<SalaryParameters> SalaryParameters { get; init; }
-
-    /// <inheritdoc />
     public DbSet<SalaryMember> SalaryMembers { get; init; }
 
     /// <inheritdoc />

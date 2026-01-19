@@ -51,7 +51,7 @@ public class SalaryLootService : ISalaryLootService
     /// <inheritdoc />
     public async Task<SalaryLootDto> CreateAsync(long salaryId, CreateSalaryLootRequest request)
     {
-        var amount = request.Quantity * request.PricePerLoot * (1 - request.DiscountPercent / 100);
+        var amount = request.Quantity * request.PricePerItem * (1 - request.DiscountPercent / 100);
 
         var entity =
             new SalaryLoot
@@ -59,7 +59,7 @@ public class SalaryLootService : ISalaryLootService
                 SalaryId = salaryId,
                 LootId = request.LootId,
                 Quantity = request.Quantity,
-                PricePerLoot = request.PricePerLoot,
+                PricePerItem = request.PricePerItem,
                 DiscountPercent = request.DiscountPercent,
                 Amount = amount,
             };
@@ -82,17 +82,17 @@ public class SalaryLootService : ISalaryLootService
 
         entity.LootId = request.LootId;
         entity.Quantity = request.Quantity;
-        entity.PricePerLoot = request.PricePerLoot;
+        entity.PricePerItem = request.PricePerItem;
 
         if (request.DiscountPercent.HasValue)
         {
             entity.DiscountPercent = request.DiscountPercent.Value;
-            entity.Amount = entity.Quantity * entity.PricePerLoot * (1 - entity.DiscountPercent / 100);
+            entity.Amount = entity.Quantity * entity.PricePerItem * (1 - entity.DiscountPercent / 100);
         }
         else if (request.Amount.HasValue)
         {
             entity.Amount = request.Amount.Value;
-            entity.DiscountPercent = 100 * (1 - entity.Amount / (entity.Quantity * entity.PricePerLoot));
+            entity.DiscountPercent = 100 * (1 - entity.Amount / (entity.Quantity * entity.PricePerItem));
         }
 
         var result = await _provider.UpdateAsync(entity);
