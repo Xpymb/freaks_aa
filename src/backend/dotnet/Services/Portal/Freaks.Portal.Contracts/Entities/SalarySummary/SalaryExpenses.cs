@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Freaks.Contracts.Common.Interfaces;
 using Freaks.Dal.Common.Consts;
 using Freaks.Portal.SharedContracts.ValueObjects.SalarySummary;
@@ -12,6 +13,9 @@ namespace Freaks.Portal.Contracts.Entities.SalarySummary;
 public class SalaryExpenses : IEntity<long>
 {
     /// <inheritdoc />
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [Column("id")]
     public long Id { get; init; }
 
     /// <summary>

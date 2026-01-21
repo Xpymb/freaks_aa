@@ -84,15 +84,15 @@ public class SalaryLootService : ISalaryLootService
         entity.Quantity = request.Quantity;
         entity.PricePerItem = request.PricePerItem;
 
-        if (request.DiscountPercent.HasValue)
+        if (request.DiscountPercent > 0)
         {
-            entity.DiscountPercent = request.DiscountPercent.Value;
+            entity.DiscountPercent = request.DiscountPercent;
             entity.Amount = entity.Quantity * entity.PricePerItem * (1 - entity.DiscountPercent / 100);
         }
-        else if (request.Amount.HasValue)
+        else
         {
-            entity.Amount = request.Amount.Value;
-            entity.DiscountPercent = 100 * (1 - entity.Amount / (entity.Quantity * entity.PricePerItem));
+            entity.DiscountPercent = 0;
+            entity.Amount = entity.Quantity * entity.PricePerItem;
         }
 
         var result = await _provider.UpdateAsync(entity);

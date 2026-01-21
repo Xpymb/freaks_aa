@@ -13,5 +13,5 @@ public record UpdateSalaryLootRequest(
     int LootId,
     int Quantity,
     decimal PricePerItem,
-    decimal? DiscountPercent,
-    decimal? Amount);
+    decimal DiscountPercent,
+    decimal Amount);
