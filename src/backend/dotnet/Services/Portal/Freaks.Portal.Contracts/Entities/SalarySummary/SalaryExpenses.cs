@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Freaks.Contracts.Common.Interfaces;
 using Freaks.Dal.Common.Consts;
 using Freaks.Portal.SharedContracts.ValueObjects.SalarySummary;
+using Freaks.Users.Contracts.Entities;
 
 namespace Freaks.Portal.Contracts.Entities.SalarySummary;
 
@@ -52,4 +53,9 @@ public class SalaryExpenses : IEntity<long>
     ///     Навигационное свойство для доступа к информации о зарплатном периоде.
     /// </summary>
     public Salary? Salary { get; init; }
+
+    /// <summary>
+    ///     Навигационное свойство для доступа к информации о пользователе.
+    /// </summary>
+    public User? User { get; init; }
 }

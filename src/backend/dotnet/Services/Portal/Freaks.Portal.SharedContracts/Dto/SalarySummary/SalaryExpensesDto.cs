@@ -1,4 +1,5 @@
 using Freaks.Portal.SharedContracts.ValueObjects.SalarySummary;
+using Freaks.Users.SharedContracts.Dto;
 
 namespace Freaks.Portal.SharedContracts.Dto.SalarySummary;
 
@@ -8,13 +9,13 @@ namespace Freaks.Portal.SharedContracts.Dto.SalarySummary;
 /// <param name="Id">Идентификатор статьи расходов.</param>
 /// <param name="SalaryId">Идентификатор зарплатного периода.</param>
 /// <param name="ExpensesType">Тип расхода.</param>
-/// <param name="UserId">Идентификатор пользователя, которому назначено поощрение.</param>
+/// <param name="User">Пользователь, которому назначено поощрение.</param>
 /// <param name="Percentage">Процент от общей суммы.</param>
 /// <param name="Amount">Сумма расхода.</param>
 public record SalaryExpensesDto(
     long Id,
     long SalaryId,
     SalaryExpensesType ExpensesType,
-    Guid? UserId,
+    UserDto? User,
     decimal Percentage,
     decimal Amount);

@@ -15,5 +15,11 @@ public class SalaryExpensesConfiguration : IEntityTypeConfiguration<SalaryExpens
             .WithMany()
             .HasForeignKey(s => s.SalaryId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder
+            .HasOne(s => s.User)
+            .WithMany()
+            .HasForeignKey(s => s.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

@@ -66,6 +66,8 @@ public class SalaryLootProvider : BaseCachedProvider<SalaryLoot, long, IPortalDb
             .AsNoTracking()
             .Include(x => x.LootItem)
             .Where(x => x.SalaryId == salaryId)
+            .OrderBy(x => x.LootItem!.Type)
+            .ThenBy(x => x.LootItem!.SynthesisExp)
             .ToListAsync();
 
         await SetCachedValueAsync(cacheKey, result, TimeSpan.FromMinutes(5));

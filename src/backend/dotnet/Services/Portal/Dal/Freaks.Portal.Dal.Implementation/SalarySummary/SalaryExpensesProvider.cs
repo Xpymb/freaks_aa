@@ -34,7 +34,9 @@ public class SalaryExpensesProvider : BaseCachedProvider<SalaryExpenses, long, I
 
         var result = await Set
             .AsNoTracking()
+            .Include(x => x.User)
             .Where(x => x.SalaryId == salaryId)
+            .OrderBy(x => x.ExpensesType)
             .ToListAsync();
 
         await SetCachedValueAsync(cacheKey, result, TimeSpan.FromMinutes(5));
