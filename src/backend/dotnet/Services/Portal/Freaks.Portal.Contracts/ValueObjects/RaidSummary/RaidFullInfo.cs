@@ -4,5 +4,5 @@ namespace Freaks.Portal.Contracts.ValueObjects.RaidSummary;
 
 public record RaidFullInfo(
     Raid Raid,
-    List<RaidParticipant> Participants,
-    List<RaidLoot> Loot);
+    IList<RaidParticipant> Participants,
+    IList<RaidLoot> Loot);
