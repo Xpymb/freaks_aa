@@ -52,7 +52,7 @@ public class SalaryProvider : BaseCachedProvider<Salary, long, IPortalDbContext>
         {
             SalaryListSortByType.Id => query.OrderBy(s => s.Id, request.SortMode),
             SalaryListSortByType.Name => query.OrderBy(s => s.Name, request.SortMode),
-            SalaryListSortByType.FillStatus => query.OrderBy(s => s.FillStatus, request.SortMode),
+            SalaryListSortByType.FillStatus => query.OrderBy(s => s.FillStepType, request.SortMode),
             SalaryListSortByType.RegistrationStatus => query.OrderBy(s => s.RegistrationStatus, request.SortMode),
             _ => throw new ArgumentOutOfRangeException(),
         };

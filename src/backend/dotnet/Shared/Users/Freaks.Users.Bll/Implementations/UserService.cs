@@ -80,7 +80,7 @@ public class UserService : IUserService
             throw new EntityNotFoundException();
         }
 
-        return await _unitOfWork.ExecuteAsync(async () =>
+        return await _unitOfWork.ExecuteInsideTransactionAsync(async () =>
         {
             entity.Roles = request.UserRoles;
             entity.UpdatedDt = DateTimeOffset.UtcNow;

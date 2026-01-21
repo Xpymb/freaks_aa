@@ -19,7 +19,7 @@ public interface IUnitOfWork<out TContext>
     /// </summary>
     /// <param name="operation">Асинхронная операция, которую необходимо выполнить.</param>
     /// <param name="cancellationToken">Токен отмены операции.</param>
-    Task<TResult> ExecuteAsync<TResult>(Func<Task<TResult>> operation, CancellationToken cancellationToken = default);
+    Task<TResult> ExecuteInsideTransactionAsync<TResult>(Func<Task<TResult>> operation, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Выполняет асинхронную операцию без параметров, возвращающую результат, в транзакции.
@@ -28,7 +28,7 @@ public interface IUnitOfWork<out TContext>
     /// <param name="operation">Асинхронная операция, которую необходимо выполнить.</param>
     /// <param name="cancellationToken">Токен отмены операции.</param>
     /// <returns>Результат выполнения операции.</returns>
-    Task ExecuteAsync(Func<Task> operation, CancellationToken cancellationToken = default);
+    Task ExecuteInsideTransactionAsync(Func<Task> operation, CancellationToken cancellationToken = default);
     
     /// <summary>
     ///     Выполняет асинхронную операцию над контекстом базы данных.
@@ -36,7 +36,7 @@ public interface IUnitOfWork<out TContext>
     /// <param name="operation">Функция, принимающая контекст и выполняющая операцию.</param>
     /// <param name="cancellationToken">Токен отмены операции.</param>
     /// <returns>Задача, представляющая выполнение операции.</returns>
-    Task ExecuteAsync(Func<TContext, Task> operation, CancellationToken cancellationToken = default);
+    Task ExecuteInsideTransactionAsync(Func<TContext, Task> operation, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Выполняет асинхронную операцию над контекстом базы данных и возвращает результат.
@@ -45,5 +45,5 @@ public interface IUnitOfWork<out TContext>
     /// <param name="operation">Функция, принимающая контекст и возвращающая результат операции.</param>
     /// <param name="cancellationToken">Токен отмены операции.</param>
     /// <returns>Результат выполнения операции.</returns>
-    Task<TResult> ExecuteAsync<TResult>(Func<TContext, Task<TResult>> operation, CancellationToken cancellationToken = default);
+    Task<TResult> ExecuteInsideTransactionAsync<TResult>(Func<TContext, Task<TResult>> operation, CancellationToken cancellationToken = default);
 }

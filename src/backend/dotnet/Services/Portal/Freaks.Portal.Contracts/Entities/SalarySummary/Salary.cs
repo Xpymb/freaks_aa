@@ -41,7 +41,7 @@ public class Salary : IEntity<long>
     ///     Статус заполнения зарплаты
     /// </summary>
     [Column("fill_status")]
-    public required SalaryFillStatus FillStatus { get; set; }
+    public required SalaryFillStepType FillStepType { get; set; }
 
     /// <summary>
     ///     Статус регистрации на зарплату

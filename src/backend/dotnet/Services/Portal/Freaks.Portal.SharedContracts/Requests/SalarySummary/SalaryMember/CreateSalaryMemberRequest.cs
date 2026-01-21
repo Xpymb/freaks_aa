@@ -7,9 +7,5 @@ namespace Freaks.Portal.SharedContracts.Requests.SalarySummary.SalaryMember;
 ///     UserId берётся из IUserContext (текущий пользователь).
 /// </summary>
 /// <param name="PaymentType">Тип выплаты.</param>
-/// <param name="ActivityPercentage">Процент активности.</param>
-/// <param name="Coefficient">Коэффициент.</param>
 public record CreateSalaryMemberRequest(
-    SalaryPaymentType PaymentType,
-    decimal ActivityPercentage,
-    decimal? Coefficient);
+    SalaryPaymentType PaymentType);

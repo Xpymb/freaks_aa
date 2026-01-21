@@ -1,3 +1,4 @@
+using Freaks.Dal.Common.Interfaces;
 using Freaks.Dal.Common.ValueObjects;
 using Freaks.Messages.Bll.Interfaces;
 using Freaks.Messages.SharedContracts.Messages.SalarySummary;
@@ -5,6 +6,7 @@ using Freaks.Messages.SharedContracts.ValueObjects;
 using Freaks.Portal.Bll.Interfaces.SalarySummary;
 using Freaks.Portal.Contracts.Entities.SalarySummary;
 using Freaks.Portal.Dal.Interfaces.SalarySummary;
+using Freaks.Portal.Dal.Persistence;
 using Freaks.Portal.SharedContracts.Dto.SalarySummary;
 using Freaks.Portal.SharedContracts.Requests.SalarySummary.SalaryExpenses;
 using Freaks.Portal.SharedContracts.ValueObjects.SalarySummary;
@@ -23,23 +25,31 @@ public class SalaryExpensesService : ISalaryExpensesService
 {
     private readonly IMapper _mapper;
     private readonly ISalaryExpensesProvider _provider;
+    private readonly ISalaryStepService _stepService;
     private readonly IMessageService _messageService;
+    private readonly IUnitOfWork<PortalDbContext> _unitOfWork;
 
     /// <summary>
     ///     Инициализирует новый экземпляр <see cref="SalaryExpensesService"/>.
     /// </summary>
     /// <param name="mapper">Сервис Mapster для преобразования сущностей в DTO и обратно.</param>
     /// <param name="provider">Провайдер доступа к данным расходов гильдии в зарплатных периодах.</param>
+    /// <param name="stepService">Сервис степпера зарплатных периодов.</param>
     /// <param name="messageService">Сервис для публикации сообщений в систему обмена сообщениями.</param>
+    /// <param name="unitOfWork">Unit of Work</param>
     /// <exception cref="ArgumentNullException">Выбрасывается, если любой из аргументов равен null.</exception>
     public SalaryExpensesService(
         IMapper mapper,
         ISalaryExpensesProvider provider,
-        IMessageService messageService)
+        ISalaryStepService stepService,
+        IMessageService messageService,
+        IUnitOfWork<PortalDbContext> unitOfWork)
     {
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         _provider = provider ?? throw new ArgumentNullException(nameof(provider));
+        _stepService = stepService ?? throw new ArgumentNullException(nameof(stepService));
         _messageService = messageService ?? throw new ArgumentNullException(nameof(messageService));
+        _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
     }
 
     /// <inheritdoc />
@@ -53,59 +63,74 @@ public class SalaryExpensesService : ISalaryExpensesService
     /// <inheritdoc />
     public async Task<SalaryExpensesDto> CreateAsync(long salaryId, CreateSalaryExpensesRequest request)
     {
-        if (request.ExpensesType is SalaryExpensesType.TargetMember && request.UserId is null)
+        return await _unitOfWork.ExecuteInsideTransactionAsync(async _ =>
         {
-            throw new SalaryExpensesUserShouldBeAssignedException();
-        }
+            await _stepService.HandleStepActionAsync(salaryId, SalaryFillStepType.Expenses);
 
-        var entity =
-            new SalaryExpenses
+            if (request.ExpensesType is SalaryExpensesType.TargetMember && request.UserId is null)
             {
-                SalaryId = salaryId,
-                ExpensesType = request.ExpensesType,
-                UserId = request.UserId,
-                Percentage = request.Percentage,
-                Amount = request.Amount,
-            };
+                throw new SalaryExpensesUserShouldBeAssignedException();
+            }
 
-        var result = await _provider.CreateAsync(entity);
+            var entity =
+                new SalaryExpenses
+                {
+                    SalaryId = salaryId,
+                    ExpensesType = request.ExpensesType,
+                    UserId = request.UserId,
+                    Percentage = request.Percentage,
+                    Amount = request.Amount,
+                };
 
-        await PublishMessageAsync(salaryId, EntityActionType.Created);
+            var result = await _provider.CreateAsync(entity);
 
-        return _mapper.Map<SalaryExpensesDto>(result!);
+            await PublishMessageAsync(salaryId, EntityActionType.Created);
+
+            return _mapper.Map<SalaryExpensesDto>(result);
+        });
     }
 
     /// <inheritdoc />
     public async Task<SalaryExpensesDto> UpdateAsync(long id, long salaryId, UpdateSalaryExpensesRequest request)
     {
-        var entity = await _provider.GetAsync(id, EntityTrackingType.NoTracking);
-        if (entity is null)
+        return await _unitOfWork.ExecuteInsideTransactionAsync(async _ =>
         {
-            throw new EntityNotFoundException();
-        }
+            await _stepService.HandleStepActionAsync(salaryId, SalaryFillStepType.Expenses);
 
-        entity.Percentage = request.Percentage;
-        entity.Amount = request.Amount;
+            var entity = await _provider.GetAsync(id, EntityTrackingType.NoTracking);
+            if (entity is null)
+            {
+                throw new EntityNotFoundException(nameof(SalaryExpenses));
+            }
 
-        var result = await _provider.UpdateAsync(entity);
+            entity.Percentage = request.Percentage;
+            entity.Amount = request.Amount;
 
-        await PublishMessageAsync(salaryId, EntityActionType.Updated);
+            var result = await _provider.UpdateAsync(entity);
 
-        return _mapper.Map<SalaryExpensesDto>(result);
+            await PublishMessageAsync(salaryId, EntityActionType.Updated);
+
+            return _mapper.Map<SalaryExpensesDto>(result);
+        });
     }
 
     /// <inheritdoc />
-    public async Task DeleteAsync(long id)
+    public async Task DeleteAsync(long id, long salaryId)
     {
-        var entity = await _provider.GetAsync(id, EntityTrackingType.NoTracking);
-        if (entity is null)
+        await _unitOfWork.ExecuteInsideTransactionAsync(async _ =>
         {
-            throw new EntityNotFoundException();
-        }
+            await _stepService.HandleStepActionAsync(salaryId, SalaryFillStepType.Expenses);
 
-        await _provider.DeleteAsync(id);
+            var entity = await _provider.GetAsync(id, EntityTrackingType.NoTracking);
+            if (entity is null)
+            {
+                return;
+            }
 
-        await PublishMessageAsync(id, EntityActionType.Deleted);
+            await _provider.DeleteAsync(id);
+
+            await PublishMessageAsync(id, EntityActionType.Deleted);
+        });
     }
 
     private async Task PublishMessageAsync(long id, EntityActionType actionType)

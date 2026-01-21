@@ -93,7 +93,7 @@ public class ShopItemRequestService : IShopItemRequestService
             throw new ShopItemDoesNotHaveRequestedQuantity();
         }
 
-        return await _unitOfWork.ExecuteAsync(async () =>
+        return await _unitOfWork.ExecuteInsideTransactionAsync(async () =>
         {
             var result = await _provider.CreateAsync(entity);
 
@@ -121,7 +121,7 @@ public class ShopItemRequestService : IShopItemRequestService
             throw new EntityNotFoundException();
         }
 
-        return await _unitOfWork.ExecuteAsync(async () =>
+        return await _unitOfWork.ExecuteInsideTransactionAsync(async () =>
         {
             entity.Status = request.Status;
             var result = await _provider.UpdateAsync(entity);
@@ -168,7 +168,7 @@ public class ShopItemRequestService : IShopItemRequestService
             return;
         }
 
-        await _unitOfWork.ExecuteAsync(async () =>
+        await _unitOfWork.ExecuteInsideTransactionAsync(async () =>
         {
             shopItemEntity.RemainingQuantity += entity.Quantity;
             await _shopItemProvider.UpdateAsync(shopItemEntity);

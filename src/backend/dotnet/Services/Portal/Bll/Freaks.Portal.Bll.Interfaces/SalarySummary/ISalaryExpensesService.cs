@@ -38,5 +38,6 @@ public interface ISalaryExpensesService
     ///     Удаляет запись о расходе гильдии из зарплатного периода.
     /// </summary>
     /// <param name="id">Идентификатор статьи расхода.</param>
-    Task DeleteAsync(long id);
+    /// <param name="salaryId">Идентификатор зарплатного периода.</param>
+    Task DeleteAsync(long id, long salaryId);
 }

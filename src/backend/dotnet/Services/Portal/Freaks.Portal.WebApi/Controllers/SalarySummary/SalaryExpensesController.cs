@@ -81,7 +81,7 @@ public class SalaryExpensesController : ControllerBase
     [HttpDelete("{id:long}")]
     public async Task<ActionResult> DeleteAsync([FromRoute] long salaryId, [FromRoute] long id)
     {
-        await _service.DeleteAsync(id);
+        await _service.DeleteAsync(id, salaryId);
         return Ok();
     }
 }

@@ -1,3 +1,4 @@
+using Freaks.Dal.Common.Interfaces;
 using Freaks.Dal.Common.ValueObjects;
 using Freaks.Messages.Bll.Interfaces;
 using Freaks.Messages.SharedContracts.Messages.SalarySummary;
@@ -5,6 +6,7 @@ using Freaks.Messages.SharedContracts.ValueObjects;
 using Freaks.Portal.Bll.Interfaces.SalarySummary;
 using Freaks.Portal.Contracts.Entities.SalarySummary;
 using Freaks.Portal.Dal.Interfaces.SalarySummary;
+using Freaks.Portal.Dal.Persistence;
 using Freaks.Portal.SharedContracts.Dto.SalarySummary;
 using Freaks.Portal.SharedContracts.Requests.SalarySummary.Salary;
 using Freaks.Portal.SharedContracts.ValueObjects.RaidSummary;
@@ -23,7 +25,9 @@ namespace Freaks.Portal.Bll.Implementation.SalarySummary;
 public class SalaryService : ISalaryService
 {
     private readonly ISalaryProvider _provider;
+    private readonly ISalaryStepService _stepService;
     private readonly IMessageService _messageService;
+    private readonly IUnitOfWork<PortalDbContext> _unitOfWork;
     private readonly IMapper _mapper;
     private readonly IUserContext _userContext;
 
@@ -33,18 +37,24 @@ public class SalaryService : ISalaryService
     /// <param name="mapper">Сервис Mapster для преобразования между моделями.</param>
     /// <param name="userContext">Контекст текущего пользователя.</param>
     /// <param name="provider">Провайдер доступа к данным зарплатных периодов.</param>
+    /// <param name="stepService">Сервис степпера зарплатных периодов.</param>
     /// <param name="messageService">Сервис для публикации сообщений в систему обмена сообщениями.</param>
+    /// <param name="unitOfWork">Unit of work</param>
     /// <exception cref="ArgumentNullException">Выбрасывается, если один из аргументов равен null.</exception>
     public SalaryService(
         IMapper mapper,
         IUserContext userContext,
         ISalaryProvider provider,
-        IMessageService messageService)
+        ISalaryStepService stepService,
+        IMessageService messageService,
+        IUnitOfWork<PortalDbContext> unitOfWork)
     {
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
         _provider = provider ?? throw new ArgumentNullException(nameof(provider));
+        _stepService = stepService ?? throw new ArgumentNullException(nameof(stepService));
         _messageService = messageService ?? throw new ArgumentNullException(nameof(messageService));
+        _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
     }
 
     /// <inheritdoc />
@@ -76,7 +86,7 @@ public class SalaryService : ISalaryService
                 Name = request.Name,
                 StartDt = request.StartDt,
                 EndDt = request.EndDt,
-                FillStatus = SalaryFillStatus.Parameters,
+                FillStepType = SalaryFillStepType.Parameters,
                 RegistrationStatus = SalaryRegistrationStatus.NotStarted,
                 AllowedPaymentTypes = request.AllowedPaymentTypes,
                 UseCoefficients = request.UseCoefficients,
@@ -95,91 +105,119 @@ public class SalaryService : ISalaryService
     /// <inheritdoc />
     public async Task<SalaryDto> UpdateAsync(long id, UpdateSalaryRequest request)
     {
-        var entity = await _provider.GetAsync(id, EntityTrackingType.NoTracking);
-        if (entity is null)
+        return await _unitOfWork.ExecuteInsideTransactionAsync(async _ =>
         {
-            throw new EntityNotFoundException();
-        }
+            await _stepService.HandleStepActionAsync(id, SalaryFillStepType.Parameters);
 
-        entity.Name = request.Name;
-        entity.StartDt = request.From;
-        entity.EndDt = request.To;
+            var entity = await _provider.GetAsync(id, EntityTrackingType.NoTracking);
+            if (entity is null)
+            {
+                throw new EntityNotFoundException();
+            }
 
-        entity.UpdatedDt = DateTime.UtcNow;
+            entity.Name = request.Name;
+            entity.StartDt = request.From;
+            entity.EndDt = request.To;
+            entity.AllowedPaymentTypes = request.AllowedPaymentTypes;
+            entity.UseCoefficients = request.UseCoefficients;
+            entity.BossTypes = request.BossTypes;
 
-        var result = await _provider.UpdateAsync(entity);
+            entity.UpdatedDt = DateTime.UtcNow;
 
-        await PublishMessageAsync(result.Id, EntityActionType.Updated);
+            var result = await _provider.UpdateAsync(entity);
 
-        return _mapper.Map<SalaryDto>(result);
+            await PublishMessageAsync(result.Id, EntityActionType.Updated);
+
+            return _mapper.Map<SalaryDto>(result);
+        });
     }
 
     /// <inheritdoc />
     public async Task DeleteAsync(long id)
     {
-        await _provider.DeleteAsync(id);
+        await _unitOfWork.ExecuteInsideTransactionAsync(async _ =>
+        {
+            await _stepService.HandleStepActionAsync(id, SalaryFillStepType.Parameters);
 
-        await PublishMessageAsync(id, EntityActionType.Deleted);
+            await _provider.DeleteAsync(id);
+
+            await PublishMessageAsync(id, EntityActionType.Deleted);
+        });
     }
 
     /// <inheritdoc />
     public async Task<SalaryDto> FinishAsync(long id)
     {
-        var entity = await _provider.GetAsync(id, EntityTrackingType.NoTracking);
-        if (entity is null)
+        return await _unitOfWork.ExecuteInsideTransactionAsync(async _ =>
         {
-            throw new EntityNotFoundException();
-        }
+            await _stepService.HandleStepActionAsync(id, SalaryFillStepType.FinalReports);
 
-        entity.FillStatus = SalaryFillStatus.FinalReports;
+            var entity = await _provider.GetAsync(id, EntityTrackingType.NoTracking);
+            if (entity is null)
+            {
+                throw new EntityNotFoundException(nameof(Salary));
+            }
 
-        entity.UpdatedDt = DateTime.UtcNow;
+            entity.FillStepType = SalaryFillStepType.FinalReports;
 
-        var result = await _provider.UpdateAsync(entity);
+            entity.UpdatedDt = DateTime.UtcNow;
 
-        await PublishMessageAsync(result.Id, EntityActionType.Updated);
+            var result = await _provider.UpdateAsync(entity);
 
-        return _mapper.Map<SalaryDto>(result);
+            await PublishMessageAsync(result.Id, EntityActionType.Updated);
+
+            return _mapper.Map<SalaryDto>(result);
+        });
     }
 
     /// <inheritdoc />
     public async Task<SalaryDto> OpenRegistrationAsync(long id)
     {
-        var entity = await _provider.GetAsync(id, EntityTrackingType.NoTracking);
-        if (entity is null)
+        return await _unitOfWork.ExecuteInsideTransactionAsync(async _ =>
         {
-            throw new EntityNotFoundException();
-        }
+            await _stepService.CheckAccessAsync(id, SalaryActionType.Fill);
 
-        entity.RegistrationStatus = SalaryRegistrationStatus.Opened;
+            var entity = await _provider.GetAsync(id, EntityTrackingType.NoTracking);
+            if (entity is null)
+            {
+                throw new EntityNotFoundException();
+            }
 
-        entity.UpdatedDt = DateTime.UtcNow;
+            entity.RegistrationStatus = SalaryRegistrationStatus.Opened;
 
-        var result = await _provider.UpdateAsync(entity);
+            entity.UpdatedDt = DateTime.UtcNow;
 
-        await PublishMessageAsync(result.Id, EntityActionType.Updated);
+            var result = await _provider.UpdateAsync(entity);
 
-        return _mapper.Map<SalaryDto>(result);
+            await PublishMessageAsync(result.Id, EntityActionType.Updated);
+
+            return _mapper.Map<SalaryDto>(result);
+        });
     }
 
     /// <inheritdoc />
     public async Task<SalaryDto> CloseRegistrationAsync(long id)
     {
-        var entity = await _provider.GetAsync(id, EntityTrackingType.NoTracking);
-        if (entity is null)
+        return await _unitOfWork.ExecuteInsideTransactionAsync(async _ =>
         {
-            throw new EntityNotFoundException();
-        }
+            await _stepService.CheckAccessAsync(id, SalaryActionType.Fill);
 
-        entity.RegistrationStatus = SalaryRegistrationStatus.Ended;
+            var entity = await _provider.GetAsync(id, EntityTrackingType.NoTracking);
+            if (entity is null)
+            {
+                throw new EntityNotFoundException();
+            }
 
-        entity.UpdatedDt = DateTime.UtcNow;
+            entity.RegistrationStatus = SalaryRegistrationStatus.Ended;
 
-        var result = await _provider.UpdateAsync(entity);
+            entity.UpdatedDt = DateTime.UtcNow;
 
-        await PublishMessageAsync(result.Id, EntityActionType.Updated);
+            var result = await _provider.UpdateAsync(entity);
 
-        return _mapper.Map<SalaryDto>(result);
+            await PublishMessageAsync(result.Id, EntityActionType.Updated);
+
+            return _mapper.Map<SalaryDto>(result);
+        });
     }
 
     private async Task PublishMessageAsync(long id, EntityActionType actionType)

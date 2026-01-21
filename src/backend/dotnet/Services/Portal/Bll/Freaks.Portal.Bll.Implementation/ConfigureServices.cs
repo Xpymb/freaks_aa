@@ -44,6 +44,7 @@ public static class ConfigureServices
         services.AddScoped<ISalaryExpensesService, SalaryExpensesService>();
         services.AddScoped<ISalaryMemberService, SalaryMemberService>();
         services.AddScoped<ISalaryCalculationService, SalaryCalculationService>();
+        services.AddScoped<ISalaryStepService, SalaryStepService>();
 
         // Loot items
         services.AddScoped<ILootItemService, LootItemService>();
