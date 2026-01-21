@@ -41,7 +41,7 @@ public class SalaryMember : ICompositeEntity<SalaryMemberKey>
     ///     Процент активности
     /// </summary>
     [Column("activity_percentage")]
-    public required decimal ActivityPercentage { get; set; }
+    public decimal? ActivityPercentage { get; set; }
 
     /// <summary>
     ///     Коэффициент
