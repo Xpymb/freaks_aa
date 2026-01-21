@@ -12,5 +12,5 @@ namespace Freaks.Portal.SharedContracts.Requests.SalarySummary.SalaryExpenses;
 public record CreateSalaryExpensesRequest(
     SalaryExpensesType ExpensesType,
     Guid? UserId,
-    decimal Percentage,
-    decimal Amount);
+    decimal? Percentage,
+    decimal? Amount);

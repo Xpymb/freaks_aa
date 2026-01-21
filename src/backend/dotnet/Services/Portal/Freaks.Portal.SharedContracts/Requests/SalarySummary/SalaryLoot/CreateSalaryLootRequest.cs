@@ -8,8 +8,10 @@ namespace Freaks.Portal.SharedContracts.Requests.SalarySummary.SalaryLoot;
 /// <param name="Quantity">Количество проданных предметов.</param>
 /// <param name="PricePerItem">Цена за единицу лута.</param>
 /// <param name="DiscountPercent">Скидка в процентах.</param>
+/// <param name="Amount">Итоговая сумма.</param>
 public record CreateSalaryLootRequest(
     int LootId,
     int Quantity,
     decimal PricePerItem,
-    decimal DiscountPercent);
+    decimal? DiscountPercent,
+    decimal? Amount);

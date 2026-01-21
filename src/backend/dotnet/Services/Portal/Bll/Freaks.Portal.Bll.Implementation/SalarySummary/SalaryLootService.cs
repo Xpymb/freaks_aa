@@ -66,7 +66,18 @@ public class SalaryLootService : ISalaryLootService
         {
             await _stepService.HandleStepActionAsync(salaryId, SalaryFillStepType.SoldByPeriod);
 
-            var amount = request.Quantity * request.PricePerItem * (1 - request.DiscountPercent / 100);
+            var discountPercent = 0m;
+            var amount = 0m;
+            if (request.Amount is not null)
+            {
+                amount = request.Amount.Value;
+                discountPercent = amount * 100 / (request.Quantity * request.PricePerItem);
+            }
+            else if (request.DiscountPercent is not null)
+            {
+                discountPercent = request.DiscountPercent.Value;
+                amount = request.Quantity * request.PricePerItem * (1 - discountPercent / 100);
+            }
 
             var entity =
                 new SalaryLoot
@@ -75,7 +86,7 @@ public class SalaryLootService : ISalaryLootService
                     LootId = request.LootId,
                     Quantity = request.Quantity,
                     PricePerItem = request.PricePerItem,
-                    DiscountPercent = request.DiscountPercent,
+                    DiscountPercent = discountPercent,
                     Amount = amount,
                 };
 
@@ -104,15 +115,15 @@ public class SalaryLootService : ISalaryLootService
             entity.Quantity = request.Quantity;
             entity.PricePerItem = request.PricePerItem;
 
-            if (request.DiscountPercent > 0)
+            if (request.DiscountPercent - entity.DiscountPercent != 0)
             {
                 entity.DiscountPercent = request.DiscountPercent;
-                entity.Amount = entity.Quantity * entity.PricePerItem * (1 - entity.DiscountPercent / 100);
+                entity.Amount = request.Quantity * request.PricePerItem * (1 - request.DiscountPercent / 100);
             }
-            else
+            else if (request.Amount - entity.Amount != 0)
             {
-                entity.DiscountPercent = 0;
-                entity.Amount = entity.Quantity * entity.PricePerItem;
+                entity.DiscountPercent = request.Amount * 100 / (request.Quantity * request.PricePerItem);
+                entity.Amount = request.Amount;
             }
 
             var result = await _provider.UpdateAsync(entity);

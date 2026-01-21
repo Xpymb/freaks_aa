@@ -25,6 +25,7 @@ public class SalaryExpensesService : ISalaryExpensesService
 {
     private readonly IMapper _mapper;
     private readonly ISalaryExpensesProvider _provider;
+    private readonly ISalaryLootProvider _lootProvider;
     private readonly ISalaryStepService _stepService;
     private readonly IMessageService _messageService;
     private readonly IUnitOfWork<PortalDbContext> _unitOfWork;
@@ -34,6 +35,7 @@ public class SalaryExpensesService : ISalaryExpensesService
     /// </summary>
     /// <param name="mapper">Сервис Mapster для преобразования сущностей в DTO и обратно.</param>
     /// <param name="provider">Провайдер доступа к данным расходов гильдии в зарплатных периодах.</param>
+    /// <param name="lootProvider">Провайдер доступа к данным проданного лута зарплатных периодов.</param>
     /// <param name="stepService">Сервис степпера зарплатных периодов.</param>
     /// <param name="messageService">Сервис для публикации сообщений в систему обмена сообщениями.</param>
     /// <param name="unitOfWork">Unit of Work</param>
@@ -41,12 +43,14 @@ public class SalaryExpensesService : ISalaryExpensesService
     public SalaryExpensesService(
         IMapper mapper,
         ISalaryExpensesProvider provider,
+        ISalaryLootProvider lootProvider,
         ISalaryStepService stepService,
         IMessageService messageService,
         IUnitOfWork<PortalDbContext> unitOfWork)
     {
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         _provider = provider ?? throw new ArgumentNullException(nameof(provider));
+        _lootProvider = lootProvider ?? throw new ArgumentNullException(nameof(lootProvider));
         _stepService = stepService ?? throw new ArgumentNullException(nameof(stepService));
         _messageService = messageService ?? throw new ArgumentNullException(nameof(messageService));
         _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
@@ -72,14 +76,29 @@ public class SalaryExpensesService : ISalaryExpensesService
                 throw new SalaryExpensesUserShouldBeAssignedException();
             }
 
+            var salaryLoot = await _lootProvider.GetBySalaryIdAsync(salaryId);
+
+            var percentage = 0m;
+            var amount = 0m;
+            if (request.Amount is not null && salaryLoot.Count > 0)
+            {
+                amount = request.Amount.Value;
+                percentage = amount * 100 / salaryLoot.Sum(x => x.Amount);
+            }
+            else if (request.Percentage is not null && salaryLoot.Count > 0)
+            {
+                percentage = request.Percentage.Value;
+                amount = percentage / 100 * salaryLoot.Sum(x => x.Amount);
+            }
+
             var entity =
                 new SalaryExpenses
                 {
                     SalaryId = salaryId,
                     ExpensesType = request.ExpensesType,
                     UserId = request.UserId,
-                    Percentage = request.Percentage,
-                    Amount = request.Amount,
+                    Percentage = percentage,
+                    Amount = amount,
                 };
 
             var result = await _provider.CreateAsync(entity);
@@ -103,8 +122,16 @@ public class SalaryExpensesService : ISalaryExpensesService
                 throw new EntityNotFoundException(nameof(SalaryExpenses));
             }
 
-            entity.Percentage = request.Percentage;
-            entity.Amount = request.Amount;
+            var salaryLoot = await _lootProvider.GetBySalaryIdAsync(salaryId);
+
+            if (entity.Amount - request.Amount != 0 && salaryLoot.Count > 0)
+            {
+                entity.Percentage = request.Amount * 100 / salaryLoot.Sum(x => x.Amount);
+            }
+            else if (entity.Percentage - request.Percentage != 0 && salaryLoot.Count > 0)
+            {
+                entity.Amount = request.Percentage / 100 * salaryLoot.Sum(x => x.Amount);
+            }
 
             var result = await _provider.UpdateAsync(entity);
 

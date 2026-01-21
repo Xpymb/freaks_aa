@@ -7,7 +7,7 @@ namespace Freaks.Portal.SharedContracts.Dto.SalarySummary;
 /// </summary>
 /// <param name="Id">Уникальный идентификатор записи.</param>
 /// <param name="SalaryId">Идентификатор зарплатного периода.</param>
-/// <param name="Loot">Информация о предмете лута.</param>
+/// <param name="LootItem">Информация о предмете лута.</param>
 /// <param name="Quantity">Количество проданных предметов.</param>
 /// <param name="PricePerItem">Цена за единицу лута.</param>
 /// <param name="DiscountPercent">Скидка в процентах.</param>
@@ -15,7 +15,7 @@ namespace Freaks.Portal.SharedContracts.Dto.SalarySummary;
 public record SalaryLootDto(
     long Id,
     long SalaryId,
-    LootItemDto Loot,
+    LootItemDto LootItem,
     int Quantity,
     decimal PricePerItem,
     decimal DiscountPercent,
