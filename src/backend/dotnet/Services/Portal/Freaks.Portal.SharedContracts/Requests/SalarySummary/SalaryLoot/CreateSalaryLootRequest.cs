@@ -6,10 +6,12 @@ namespace Freaks.Portal.SharedContracts.Requests.SalarySummary.SalaryLoot;
 /// </summary>
 /// <param name="LootId">Идентификатор предмета лута (из справочника).</param>
 /// <param name="Quantity">Количество проданных предметов.</param>
-/// <param name="PricePerLoot">Цена за единицу лута.</param>
+/// <param name="PricePerItem">Цена за единицу лута.</param>
 /// <param name="DiscountPercent">Скидка в процентах.</param>
+/// <param name="Amount">Итоговая сумма.</param>
 public record CreateSalaryLootRequest(
     int LootId,
     int Quantity,
-    decimal PricePerLoot,
-    decimal DiscountPercent);
+    decimal PricePerItem,
+    decimal? DiscountPercent,
+    decimal? Amount);

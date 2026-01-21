@@ -5,7 +5,7 @@ namespace Freaks.WebApi.Common.Exceptions.Base;
 /// <summary>
 ///     Базовое исключение для API, содержащее статус HTTP и внутренний код ошибки.
 /// </summary>
-public class BaseApiException : Exception
+public abstract class BaseApiException : Exception
 {
     /// <summary>
     ///     HTTP-статус ответа, связанный с исключением.
@@ -22,7 +22,7 @@ public class BaseApiException : Exception
     /// </summary>
     /// <param name="message">Сообщение об ошибке.</param>
     /// <param name="innerException">Вложенное исключение (если есть).</param>
-    public BaseApiException(string? message = null, Exception? innerException = null) : base(message, innerException)
+    protected BaseApiException(string? message = null, Exception? innerException = null) : base(message, innerException)
     {
     }
 }

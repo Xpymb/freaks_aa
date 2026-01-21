@@ -250,6 +250,8 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
 
                     b.HasIndex("CreatorId");
 
+                    b.HasIndex("StartDt", "BossType");
+
                     b.ToTable("raid", "portal");
                 });
 
@@ -342,6 +344,16 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
+                    b.PrimitiveCollection<int[]>("AllowedPaymentTypes")
+                        .IsRequired()
+                        .HasColumnType("integer[]")
+                        .HasColumnName("allowed_payment_types");
+
+                    b.PrimitiveCollection<int[]>("BossTypes")
+                        .IsRequired()
+                        .HasColumnType("integer[]")
+                        .HasColumnName("boss_types");
+
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uuid")
                         .HasColumnName("created_by");
@@ -354,7 +366,7 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
                         .HasColumnType("date")
                         .HasColumnName("end_dt");
 
-                    b.Property<int>("FillStatus")
+                    b.Property<int>("FillStepType")
                         .HasColumnType("integer")
                         .HasColumnName("fill_status");
 
@@ -375,6 +387,10 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_dt");
 
+                    b.Property<bool>("UseCoefficients")
+                        .HasColumnType("boolean")
+                        .HasColumnName("use_coefficients");
+
                     b.HasKey("Id");
 
                     b.ToTable("salary", "portal");
@@ -382,23 +398,38 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
 
             modelBuilder.Entity("Freaks.Portal.Contracts.Entities.SalarySummary.SalaryExpenses", b =>
                 {
-                    b.Property<long>("SalaryId")
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
-                        .HasColumnName("salary_id");
+                        .HasColumnName("id");
 
-                    b.Property<int>("ExpensesType")
-                        .HasColumnType("integer")
-                        .HasColumnName("expenses_type");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("numeric")
                         .HasColumnName("amount");
 
+                    b.Property<int>("ExpensesType")
+                        .HasColumnType("integer")
+                        .HasColumnName("expenses_type");
+
                     b.Property<decimal>("Percentage")
                         .HasColumnType("numeric")
                         .HasColumnName("percentage");
 
-                    b.HasKey("SalaryId", "ExpensesType");
+                    b.Property<long>("SalaryId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("salary_id");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SalaryId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("salary_expenses", "portal");
                 });
@@ -420,9 +451,9 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("loot_id");
 
-                    b.Property<decimal>("PricePerLoot")
+                    b.Property<decimal>("PricePerItem")
                         .HasColumnType("numeric")
-                        .HasColumnName("price_per_loot");
+                        .HasColumnName("price_per_item");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("integer")
@@ -462,9 +493,9 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("loot_id");
 
-                    b.Property<decimal>("PricePerLoot")
+                    b.Property<decimal>("PricePerItem")
                         .HasColumnType("numeric")
-                        .HasColumnName("price_per_loot");
+                        .HasColumnName("price_per_item");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("integer")
@@ -497,7 +528,7 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
                         .HasColumnType("numeric")
                         .HasColumnName("activity_gold");
 
-                    b.Property<decimal>("ActivityPercentage")
+                    b.Property<decimal?>("ActivityPercentage")
                         .HasColumnType("numeric")
                         .HasColumnName("activity_percentage");
 
@@ -526,31 +557,6 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("salary_member", "portal");
-                });
-
-            modelBuilder.Entity("Freaks.Portal.Contracts.Entities.SalarySummary.SalaryParameters", b =>
-                {
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint")
-                        .HasColumnName("salary_id");
-
-                    b.PrimitiveCollection<int[]>("AllowedPaymentTypes")
-                        .IsRequired()
-                        .HasColumnType("integer[]")
-                        .HasColumnName("allowed_payment_types");
-
-                    b.PrimitiveCollection<int[]>("BossTypes")
-                        .IsRequired()
-                        .HasColumnType("integer[]")
-                        .HasColumnName("boss_types");
-
-                    b.Property<bool>("UseCoefficients")
-                        .HasColumnType("boolean")
-                        .HasColumnName("use_coefficients");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("salary_parameters", "portal");
                 });
 
             modelBuilder.Entity("Freaks.Portal.Contracts.Entities.Shop.ShopItem", b =>
@@ -781,7 +787,14 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Freaks.Users.Contracts.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.Navigation("Salary");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Freaks.Portal.Contracts.Entities.SalarySummary.SalaryGuildLeader", b =>
@@ -839,17 +852,6 @@ namespace Freaks.Portal.Dal.Persistence.Migrations
                     b.Navigation("Salary");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Freaks.Portal.Contracts.Entities.SalarySummary.SalaryParameters", b =>
-                {
-                    b.HasOne("Freaks.Portal.Contracts.Entities.SalarySummary.Salary", "Salary")
-                        .WithMany()
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Salary");
                 });
 
             modelBuilder.Entity("Freaks.Portal.Contracts.Entities.Shop.ShopItem", b =>

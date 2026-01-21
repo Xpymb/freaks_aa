@@ -43,7 +43,8 @@ public static class ConfigureServices
         services.AddScoped<ISalaryGuildLeaderService, SalaryGuildLeaderService>();
         services.AddScoped<ISalaryExpensesService, SalaryExpensesService>();
         services.AddScoped<ISalaryMemberService, SalaryMemberService>();
-        services.AddScoped<ISalaryParametersService, SalaryParametersService>();
+        services.AddScoped<ISalaryCalculationService, SalaryCalculationService>();
+        services.AddScoped<ISalaryStepService, SalaryStepService>();
 
         // Loot items
         services.AddScoped<ILootItemService, LootItemService>();

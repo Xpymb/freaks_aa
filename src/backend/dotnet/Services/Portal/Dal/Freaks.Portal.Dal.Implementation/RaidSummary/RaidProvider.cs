@@ -4,9 +4,11 @@ using Freaks.Dal.Common.Implementations;
 using Freaks.Dal.Common.Interfaces;
 using Freaks.Dal.Common.ValueObjects;
 using Freaks.Portal.Contracts.Entities.RaidSummary;
+using Freaks.Portal.Contracts.ValueObjects.RaidSummary;
 using Freaks.Portal.Dal.Interfaces.RaidSummary;
 using Freaks.Portal.Dal.Persistence;
 using Freaks.Portal.SharedContracts.Requests.RaidSummary.Raid;
+using Freaks.Portal.SharedContracts.ValueObjects.RaidSummary;
 using Freaks.SharedContracts.Common;
 using Microsoft.EntityFrameworkCore;
 
@@ -125,6 +127,19 @@ public class RaidProvider : BaseCachedProvider<Raid, long, IPortalDbContext>, IR
 
         await SetCachedValueAsync(cacheKey, paginatedResult, TimeSpan.FromMinutes(5));
         return paginatedResult;
+    }
+
+    /// <inheritdoc />
+    public async Task<IList<RaidFullInfo>> GetFullInfoAsync(DateTimeOffset startDt, DateTimeOffset endDt, IList<BossType> bossTypes)
+    {
+        return await Set
+            .AsNoTracking()
+            .Include(r => r.Participants)
+            .Include(r => r.Loots)
+            .Where(r => r.StartDt >= startDt && r.StartDt <= endDt && bossTypes.Contains(r.BossType))
+            .Select(r => new RaidFullInfo(r, r.Participants, r.Loots))
+            .AsSplitQuery()
+            .ToListAsync();
     }
 
     /// <inheritdoc />

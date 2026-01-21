@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Freaks.Portal.Dal.Persistence.Configurations.SalarySummary;
+namespace Freaks.Portal.Dal.Persistence.Configurations.Salary;
 
 /// <inheritdoc />
 public class SalaryLootConfiguration : IEntityTypeConfiguration<SalaryLoot>

@@ -39,8 +39,8 @@ public class SalaryGuildLeader : IEntity<long>
     /// <summary>
     ///     Цена за единицу лута
     /// </summary>
-    [Column("price_per_loot")]
-    public required decimal PricePerLoot { get; set; }
+    [Column("price_per_item")]
+    public required decimal PricePerItem { get; set; }
 
     /// <summary>
     ///     Сумма

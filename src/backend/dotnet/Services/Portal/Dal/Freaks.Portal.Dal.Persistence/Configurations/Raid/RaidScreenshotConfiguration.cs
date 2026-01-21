@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Freaks.Portal.Dal.Persistence.Configurations.RaidConfiguration;
+namespace Freaks.Portal.Dal.Persistence.Configurations.Raid;
 
 /// <inheritdoc />
 public class RaidScreenshotConfiguration : IEntityTypeConfiguration<RaidScreenshot>

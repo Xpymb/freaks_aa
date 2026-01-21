@@ -10,7 +10,7 @@ namespace Freaks.Messages.SharedContracts.Messages.SalarySummary;
 public class SalaryExpensesChangedMessage : BaseMessage
 {
     /// <summary>
-    ///     Идентификатор зарплатного периода, в котором изменились расходы.
+    ///     Идентификатор статьи расхода.
     /// </summary>
-    public required long SalaryId { get; init; }
+    public required long Id { get; init; }
 }

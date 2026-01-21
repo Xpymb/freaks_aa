@@ -3,30 +3,30 @@
 /// <summary>
 ///     Статус заполнения зп
 /// </summary>
-public enum SalaryFillStatus
+public enum SalaryFillStepType
 {
     /// <summary>
     ///     Параметры периода
     /// </summary>
-    PeriodParameters = 1,
+    Parameters = 1,
 
     /// <summary>
     ///     Продано за период
     /// </summary>
-    SoldByPeriod = 2,
+    SoldByPeriod = 10,
 
     /// <summary>
     ///     Доля руководства
     /// </summary>
-    GuildLeaderSalary = 3,
+    GuildLeaderSalary = 20,
 
     /// <summary>
     ///     Расходы и отчисления
     /// </summary>
-    Expenses = 4,
+    Expenses = 30,
 
     /// <summary>
-    ///     Итоговый отчёты
+    ///     Итоговый отчёт
     /// </summary>
-    FinalReports = 5,
+    FinalReports = 40,
 }

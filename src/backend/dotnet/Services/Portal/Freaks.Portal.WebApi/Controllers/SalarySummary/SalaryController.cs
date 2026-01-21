@@ -20,14 +20,19 @@ namespace Freaks.Portal.WebApi.Controllers.SalarySummary;
 public class SalaryController : ControllerBase
 {
     private readonly ISalaryService _service;
+    private readonly ISalaryCalculationService _calculationService;
 
     /// <summary>
     ///     Инициализирует новый экземпляр контроллера <see cref="SalaryController"/>.
     /// </summary>
     /// <param name="service">Сервис для работы с зарплатными периодами.</param>
-    public SalaryController(ISalaryService service)
+    /// <param name="calculationService">Сервис расчёта зарплатного периода.</param>
+    public SalaryController(
+        ISalaryService service,
+        ISalaryCalculationService calculationService)
     {
         _service = service ?? throw new ArgumentNullException(nameof(service));
+        _calculationService = calculationService ?? throw new ArgumentNullException(nameof(calculationService));
     }
 
     /// <summary>
@@ -111,6 +116,19 @@ public class SalaryController : ControllerBase
     public async Task<SalaryDto> CloseRegistrationAsync([FromRoute] long id)
     {
         return await _service.CloseRegistrationAsync(id);
+    }
+
+    /// <summary>
+    ///     Закрывает регистрацию на зарплатный период, изменяя статус регистрации на Closed.
+    /// </summary>
+    /// <param name="id">Идентификатор зарплатного периода.</param>
+    /// <returns>Обновлённый зарплатный период с полной информацией.</returns>
+    [RequireRoles(UserRole.Editor, UserRole.Admin, UserRole.GuildLeader)]
+    [HttpPost("{id:long}/calculate")]
+    public async Task<ActionResult> CalculateAsync([FromRoute] long id)
+    {
+        await _calculationService.CalculateAsync(id);
+        return Ok();
     }
 
     /// <summary>

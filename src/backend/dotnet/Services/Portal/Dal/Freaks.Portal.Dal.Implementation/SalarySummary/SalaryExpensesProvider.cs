@@ -10,7 +10,7 @@ namespace Freaks.Portal.Dal.Implementation.SalarySummary;
 /// <summary>
 ///     Провайдер для работы с расходами и отчислениями зарплатного периода.
 /// </summary>
-public class SalaryExpensesProvider : BaseCachedCompositeProvider<SalaryExpenses, SalaryExpensesKey, IPortalDbContext>, ISalaryExpensesProvider
+public class SalaryExpensesProvider : BaseCachedProvider<SalaryExpenses, long, IPortalDbContext>, ISalaryExpensesProvider
 {
     /// <summary>
     ///     Инициализирует новый экземпляр класса <see cref="SalaryExpensesProvider"/>.
@@ -34,23 +34,18 @@ public class SalaryExpensesProvider : BaseCachedCompositeProvider<SalaryExpenses
 
         var result = await Set
             .AsNoTracking()
+            .Include(x => x.User)
             .Where(x => x.SalaryId == salaryId)
+            .OrderBy(x => x.ExpensesType)
             .ToListAsync();
 
         await SetCachedValueAsync(cacheKey, result, TimeSpan.FromMinutes(5));
         return result;
     }
 
-    /// <inheritdoc />
-    protected override IQueryable<SalaryExpenses> FilterByKey(SalaryExpensesKey key, IQueryable<SalaryExpenses> queryable)
+    protected override string GetCacheKey(long key)
     {
-        return queryable.Where(se => se.SalaryId == key.SalaryId && se.ExpensesType == key.ExpensesType);
-    }
-
-    /// <inheritdoc />
-    protected override string GetCacheKey(SalaryExpensesKey key)
-    {
-        return $"{nameof(SalaryExpenses)}:salary:{key.SalaryId}:type:{key.ExpensesType}";
+        return $"{nameof(SalaryExpenses)}:{key}";
     }
 
     /// <summary>
@@ -68,7 +63,7 @@ public class SalaryExpensesProvider : BaseCachedCompositeProvider<SalaryExpenses
     {
         return
         [
-            GetCacheKey(entity.GetCompositeKey()),
+            GetCacheKey(entity.Id),
             GetCacheSalaryKey(entity.SalaryId),
         ];
     }

@@ -57,7 +57,12 @@ public enum BossType
     AbyssalSehekmet = 10,
     
     /// <summary>
-    /// Калиель.
+    /// Калеиль.
     /// </summary>
-    Kaliel = 11,
+    Nehliya = 11,
+
+    /// <summary>
+    /// Жук.
+    /// </summary>
+    Risopoda = 12,
 }

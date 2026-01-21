@@ -1,3 +1,4 @@
+using Freaks.Portal.SharedContracts.ValueObjects.RaidSummary;
 using Freaks.Portal.SharedContracts.ValueObjects.SalarySummary;
 
 namespace Freaks.Portal.SharedContracts.Dto.SalarySummary;
@@ -10,12 +11,18 @@ namespace Freaks.Portal.SharedContracts.Dto.SalarySummary;
 /// <param name="Name">Название зарплатного периода.</param>
 /// <param name="StartDt">Дата начала периода.</param>
 /// <param name="EndDt">Дата окончания периода.</param>
-/// <param name="FillStatus">Статус заполнения зарплаты.</param>
+/// <param name="FillStepType">Статус заполнения зарплаты.</param>
 /// <param name="RegistrationStatus">Статус регистрации на зарплату.</param>
+/// <param name="AllowedPaymentTypes">Разрешённые способы получения ЗП.</param>
+/// <param name="UseCoefficients">Признак: использовать коэффициентную систему.</param>
+/// <param name="BossTypes">Учитываемые боссы.</param>
 public record SalaryDto(
     long Id,
     string Name,
     DateOnly StartDt,
     DateOnly EndDt,
-    SalaryFillStatus FillStatus,
-    SalaryRegistrationStatus RegistrationStatus);
+    SalaryFillStepType FillStepType,
+    SalaryRegistrationStatus RegistrationStatus,
+    IList<SalaryPaymentType> AllowedPaymentTypes,
+    bool UseCoefficients,
+    IList<BossType> BossTypes);

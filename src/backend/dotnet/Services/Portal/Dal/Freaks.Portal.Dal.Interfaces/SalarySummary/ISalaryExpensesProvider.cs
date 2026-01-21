@@ -7,7 +7,7 @@ namespace Freaks.Portal.Dal.Interfaces.SalarySummary;
 /// <summary>
 ///     Провайдер для работы с расходами и отчислениями зарплатного периода.
 /// </summary>
-public interface ISalaryExpensesProvider : IBaseCompositeProvider<SalaryExpenses, SalaryExpensesKey, IPortalDbContext>
+public interface ISalaryExpensesProvider : IBaseProvider<SalaryExpenses, long, IPortalDbContext>
 {
     /// <summary>
     ///     Возвращает список расходов и отчислений по идентификатору зарплатного периода.

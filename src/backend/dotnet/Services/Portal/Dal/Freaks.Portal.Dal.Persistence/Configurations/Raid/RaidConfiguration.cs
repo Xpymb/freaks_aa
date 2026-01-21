@@ -1,14 +1,13 @@
-﻿using Freaks.Portal.Contracts.Entities.RaidSummary;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Freaks.Portal.Dal.Persistence.Configurations.RaidConfiguration;
+namespace Freaks.Portal.Dal.Persistence.Configurations.Raid;
 
 /// <inheritdoc />
-public class RaidConfiguration : IEntityTypeConfiguration<Raid>
+public class RaidConfiguration : IEntityTypeConfiguration<Contracts.Entities.RaidSummary.Raid>
 {
     /// <inheritdoc />
-    public void Configure(EntityTypeBuilder<Raid> builder)
+    public void Configure(EntityTypeBuilder<Contracts.Entities.RaidSummary.Raid> builder)
     {
         builder
             .HasOne(r => r.Creator)
@@ -33,5 +32,8 @@ public class RaidConfiguration : IEntityTypeConfiguration<Raid>
             .WithOne(p => p.Raid)
             .HasForeignKey(p => p.RaidId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder
+            .HasIndex(r => new { r.StartDt, r.BossType });
     }
 }

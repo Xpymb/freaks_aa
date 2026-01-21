@@ -14,7 +14,7 @@ public class UnitOfWork<TContext> : IUnitOfWork<TContext>
     }
 
     /// <inheritdoc />
-    public async Task<TResult> ExecuteAsync<TResult>(Func<Task<TResult>> operation, CancellationToken cancellationToken = default)
+    public async Task<TResult> ExecuteInsideTransactionAsync<TResult>(Func<Task<TResult>> operation, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(operation);
 
@@ -34,7 +34,7 @@ public class UnitOfWork<TContext> : IUnitOfWork<TContext>
     }
 
     /// <inheritdoc />
-    public async Task ExecuteAsync(Func<Task> operation, CancellationToken cancellationToken = default)
+    public async Task ExecuteInsideTransactionAsync(Func<Task> operation, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(operation);
 
@@ -53,7 +53,7 @@ public class UnitOfWork<TContext> : IUnitOfWork<TContext>
     }
 
     /// <inheritdoc />
-    public async Task ExecuteAsync(Func<TContext, Task> operation, CancellationToken cancellationToken = default)
+    public async Task ExecuteInsideTransactionAsync(Func<TContext, Task> operation, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(operation);
 
@@ -72,7 +72,7 @@ public class UnitOfWork<TContext> : IUnitOfWork<TContext>
     }
 
     /// <inheritdoc />
-    public async Task<TResult> ExecuteAsync<TResult>(Func<TContext, Task<TResult>> operation, CancellationToken cancellationToken = default)
+    public async Task<TResult> ExecuteInsideTransactionAsync<TResult>(Func<TContext, Task<TResult>> operation, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(operation);
 

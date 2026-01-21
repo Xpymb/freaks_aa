@@ -63,8 +63,9 @@ public class SalaryGuildLeaderProvider : BaseCachedProvider<SalaryGuildLeader, l
 
         var result = await Set
             .AsNoTracking()
-            .Include(sql => sql.LootItem)
-            .Where(sgl => sgl.SalaryId == salaryId)
+            .Include(x => x.LootItem)
+            .Where(x => x.SalaryId == salaryId)
+            .OrderBy(x => x.LootItem!.Type)
             .ToListAsync();
 
         await SetCachedValueAsync(cacheKey, result, TimeSpan.FromMinutes(5));

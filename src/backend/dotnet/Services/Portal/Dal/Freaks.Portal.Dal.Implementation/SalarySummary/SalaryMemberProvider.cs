@@ -34,7 +34,9 @@ public class SalaryMemberProvider : BaseCachedCompositeProvider<SalaryMember, Sa
 
         var result = await Set
             .AsNoTracking()
+            .Include(sm => sm.User)
             .Where(x => x.SalaryId == salaryId)
+            .OrderByDescending(x => x.ActivityPercentage)
             .ToListAsync();
 
         await SetCachedValueAsync(cacheKey, result, TimeSpan.FromMinutes(5));

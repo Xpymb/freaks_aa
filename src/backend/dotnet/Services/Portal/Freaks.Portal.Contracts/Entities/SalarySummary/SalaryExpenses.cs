@@ -1,23 +1,24 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Freaks.Contracts.Common.Interfaces;
 using Freaks.Dal.Common.Consts;
 using Freaks.Portal.SharedContracts.ValueObjects.SalarySummary;
+using Freaks.Users.Contracts.Entities;
 
 namespace Freaks.Portal.Contracts.Entities.SalarySummary;
-
-/// <summary>
-///     Композитный ключ для зарплатных расходов
-/// </summary>
-/// <param name="SalaryId">Идентификатор зарплатного периода</param>
-/// <param name="ExpensesType">Тип расхода</param>
-public record SalaryExpensesKey(long SalaryId, SalaryExpensesType ExpensesType);
 
 /// <summary>
 ///     Расходы и отчисления зарплатного периода
 /// </summary>
 [Table("salary_expenses", Schema = DatabaseConsts.PortalSchema)]
-public class SalaryExpenses : ICompositeEntity<SalaryExpensesKey>
+public class SalaryExpenses : IEntity<long>
 {
+    /// <inheritdoc />
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [Column("id")]
+    public long Id { get; init; }
+
     /// <summary>
     ///     Идентификатор зарплатного периода
     /// </summary>
@@ -29,6 +30,12 @@ public class SalaryExpenses : ICompositeEntity<SalaryExpensesKey>
     /// </summary>
     [Column("expenses_type")]
     public required SalaryExpensesType ExpensesType { get; init; }
+
+    /// <summary>
+    ///     Идентификатор пользователя, которому назначено поощрение
+    /// </summary>
+    [Column("user_id")]
+    public Guid? UserId { get; init; }
 
     /// <summary>
     ///     Процент от общей суммы
@@ -47,9 +54,8 @@ public class SalaryExpenses : ICompositeEntity<SalaryExpensesKey>
     /// </summary>
     public Salary? Salary { get; init; }
 
-    /// <inheritdoc />
-    public SalaryExpensesKey GetCompositeKey()
-    {
-        return new SalaryExpensesKey(SalaryId, ExpensesType);
-    }
+    /// <summary>
+    ///     Навигационное свойство для доступа к информации о пользователе.
+    /// </summary>
+    public User? User { get; init; }
 }
