@@ -9,7 +9,7 @@ public class SalaryEndedException : BadRequestApiException
     public override HttpStatusCode StatusCode => HttpStatusCode.BadRequest;
 
     /// <inheritdoc />
-    public override string ErrorCode => "SALARY_ENDED_EXCEPTION";
+    public override string ErrorCode => "SALARY_ENDED";
 
     /// <summary>
     ///     Инициализирует новый экземпляр <see cref="SalaryEndedException" />.

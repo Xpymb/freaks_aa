@@ -56,6 +56,7 @@
   </Folder>
   <Folder Name="/Shared/">
     <Project Path="Shared/Freaks.Bll.Common/Freaks.Bll.Common.csproj" />
+    <Project Path="Shared/Freaks.Common/Freaks.Common.csproj" />
     <Project Path="Shared/Freaks.Contracts.Common/Freaks.Contracts.Common.csproj" />
     <Project Path="Shared/Freaks.Dal.Common/Freaks.Dal.Common.csproj" />
     <Project Path="Shared/Freaks.Options.Common/Freaks.Options.Common.csproj" />

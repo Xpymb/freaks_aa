@@ -26,6 +26,8 @@ public class SalaryStepService : ISalaryStepService
             throw new EntityNotFoundException(nameof(Salary));
         }
 
+        salary.UpdatedDt = DateTime.UtcNow;
+
         CheckEnded(salary);
 
         if(salary.FillStepType < fillStepType)
@@ -46,6 +48,11 @@ public class SalaryStepService : ISalaryStepService
         }
 
         CheckEnded(salary);
+
+        if (actionType is SalaryActionType.Register)
+        {
+            CheckRegistrationStatus(salary);
+        }
     }
 
     private static void CheckEnded(Salary salary)

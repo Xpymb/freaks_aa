@@ -1,4 +1,4 @@
-﻿using Freaks.Bll.Common.Helpers;
+﻿using Freaks.Common.Extensions;
 using Freaks.Dal.Common.ValueObjects;
 using Freaks.Portal.Bll.Implementation.SalarySummary.Algorithms;
 using Freaks.Portal.Bll.Interfaces.SalarySummary;
