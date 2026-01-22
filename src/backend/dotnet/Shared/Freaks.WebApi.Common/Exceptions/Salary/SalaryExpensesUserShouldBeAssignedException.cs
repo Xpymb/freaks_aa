@@ -3,6 +3,10 @@ using Freaks.WebApi.Common.Exceptions.Base;
 
 namespace Freaks.WebApi.Common.Exceptions.Salary;
 
+/// <summary>
+///     Исключение, возникающее при попытке создать целевой расход (TargetMember) без указания пользователя.
+///     Для расходов типа TargetMember обязательно должен быть назначен конкретный пользователь.
+/// </summary>
 public class SalaryExpensesUserShouldBeAssignedException : BadRequestApiException
 {
     /// <inheritdoc />
@@ -12,7 +16,7 @@ public class SalaryExpensesUserShouldBeAssignedException : BadRequestApiExceptio
     public override string ErrorCode => "SALARY_EXPENSES_USER_SHOULD_BE_ASSIGNED";
 
     /// <summary>
-    ///     Инициализирует новый экземпляр <see cref="BadRequestApiException" />.
+    ///     Инициализирует новый экземпляр <see cref="SalaryExpensesUserShouldBeAssignedException" />.
     /// </summary>
     /// <param name="message">Сообщение об ошибке.</param>
     /// <param name="innerException">Вложенное исключение (если есть).</param>

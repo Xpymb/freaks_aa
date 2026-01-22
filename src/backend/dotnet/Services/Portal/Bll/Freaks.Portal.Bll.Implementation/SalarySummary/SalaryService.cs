@@ -116,8 +116,8 @@ public class SalaryService : ISalaryService
             }
 
             entity.Name = request.Name;
-            entity.StartDt = request.From;
-            entity.EndDt = request.To;
+            entity.StartDt = request.StartDt;
+            entity.EndDt = request.EndDt;
             entity.AllowedPaymentTypes = request.AllowedPaymentTypes;
             entity.UseCoefficients = request.UseCoefficients;
             entity.BossTypes = request.BossTypes;

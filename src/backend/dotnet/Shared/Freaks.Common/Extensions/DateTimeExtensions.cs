@@ -1,6 +1,6 @@
-﻿namespace Freaks.Bll.Common.Helpers;
+﻿namespace Freaks.Common.Extensions;
 
-public static class DateTimeHelper
+public static class DateTimeExtensions
 {
     extension(DateOnly date)
     {

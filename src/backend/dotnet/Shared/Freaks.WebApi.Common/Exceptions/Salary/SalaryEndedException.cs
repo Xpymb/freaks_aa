@@ -3,13 +3,17 @@ using Freaks.WebApi.Common.Exceptions.Base;
 
 namespace Freaks.WebApi.Common.Exceptions.Salary;
 
+/// <summary>
+///     Исключение, возникающее при попытке изменить завершенный зарплатный период.
+///     После завершения зарплатного периода изменения данных не допускаются.
+/// </summary>
 public class SalaryEndedException : BadRequestApiException
 {
     /// <inheritdoc />
     public override HttpStatusCode StatusCode => HttpStatusCode.BadRequest;
 
     /// <inheritdoc />
-    public override string ErrorCode => "SALARY_ENDED_EXCEPTION";
+    public override string ErrorCode => "SALARY_ENDED";
 
     /// <summary>
     ///     Инициализирует новый экземпляр <see cref="SalaryEndedException" />.
