@@ -4,6 +4,10 @@ using Freaks.WebApi.Common.Exceptions.Salary;
 
 namespace Freaks.WebApi.Common.Exceptions;
 
+/// <summary>
+///     Исключение, возникающее при ошибках валидации входных данных.
+///     Содержит детальную информацию об ошибках валидации для каждого поля.
+/// </summary>
 public class ValidationApiException : BadRequestApiException
 {
     /// <inheritdoc />
@@ -20,7 +24,7 @@ public class ValidationApiException : BadRequestApiException
     /// <summary>
     ///     Инициализирует новый экземпляр <see cref="ValidationApiException" />.
     /// </summary>
-    /// <param name="validationProblems"></param>
+    /// <param name="validationProblems">Словарь ошибок валидации, где ключ - имя поля, значение - массив сообщений об ошибках.</param>
     /// <param name="message">Сообщение об ошибке.</param>
     /// <param name="innerException">Вложенное исключение (если есть).</param>
     public ValidationApiException(IDictionary<string, string[]> validationProblems, string? message = null, Exception? innerException = null)

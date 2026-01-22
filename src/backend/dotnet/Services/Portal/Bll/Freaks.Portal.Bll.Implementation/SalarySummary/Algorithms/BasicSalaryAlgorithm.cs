@@ -6,6 +6,11 @@ using Freaks.Portal.SharedContracts.ValueObjects.SalarySummary;
 
 namespace Freaks.Portal.Bll.Implementation.SalarySummary.Algorithms;
 
+/// <summary>
+///     Базовый алгоритм расчета зарплат участников гильдии.
+///     Распределяет доход от проданного лута между участниками с учетом их активности, ответственности,
+///     расходов и долей руководства гильдии.
+/// </summary>
 public class BasicSalaryAlgorithm
 {
     private readonly Salary _salary;
@@ -18,6 +23,15 @@ public class BasicSalaryAlgorithm
     private Dictionary<Guid, MemberCalculation> _calculations = new();
     private decimal _undistributed;
 
+    /// <summary>
+    ///     Инициализирует новый экземпляр алгоритма расчета зарплат.
+    /// </summary>
+    /// <param name="raids">Список рейдов за период с полной информацией.</param>
+    /// <param name="salary">Зарплатный период.</param>
+    /// <param name="loot">Проданный лут за период.</param>
+    /// <param name="guildLeader">Доли руководства гильдии.</param>
+    /// <param name="expenses">Расходы и отчисления периода.</param>
+    /// <param name="members">Участники зарплатного периода.</param>
     public BasicSalaryAlgorithm(
         IList<RaidFullInfo> raids,
         Salary salary,

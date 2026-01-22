@@ -2,6 +2,10 @@
 
 namespace Freaks.Portal.SharedContracts.Requests.SalarySummary.Salary.Validators;
 
+/// <summary>
+///     Валидатор для запроса на создание нового зарплатного периода.
+///     Проверяет обязательность названия, корректность дат, наличие разрешенных типов выплат и боссов.
+/// </summary>
 public class CreateSalaryRequestValidator : AbstractValidator<CreateSalaryRequest>
 {
     public CreateSalaryRequestValidator()

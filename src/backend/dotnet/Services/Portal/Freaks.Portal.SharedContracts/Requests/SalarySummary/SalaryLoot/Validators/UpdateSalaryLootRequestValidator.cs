@@ -2,6 +2,11 @@
 
 namespace Freaks.Portal.SharedContracts.Requests.SalarySummary.SalaryLoot.Validators;
 
+/// <summary>
+///     Валидатор для запроса на обновление проданного лута в зарплатном периоде.
+///     Проверяет, что LootId, Quantity и PricePerItem больше нуля,
+///     а DiscountPercent и Amount не являются отрицательными значениями.
+/// </summary>
 public class UpdateSalaryLootRequestValidator : AbstractValidator<UpdateSalaryLootRequest>
 {
     public UpdateSalaryLootRequestValidator()

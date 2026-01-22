@@ -9,6 +9,10 @@ using Freaks.WebApi.Common.Exceptions;
 
 namespace Freaks.Portal.Bll.Implementation.SalarySummary;
 
+/// <summary>
+///     Реализация сервиса для расчета зарплат участников за зарплатный период.
+///     Выполняет расчет на основе рейдов, лута, расходов и участников с использованием алгоритмов распределения.
+/// </summary>
 public class SalaryCalculationService : ISalaryCalculationService
 {
     private readonly ISalaryProvider _salaryProvider;
@@ -18,6 +22,16 @@ public class SalaryCalculationService : ISalaryCalculationService
     private readonly ISalaryMemberProvider _salaryMemberProvider;
     private readonly IRaidProvider _raidProvider;
 
+    /// <summary>
+    ///     Инициализирует новый экземпляр сервиса <see cref="SalaryCalculationService" />.
+    /// </summary>
+    /// <param name="salaryProvider">Провайдер для работы с зарплатными периодами.</param>
+    /// <param name="salaryLootProvider">Провайдер для работы с проданным лутом.</param>
+    /// <param name="salaryGuildLeaderProvider">Провайдер для работы с долями руководства.</param>
+    /// <param name="salaryExpensesProvider">Провайдер для работы с расходами.</param>
+    /// <param name="salaryMemberProvider">Провайдер для работы с участниками.</param>
+    /// <param name="raidProvider">Провайдер для работы с рейдами.</param>
+    /// <exception cref="ArgumentNullException">Выбрасывается, если один из аргументов равен null.</exception>
     public SalaryCalculationService(
         ISalaryProvider salaryProvider,
         ISalaryLootProvider salaryLootProvider,

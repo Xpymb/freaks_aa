@@ -2,6 +2,10 @@
 
 namespace Freaks.Portal.SharedContracts.Requests.SalarySummary.SalaryGuildLeader.Validators;
 
+/// <summary>
+///     Валидатор для запроса на обновление записи о доле руководства гильдии.
+///     Проверяет, что LootId, Quantity и PricePerItem больше нуля.
+/// </summary>
 public class UpdateSalaryGuildLeaderRequestValidator : AbstractValidator<UpdateSalaryGuildLeaderRequest>
 {
     public UpdateSalaryGuildLeaderRequestValidator()

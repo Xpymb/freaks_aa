@@ -3,6 +3,10 @@ using Freaks.WebApi.Common.Exceptions.Base;
 
 namespace Freaks.WebApi.Common.Exceptions.Salary;
 
+/// <summary>
+///     Исключение, возникающее при попытке выполнить действие, требующее открытой регистрации,
+///     когда регистрация на зарплатный период уже завершена.
+/// </summary>
 public class SalaryRegistrationEndedException : BadRequestApiException
 {
     /// <inheritdoc />

@@ -8,10 +8,19 @@ using Freaks.WebApi.Common.Exceptions.Salary;
 
 namespace Freaks.Portal.Bll.Implementation.SalarySummary;
 
+/// <summary>
+///     Реализация сервиса для управления шагами заполнения зарплатного периода.
+///     Контролирует переходы между этапами и проверяет права доступа для выполнения действий.
+/// </summary>
 public class SalaryStepService : ISalaryStepService
 {
     private readonly ISalaryProvider _salaryProvider;
 
+    /// <summary>
+    ///     Инициализирует новый экземпляр сервиса <see cref="SalaryStepService" />.
+    /// </summary>
+    /// <param name="salaryProvider">Провайдер для работы с зарплатными периодами.</param>
+    /// <exception cref="ArgumentNullException">Выбрасывается, если salaryProvider равен null.</exception>
     public SalaryStepService(ISalaryProvider salaryProvider)
     {
         _salaryProvider = salaryProvider ?? throw new ArgumentNullException(nameof(salaryProvider));

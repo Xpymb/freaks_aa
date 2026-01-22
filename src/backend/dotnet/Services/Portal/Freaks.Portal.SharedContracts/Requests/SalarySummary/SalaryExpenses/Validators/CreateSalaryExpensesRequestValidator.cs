@@ -3,6 +3,11 @@ using Freaks.Portal.SharedContracts.ValueObjects.SalarySummary;
 
 namespace Freaks.Portal.SharedContracts.Requests.SalarySummary.SalaryExpenses.Validators;
 
+/// <summary>
+///     Валидатор для запроса на создание записи о расходах гильдии.
+///     Проверяет корректность типа расхода, наличие UserId для целевых поощрений,
+///     и обязательность заполнения хотя бы одного из полей: Percentage или Amount.
+/// </summary>
 public class CreateSalaryExpensesRequestValidator : AbstractValidator<CreateSalaryExpensesRequest>
 {
     public CreateSalaryExpensesRequestValidator()

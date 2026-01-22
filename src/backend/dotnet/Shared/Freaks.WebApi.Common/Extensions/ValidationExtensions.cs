@@ -6,8 +6,18 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Freaks.WebApi.Common.Extensions;
 
+/// <summary>
+///     Методы расширения для настройки FluentValidation в приложении.
+/// </summary>
 public static class ValidationExtensions
 {
+    /// <summary>
+    ///     Добавляет FluentValidation в сервисы приложения.
+    ///     Регистрирует все валидаторы из указанной сборки и настраивает глобальный фильтр для автоматической валидации запросов.
+    /// </summary>
+    /// <param name="services">Коллекция сервисов.</param>
+    /// <param name="assembly">Сборка, из которой нужно зарегистрировать валидаторы.</param>
+    /// <returns>Коллекция сервисов для цепочки вызовов.</returns>
     public static IServiceCollection AddValidation(this IServiceCollection services, Assembly assembly)
     {
         services.AddValidatorsFromAssembly(assembly);

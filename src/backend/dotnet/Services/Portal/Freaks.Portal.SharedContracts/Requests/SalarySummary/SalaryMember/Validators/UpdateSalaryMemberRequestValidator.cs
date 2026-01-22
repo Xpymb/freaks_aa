@@ -3,6 +3,10 @@ using Freaks.Portal.SharedContracts.ValueObjects.SalarySummary;
 
 namespace Freaks.Portal.SharedContracts.Requests.SalarySummary.SalaryMember.Validators;
 
+/// <summary>
+///     Валидатор для запроса на обновление информации об участнике зарплатного периода.
+///     Проверяет корректность типа выплаты.
+/// </summary>
 public class UpdateSalaryMemberRequestValidator : AbstractValidator<UpdateSalaryMemberRequest>
 {
     public UpdateSalaryMemberRequestValidator()

@@ -27,7 +27,9 @@ public class FluentValidationActionFilter : IAsyncActionFilter
         foreach (var argument in context.ActionArguments)
         {
             if (argument.Value == null)
+            {
                 continue;
+            }
 
             var argumentType = argument.Value.GetType();
 
@@ -38,7 +40,9 @@ public class FluentValidationActionFilter : IAsyncActionFilter
             var validator = _serviceProvider.GetService(validatorType) as IValidator;
 
             if (validator == null)
+            {
                 continue;
+            }
 
             // Создаем контекст валидации
             var validationContext = new ValidationContext<object>(argument.Value);
