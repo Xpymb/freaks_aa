@@ -88,7 +88,7 @@ public class RaidParticipantService : IRaidParticipantService
         await PublishMessageAsync(raidId, EntityActionType.Deleted);
     }
 
-    private async Task PublishMessageAsync(long raidId, EntityActionType actionType)
+    private Task PublishMessageAsync(long raidId, EntityActionType actionType)
     {
         var message =
             new RaidParticipantChangedMessage
@@ -96,6 +96,6 @@ public class RaidParticipantService : IRaidParticipantService
                 RaidId = raidId, ActionType = actionType,
             };
 
-        await _messageService.Publish(message);
+        return _messageService.PublishAsync(message);
     }
 }

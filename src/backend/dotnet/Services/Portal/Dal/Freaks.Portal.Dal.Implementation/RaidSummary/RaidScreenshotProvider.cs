@@ -43,9 +43,9 @@ public class RaidScreenshotProvider : BaseCachedCompositeProvider<RaidScreenshot
     }
 
     /// <inheritdoc />
-    public async Task<int> CountByRaidAsync(long raidId)
+    public Task<int> CountByRaidAsync(long raidId)
     {
-        return await Set.CountAsync(r => r.RaidId == raidId);
+        return Set.CountAsync(r => r.RaidId == raidId);
     }
 
     /// <inheritdoc />

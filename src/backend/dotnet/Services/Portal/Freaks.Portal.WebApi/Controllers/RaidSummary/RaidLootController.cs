@@ -35,9 +35,9 @@ public class RaidLootController : ControllerBase
     /// <param name="raidId">Идентификатор рейда.</param>
     /// <returns>Список предметов лута рейда.</returns>
     [HttpGet]
-    public async Task<IList<RaidLootDto>> GetListAsync([FromRoute] long raidId)
+    public Task<IList<RaidLootDto>> GetListAsync([FromRoute] long raidId)
     {
-        return await _service.GetListAsync(raidId);
+        return _service.GetListAsync(raidId);
     }
 
     /// <summary>
@@ -47,9 +47,9 @@ public class RaidLootController : ControllerBase
     /// <param name="request">Данные нового предмета лута.</param>
     /// <returns>Информация о добавленном предмета лута.</returns>
     [HttpPost]
-    public async Task<RaidLootDto> CreateAsync([FromRoute] long raidId, [FromBody] CreateRaidLootRequest request)
+    public Task<RaidLootDto> CreateAsync([FromRoute] long raidId, [FromBody] CreateRaidLootRequest request)
     {
-        return await _service.CreateAsync(raidId, request);
+        return _service.CreateAsync(raidId, request);
     }
 
     /// <summary>
@@ -60,9 +60,9 @@ public class RaidLootController : ControllerBase
     /// <param name="request">Обновлённые данные о предмета лута.</param>
     /// <returns>Информация об обновлённом предмета лута.</returns>
     [HttpPut("{lootId:int}")]
-    public async Task<RaidLootDto> UpdateAsync([FromRoute] long raidId, [FromRoute] int lootId, [FromBody] UpdateRaidLootRequest request)
+    public Task<RaidLootDto> UpdateAsync([FromRoute] long raidId, [FromRoute] int lootId, [FromBody] UpdateRaidLootRequest request)
     {
-        return await _service.UpdateAsync(raidId, lootId, request);
+        return _service.UpdateAsync(raidId, lootId, request);
     }
 
     /// <summary>
@@ -72,9 +72,8 @@ public class RaidLootController : ControllerBase
     /// <param name="lootId">Идентификатор предмета лута.</param>
     /// <returns>Результат выполнения операции.</returns>
     [HttpDelete("{lootId:int}")]
-    public async Task<ActionResult> DeleteAsync([FromRoute] long raidId, [FromRoute] int lootId)
+    public Task DeleteAsync([FromRoute] long raidId, [FromRoute] int lootId)
     {
-        await _service.DeleteAsync(raidId, lootId);
-        return Ok();
+        return _service.DeleteAsync(raidId, lootId);
     }
 }

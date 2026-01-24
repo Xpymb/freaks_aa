@@ -12,5 +12,5 @@ public interface IMessageService
     /// </summary>
     /// <typeparam name="T">Тип сообщения, наследуемый от <see cref="BaseMessage" />.</typeparam>
     /// <param name="message">Экземпляр сообщения для публикации.</param>
-    Task Publish<T>(T message) where T : BaseMessage;
+    Task PublishAsync<T>(T message) where T : BaseMessage;
 }

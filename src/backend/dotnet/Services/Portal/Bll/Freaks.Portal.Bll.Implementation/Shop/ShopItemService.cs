@@ -147,7 +147,7 @@ public class ShopItemService : IShopItemService
         await PublishMessageAsync(id, null, EntityActionType.Deleted);
     }
 
-    private async Task PublishMessageAsync(int id, ShopItemStatus? status, EntityActionType actionType)
+    private Task PublishMessageAsync(int id, ShopItemStatus? status, EntityActionType actionType)
     {
         var message =
             new ShopItemChangedMessage
@@ -157,6 +157,6 @@ public class ShopItemService : IShopItemService
                 ActionType = actionType,
             };
 
-        await _messageService.Publish(message);
+        return _messageService.PublishAsync(message);
     }
 }

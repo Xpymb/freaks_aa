@@ -31,11 +31,11 @@ public abstract class BaseProvider<TEntity, TKey, TDbContext> : IBaseProvider<TE
     protected BaseProvider(TDbContext dbContext)
     {
         DbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
-        Set = dbContext.Set<TEntity>() ?? throw new ArgumentNullException(nameof(DbSet<TEntity>));
+        Set = dbContext.Set<TEntity>() ?? throw new ArgumentNullException(nameof(DbSet<>));
     }
 
     /// <inheritdoc />
-    public virtual async Task<TEntity?> GetAsync(TKey key, EntityTrackingType trackingType)
+    public virtual Task<TEntity?> GetAsync(TKey key, EntityTrackingType trackingType)
     {
         var query = Set.Where(e => e.Id.Equals(key));
 
@@ -44,7 +44,7 @@ public abstract class BaseProvider<TEntity, TKey, TDbContext> : IBaseProvider<TE
             query = query.AsNoTracking();
         }
 
-        return await query.FirstOrDefaultAsync();
+        return query.FirstOrDefaultAsync();
     }
 
     /// <inheritdoc />
@@ -97,35 +97,35 @@ public abstract class BaseProvider<TEntity, TKey, TDbContext> : IBaseProvider<TE
     }
 
     /// <inheritdoc />
-    public virtual async Task DeleteAsync(TKey key)
+    public virtual Task DeleteAsync(TKey key)
     {
-        await Set
+        return Set
               .Where(e => e.Id.Equals(key))
               .ExecuteDeleteAsync();
     }
 
     /// <inheritdoc />
-    public virtual async Task DeleteAsync(TEntity entity)
+    public virtual Task DeleteAsync(TEntity entity)
     {
-        await DeleteAsync(entity.Id);
+        return DeleteAsync(entity.Id);
     }
 
     /// <inheritdoc />
-    public virtual async Task DeleteAsync(IList<TKey> keys)
+    public virtual Task DeleteAsync(IList<TKey> keys)
     {
-        await Set
+        return Set
               .Where(e => keys.Contains(e.Id))
               .ExecuteDeleteAsync();
     }
 
     /// <inheritdoc />
-    public virtual async Task DeleteAsync(IList<TEntity> entities)
+    public virtual Task DeleteAsync(IList<TEntity> entities)
     {
         var ids =
             entities
                 .Select(e => e.Id)
                 .ToList();
 
-        await DeleteAsync(ids);
+        return DeleteAsync(ids);
     }
 }

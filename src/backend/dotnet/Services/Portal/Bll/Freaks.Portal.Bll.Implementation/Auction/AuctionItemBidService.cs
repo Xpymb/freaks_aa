@@ -124,7 +124,7 @@ public class AuctionItemBidService : IAuctionItemBidService
         await PublishMessageAsync(auctionItem.Id, bid.Id, EntityActionType.Deleted);
     }
 
-    private async Task PublishMessageAsync(long auctionItemId, long bidId, EntityActionType actionType)
+    private Task PublishMessageAsync(long auctionItemId, long bidId, EntityActionType actionType)
     {
         var message =
             new AuctionItemBidChangedMessage
@@ -134,6 +134,6 @@ public class AuctionItemBidService : IAuctionItemBidService
                 ActionType = actionType,
             };
 
-        await _messageService.Publish(message);
+        return _messageService.PublishAsync(message);
     }
 }

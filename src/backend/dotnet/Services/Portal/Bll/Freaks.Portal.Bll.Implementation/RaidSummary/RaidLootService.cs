@@ -109,7 +109,7 @@ public class RaidLootService : IRaidLootService
         await PublishMessageAsync(raidId, EntityActionType.Deleted);
     }
 
-    private async Task PublishMessageAsync(long raidId, EntityActionType actionType)
+    private Task PublishMessageAsync(long raidId, EntityActionType actionType)
     {
         var message =
             new RaidLootChangedMessage
@@ -117,6 +117,6 @@ public class RaidLootService : IRaidLootService
                 RaidId = raidId, ActionType = actionType,
             };
 
-        await _messageService.Publish(message);
+        return _messageService.PublishAsync(message);
     }
 }

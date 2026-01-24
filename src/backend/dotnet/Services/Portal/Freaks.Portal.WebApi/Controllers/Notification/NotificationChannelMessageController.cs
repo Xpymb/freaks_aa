@@ -33,12 +33,12 @@ public class NotificationChannelMessageController : ControllerBase
     /// <summary>
     /// Получает пагинированный список сообщений указанного канала.
     /// </summary>
+    /// <param name="channelId">Идентификатор канала</param>
     /// <param name="request">Параметры фильтрации, сортировки и пагинации.</param>
     /// <returns>Список сообщений.</returns>
     [HttpGet]
-    public async Task<PaginatedList<NotificationChannelMessageDto>> GetListAsync(
-                 [FromQuery]GetNotificationChannelMessageRequest request)
+    public Task<PaginatedList<NotificationChannelMessageDto>> GetListAsync([FromRoute] int channelId, [FromQuery] GetNotificationChannelMessageRequest request)
     {
-        return await _service.GetListAsync(request);
+        return _service.GetListAsync(request);
     }
 }

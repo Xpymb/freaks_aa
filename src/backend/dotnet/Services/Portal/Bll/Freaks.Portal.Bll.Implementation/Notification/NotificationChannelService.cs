@@ -57,7 +57,7 @@ public class NotificationChannelService : INotificationChannelService
         return _mapper.Map<NotificationChannelDto>(result);
     }
     
-    private async Task PublishMessageAsync(long id, EntityActionType actionType)
+    private Task PublishMessageAsync(long id, EntityActionType actionType)
     {
         var message =
             new NotificationChannelChangedMessage
@@ -66,6 +66,6 @@ public class NotificationChannelService : INotificationChannelService
                 ActionType = actionType
             };
 
-        await _messageService.Publish(message);
+        return _messageService.PublishAsync(message);
     }
 }

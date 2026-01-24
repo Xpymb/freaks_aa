@@ -35,9 +35,9 @@ public class AuctionItemBidController : ControllerBase
     /// <param name="auctionItemId">Идентификатор лота, для которого запрашиваются ставки.</param>
     /// <returns>Список DTO ставок <see cref="AuctionItemBidDto" />.</returns>
     [HttpGet]
-    public async Task<IList<AuctionItemBidDto>> GetListAsync([FromRoute] long auctionItemId)
+    public Task<IList<AuctionItemBidDto>> GetListAsync([FromRoute] long auctionItemId)
     {
-        return await _service.GetListAsync(auctionItemId);
+        return _service.GetListAsync(auctionItemId);
     }
 
     /// <summary>
@@ -47,9 +47,9 @@ public class AuctionItemBidController : ControllerBase
     /// <param name="request">Параметры создания ставки (<see cref="CreateAuctionItemBidRequest" />).</param>
     /// <returns>DTO созданной ставки <see cref="AuctionItemBidDto" />.</returns>
     [HttpPost]
-    public async Task<AuctionItemBidDto> CreateAsync([FromRoute] long auctionItemId, [FromBody] CreateAuctionItemBidRequest request)
+    public Task<AuctionItemBidDto> CreateAsync([FromRoute] long auctionItemId, [FromBody] CreateAuctionItemBidRequest request)
     {
-        return await _service.CreateAsync(auctionItemId, request);
+        return _service.CreateAsync(auctionItemId, request);
     }
 
     /// <summary>
@@ -58,9 +58,8 @@ public class AuctionItemBidController : ControllerBase
     /// <param name="id">Идентификатор ставки для удаления.</param>
     /// <returns>HTTP 200 OK при успешном удалении.</returns>
     [HttpDelete("{id:long}")]
-    public async Task<IActionResult> DeleteAsync([FromRoute] long id)
+    public Task DeleteAsync([FromRoute] long id)
     {
-        await _service.DeleteAsync(id);
-        return Ok();
+        return _service.DeleteAsync(id);
     }
 }

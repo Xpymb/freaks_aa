@@ -97,7 +97,7 @@ public class RaidScreenshotService : IRaidScreenshotService
                 Id = raid.Id,
                 ActionType = EntityActionType.Updated,
             };
-            await _messageService.Publish(raidChangedMessage);
+            await _messageService.PublishAsync(raidChangedMessage);
         }
         
         var result = await _provider.GetByRaidIdAsync(raidId);
@@ -132,13 +132,13 @@ public class RaidScreenshotService : IRaidScreenshotService
                 Id = raid.Id,
                 ActionType = EntityActionType.Updated,
             };
-            await _messageService.Publish(raidChangedMessage);
+            await _messageService.PublishAsync(raidChangedMessage);
         }
 
         await PublishMessageAsync(raidId, EntityActionType.Deleted);
     }
 
-    private async Task PublishMessageAsync(long raidId, EntityActionType actionType)
+    private Task PublishMessageAsync(long raidId, EntityActionType actionType)
     {
         var message =
             new RaidScreenshotChangedMessage
@@ -146,6 +146,6 @@ public class RaidScreenshotService : IRaidScreenshotService
                 RaidId = raidId, ActionType = actionType,
             };
 
-        await _messageService.Publish(message);
+        return _messageService.PublishAsync(message);
     }
 }
