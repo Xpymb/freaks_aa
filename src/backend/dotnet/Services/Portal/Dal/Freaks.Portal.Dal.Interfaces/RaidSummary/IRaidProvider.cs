@@ -21,5 +21,5 @@ public interface IRaidProvider : IBaseProvider<Raid, long, IPortalDbContext>
     /// <returns>Постраничный список рейдов, соответствующих условиям запроса.</returns>
     Task<PaginatedList<Raid>> GetPaginatedListAsync(GetRaidListRequest request);
 
-    Task<IList<RaidFullInfo>> GetFullInfoAsync(DateTimeOffset startDt, DateTimeOffset endDt, IList<BossType> bossTypes);
+    Task<List<RaidFullInfo>> GetFullInfoAsync(DateTimeOffset startDt, DateTimeOffset endDt, IList<BossType> bossTypes);
 }

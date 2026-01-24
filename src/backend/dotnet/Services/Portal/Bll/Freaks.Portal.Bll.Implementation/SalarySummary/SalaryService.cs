@@ -103,9 +103,9 @@ public class SalaryService : ISalaryService
     }
 
     /// <inheritdoc />
-    public async Task<SalaryDto> UpdateAsync(long id, UpdateSalaryRequest request)
+    public Task<SalaryDto> UpdateAsync(long id, UpdateSalaryRequest request)
     {
-        return await _unitOfWork.ExecuteInsideTransactionAsync(async _ =>
+        return _unitOfWork.ExecuteInsideTransactionAsync(async _ =>
         {
             await _stepService.HandleStepActionAsync(id, SalaryFillStepType.Parameters);
 
@@ -133,9 +133,9 @@ public class SalaryService : ISalaryService
     }
 
     /// <inheritdoc />
-    public async Task DeleteAsync(long id)
+    public Task DeleteAsync(long id)
     {
-        await _unitOfWork.ExecuteInsideTransactionAsync(async _ =>
+        return _unitOfWork.ExecuteInsideTransactionAsync(async _ =>
         {
             await _stepService.HandleStepActionAsync(id, SalaryFillStepType.Parameters);
 
@@ -146,9 +146,9 @@ public class SalaryService : ISalaryService
     }
 
     /// <inheritdoc />
-    public async Task<SalaryDto> FinishAsync(long id)
+    public Task<SalaryDto> FinishAsync(long id)
     {
-        return await _unitOfWork.ExecuteInsideTransactionAsync(async _ =>
+        return _unitOfWork.ExecuteInsideTransactionAsync(async _ =>
         {
             await _stepService.HandleStepActionAsync(id, SalaryFillStepType.FinalReports);
 
@@ -171,9 +171,9 @@ public class SalaryService : ISalaryService
     }
 
     /// <inheritdoc />
-    public async Task<SalaryDto> OpenRegistrationAsync(long id)
+    public Task<SalaryDto> OpenRegistrationAsync(long id)
     {
-        return await _unitOfWork.ExecuteInsideTransactionAsync(async _ =>
+        return _unitOfWork.ExecuteInsideTransactionAsync(async _ =>
         {
             await _stepService.CheckAccessAsync(id, SalaryActionType.Fill);
 
@@ -196,9 +196,9 @@ public class SalaryService : ISalaryService
     }
 
     /// <inheritdoc />
-    public async Task<SalaryDto> CloseRegistrationAsync(long id)
+    public Task<SalaryDto> CloseRegistrationAsync(long id)
     {
-        return await _unitOfWork.ExecuteInsideTransactionAsync(async _ =>
+        return _unitOfWork.ExecuteInsideTransactionAsync(async _ =>
         {
             await _stepService.CheckAccessAsync(id, SalaryActionType.Fill);
 
@@ -220,7 +220,7 @@ public class SalaryService : ISalaryService
         });
     }
 
-    private async Task PublishMessageAsync(long id, EntityActionType actionType)
+    private Task PublishMessageAsync(long id, EntityActionType actionType)
     {
         var message =
             new SalaryChangedMessage
@@ -228,6 +228,6 @@ public class SalaryService : ISalaryService
                 Id = id, ActionType = actionType,
             };
 
-        await _messageService.Publish(message);
+        return _messageService.PublishAsync(message);
     }
 }

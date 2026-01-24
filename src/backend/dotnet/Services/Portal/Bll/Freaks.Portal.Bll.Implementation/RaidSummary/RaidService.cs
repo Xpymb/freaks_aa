@@ -196,7 +196,7 @@ public class RaidService : IRaidService
         await PublishMessageAsync(entity.Id, EntityActionType.Updated);
     }
 
-    private async Task PublishMessageAsync(long id, EntityActionType actionType)
+    private Task PublishMessageAsync(long id, EntityActionType actionType)
     {
         var message =
             new RaidChangedMessage
@@ -204,6 +204,6 @@ public class RaidService : IRaidService
                 Id = id, ActionType = actionType,
             };
 
-        await _messageService.Publish(message);
+        return _messageService.PublishAsync(message);
     }
 }

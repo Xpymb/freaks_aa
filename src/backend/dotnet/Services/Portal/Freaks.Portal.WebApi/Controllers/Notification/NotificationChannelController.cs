@@ -34,9 +34,9 @@ public class NotificationChannelController : ControllerBase
     /// </summary>
     /// <returns>Список каналов в формате DTO.</returns>
     [HttpGet]
-    public async Task<IList<NotificationChannelDto>> GetListAsync()
+    public Task<IList<NotificationChannelDto>> GetListAsync()
     {
-        return await _service.GetListAsync();
+        return _service.GetListAsync();
     }
 
     /// <summary>
@@ -46,8 +46,8 @@ public class NotificationChannelController : ControllerBase
     /// <returns>/// Созданный канал в формате DTO.</returns>
     [RequireRoles(UserRole.Admin,  UserRole.GuildLeader)]
     [HttpPost]
-    public async Task<NotificationChannelDto> CreateAsync([FromBody] CreateNotificationChannelRequest request)
+    public Task<NotificationChannelDto> CreateAsync([FromBody] CreateNotificationChannelRequest request)
     {
-        return await _service.CreateAsync(request);
+        return _service.CreateAsync(request);
     }
 }

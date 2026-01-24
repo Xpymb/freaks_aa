@@ -37,7 +37,7 @@ public class ExceptionHandlerMiddleware
         }
     }
 
-    private static async Task HandleException(HttpContext context, Exception ex, IWebHostEnvironment env)
+    private static Task HandleException(HttpContext context, Exception ex, IWebHostEnvironment env)
     {
         var statusCode = HttpStatusCode.InternalServerError;
         var errorCode = "UNKNOWN_EXCEPTION";
@@ -77,6 +77,6 @@ public class ExceptionHandlerMiddleware
         context.Response.StatusCode = statusCode.GetHashCode();
         context.Response.ContentType = "application/json";
 
-        await context.Response.WriteAsJsonAsync(exceptionResponse, new JsonSerializerOptions { DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull });
+        return context.Response.WriteAsJsonAsync(exceptionResponse, new JsonSerializerOptions { DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull });
     }
 }

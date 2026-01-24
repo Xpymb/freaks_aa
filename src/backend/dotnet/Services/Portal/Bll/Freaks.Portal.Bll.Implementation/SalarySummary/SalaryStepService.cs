@@ -39,7 +39,7 @@ public class SalaryStepService : ISalaryStepService
 
         CheckEnded(salary);
 
-        if(salary.FillStepType < fillStepType)
+        if (salary.FillStepType < fillStepType)
         {
             salary.FillStepType = fillStepType;
         }

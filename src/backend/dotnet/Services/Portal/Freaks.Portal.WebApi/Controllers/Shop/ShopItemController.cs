@@ -38,9 +38,9 @@ public class ShopItemController : ControllerBase
     /// <param name="id">Идентификатор товара.</param>
     /// <returns>Объект <see cref="ShopItemDto" /> с информацией о товаре.</returns>
     [HttpGet("{id:int}")]
-    public async Task<ShopItemDto> GetAsync([FromRoute] int id)
+    public Task<ShopItemDto> GetAsync([FromRoute] int id)
     {
-        return await _service.GetAsync(id);
+        return _service.GetAsync(id);
     }
 
     /// <summary>
@@ -49,9 +49,9 @@ public class ShopItemController : ControllerBase
     /// <param name="request">Параметры фильтрации и пагинации.</param>
     /// <returns>Пагинированный список объектов <see cref="ShopItemDto" />.</returns>
     [HttpGet]
-    public async Task<PaginatedList<ShopItemDto>> GetListAsync([FromQuery] GetShopItemListRequest request)
+    public Task<PaginatedList<ShopItemDto>> GetListAsync([FromQuery] GetShopItemListRequest request)
     {
-        return await _service.GetListAsync(request);
+        return _service.GetListAsync(request);
     }
 
     /// <summary>
@@ -61,9 +61,9 @@ public class ShopItemController : ControllerBase
     /// <returns>Созданный объект <see cref="ShopItemDto" />.</returns>
     [RequireRoles(UserRole.Admin, UserRole.GuildLeader)]
     [HttpPost]
-    public async Task<ShopItemDto> CreateAsync([FromBody] CreateShopItemRequest request)
+    public Task<ShopItemDto> CreateAsync([FromBody] CreateShopItemRequest request)
     {
-        return await _service.CreateAsync(request);
+        return _service.CreateAsync(request);
     }
 
     /// <summary>
@@ -74,9 +74,9 @@ public class ShopItemController : ControllerBase
     /// <returns>Обновлённый объект <see cref="ShopItemDto" />.</returns>
     [RequireRoles(UserRole.Admin, UserRole.GuildLeader)]
     [HttpPut("{id:int}")]
-    public async Task<ShopItemDto> UpdateAsync([FromRoute] int id, UpdateShopItemRequest request)
+    public Task<ShopItemDto> UpdateAsync([FromRoute] int id, UpdateShopItemRequest request)
     {
-        return await _service.UpdateAsync(id, request);
+        return _service.UpdateAsync(id, request);
     }
 
     /// <summary>
@@ -85,9 +85,8 @@ public class ShopItemController : ControllerBase
     /// <param name="id">Идентификатор удаляемого товара.</param>
     [RequireRoles(UserRole.Admin, UserRole.GuildLeader)]
     [HttpDelete("{id:int}")]
-    public async Task<IActionResult> DeleteAsync([FromRoute] int id)
+    public Task DeleteAsync([FromRoute] int id)
     {
-        await _service.DeleteAsync(id);
-        return Ok();
+        return _service.DeleteAsync(id);
     }
 }

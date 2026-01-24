@@ -1,5 +1,6 @@
 ﻿using Freaks.Dal.Common.Implementations;
 using Freaks.Dal.Common.Interfaces;
+using Freaks.Dal.Common.ValueObjects;
 using Freaks.Portal.Contracts.Entities.SalarySummary;
 using Freaks.Portal.Dal.Interfaces.SalarySummary;
 using Freaks.Portal.Dal.Persistence;
@@ -20,6 +21,35 @@ public class SalaryExpensesProvider : BaseCachedProvider<SalaryExpenses, long, I
     public SalaryExpensesProvider(IPortalDbContext dbContext, ICacheProvider cacheProvider)
         : base(dbContext, cacheProvider)
     {
+    }
+
+    public override async Task<SalaryExpenses?> GetAsync(long key, EntityTrackingType trackingType)
+    {
+        var cachedValue = await GetCachedValueAsync(key);
+        if (cachedValue is not null)
+        {
+            if (trackingType is EntityTrackingType.Tracking)
+            {
+                Set.Attach(cachedValue);
+            }
+
+            return cachedValue;
+        }
+
+        var query = Set.AsQueryable();
+
+        if (trackingType is EntityTrackingType.NoTracking)
+        {
+            query = query.AsNoTracking();
+        }
+
+        var result =
+            await query
+                .Include(x => x.User)
+                .FirstOrDefaultAsync(x => x.Id == key);
+
+        await SetCachedValueAsync(result, TimeSpan.FromMinutes(5));
+        return result;
     }
 
     /// <inheritdoc />

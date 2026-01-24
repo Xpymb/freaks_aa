@@ -41,9 +41,9 @@ public class SalaryController : ControllerBase
     /// <param name="id">Идентификатор зарплатного периода.</param>
     /// <returns>Детальная информация о зарплатном периоде.</returns>
     [HttpGet("{id:long}")]
-    public async Task<SalaryDto> GetAsync([FromRoute] long id)
+    public Task<SalaryDto> GetAsync([FromRoute] long id)
     {
-        return await _service.GetAsync(id);
+        return _service.GetAsync(id);
     }
 
     /// <summary>
@@ -52,9 +52,9 @@ public class SalaryController : ControllerBase
     /// <param name="request">Параметры запроса для фильтрации и сортировки зарплатных периодов.</param>
     /// <returns>Постраничный список кратких описаний зарплатных периодов.</returns>
     [HttpGet]
-    public async Task<PaginatedList<SalaryDto>> GetListAsync([FromQuery] GetSalaryListRequest request)
+    public Task<PaginatedList<SalaryDto>> GetListAsync([FromQuery] GetSalaryListRequest request)
     {
-        return await _service.GetListAsync(request);
+        return _service.GetListAsync(request);
     }
 
     /// <summary>
@@ -64,9 +64,9 @@ public class SalaryController : ControllerBase
     /// <returns>Созданный зарплатный период с полной информацией.</returns>
     [RequireRoles(UserRole.Editor, UserRole.Admin, UserRole.GuildLeader)]
     [HttpPost]
-    public async Task<SalaryDto> CreateAsync([FromBody] CreateSalaryRequest request)
+    public Task<SalaryDto> CreateAsync([FromBody] CreateSalaryRequest request)
     {
-        return await _service.CreateAsync(request);
+        return _service.CreateAsync(request);
     }
 
     /// <summary>
@@ -77,9 +77,9 @@ public class SalaryController : ControllerBase
     /// <returns>Обновлённый зарплатный период с полной информацией.</returns>
     [RequireRoles(UserRole.Editor, UserRole.Admin, UserRole.GuildLeader)]
     [HttpPut("{id:long}")]
-    public async Task<SalaryDto> UpdateAsync([FromRoute] long id, [FromBody] UpdateSalaryRequest request)
+    public Task<SalaryDto> UpdateAsync([FromRoute] long id, [FromBody] UpdateSalaryRequest request)
     {
-        return await _service.UpdateAsync(id, request);
+        return _service.UpdateAsync(id, request);
     }
 
     /// <summary>
@@ -89,9 +89,9 @@ public class SalaryController : ControllerBase
     /// <returns>Обновлённый зарплатный период с полной информацией.</returns>
     [RequireRoles(UserRole.Admin, UserRole.GuildLeader)]
     [HttpPost("{id:long}/finish")]
-    public async Task<SalaryDto> FinishAsync([FromRoute] long id)
+    public Task<SalaryDto> FinishAsync([FromRoute] long id)
     {
-        return await _service.FinishAsync(id);
+        return _service.FinishAsync(id);
     }
 
     /// <summary>
@@ -101,9 +101,9 @@ public class SalaryController : ControllerBase
     /// <returns>Обновлённый зарплатный период с полной информацией.</returns>
     [RequireRoles(UserRole.Editor, UserRole.Admin, UserRole.GuildLeader)]
     [HttpPost("{id:long}/open-registration")]
-    public async Task<SalaryDto> OpenRegistrationAsync([FromRoute] long id)
+    public Task<SalaryDto> OpenRegistrationAsync([FromRoute] long id)
     {
-        return await _service.OpenRegistrationAsync(id);
+        return _service.OpenRegistrationAsync(id);
     }
 
     /// <summary>
@@ -113,9 +113,9 @@ public class SalaryController : ControllerBase
     /// <returns>Обновлённый зарплатный период с полной информацией.</returns>
     [RequireRoles(UserRole.Editor, UserRole.Admin, UserRole.GuildLeader)]
     [HttpPost("{id:long}/close-registration")]
-    public async Task<SalaryDto> CloseRegistrationAsync([FromRoute] long id)
+    public Task<SalaryDto> CloseRegistrationAsync([FromRoute] long id)
     {
-        return await _service.CloseRegistrationAsync(id);
+        return _service.CloseRegistrationAsync(id);
     }
 
     /// <summary>
@@ -125,10 +125,9 @@ public class SalaryController : ControllerBase
     /// <returns>Обновлённый зарплатный период с полной информацией.</returns>
     [RequireRoles(UserRole.Editor, UserRole.Admin, UserRole.GuildLeader)]
     [HttpPost("{id:long}/calculate")]
-    public async Task<ActionResult> CalculateAsync([FromRoute] long id)
+    public Task CalculateAsync([FromRoute] long id)
     {
-        await _calculationService.CalculateAsync(id);
-        return Ok();
+        return _calculationService.CalculateAsync(id);
     }
 
     /// <summary>
@@ -137,9 +136,8 @@ public class SalaryController : ControllerBase
     /// <param name="id">Идентификатор зарплатного периода для удаления.</param>
     [RequireRoles(UserRole.Admin, UserRole.GuildLeader)]
     [HttpDelete("{id:long}")]
-    public async Task<ActionResult> DeleteAsync([FromRoute] long id)
+    public Task DeleteAsync([FromRoute] long id)
     {
-        await _service.DeleteAsync(id);
-        return Ok();
+        return _service.DeleteAsync(id);
     }
 }

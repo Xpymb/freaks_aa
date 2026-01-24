@@ -60,9 +60,9 @@ public class SalaryLootService : ISalaryLootService
     }
 
     /// <inheritdoc />
-    public async Task<SalaryLootDto> CreateAsync(long salaryId, CreateSalaryLootRequest request)
+    public Task<SalaryLootDto> CreateAsync(long salaryId, CreateSalaryLootRequest request)
     {
-        return await _unitOfWork.ExecuteInsideTransactionAsync(async _ =>
+        return _unitOfWork.ExecuteInsideTransactionAsync(async _ =>
         {
             await _stepService.HandleStepActionAsync(salaryId, SalaryFillStepType.SoldByPeriod);
 
@@ -99,9 +99,9 @@ public class SalaryLootService : ISalaryLootService
     }
 
     /// <inheritdoc />
-    public async Task<SalaryLootDto> UpdateAsync(long salaryId, long lootId, UpdateSalaryLootRequest request)
+    public Task<SalaryLootDto> UpdateAsync(long salaryId, long lootId, UpdateSalaryLootRequest request)
     {
-        return await _unitOfWork.ExecuteInsideTransactionAsync(async _ =>
+        return _unitOfWork.ExecuteInsideTransactionAsync(async _ =>
         {
             await _stepService.HandleStepActionAsync(salaryId, SalaryFillStepType.SoldByPeriod);
 
@@ -135,9 +135,9 @@ public class SalaryLootService : ISalaryLootService
     }
 
     /// <inheritdoc />
-    public async Task DeleteAsync(long salaryId, long lootId)
+    public Task DeleteAsync(long salaryId, long lootId)
     {
-        await _unitOfWork.ExecuteInsideTransactionAsync(async _ =>
+        return _unitOfWork.ExecuteInsideTransactionAsync(async _ =>
         {
             await _stepService.HandleStepActionAsync(salaryId, SalaryFillStepType.SoldByPeriod);
 
@@ -153,7 +153,7 @@ public class SalaryLootService : ISalaryLootService
         });
     }
 
-    private async Task PublishMessageAsync(long salaryId, EntityActionType actionType)
+    private Task PublishMessageAsync(long salaryId, EntityActionType actionType)
     {
         var message =
             new SalaryLootChangedMessage
@@ -161,6 +161,6 @@ public class SalaryLootService : ISalaryLootService
                 SalaryId = salaryId, ActionType = actionType,
             };
 
-        await _messageService.Publish(message);
+        return _messageService.PublishAsync(message);
     }
 }

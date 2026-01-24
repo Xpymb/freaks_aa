@@ -53,7 +53,7 @@ public class StorageProvider : IStorageProvider
     }
 
     /// <inheritdoc />
-    public async Task UploadAsync(Stream fileStream, string path, string fileName, string contentType, string? bucket = null)
+    public Task UploadAsync(Stream fileStream, string path, string fileName, string contentType, string? bucket = null)
     {
         bucket ??= _options.DefaultBucketName;
         //await EnsureBucketExistsAsync(bucket);
@@ -68,11 +68,11 @@ public class StorageProvider : IStorageProvider
                 .WithObjectSize(fileStream.Length)
                 .WithContentType(contentType);
 
-        await _minioClient.PutObjectAsync(args);
+        return _minioClient.PutObjectAsync(args);
     }
 
     /// <inheritdoc />
-    public async Task DeleteAsync(string absolutePath, string? bucket = null)
+    public Task DeleteAsync(string absolutePath, string? bucket = null)
     {
         bucket ??= _options.DefaultBucketName;
 
@@ -81,7 +81,7 @@ public class StorageProvider : IStorageProvider
                 .WithBucket(bucket)
                 .WithObject(absolutePath);
 
-        await _minioClient.RemoveObjectAsync(args);
+        return _minioClient.RemoveObjectAsync(args);
     }
 
     /// <summary>

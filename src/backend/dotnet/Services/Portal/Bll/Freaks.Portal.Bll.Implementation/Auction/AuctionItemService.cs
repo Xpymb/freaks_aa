@@ -174,7 +174,7 @@ public class AuctionItemService : IAuctionItemService
         await PublishMessageAsync(entity.Id, entity.Status, EntityActionType.Updated);
     }
 
-    private async Task PublishMessageAsync(long id, AuctionItemStatus? status, EntityActionType actionType)
+    private Task PublishMessageAsync(long id, AuctionItemStatus? status, EntityActionType actionType)
     {
         var message =
             new AuctionItemChangedMessage
@@ -184,6 +184,6 @@ public class AuctionItemService : IAuctionItemService
                 ActionType = actionType,
             };
 
-        await _messageService.Publish(message);
+        return _messageService.PublishAsync(message);
     }
 }

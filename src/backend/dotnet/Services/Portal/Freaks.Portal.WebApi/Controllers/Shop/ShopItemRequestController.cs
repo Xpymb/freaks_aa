@@ -35,9 +35,9 @@ public class ShopItemRequestController : ControllerBase
     /// <param name="shopItemId">Идентификатор товара магазина.</param>
     /// <returns>Список заявок на покупку.</returns>
     [HttpGet]
-    public async Task<IList<ShopItemRequestDto>> GetListAsync([FromRoute] int shopItemId)
+    public Task<IList<ShopItemRequestDto>> GetListAsync([FromRoute] int shopItemId)
     {
-        return await _service.GetListAsync(shopItemId);
+        return _service.GetListAsync(shopItemId);
     }
 
     /// <summary>
@@ -47,9 +47,9 @@ public class ShopItemRequestController : ControllerBase
     /// <param name="request">Данные заявки на покупку.</param>
     /// <returns>Созданная заявка.</returns>
     [HttpPost]
-    public async Task<ShopItemRequestDto> CreateAsync([FromRoute] int shopItemId, [FromBody] CreateShopItemModelRequest request)
+    public Task<ShopItemRequestDto> CreateAsync([FromRoute] int shopItemId, [FromBody] CreateShopItemModelRequest request)
     {
-        return await _service.CreateAsync(shopItemId, request);
+        return _service.CreateAsync(shopItemId, request);
     }
 
     /// <summary>
@@ -60,9 +60,9 @@ public class ShopItemRequestController : ControllerBase
     /// <returns>Обновлённая заявка.</returns>
     [RequireRoles(UserRole.Admin, UserRole.GuildLeader)]
     [HttpPatch]
-    public async Task<ShopItemRequestDto> UpdateStatusAsync([FromRoute] int shopItemId, [FromBody] UpdateStatusShopItemRequest request)
+    public Task<ShopItemRequestDto> UpdateStatusAsync([FromRoute] int shopItemId, [FromBody] UpdateStatusShopItemRequest request)
     {
-        return await _service.UpdateStatusAsync(shopItemId, request);
+        return _service.UpdateStatusAsync(shopItemId, request);
     }
 
     /// <summary>
@@ -71,9 +71,8 @@ public class ShopItemRequestController : ControllerBase
     /// <param name="shopItemId">Идентификатор товара магазина.</param>
     /// <param name="userId">Идентификатор пользователя, чью заявку нужно удалить.</param>
     [HttpDelete]
-    public async Task<IActionResult> DeleteAsync([FromRoute] int shopItemId, [FromQuery] Guid userId)
+    public Task DeleteAsync([FromRoute] int shopItemId, [FromQuery] Guid userId)
     {
-        await _service.DeleteAsync(shopItemId, userId);
-        return Ok();
+        return _service.DeleteAsync(shopItemId, userId);
     }
 }

@@ -28,27 +28,27 @@ public class EasyCacheProvider : ICacheProvider
     }
 
     /// <inheritdoc />
-    public async Task SetAsync<T>(string key, T value, TimeSpan expiration)
+    public Task SetAsync<T>(string key, T value, TimeSpan expiration)
     {
-        await _provider.SetAsync(key, value, expiration);
+        return _provider.SetAsync(key, value, expiration);
     }
 
     /// <inheritdoc />
-    public async Task RemoveAsync(string key)
+    public Task RemoveAsync(string key)
     {
-        await _provider.RemoveAsync(key);
+        return _provider.RemoveAsync(key);
     }
 
     /// <inheritdoc />
-    public async Task RemoveAsync(List<string> keys)
+    public Task RemoveAsync(List<string> keys)
     {
-        await _provider.RemoveAllAsync(keys);
+        return _provider.RemoveAllAsync(keys);
     }
 
     /// <inheritdoc />
-    public async Task RemoveByPrefixAsync(string prefix)
+    public Task RemoveByPrefixAsync(string prefix)
     {
-        await _provider.RemoveByPrefixAsync(prefix);
+        return _provider.RemoveByPrefixAsync(prefix);
     }
 
     /// <inheritdoc />

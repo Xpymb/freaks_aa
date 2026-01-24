@@ -33,8 +33,8 @@ public class LootItemsController : ControllerBase
     /// </summary>
     /// <returns>Список объектов <see cref="LootItemDto" />.</returns>
     [HttpGet]
-    public async Task<IList<LootItemDto>> GetListAsync()
+    public Task<IList<LootItemDto>> GetListAsync()
     {
-        return await _service.GetListAsync();
+        return _service.GetListAsync();
     }
 }

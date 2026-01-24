@@ -35,9 +35,9 @@ public class SalaryMemberController : ControllerBase
     /// <param name="salaryId">Идентификатор зарплатного периода.</param>
     /// <returns>Список участников в зарплатном периоде.</returns>
     [HttpGet]
-    public async Task<IList<SalaryMemberDto>> GetListAsync([FromRoute] long salaryId)
+    public Task<IList<SalaryMemberDto>> GetListAsync([FromRoute] long salaryId)
     {
-        return await _service.GetListAsync(salaryId);
+        return _service.GetListAsync(salaryId);
     }
 
     /// <summary>
@@ -48,9 +48,9 @@ public class SalaryMemberController : ControllerBase
     /// <param name="request">Данные нового участника (без UserId).</param>
     /// <returns>Информация о добавленном участнике.</returns>
     [HttpPost]
-    public async Task<SalaryMemberDto> CreateAsync([FromRoute] long salaryId, [FromBody] CreateSalaryMemberRequest request)
+    public Task<SalaryMemberDto> CreateAsync([FromRoute] long salaryId, [FromBody] CreateSalaryMemberRequest request)
     {
-        return await _service.CreateAsync(salaryId, request);
+        return _service.CreateAsync(salaryId, request);
     }
 
     /// <summary>
@@ -62,9 +62,9 @@ public class SalaryMemberController : ControllerBase
     /// <returns>Информация о добавленном участнике.</returns>
     [RequireRoles(UserRole.Admin, UserRole.Editor, UserRole.GuildLeader)]
     [HttpPost("admin")]
-    public async Task<SalaryMemberDto> CreateAdminAsync([FromRoute] long salaryId, [FromBody] CreateSalaryMemberAdminRequest request)
+    public Task<SalaryMemberDto> CreateAdminAsync([FromRoute] long salaryId, [FromBody] CreateSalaryMemberAdminRequest request)
     {
-        return await _service.CreateAdminAsync(salaryId, request);
+        return _service.CreateAdminAsync(salaryId, request);
     }
 
     /// <summary>
@@ -76,9 +76,9 @@ public class SalaryMemberController : ControllerBase
     /// <returns>Информация об обновлённом участнике.</returns>
     [RequireRoles(UserRole.Admin, UserRole.Editor, UserRole.GuildLeader)]
     [HttpPut("{userId:guid}")]
-    public async Task<SalaryMemberDto> UpdateAsync([FromRoute] long salaryId, [FromRoute] Guid userId, [FromBody] UpdateSalaryMemberRequest request)
+    public Task<SalaryMemberDto> UpdateAsync([FromRoute] long salaryId, [FromRoute] Guid userId, [FromBody] UpdateSalaryMemberRequest request)
     {
-        return await _service.UpdateAsync(salaryId, userId, request);
+        return _service.UpdateAsync(salaryId, userId, request);
     }
 
     /// <summary>
@@ -89,9 +89,8 @@ public class SalaryMemberController : ControllerBase
     /// <returns>Результат выполнения операции.</returns>
     [RequireRoles(UserRole.Admin, UserRole.Editor, UserRole.GuildLeader)]
     [HttpDelete("{userId:guid}")]
-    public async Task<ActionResult> DeleteAsync([FromRoute] long salaryId, [FromRoute] Guid userId)
+    public Task DeleteAsync([FromRoute] long salaryId, [FromRoute] Guid userId)
     {
-        await _service.DeleteAsync(salaryId, userId);
-        return Ok();
+        return _service.DeleteAsync(salaryId, userId);
     }
 }

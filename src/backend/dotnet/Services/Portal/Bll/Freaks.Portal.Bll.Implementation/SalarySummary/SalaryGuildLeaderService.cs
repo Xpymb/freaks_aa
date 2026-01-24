@@ -60,9 +60,9 @@ public class SalaryGuildLeaderService : ISalaryGuildLeaderService
     }
 
     /// <inheritdoc />
-    public async Task<SalaryGuildLeaderDto> CreateAsync(long salaryId, CreateSalaryGuildLeaderRequest request)
+    public Task<SalaryGuildLeaderDto> CreateAsync(long salaryId, CreateSalaryGuildLeaderRequest request)
     {
-        return await _unitOfWork.ExecuteInsideTransactionAsync(async _ =>
+        return _unitOfWork.ExecuteInsideTransactionAsync(async _ =>
         {
             await _stepService.HandleStepActionAsync(salaryId, SalaryFillStepType.GuildLeaderSalary);
 
@@ -87,9 +87,9 @@ public class SalaryGuildLeaderService : ISalaryGuildLeaderService
     }
 
     /// <inheritdoc />
-    public async Task<SalaryGuildLeaderDto> UpdateAsync(long salaryId, long guildLeaderId, UpdateSalaryGuildLeaderRequest request)
+    public Task<SalaryGuildLeaderDto> UpdateAsync(long salaryId, long guildLeaderId, UpdateSalaryGuildLeaderRequest request)
     {
-        return await _unitOfWork.ExecuteInsideTransactionAsync(async _ =>
+        return _unitOfWork.ExecuteInsideTransactionAsync(async _ =>
         {
             await _stepService.HandleStepActionAsync(salaryId, SalaryFillStepType.GuildLeaderSalary);
 
@@ -114,9 +114,9 @@ public class SalaryGuildLeaderService : ISalaryGuildLeaderService
     }
 
     /// <inheritdoc />
-    public async Task DeleteAsync(long salaryId, long guildLeaderId)
+    public Task DeleteAsync(long salaryId, long guildLeaderId)
     {
-        await _unitOfWork.ExecuteInsideTransactionAsync(async _ =>
+        return _unitOfWork.ExecuteInsideTransactionAsync(async _ =>
         {
             await _stepService.HandleStepActionAsync(salaryId, SalaryFillStepType.GuildLeaderSalary);
 
@@ -132,7 +132,7 @@ public class SalaryGuildLeaderService : ISalaryGuildLeaderService
         });
     }
 
-    private async Task PublishMessageAsync(long salaryId, EntityActionType actionType)
+    private Task PublishMessageAsync(long salaryId, EntityActionType actionType)
     {
         var message =
             new SalaryGuildLeaderChangedMessage
@@ -140,6 +140,6 @@ public class SalaryGuildLeaderService : ISalaryGuildLeaderService
                 SalaryId = salaryId, ActionType = actionType,
             };
 
-        await _messageService.Publish(message);
+        return _messageService.PublishAsync(message);
     }
 }

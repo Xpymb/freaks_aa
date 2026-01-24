@@ -43,17 +43,16 @@ public class RaidProvider : BaseCachedProvider<Raid, long, IPortalDbContext>, IR
             return cachedValue;
         }
 
-        var query =
-            Set
-                .Include(r => r.Creator)
-                .Where(r => r.Id == key);
+        var query = Set.AsQueryable();
 
         if (trackingType is EntityTrackingType.NoTracking)
         {
             query = query.AsNoTracking();
         }
 
-        var result = await query.FirstOrDefaultAsync();
+        var result = await query
+            .Include(r => r.Creator)
+            .FirstOrDefaultAsync(r => r.Id == key);
 
         await SetCachedValueAsync(result, TimeSpan.FromMinutes(5));
         return result;
@@ -130,9 +129,9 @@ public class RaidProvider : BaseCachedProvider<Raid, long, IPortalDbContext>, IR
     }
 
     /// <inheritdoc />
-    public async Task<IList<RaidFullInfo>> GetFullInfoAsync(DateTimeOffset startDt, DateTimeOffset endDt, IList<BossType> bossTypes)
+    public Task<List<RaidFullInfo>> GetFullInfoAsync(DateTimeOffset startDt, DateTimeOffset endDt, IList<BossType> bossTypes)
     {
-        return await Set
+        return Set
             .AsNoTracking()
             .Include(r => r.Participants)
             .Include(r => r.Loots)

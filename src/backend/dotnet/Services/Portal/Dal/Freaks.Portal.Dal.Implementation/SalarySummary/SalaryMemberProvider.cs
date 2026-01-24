@@ -1,5 +1,6 @@
 ﻿using Freaks.Dal.Common.Implementations;
 using Freaks.Dal.Common.Interfaces;
+using Freaks.Dal.Common.ValueObjects;
 using Freaks.Portal.Contracts.Entities.SalarySummary;
 using Freaks.Portal.Dal.Interfaces.SalarySummary;
 using Freaks.Portal.Dal.Persistence;
@@ -22,6 +23,35 @@ public class SalaryMemberProvider : BaseCachedCompositeProvider<SalaryMember, Sa
     {
     }
 
+    public override async Task<SalaryMember?> GetAsync(SalaryMemberKey key, EntityTrackingType trackingType)
+    {
+        var cachedValue = await GetCachedValueAsync(key);
+        if (cachedValue is not null)
+        {
+            if (trackingType is EntityTrackingType.Tracking)
+            {
+                Set.Attach(cachedValue);
+            }
+
+            return cachedValue;
+        }
+
+        var query = FilterByKey(key, Set);
+
+        if (trackingType is EntityTrackingType.NoTracking)
+        {
+            query = query.AsNoTracking();
+        }
+
+        var result =
+            await query
+                .Include(x => x.User)
+                .FirstOrDefaultAsync();
+
+        await SetCachedValueAsync(result, TimeSpan.FromMinutes(5));
+        return result;
+    }
+
     /// <inheritdoc />
     public async Task<IList<SalaryMember>> GetBySalaryIdAsync(long salaryId)
     {
@@ -36,7 +66,7 @@ public class SalaryMemberProvider : BaseCachedCompositeProvider<SalaryMember, Sa
             .AsNoTracking()
             .Include(sm => sm.User)
             .Where(x => x.SalaryId == salaryId)
-            .OrderByDescending(x => x.ActivityPercentage)
+            .OrderByDescending(x => x.ActivityGold)
             .ToListAsync();
 
         await SetCachedValueAsync(cacheKey, result, TimeSpan.FromMinutes(5));

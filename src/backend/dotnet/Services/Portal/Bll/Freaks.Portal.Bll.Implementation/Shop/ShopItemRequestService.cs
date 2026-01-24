@@ -179,7 +179,7 @@ public class ShopItemRequestService : IShopItemRequestService
         });
     }
 
-    private async Task PublishMessageAsync(int shopItemId, EntityActionType actionType)
+    private Task PublishMessageAsync(int shopItemId, EntityActionType actionType)
     {
         var message =
             new ShopItemRequestChangedMessage
@@ -187,6 +187,6 @@ public class ShopItemRequestService : IShopItemRequestService
                 ShopItemId = shopItemId, ActionType = actionType,
             };
 
-        await _messageService.Publish(message);
+        return _messageService.PublishAsync(message);
     }
 }

@@ -37,7 +37,7 @@ public abstract class BaseCompositeProvider<TEntity, TKey, TDbContext> : IBaseCo
     protected abstract IQueryable<TEntity> FilterByKey(TKey key, IQueryable<TEntity> queryable);
 
     /// <inheritdoc />
-    public virtual async Task<TEntity?> GetAsync(TKey key, EntityTrackingType trackingType)
+    public virtual Task<TEntity?> GetAsync(TKey key, EntityTrackingType trackingType)
     {
         var query = FilterByKey(key, Set);
         if (trackingType is EntityTrackingType.NoTracking)
@@ -45,7 +45,7 @@ public abstract class BaseCompositeProvider<TEntity, TKey, TDbContext> : IBaseCo
             query = query.AsNoTracking();
         }
 
-        return await query.FirstOrDefaultAsync();
+        return query.FirstOrDefaultAsync();
     }
 
     /// <inheritdoc />
@@ -97,21 +97,21 @@ public abstract class BaseCompositeProvider<TEntity, TKey, TDbContext> : IBaseCo
     }
 
     /// <inheritdoc />
-    public virtual async Task DeleteAsync(TKey key)
+    public virtual Task DeleteAsync(TKey key)
     {
         var query = FilterByKey(key, Set);
-        await query.ExecuteDeleteAsync();
+        return query.ExecuteDeleteAsync();
     }
 
     /// <inheritdoc />
-    public virtual async Task DeleteAsync(TEntity entity)
+    public virtual Task DeleteAsync(TEntity entity)
     {
         var key = entity.GetCompositeKey();
-        await DeleteAsync(key);
+        return DeleteAsync(key);
     }
 
     /// <inheritdoc />
-    public virtual async Task DeleteAsync(IList<TKey> keys)
+    public virtual Task DeleteAsync(IList<TKey> keys)
     {
         var query = Set.AsQueryable();
 
@@ -119,16 +119,16 @@ public abstract class BaseCompositeProvider<TEntity, TKey, TDbContext> : IBaseCo
             keys.Select(key => FilterByKey(key, Set))
                 .Aggregate(query, (current, nextQuery) => current.Union(nextQuery));
 
-        await query.ExecuteDeleteAsync();
+        return query.ExecuteDeleteAsync();
     }
 
     /// <inheritdoc />
-    public virtual async Task DeleteAsync(IList<TEntity> entities)
+    public virtual Task DeleteAsync(IList<TEntity> entities)
     {
         var keys =
             entities.Select(key => key.GetCompositeKey())
                     .ToList();
 
-        await DeleteAsync(keys);
+        return DeleteAsync(keys);
     }
 }

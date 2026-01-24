@@ -35,9 +35,9 @@ public class SalaryGuildLeaderController : ControllerBase
     /// <param name="salaryId">Идентификатор зарплатного периода.</param>
     /// <returns>Список долей руководства гильдии в зарплатном периоде.</returns>
     [HttpGet]
-    public async Task<IList<SalaryGuildLeaderDto>> GetListAsync([FromRoute] long salaryId)
+    public Task<IList<SalaryGuildLeaderDto>> GetListAsync([FromRoute] long salaryId)
     {
-        return await _service.GetListAsync(salaryId);
+        return _service.GetListAsync(salaryId);
     }
 
     /// <summary>
@@ -48,9 +48,9 @@ public class SalaryGuildLeaderController : ControllerBase
     /// <returns>Информация о добавленной доле руководства гильдии.</returns>
     [RequireRoles(UserRole.Admin, UserRole.GuildLeader)]
     [HttpPost]
-    public async Task<SalaryGuildLeaderDto> CreateAsync([FromRoute] long salaryId, [FromBody] CreateSalaryGuildLeaderRequest request)
+    public Task<SalaryGuildLeaderDto> CreateAsync([FromRoute] long salaryId, [FromBody] CreateSalaryGuildLeaderRequest request)
     {
-        return await _service.CreateAsync(salaryId, request);
+        return _service.CreateAsync(salaryId, request);
     }
 
     /// <summary>
@@ -63,9 +63,9 @@ public class SalaryGuildLeaderController : ControllerBase
     /// <returns>Информация об обновлённой доле руководства гильдии.</returns>
     [RequireRoles(UserRole.Admin, UserRole.GuildLeader)]
     [HttpPut("{guildLeaderId:long}")]
-    public async Task<SalaryGuildLeaderDto> UpdateAsync([FromRoute] long salaryId, [FromRoute] long guildLeaderId, [FromBody] UpdateSalaryGuildLeaderRequest request)
+    public Task<SalaryGuildLeaderDto> UpdateAsync([FromRoute] long salaryId, [FromRoute] long guildLeaderId, [FromBody] UpdateSalaryGuildLeaderRequest request)
     {
-        return await _service.UpdateAsync(salaryId, guildLeaderId, request);
+        return _service.UpdateAsync(salaryId, guildLeaderId, request);
     }
 
     /// <summary>
@@ -76,9 +76,8 @@ public class SalaryGuildLeaderController : ControllerBase
     /// <returns>Результат выполнения операции.</returns>
     [RequireRoles(UserRole.Admin, UserRole.GuildLeader)]
     [HttpDelete("{guildLeaderId:long}")]
-    public async Task<ActionResult> DeleteAsync([FromRoute] long salaryId, [FromRoute] long guildLeaderId)
+    public Task DeleteAsync([FromRoute] long salaryId, [FromRoute] long guildLeaderId)
     {
-        await _service.DeleteAsync(salaryId, guildLeaderId);
-        return Ok();
+        return _service.DeleteAsync(salaryId, guildLeaderId);
     }
 }

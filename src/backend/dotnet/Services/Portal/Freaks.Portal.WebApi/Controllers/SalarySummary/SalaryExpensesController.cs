@@ -36,9 +36,9 @@ public class SalaryExpensesController : ControllerBase
     /// <param name="salaryId">Идентификатор зарплатного периода.</param>
     /// <returns>Список расходов гильдии в зарплатном периоде.</returns>
     [HttpGet]
-    public async Task<IList<SalaryExpensesDto>> GetListAsync([FromRoute] long salaryId)
+    public Task<IList<SalaryExpensesDto>> GetListAsync([FromRoute] long salaryId)
     {
-        return await _service.GetListAsync(salaryId);
+        return _service.GetListAsync(salaryId);
     }
 
     /// <summary>
@@ -49,9 +49,9 @@ public class SalaryExpensesController : ControllerBase
     /// <returns>Информация о добавленном расходе гильдии.</returns>
     [RequireRoles(UserRole.Admin, UserRole.Editor, UserRole.GuildLeader)]
     [HttpPost]
-    public async Task<SalaryExpensesDto> CreateAsync([FromRoute] long salaryId, [FromBody] CreateSalaryExpensesRequest request)
+    public Task<SalaryExpensesDto> CreateAsync([FromRoute] long salaryId, [FromBody] CreateSalaryExpensesRequest request)
     {
-        return await _service.CreateAsync(salaryId, request);
+        return _service.CreateAsync(salaryId, request);
     }
 
     /// <summary>
@@ -63,12 +63,12 @@ public class SalaryExpensesController : ControllerBase
     /// <returns>Информация об обновлённом расходе гильдии.</returns>
     [RequireRoles(UserRole.Admin, UserRole.Editor, UserRole.GuildLeader)]
     [HttpPut("{id:long}")]
-    public async Task<SalaryExpensesDto> UpdateAsync(
+    public Task<SalaryExpensesDto> UpdateAsync(
         [FromRoute] long salaryId,
         [FromRoute] long id,
         [FromBody] UpdateSalaryExpensesRequest request)
     {
-        return await _service.UpdateAsync(id, salaryId, request);
+        return _service.UpdateAsync(id, salaryId, request);
     }
 
     /// <summary>
@@ -79,9 +79,8 @@ public class SalaryExpensesController : ControllerBase
     /// <returns>Результат выполнения операции.</returns>
     [RequireRoles(UserRole.Admin, UserRole.Editor, UserRole.GuildLeader)]
     [HttpDelete("{id:long}")]
-    public async Task<ActionResult> DeleteAsync([FromRoute] long salaryId, [FromRoute] long id)
+    public Task DeleteAsync([FromRoute] long salaryId, [FromRoute] long id)
     {
-        await _service.DeleteAsync(id, salaryId);
-        return Ok();
+        return _service.DeleteAsync(id, salaryId);
     }
 }

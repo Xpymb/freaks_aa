@@ -24,11 +24,11 @@ public class CentrifugoMessageService : IMessageService
     }
 
     /// <inheritdoc />
-    public async Task Publish<T>(T message) where T : BaseMessage
+    public Task PublishAsync<T>(T message) where T : BaseMessage
     {
         var topicName = TopicHelper.GetTopicName(message);
 
-        await _client.Publish(
+        return _client.Publish(
             new PublishParams
             {
                 Channel = topicName, Data = message,

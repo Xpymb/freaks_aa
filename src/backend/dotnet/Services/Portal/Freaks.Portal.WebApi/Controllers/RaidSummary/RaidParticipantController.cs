@@ -36,9 +36,9 @@ public class RaidParticipantController : ControllerBase
     /// <param name="raidId">Идентификатор рейда.</param>
     /// <returns>Список участников рейда.</returns>
     [HttpGet]
-    public async Task<IList<RaidParticipantDto>> GetListAsync([FromRoute] long raidId)
+    public Task<IList<RaidParticipantDto>> GetListAsync([FromRoute] long raidId)
     {
-        return await _service.GetListAsync(raidId);
+        return _service.GetListAsync(raidId);
     }
 
     /// <summary>
@@ -48,10 +48,9 @@ public class RaidParticipantController : ControllerBase
     /// <param name="request">Данные нового участника.</param>
     /// <returns>Информация о добавленном участнике.</returns>
     [HttpPost]
-    public async Task<RaidParticipantDto> CreateAsync([FromRoute] long raidId, [FromBody] CreateRaidParticipantRequest request)
+    public Task<RaidParticipantDto> CreateAsync([FromRoute] long raidId, [FromBody] CreateRaidParticipantRequest request)
     {
-        var result = await _service.CreateAsync(raidId, request);
-        return result;
+        return _service.CreateAsync(raidId, request);
     }
 
     /// <summary>
@@ -61,9 +60,8 @@ public class RaidParticipantController : ControllerBase
     /// <param name="participantId">Идентификатор участника.</param>
     /// <returns>Результат выполнения операции.</returns>
     [HttpDelete("{participantId:Guid}")]
-    public async Task<ActionResult> DeleteAsync([FromRoute] long raidId, [FromRoute] Guid participantId)
+    public Task DeleteAsync([FromRoute] long raidId, [FromRoute] Guid participantId)
     {
-        await _service.DeleteAsync(raidId, participantId);
-        return Ok();
+        return _service.DeleteAsync(raidId, participantId);
     }
 }

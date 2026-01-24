@@ -36,9 +36,9 @@ public class RaidController : ControllerBase
     /// <param name="id">Идентификатор рейда.</param>
     /// <returns>Объект <see cref="RaidDto" /> с полной информацией о рейде.</returns>
     [HttpGet("{id:long}")]
-    public async Task<RaidDto> GetAsync([FromRoute] long id)
+    public Task<RaidDto> GetAsync([FromRoute] long id)
     {
-        return await _service.GetAsync(id);
+        return _service.GetAsync(id);
     }
 
     /// <summary>
@@ -47,9 +47,9 @@ public class RaidController : ControllerBase
     /// <param name="request">Параметры фильтрации, сортировки и пагинации.</param>
     /// <returns>Список рейдов в виде кратких DTO.</returns>
     [HttpGet]
-    public async Task<PaginatedList<RaidShortDto>> GetListAsync([FromQuery] GetRaidListRequest request)
+    public Task<PaginatedList<RaidShortDto>> GetListAsync([FromQuery] GetRaidListRequest request)
     {
-        return await _service.GetListAsync(request);
+        return _service.GetListAsync(request);
     }
 
     /// <summary>
@@ -58,9 +58,9 @@ public class RaidController : ControllerBase
     /// <param name="request">Данные для создания рейда.</param>
     /// <returns>Созданный рейд в виде <see cref="RaidDto" />.</returns>
     [HttpPost]
-    public async Task<RaidDto> CreateAsync([FromBody] CreateRaidRequest request)
+    public Task<RaidDto> CreateAsync([FromBody] CreateRaidRequest request)
     {
-        return await _service.CreateAsync(request);
+        return _service.CreateAsync(request);
     }
 
     /// <summary>
@@ -70,9 +70,9 @@ public class RaidController : ControllerBase
     /// <returns>Завершенный рейд в виде <see cref="RaidDto" />.</returns>
     [RequireRoles(UserRole.Admin, UserRole.GuildLeader)]
     [HttpPost("{id:long}/finish")]
-    public async Task<RaidDto> FinishAsync([FromRoute] long id)
+    public Task<RaidDto> FinishAsync([FromRoute] long id)
     {
-        return await _service.FinishAsync(id);
+        return _service.FinishAsync(id);
     }
 
     /// <summary>
@@ -82,9 +82,9 @@ public class RaidController : ControllerBase
     /// <param name="request">Обновлённые данные рейда.</param>
     /// <returns>Обновлённый рейд в виде <see cref="RaidDto" />.</returns>
     [HttpPut("{id:long}")]
-    public async Task<RaidDto> UpdateAsync([FromRoute] long id, [FromBody] UpdateRaidRequest request)
+    public Task<RaidDto> UpdateAsync([FromRoute] long id, [FromBody] UpdateRaidRequest request)
     {
-        return await _service.UpdateAsync(id, request);
+        return _service.UpdateAsync(id, request);
     }
 
     /// <summary>
@@ -93,9 +93,8 @@ public class RaidController : ControllerBase
     /// <param name="id">Идентификатор рейда, подлежащего удалению.</param>
     /// <returns>Результат выполнения операции.</returns>
     [HttpDelete("{id:long}")]
-    public async Task<ActionResult> DeleteAsync([FromRoute] long id)
+    public Task DeleteAsync([FromRoute] long id)
     {
-        await _service.DeleteAsync(id);
-        return Ok();
+        return _service.DeleteAsync(id);
     }
 }

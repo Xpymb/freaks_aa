@@ -65,9 +65,9 @@ public class SalaryExpensesService : ISalaryExpensesService
     }
 
     /// <inheritdoc />
-    public async Task<SalaryExpensesDto> CreateAsync(long salaryId, CreateSalaryExpensesRequest request)
+    public Task<SalaryExpensesDto> CreateAsync(long salaryId, CreateSalaryExpensesRequest request)
     {
-        return await _unitOfWork.ExecuteInsideTransactionAsync(async _ =>
+        return _unitOfWork.ExecuteInsideTransactionAsync(async _ =>
         {
             await _stepService.HandleStepActionAsync(salaryId, SalaryFillStepType.Expenses);
 
@@ -110,9 +110,9 @@ public class SalaryExpensesService : ISalaryExpensesService
     }
 
     /// <inheritdoc />
-    public async Task<SalaryExpensesDto> UpdateAsync(long id, long salaryId, UpdateSalaryExpensesRequest request)
+    public Task<SalaryExpensesDto> UpdateAsync(long id, long salaryId, UpdateSalaryExpensesRequest request)
     {
-        return await _unitOfWork.ExecuteInsideTransactionAsync(async _ =>
+        return _unitOfWork.ExecuteInsideTransactionAsync(async _ =>
         {
             await _stepService.HandleStepActionAsync(salaryId, SalaryFillStepType.Expenses);
 
@@ -142,9 +142,9 @@ public class SalaryExpensesService : ISalaryExpensesService
     }
 
     /// <inheritdoc />
-    public async Task DeleteAsync(long id, long salaryId)
+    public Task DeleteAsync(long id, long salaryId)
     {
-        await _unitOfWork.ExecuteInsideTransactionAsync(async _ =>
+        return _unitOfWork.ExecuteInsideTransactionAsync(async _ =>
         {
             await _stepService.HandleStepActionAsync(salaryId, SalaryFillStepType.Expenses);
 
@@ -160,7 +160,7 @@ public class SalaryExpensesService : ISalaryExpensesService
         });
     }
 
-    private async Task PublishMessageAsync(long id, EntityActionType actionType)
+    private Task PublishMessageAsync(long id, EntityActionType actionType)
     {
         var message =
             new SalaryExpensesChangedMessage
@@ -168,6 +168,6 @@ public class SalaryExpensesService : ISalaryExpensesService
                 Id = id, ActionType = actionType,
             };
 
-        await _messageService.Publish(message);
+        return _messageService.PublishAsync(message);
     }
 }

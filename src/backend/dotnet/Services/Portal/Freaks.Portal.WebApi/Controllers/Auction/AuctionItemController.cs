@@ -36,9 +36,9 @@ public class AuctionItemController : ControllerBase
     /// <param name="id">Идентификатор лота.</param>
     /// <returns>DTO лота <see cref="AuctionItemDto" />.</returns>
     [HttpGet("{id:long}")]
-    public async Task<AuctionItemDto> GetAsync([FromRoute] long id)
+    public Task<AuctionItemDto> GetAsync([FromRoute] long id)
     {
-        return await _service.GetAsync(id);
+        return _service.GetAsync(id);
     }
 
     /// <summary>
@@ -47,9 +47,9 @@ public class AuctionItemController : ControllerBase
     /// <param name="request">Параметры фильтрации, сортировки и пагинации (<see cref="GetAuctionItemListRequest" />).</param>
     /// <returns>Пагинированный список DTO кратких данных лотов <see cref="PaginatedList{AuctionItemShortDto}" />.</returns>
     [HttpGet]
-    public async Task<PaginatedList<AuctionItemShortDto>> GetListAsync([FromQuery] GetAuctionItemListRequest request)
+    public Task<PaginatedList<AuctionItemShortDto>> GetListAsync([FromQuery] GetAuctionItemListRequest request)
     {
-        return await _service.GetListAsync(request);
+        return _service.GetListAsync(request);
     }
 
     /// <summary>
@@ -59,9 +59,9 @@ public class AuctionItemController : ControllerBase
     /// <returns>DTO созданного лота <see cref="AuctionItemDto" />.</returns>
     [RequireRoles(UserRole.Admin, UserRole.GuildLeader)]
     [HttpPost]
-    public async Task<AuctionItemDto> CreateAsync([FromBody] CreateAuctionItemRequest request)
+    public Task<AuctionItemDto> CreateAsync([FromBody] CreateAuctionItemRequest request)
     {
-        return await _service.CreateAsync(request);
+        return _service.CreateAsync(request);
     }
 
     /// <summary>
@@ -72,9 +72,9 @@ public class AuctionItemController : ControllerBase
     /// <returns>DTO обновлённого лота <see cref="AuctionItemDto" />.</returns>
     [RequireRoles(UserRole.Admin, UserRole.GuildLeader)]
     [HttpPut("{id:long}")]
-    public async Task<AuctionItemDto> UpdateAsync([FromRoute] long id, [FromBody] UpdateAuctionItemRequest request)
+    public Task<AuctionItemDto> UpdateAsync([FromRoute] long id, [FromBody] UpdateAuctionItemRequest request)
     {
-        return await _service.UpdateAsync(id, request);
+        return _service.UpdateAsync(id, request);
     }
 
     /// <summary>
@@ -84,9 +84,8 @@ public class AuctionItemController : ControllerBase
     /// <returns>HTTP 200 OK при успешном удалении.</returns>
     [RequireRoles(UserRole.Admin, UserRole.GuildLeader)]
     [HttpDelete("{id:long}")]
-    public async Task<IActionResult> DeleteAsync([FromRoute] long id)
+    public Task DeleteAsync([FromRoute] long id)
     {
-        await _service.DeleteAsync(id);
-        return Ok();
+        return _service.DeleteAsync(id);
     }
 }

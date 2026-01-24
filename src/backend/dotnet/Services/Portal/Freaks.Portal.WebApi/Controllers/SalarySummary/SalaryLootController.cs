@@ -35,9 +35,9 @@ public class SalaryLootController : ControllerBase
     /// <param name="salaryId">Идентификатор зарплатного периода.</param>
     /// <returns>Список проданного лута зарплатного периода.</returns>
     [HttpGet]
-    public async Task<IList<SalaryLootDto>> GetListAsync([FromRoute] long salaryId)
+    public Task<IList<SalaryLootDto>> GetListAsync([FromRoute] long salaryId)
     {
-        return await _service.GetListAsync(salaryId);
+        return _service.GetListAsync(salaryId);
     }
 
     /// <summary>
@@ -48,9 +48,9 @@ public class SalaryLootController : ControllerBase
     /// <returns>Информация о добавленном проданном луте.</returns>
     [RequireRoles(UserRole.Editor, UserRole.Admin, UserRole.GuildLeader)]
     [HttpPost]
-    public async Task<SalaryLootDto> CreateAsync([FromRoute] long salaryId, [FromBody] CreateSalaryLootRequest request)
+    public Task<SalaryLootDto> CreateAsync([FromRoute] long salaryId, [FromBody] CreateSalaryLootRequest request)
     {
-        return await _service.CreateAsync(salaryId, request);
+        return _service.CreateAsync(salaryId, request);
     }
 
     /// <summary>
@@ -63,9 +63,9 @@ public class SalaryLootController : ControllerBase
     /// <returns>Информация об обновлённом проданном луте.</returns>
     [RequireRoles(UserRole.Editor, UserRole.Admin, UserRole.GuildLeader)]
     [HttpPut("{lootId:long}")]
-    public async Task<SalaryLootDto> UpdateAsync([FromRoute] long salaryId, [FromRoute] long lootId, [FromBody] UpdateSalaryLootRequest request)
+    public Task<SalaryLootDto> UpdateAsync([FromRoute] long salaryId, [FromRoute] long lootId, [FromBody] UpdateSalaryLootRequest request)
     {
-        return await _service.UpdateAsync(salaryId, lootId, request);
+        return _service.UpdateAsync(salaryId, lootId, request);
     }
 
     /// <summary>
@@ -76,9 +76,8 @@ public class SalaryLootController : ControllerBase
     /// <returns>Результат выполнения операции.</returns>
     [RequireRoles(UserRole.Editor, UserRole.Admin, UserRole.GuildLeader)]
     [HttpDelete("{lootId:long}")]
-    public async Task<ActionResult> DeleteAsync([FromRoute] long salaryId, [FromRoute] long lootId)
+    public Task DeleteAsync([FromRoute] long salaryId, [FromRoute] long lootId)
     {
-        await _service.DeleteAsync(salaryId, lootId);
-        return Ok();
+        return _service.DeleteAsync(salaryId, lootId);
     }
 }

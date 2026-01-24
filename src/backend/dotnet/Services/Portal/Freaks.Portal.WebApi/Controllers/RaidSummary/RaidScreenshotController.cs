@@ -35,9 +35,9 @@ public class RaidScreenshotController : ControllerBase
     /// <param name="raidId">Идентификатор рейда.</param>
     /// <returns>Список скриншотов.</returns>
     [HttpGet]
-    public async Task<IList<RaidScreenshotDto>> GetListAsync([FromRoute] long raidId)
+    public Task<IList<RaidScreenshotDto>> GetListAsync([FromRoute] long raidId)
     {
-        return await _service.GetListAsync(raidId);
+        return _service.GetListAsync(raidId);
     }
 
     /// <summary>
@@ -47,9 +47,9 @@ public class RaidScreenshotController : ControllerBase
     /// <param name="request">Данные скриншотов для установки.</param>
     /// <returns>Актуальный список скриншотов после обновления.</returns>
     [HttpPost]
-    public async Task<IList<RaidScreenshotDto>> SetAsync([FromRoute] long raidId, [FromBody] SetRaidScreenshotRequest request)
+    public Task<IList<RaidScreenshotDto>> SetAsync([FromRoute] long raidId, [FromBody] SetRaidScreenshotRequest request)
     {
-        return await _service.SetAsync(raidId, request);
+        return _service.SetAsync(raidId, request);
     }
 
     /// <summary>
@@ -59,9 +59,8 @@ public class RaidScreenshotController : ControllerBase
     /// <param name="screenshotUrl">URL скриншота для удаления.</param>
     /// <returns>Результат выполнения операции.</returns>
     [HttpDelete]
-    public async Task<ActionResult> DeleteAsync([FromRoute] long raidId, [FromQuery] string screenshotUrl)
+    public Task DeleteAsync([FromRoute] long raidId, [FromQuery] string screenshotUrl)
     {
-        await _service.DeleteAsync(raidId, screenshotUrl);
-        return Ok();
+        return _service.DeleteAsync(raidId, screenshotUrl);
     }
 }

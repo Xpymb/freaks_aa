@@ -36,9 +36,9 @@ public class UsersController : ControllerBase
     /// <returns>Объект <see cref="UserDto" /> с данными пользователя.</returns>
     [RequireRoles(UserRole.GuildLeader, UserRole.Admin)]
     [HttpGet("{id:Guid}")]
-    public async Task<UserDto> GetAsync([FromRoute] Guid id)
+    public Task<UserDto> GetAsync([FromRoute] Guid id)
     {
-        return await _userService.GetAsync(id);
+        return _userService.GetAsync(id);
     }
 
     /// <summary>
@@ -47,9 +47,9 @@ public class UsersController : ControllerBase
     /// <param name="includeWoRoles">Флаг, указывающий, включать ли пользователей без назначенных ролей.</param>
     /// <returns>Список объектов <see cref="UserDto" />.</returns>
     [HttpGet]
-    public async Task<IList<UserDto>> GetListAsync([FromQuery] bool includeWoRoles)
+    public Task<IList<UserDto>> GetListAsync([FromQuery] bool includeWoRoles)
     {
-        return await _userService.GetListAsync(includeWoRoles);
+        return _userService.GetListAsync(includeWoRoles);
     }
 
     /// <summary>
@@ -60,8 +60,8 @@ public class UsersController : ControllerBase
     /// <returns>Обновлённый <see cref="UserDto" /> с актуальными ролями.</returns>
     [RequireRoles(UserRole.GuildLeader, UserRole.Admin)]
     [HttpPatch("{id:Guid}/roles")]
-    public async Task<UserDto> UpdateRolesAsync([FromRoute] Guid id, [FromBody] UpdateUserRolesRequest request)
+    public Task<UserDto> UpdateRolesAsync([FromRoute] Guid id, [FromBody] UpdateUserRolesRequest request)
     {
-        return await _userService.UpdateRolesAsync(id, request);
+        return _userService.UpdateRolesAsync(id, request);
     }
 }
