@@ -9,6 +9,9 @@ namespace Freaks.Portal.SharedContracts.Requests.SalarySummary.SalaryMember.Vali
 /// </summary>
 public class UpdateSalaryMemberRequestValidator : AbstractValidator<UpdateSalaryMemberRequest>
 {
+    /// <summary>
+    ///     Инициализирует новый экземпляр <see cref="UpdateSalaryMemberRequestValidator"/>.
+    /// </summary>
     public UpdateSalaryMemberRequestValidator()
     {
         var salaryPaymentTypes = Enum.GetValues<SalaryPaymentType>();

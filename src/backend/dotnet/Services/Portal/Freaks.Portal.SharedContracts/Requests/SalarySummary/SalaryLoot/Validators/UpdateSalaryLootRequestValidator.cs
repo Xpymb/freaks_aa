@@ -9,6 +9,9 @@ namespace Freaks.Portal.SharedContracts.Requests.SalarySummary.SalaryLoot.Valida
 /// </summary>
 public class UpdateSalaryLootRequestValidator : AbstractValidator<UpdateSalaryLootRequest>
 {
+    /// <summary>
+    ///     Инициализирует новый экземпляр <see cref="UpdateSalaryLootRequestValidator"/>.
+    /// </summary>
     public UpdateSalaryLootRequestValidator()
     {
         RuleFor(x => x.LootId).GreaterThan(0);

@@ -8,6 +8,9 @@ namespace Freaks.Portal.SharedContracts.Requests.SalarySummary.SalaryGuildLeader
 /// </summary>
 public class UpdateSalaryGuildLeaderRequestValidator : AbstractValidator<UpdateSalaryGuildLeaderRequest>
 {
+    /// <summary>
+    ///     Инициализирует новый экземпляр <see cref="UpdateSalaryGuildLeaderRequestValidator"/>.
+    /// </summary>
     public UpdateSalaryGuildLeaderRequestValidator()
     {
         RuleFor(x => x.LootId).GreaterThan(0);

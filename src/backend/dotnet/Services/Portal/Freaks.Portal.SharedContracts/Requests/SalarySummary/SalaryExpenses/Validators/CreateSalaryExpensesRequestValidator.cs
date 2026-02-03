@@ -10,6 +10,9 @@ namespace Freaks.Portal.SharedContracts.Requests.SalarySummary.SalaryExpenses.Va
 /// </summary>
 public class CreateSalaryExpensesRequestValidator : AbstractValidator<CreateSalaryExpensesRequest>
 {
+    /// <summary>
+    ///     Инициализирует новый экземпляр <see cref="CreateSalaryExpensesRequestValidator"/>.
+    /// </summary>
     public CreateSalaryExpensesRequestValidator()
     {
         var salaryExpenseTypes = Enum.GetValues<SalaryExpensesType>();

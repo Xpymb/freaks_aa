@@ -89,7 +89,7 @@ public class SalaryMemberProvider : BaseCachedCompositeProvider<SalaryMember, Sa
     ///     Генерирует ключ кэша для списка участников зарплатного периода.
     /// </summary>
     /// <param name="salaryId">Идентификатор зарплатного периода.</param>
-    /// <returns>Строковой ключ кэша.</returns>
+    /// <returns>Строковый ключ кэша.</returns>
     private static string GetCacheSalaryKey(long salaryId)
     {
         return $"{nameof(SalaryMember)}:list:salary:{salaryId}";

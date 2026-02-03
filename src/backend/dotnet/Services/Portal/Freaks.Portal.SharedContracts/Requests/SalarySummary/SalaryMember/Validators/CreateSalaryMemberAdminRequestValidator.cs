@@ -9,6 +9,9 @@ namespace Freaks.Portal.SharedContracts.Requests.SalarySummary.SalaryMember.Vali
 /// </summary>
 public class CreateSalaryMemberAdminRequestValidator : AbstractValidator<CreateSalaryMemberAdminRequest>
 {
+    /// <summary>
+    ///     Инициализирует новый экземпляр <see cref="CreateSalaryMemberAdminRequestValidator"/>.
+    /// </summary>
     public CreateSalaryMemberAdminRequestValidator()
     {
         RuleFor(x => x.UserId).NotNull().NotEmpty();
