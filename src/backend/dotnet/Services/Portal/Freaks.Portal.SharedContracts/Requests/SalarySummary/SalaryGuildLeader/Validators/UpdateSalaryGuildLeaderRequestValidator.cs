@@ -13,8 +13,6 @@ public class UpdateSalaryGuildLeaderRequestValidator : AbstractValidator<UpdateS
     /// </summary>
     public UpdateSalaryGuildLeaderRequestValidator()
     {
-        RuleFor(x => x.LootId).GreaterThan(0);
         RuleFor(x => x.Quantity).GreaterThan(0);
-        RuleFor(x => x.PricePerItem).GreaterThan(0);
     }
 }

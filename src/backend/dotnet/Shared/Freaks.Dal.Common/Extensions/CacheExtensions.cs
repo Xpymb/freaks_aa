@@ -4,6 +4,7 @@ using Freaks.Dal.Common.Interfaces;
 using Freaks.Options.Common;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Freaks.Dal.Common.Extensions;
 
@@ -65,7 +66,7 @@ public static class CacheExtensions
             //     "hybrid");
         });
 
-        services.AddScoped<ICacheProvider, EasyCacheProvider>();
+        services.TryAddScoped<ICacheProvider, EasyCacheProvider>();
 
         return services;
     }

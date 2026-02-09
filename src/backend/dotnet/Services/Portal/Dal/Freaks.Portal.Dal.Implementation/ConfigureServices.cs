@@ -59,6 +59,8 @@ public static class ConfigureServices
         services.AddScoped<ISalaryGuildLeaderProvider, SalaryGuildLeaderProvider>();
         services.AddScoped<ISalaryLootProvider, SalaryLootProvider>();
 
+        services.AddEasyCachingCommon(configuration);
+
         return services;
     }
 }

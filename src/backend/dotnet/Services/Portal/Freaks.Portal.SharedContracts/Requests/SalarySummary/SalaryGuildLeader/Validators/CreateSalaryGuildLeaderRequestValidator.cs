@@ -13,8 +13,7 @@ public class CreateSalaryGuildLeaderRequestValidator : AbstractValidator<CreateS
     /// </summary>
     public CreateSalaryGuildLeaderRequestValidator()
     {
-        RuleFor(x => x.LootId).GreaterThan(0);
+        RuleFor(x => x.SalaryLootId).GreaterThan(0);
         RuleFor(x => x.Quantity).GreaterThan(0);
-        RuleFor(x => x.PricePerItem).GreaterThan(0);
     }
 }

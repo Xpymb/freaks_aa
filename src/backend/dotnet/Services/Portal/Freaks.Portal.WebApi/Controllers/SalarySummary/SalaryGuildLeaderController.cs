@@ -58,26 +58,26 @@ public class SalaryGuildLeaderController : ControllerBase
     ///     Amount пересчитывается по формуле: Quantity * PricePerLoot.
     /// </summary>
     /// <param name="salaryId">Идентификатор зарплатного периода.</param>
-    /// <param name="guildLeaderId">Идентификатор записи доли руководства гильдии.</param>
+    /// <param name="salaryLootId">Идентификатор записи лута зарплатного периода.</param>
     /// <param name="request">Обновлённые данные о доле руководства гильдии.</param>
     /// <returns>Информация об обновлённой доле руководства гильдии.</returns>
     [RequireRoles(UserRole.Admin, UserRole.GuildLeader)]
-    [HttpPut("{guildLeaderId:long}")]
-    public Task<SalaryGuildLeaderDto> UpdateAsync([FromRoute] long salaryId, [FromRoute] long guildLeaderId, [FromBody] UpdateSalaryGuildLeaderRequest request)
+    [HttpPut("{salaryLootId:long}")]
+    public Task<SalaryGuildLeaderDto> UpdateAsync([FromRoute] long salaryId, [FromRoute] long salaryLootId, [FromBody] UpdateSalaryGuildLeaderRequest request)
     {
-        return _service.UpdateAsync(salaryId, guildLeaderId, request);
+        return _service.UpdateAsync(salaryId, salaryLootId, request);
     }
 
     /// <summary>
     ///     Удаляет запись о доле руководства гильдии из указанного зарплатного периода.
     /// </summary>
     /// <param name="salaryId">Идентификатор зарплатного периода.</param>
-    /// <param name="guildLeaderId">Идентификатор записи доли руководства гильдии.</param>
+    /// <param name="salaryLootId">Идентификатор записи лута зарплатного периода.</param>
     /// <returns>Результат выполнения операции.</returns>
     [RequireRoles(UserRole.Admin, UserRole.GuildLeader)]
-    [HttpDelete("{guildLeaderId:long}")]
-    public Task DeleteAsync([FromRoute] long salaryId, [FromRoute] long guildLeaderId)
+    [HttpDelete("{salaryLootId:long}")]
+    public Task DeleteAsync([FromRoute] long salaryId, [FromRoute] long salaryLootId)
     {
-        return _service.DeleteAsync(salaryId, guildLeaderId);
+        return _service.DeleteAsync(salaryId, salaryLootId);
     }
 }

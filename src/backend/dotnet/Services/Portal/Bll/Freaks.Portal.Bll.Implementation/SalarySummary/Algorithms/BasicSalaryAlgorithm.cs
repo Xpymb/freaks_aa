@@ -1,3 +1,4 @@
+using Freaks.Portal.Bll.Implementation.SalarySummary.Helpers;
 using Freaks.Portal.Contracts.Entities.SalarySummary;
 using Freaks.Portal.Contracts.ValueObjects.RaidSummary;
 using Freaks.Portal.SharedContracts.ValueObjects.Loot;
@@ -101,7 +102,7 @@ public class BasicSalaryAlgorithm
     private decimal CalculateDistributionPool()
     {
         var totalLootAmount = _loot.Sum(l => l.Amount);
-        var guildLeaderAmount = _guildLeader.Sum(g => g.Amount);
+        var guildLeaderAmount = _guildLeader.Sum(g => SalaryGuildLeaderHelper.CalculateAmount(g.SalaryLoot, g.Quantity));
         var expensesAmount = _expenses.Sum(e => e.Amount);
 
         return totalLootAmount - guildLeaderAmount - expensesAmount;

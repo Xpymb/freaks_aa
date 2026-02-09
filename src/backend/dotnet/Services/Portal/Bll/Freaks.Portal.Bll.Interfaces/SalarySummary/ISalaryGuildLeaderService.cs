@@ -29,15 +29,15 @@ public interface ISalaryGuildLeaderService
     ///     Amount пересчитывается по формуле: Quantity * PricePerLoot.
     /// </summary>
     /// <param name="salaryId">Идентификатор зарплатного периода.</param>
-    /// <param name="guildLeaderId">Идентификатор записи доли руководства гильдии.</param>
+    /// <param name="salaryLootId">Идентификатор записи доли руководства гильдии.</param>
     /// <param name="request">Запрос с новой информацией о доле руководства.</param>
     /// <returns>Обновлённая доля руководства гильдии в виде DTO.</returns>
-    Task<SalaryGuildLeaderDto> UpdateAsync(long salaryId, long guildLeaderId, UpdateSalaryGuildLeaderRequest request);
+    Task<SalaryGuildLeaderDto> UpdateAsync(long salaryId, long salaryLootId, UpdateSalaryGuildLeaderRequest request);
 
     /// <summary>
     ///     Удаляет запись о доле руководства гильдии из зарплатного периода.
     /// </summary>
     /// <param name="salaryId">Идентификатор зарплатного периода.</param>
-    /// <param name="guildLeaderId">Идентификатор записи доли руководства гильдии для удаления.</param>
-    Task DeleteAsync(long salaryId, long guildLeaderId);
+    /// <param name="salaryLootId">Идентификатор записи доли руководства гильдии для удаления.</param>
+    Task DeleteAsync(long salaryId, long salaryLootId);
 }

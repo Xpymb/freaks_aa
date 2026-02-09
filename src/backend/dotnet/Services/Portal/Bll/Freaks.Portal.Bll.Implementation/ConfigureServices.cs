@@ -1,9 +1,11 @@
 ﻿using Freaks.Bll.Common.Extensions;
+using Freaks.Messages.Common;
 using Freaks.Portal.Bll.Implementation.Auction;
 using Freaks.Portal.Bll.Implementation.Loot;
 using Freaks.Portal.Bll.Implementation.Notification;
 using Freaks.Portal.Bll.Implementation.RaidSummary;
 using Freaks.Portal.Bll.Implementation.SalarySummary;
+using Freaks.Portal.Bll.Implementation.SalarySummary.Mappings;
 using Freaks.Portal.Bll.Implementation.Shop;
 using Freaks.Portal.Bll.Interfaces.Auction;
 using Freaks.Portal.Bll.Interfaces.Loot;
@@ -11,6 +13,7 @@ using Freaks.Portal.Bll.Interfaces.Notification;
 using Freaks.Portal.Bll.Interfaces.RaidSummary;
 using Freaks.Portal.Bll.Interfaces.SalarySummary;
 using Freaks.Portal.Bll.Interfaces.Shop;
+using Mapster;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -57,9 +60,15 @@ public static class ConfigureServices
         services.AddScoped<IAuctionItemService, AuctionItemService>();
         services.AddScoped<IAuctionItemBidService, AuctionItemBidService>();
         
-        //Notification
+        // Notification
         services.AddScoped<INotificationChannelMessageService, NotificationChannelMessageService>();
         services.AddScoped<INotificationChannelService, NotificationChannelService>();
+
+        // Mapper
+        services.AddMapsterCommon(typeof(SalaryGuildLeaderMappingProfile).Assembly);
+
+        // Real-Time messages
+        services.AddCentrifugoMessageService(configuration);
         
         return services;
     }
