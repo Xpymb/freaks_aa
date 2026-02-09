@@ -14,9 +14,8 @@ public class SalaryGuildLeader : IEntity<long>
 {
     /// <inheritdoc />
     [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    [Column("id")]
-    public long Id { get; init; }
+    [Column("salary_loot_id")]
+    public required long Id { get; init; }
 
     /// <summary>
     ///     Идентификатор зарплатного периода
@@ -25,28 +24,10 @@ public class SalaryGuildLeader : IEntity<long>
     public required long SalaryId { get; init; }
 
     /// <summary>
-    ///     Идентификатор лута
-    /// </summary>
-    [Column("loot_id")]
-    public required int LootId { get; set; }
-
-    /// <summary>
     ///     Количество
     /// </summary>
     [Column("quantity")]
     public required int Quantity { get; set; }
-
-    /// <summary>
-    ///     Цена за единицу лута
-    /// </summary>
-    [Column("price_per_item")]
-    public required decimal PricePerItem { get; set; }
-
-    /// <summary>
-    ///     Сумма
-    /// </summary>
-    [Column("amount")]
-    public required decimal Amount { get; set; }
 
     /// <summary>
     ///     Навигационное свойство для доступа к информации о зарплатном периоде.
@@ -56,5 +37,5 @@ public class SalaryGuildLeader : IEntity<long>
     /// <summary>
     ///     Навигационное свойство для доступа к информации о предмете добычи.
     /// </summary>
-    public LootItem? LootItem { get; init; }
+    public SalaryLoot? SalaryLoot { get; init; }
 }

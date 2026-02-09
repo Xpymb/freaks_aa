@@ -1,12 +1,7 @@
-using System.Reflection;
-using FluentValidation;
-using Freaks.Bll.Common.Extensions;
 using Freaks.Dal.Common.Extensions;
-using Freaks.Messages.Common;
 using Freaks.Portal.Bll.Implementation;
 using Freaks.Portal.Dal.Implementation;
 using Freaks.Portal.Dal.Persistence;
-using Freaks.Portal.SharedContracts.Requests.SalarySummary.Salary;
 using Freaks.Portal.SharedContracts.Requests.SalarySummary.Salary.Validators;
 using Freaks.Users.Common;
 using Freaks.Users.Dal.Persistence;
@@ -20,14 +15,9 @@ builder.Services.AddControllers();
 builder.Services.AddDefaults(builder.Configuration);
 builder.Services.AddValidation(typeof(CreateSalaryRequestValidator).Assembly);
 builder.Services.AddNSwag();
-builder.Services.AddMapsterCommon();
-builder.Services.AddCentrifugoMessageService(builder.Configuration);
 
 // Auth
 builder.Services.AddKeycloakAuth(builder.Configuration);
-
-// Cache
-builder.Services.AddEasyCachingCommon(builder.Configuration);
 
 // User
 builder.Services.AddUserContext(builder.Configuration);

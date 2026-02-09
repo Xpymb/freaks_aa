@@ -15,4 +15,10 @@ public interface ISalaryLootProvider : IBaseProvider<SalaryLoot, long, IPortalDb
     /// <param name="salaryId">Идентификатор зарплатного периода.</param>
     /// <returns>Список проданного лута за период.</returns>
     Task<IList<SalaryLoot>> GetBySalaryIdAsync(long salaryId);
+
+    /// <summary>
+    ///     Удаляет все записи проданного лута, связанные с указанным зарплатным периодом.
+    /// </summary>
+    /// <param name="salaryId">Идентификатор зарплатного периода.</param>
+    Task DeleteBySalaryIdAsync(long salaryId);
 }

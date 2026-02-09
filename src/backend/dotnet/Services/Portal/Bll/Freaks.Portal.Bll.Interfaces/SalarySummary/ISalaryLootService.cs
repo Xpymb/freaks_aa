@@ -1,4 +1,5 @@
 using Freaks.Portal.SharedContracts.Dto.SalarySummary;
+using Freaks.Portal.SharedContracts.Requests.SalarySummary.SalaryGuildLeader;
 using Freaks.Portal.SharedContracts.Requests.SalarySummary.SalaryLoot;
 
 namespace Freaks.Portal.Bll.Interfaces.SalarySummary;
@@ -33,6 +34,14 @@ public interface ISalaryLootService
     /// <param name="request">Запрос с новой информацией о луте.</param>
     /// <returns>Обновлённый проданный лут в виде DTO.</returns>
     Task<SalaryLootDto> UpdateAsync(long salaryId, long lootId, UpdateSalaryLootRequest request);
+
+    /// <summary>
+    ///     Автоматически заполняет проданный лут зарплатного периода на основе данных из рейдов.
+    ///     Удаляет все существующие записи лута за период и создаёт новые на основе указанных предметов из рейдов.
+    /// </summary>
+    /// <param name="salaryId">Идентификатор зарплатного периода.</param>
+    /// <param name="request">Запрос с идентификаторами предметов лута для автоматического заполнения.</param>
+    Task FillByRaidsAsync(long salaryId, FillByRaidsRequest request);
 
     /// <summary>
     ///     Удаляет запись о проданном луте из зарплатного периода.

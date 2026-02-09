@@ -1,6 +1,9 @@
-﻿using Mapster;
+﻿using System.Reflection;
+using FastExpressionCompiler;
+using Mapster;
 using MapsterMapper;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Freaks.Bll.Common.Extensions;
 
@@ -14,9 +17,16 @@ public static class MapperExtensions
     ///     и регистрирует <see cref="TypeAdapterConfig" /> и <see cref="IMapper" />.
     /// </summary>
     /// <param name="services">Коллекция сервисов для регистрации.</param>
-    public static IServiceCollection AddMapsterCommon(this IServiceCollection services)
+    /// <param name="assembly">Сборка приложения, в которой находятся конфиги</param>
+    public static IServiceCollection AddMapsterCommon(this IServiceCollection services, Assembly assembly)
     {
-        services.AddMapster();
+        var config = TypeAdapterConfig.GlobalSettings;
+
+        config.Compiler = exp => exp.CompileFast();
+        config.Scan(assembly);
+
+        services.AddSingleton(config);
+        services.TryAddScoped<IMapper, ServiceMapper>();
 
         return services;
     }

@@ -17,9 +17,9 @@ public class SalaryGuildLeaderConfiguration : IEntityTypeConfiguration<SalaryGui
             .OnDelete(DeleteBehavior.Cascade);
 
         builder
-            .HasOne(s => s.LootItem)
+            .HasOne(s => s.SalaryLoot)
             .WithMany()
-            .HasForeignKey(s => s.LootId)
+            .HasForeignKey(s => s.Id)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

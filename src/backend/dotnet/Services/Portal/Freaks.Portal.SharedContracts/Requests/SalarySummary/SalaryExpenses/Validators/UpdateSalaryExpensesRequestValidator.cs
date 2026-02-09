@@ -8,6 +8,9 @@ namespace Freaks.Portal.SharedContracts.Requests.SalarySummary.SalaryExpenses.Va
 /// </summary>
 public class UpdateSalaryExpensesRequestValidator : AbstractValidator<UpdateSalaryExpensesRequest>
 {
+    /// <summary>
+    ///     Инициализирует новый экземпляр <see cref="UpdateSalaryExpensesRequestValidator"/>.
+    /// </summary>
     public UpdateSalaryExpensesRequestValidator()
     {
         RuleFor(x => x.Percentage)

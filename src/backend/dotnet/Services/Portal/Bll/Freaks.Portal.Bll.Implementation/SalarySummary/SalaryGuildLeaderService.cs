@@ -66,16 +66,12 @@ public class SalaryGuildLeaderService : ISalaryGuildLeaderService
         {
             await _stepService.HandleStepActionAsync(salaryId, SalaryFillStepType.GuildLeaderSalary);
 
-            var amount = request.Quantity * request.PricePerItem;
-
             var entity =
                 new SalaryGuildLeader
                 {
+                    Id = request.SalaryLootId,
                     SalaryId = salaryId,
-                    LootId = request.LootId,
                     Quantity = request.Quantity,
-                    PricePerItem = request.PricePerItem,
-                    Amount = amount,
                 };
 
             var result = await _provider.CreateAsync(entity);
@@ -87,23 +83,19 @@ public class SalaryGuildLeaderService : ISalaryGuildLeaderService
     }
 
     /// <inheritdoc />
-    public Task<SalaryGuildLeaderDto> UpdateAsync(long salaryId, long guildLeaderId, UpdateSalaryGuildLeaderRequest request)
+    public Task<SalaryGuildLeaderDto> UpdateAsync(long salaryId, long salaryLootId, UpdateSalaryGuildLeaderRequest request)
     {
         return _unitOfWork.ExecuteInsideTransactionAsync(async _ =>
         {
             await _stepService.HandleStepActionAsync(salaryId, SalaryFillStepType.GuildLeaderSalary);
 
-            var entity = await _provider.GetAsync(guildLeaderId, EntityTrackingType.NoTracking);
+            var entity = await _provider.GetAsync(salaryLootId, EntityTrackingType.NoTracking);
             if (entity is null)
             {
                 throw new EntityNotFoundException(nameof(SalaryGuildLeader));
             }
 
-            entity.LootId = request.LootId;
             entity.Quantity = request.Quantity;
-            entity.PricePerItem = request.PricePerItem;
-
-            entity.Amount = entity.Quantity * entity.PricePerItem;
 
             var result = await _provider.UpdateAsync(entity);
 
@@ -114,19 +106,19 @@ public class SalaryGuildLeaderService : ISalaryGuildLeaderService
     }
 
     /// <inheritdoc />
-    public Task DeleteAsync(long salaryId, long guildLeaderId)
+    public Task DeleteAsync(long salaryId, long salaryLootId)
     {
         return _unitOfWork.ExecuteInsideTransactionAsync(async _ =>
         {
             await _stepService.HandleStepActionAsync(salaryId, SalaryFillStepType.GuildLeaderSalary);
 
-            var entity = await _provider.GetAsync(guildLeaderId, EntityTrackingType.NoTracking);
+            var entity = await _provider.GetAsync(salaryLootId, EntityTrackingType.NoTracking);
             if (entity is null)
             {
                 return;
             }
 
-            await _provider.DeleteAsync(guildLeaderId);
+            await _provider.DeleteAsync(salaryLootId);
 
             await PublishMessageAsync(salaryId, EntityActionType.Deleted);
         });

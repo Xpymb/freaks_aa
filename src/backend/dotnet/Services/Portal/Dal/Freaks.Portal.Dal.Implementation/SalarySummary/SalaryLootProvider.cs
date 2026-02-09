@@ -75,6 +75,15 @@ public class SalaryLootProvider : BaseCachedProvider<SalaryLoot, long, IPortalDb
     }
 
     /// <inheritdoc />
+    public async Task DeleteBySalaryIdAsync(long salaryId)
+    {
+        await RemoveCacheAsync(salaryId);
+        await Set
+            .Where(l => l.SalaryId == salaryId)
+            .ExecuteDeleteAsync();
+    }
+
+    /// <inheritdoc />
     protected override string GetCacheKey(long key)
     {
         return $"{nameof(SalaryLoot)}:{key}";

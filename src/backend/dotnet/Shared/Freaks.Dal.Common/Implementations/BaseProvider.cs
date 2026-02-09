@@ -53,8 +53,7 @@ public abstract class BaseProvider<TEntity, TKey, TDbContext> : IBaseProvider<TE
         var entry = await Set.AddAsync(entity);
         await DbContext.SaveChangesAsync();
 
-        var result = await GetAsync(entry.Entity.Id, EntityTrackingType.NoTracking);
-        return result!;
+        return (await GetAsync(entry.Entity.Id, EntityTrackingType.NoTracking))!;
     }
 
     /// <inheritdoc />

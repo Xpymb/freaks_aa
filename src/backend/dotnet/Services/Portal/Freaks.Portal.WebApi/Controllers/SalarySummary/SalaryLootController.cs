@@ -1,5 +1,6 @@
 using Freaks.Portal.Bll.Interfaces.SalarySummary;
 using Freaks.Portal.SharedContracts.Dto.SalarySummary;
+using Freaks.Portal.SharedContracts.Requests.SalarySummary.SalaryGuildLeader;
 using Freaks.Portal.SharedContracts.Requests.SalarySummary.SalaryLoot;
 using Freaks.Users.Common.Attributes;
 using Freaks.Users.Contracts.ValueObjects;
@@ -51,6 +52,19 @@ public class SalaryLootController : ControllerBase
     public Task<SalaryLootDto> CreateAsync([FromRoute] long salaryId, [FromBody] CreateSalaryLootRequest request)
     {
         return _service.CreateAsync(salaryId, request);
+    }
+
+    /// <summary>
+    ///     Автоматически заполняет проданный лут зарплатного периода на основе данных из рейдов.
+    ///     Удаляет все существующие записи лута за период и создаёт новые на основе указанных предметов из рейдов.
+    /// </summary>
+    /// <param name="salaryId">Идентификатор зарплатного периода.</param>
+    /// <param name="request">Запрос с идентификаторами предметов лута для автоматического заполнения.</param>
+    [RequireRoles(UserRole.Admin, UserRole.GuildLeader)]
+    [HttpPost("fill-by-raids")]
+    public Task FillByRaidsAsync([FromRoute] long salaryId, [FromBody] FillByRaidsRequest request)
+    {
+        return _service.FillByRaidsAsync(salaryId, request);
     }
 
     /// <summary>
