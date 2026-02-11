@@ -15,6 +15,8 @@ services:
       - KeycloakAdmin__resource=realm_admin
       - KeycloakAdmin__credentials__secret=${KEYCLOAK_ADMIN_CLIENT_SECRET}
       - DbOptions__ConnectionString=${DB_OPTIONS}
+      - OpenTelemetry__OtlpEndpoint=http://alloy:4318
+      - NLog__targets__loki__endpoint=http://alloy:3100
     depends_on:
       - rabbitmq
       - redis
@@ -33,6 +35,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Compose
       - DbOptions__ConnectionString=${DB_OPTIONS}
+      - OpenTelemetry__OtlpEndpoint=http://alloy:4318
+      - NLog__targets__loki__endpoint=http://alloy:3100
       - StorageOptions__Host=${STORAGE_OPTIONS_HOST}
       - StorageOptions__AccessKey=${STORAGE_OPTIONS_ACCESS_KEY}
       - StorageOptions__SecretKey=${STORAGE_OPTIONS_SECRET_KEY}
@@ -66,8 +70,6 @@ services:
         - RABBITMQ_VERSION=${RABBITMQ_VERSION}
     ports:
       - "18672:15672"
-      - "8672:5672"
-      - "8671:5671"
       - "18671:15671"
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq:rw
@@ -93,7 +95,24 @@ services:
       nofile:
         soft: 65535
         hard: 65535
+  alloy:
+    image: grafana/alloy:latest
+    container_name: grafana-alloy
+    restart: unless-stopped
+    ports:
+      - "12345:12345"  # Alloy UI
+    volumes:
+      - ./GrafanaLoki/config.alloy:/etc/alloy/config.alloy:ro
+      - alloy-data:/var/lib/alloy
+    command:
+      - run
+      - --server.http.listen-addr=0.0.0.0:12345
+      - --storage.path=/var/lib/alloy
+      - /etc/alloy/config.alloy
+    environment:
+      - HOSTNAME=alloy
 volumes:
   postgres_data: null
   minio_data: null
   rabbitmq_data: null
+  alloy-data: null
