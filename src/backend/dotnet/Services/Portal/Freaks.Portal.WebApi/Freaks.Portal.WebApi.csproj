@@ -18,6 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\..\Shared\Freaks.Telemetry.Common\Freaks.Telemetry.Common.csproj" />
         <ProjectReference Include="..\..\..\Shared\Freaks.WebApi.Common\Freaks.WebApi.Common.csproj"/>
         <ProjectReference Include="..\..\..\Shared\Messages\Freaks.Messages.Common\Freaks.Messages.Common.csproj"/>
         <ProjectReference Include="..\..\..\Shared\Users\Freaks.Users.Common\Freaks.Users.Common.csproj"/>

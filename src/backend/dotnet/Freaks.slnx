@@ -61,6 +61,7 @@
     <Project Path="Shared/Freaks.Dal.Common/Freaks.Dal.Common.csproj" />
     <Project Path="Shared/Freaks.Options.Common/Freaks.Options.Common.csproj" />
     <Project Path="Shared/Freaks.SharedContracts.Common/Freaks.SharedContracts.Common.csproj" />
+    <Project Path="Shared/Freaks.Telemetry.Common/Freaks.Telemetry.Common.csproj" />
     <Project Path="Shared/Freaks.WebApi.Common/Freaks.WebApi.Common.csproj" />
   </Folder>
   <Folder Name="/Shared/Messages/">

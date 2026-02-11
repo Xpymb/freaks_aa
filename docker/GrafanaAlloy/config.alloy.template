@@ -1,0 +1,94 @@
+// Grafana Alloy configuration for receiving logs and forwarding to Grafana Cloud Loki
+
+// Принимаем логи по Loki HTTP API на порту 3100
+loki.source.api "default" {
+  http {
+    listen_address = "0.0.0.0"
+    listen_port    = 3100
+  }
+
+  // Пересылаем все логи в Grafana Cloud
+  forward_to = [loki.write.grafanacloud.receiver]
+
+  // Добавляем метку источника
+  labels = {
+    source = "alloy",
+  }
+}
+
+// Отправляем логи в Grafana Cloud Loki
+loki.write "grafanacloud" {
+  endpoint {
+    url = "your_loki_url"
+
+    basic_auth {
+      username = "your_loki_username"
+      password = "your_loki_password"
+    }
+  }
+
+  // Параметры отправки
+  external_labels = {
+    cluster = "freaks-aa",
+  }
+}
+
+// Принимаем метрики от .NET сервисов по OTLP и конвертируем в Prometheus формат
+otelcol.receiver.otlp "freaks" {
+  grpc {
+    endpoint = "0.0.0.0:4317"
+  }
+  http {
+    endpoint = "0.0.0.0:4318"
+  }
+  output {
+    metrics = [otelcol.exporter.prometheus.freaks.input]
+    traces  = [otelcol.exporter.otlp.tempo.input]
+  }
+}
+
+otelcol.exporter.prometheus "freaks" {
+  forward_to = [prometheus.remote_write.grafanacloud.receiver]
+}
+
+// Отправляем трейсы в Grafana Cloud Tempo
+otelcol.exporter.otlp "tempo" {
+  client {
+    endpoint = "your_otlp_url"
+    auth     = otelcol.auth.basic.tempo.handler
+  }
+}
+
+otelcol.auth.basic "tempo" {
+  username = "your_tempo_username"
+  password = "your_tempo_password"
+}
+
+// Экспорт метрик самого Alloy
+prometheus.exporter.self "alloy" { }
+
+prometheus.scrape "alloy_metrics" {
+  targets    = prometheus.exporter.self.alloy.targets
+  forward_to = [prometheus.remote_write.grafanacloud.receiver]
+}
+
+prometheus.remote_write "grafanacloud" {
+  endpoint {
+    url = "your_prometheus_url"
+
+    basic_auth {
+      username = "your_prometheus_username"
+      password = "your_prometheus_password"
+    }
+  }
+
+  external_labels = {
+    cluster = "freaks-aa",
+  }
+}
+
+// Логирование для отладки Alloy
+logging {
+  level  = "info"
+  format = "logfmt"
+}

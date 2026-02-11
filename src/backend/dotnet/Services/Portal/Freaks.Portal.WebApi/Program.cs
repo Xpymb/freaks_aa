@@ -3,6 +3,7 @@ using Freaks.Portal.Bll.Implementation;
 using Freaks.Portal.Dal.Implementation;
 using Freaks.Portal.Dal.Persistence;
 using Freaks.Portal.SharedContracts.Requests.SalarySummary.Salary.Validators;
+using Freaks.Telemetry.Common.Extensions;
 using Freaks.Users.Common;
 using Freaks.Users.Dal.Persistence;
 using Freaks.WebApi.Common.Extensions;
@@ -15,6 +16,8 @@ builder.Services.AddControllers();
 builder.Services.AddDefaults(builder.Configuration);
 builder.Services.AddValidation(typeof(CreateSalaryRequestValidator).Assembly);
 builder.Services.AddNSwag();
+builder.AddNLogCommon();
+builder.Services.AddMetricsAndTraces(builder.Environment, builder.Configuration);
 
 // Auth
 builder.Services.AddKeycloakAuth(builder.Configuration);
