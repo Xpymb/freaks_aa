@@ -102,7 +102,7 @@ services:
     ports:
       - "12345:12345"  # Alloy UI
     volumes:
-      - ./GrafanaLoki/config.alloy:/etc/alloy/config.alloy:ro
+      - ./GrafanaAlloy/config.alloy:/etc/alloy/config.alloy:ro
       - alloy-data:/var/lib/alloy
     command:
       - run
