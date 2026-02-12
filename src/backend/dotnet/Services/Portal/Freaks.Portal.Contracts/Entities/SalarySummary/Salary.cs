@@ -84,4 +84,10 @@ public class Salary : IEntity<long>
     /// </summary>
     [Column("updated_dt")]
     public DateTime? UpdatedDt { get; set; }
+
+    /// <summary>
+    ///     Признак: зарплатный период завершён
+    /// </summary>
+    [Column("is_finished")]
+    public bool IsFinished { get; set; }
 }

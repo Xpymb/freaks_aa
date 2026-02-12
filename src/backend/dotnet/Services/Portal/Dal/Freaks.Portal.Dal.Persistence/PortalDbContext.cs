@@ -78,6 +78,9 @@ public class PortalDbContext : DbContext, IPortalDbContext
     public DbSet<SalaryExpenses> SalaryExpenses { get; init; }
 
     /// <inheritdoc />
+    public DbSet<SalaryFinalReport> SalaryFinalReports { get; init; }
+
+    /// <inheritdoc />
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

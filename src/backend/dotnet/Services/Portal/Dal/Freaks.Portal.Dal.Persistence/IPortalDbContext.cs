@@ -95,4 +95,9 @@ public interface IPortalDbContext : IBaseDbContext
     ///    Набор расходов в зарплатных отчётах.
     /// </summary>
     DbSet<SalaryExpenses> SalaryExpenses { get; }
+
+    /// <summary>
+    ///     Набор итоговых отчётов зарплатных периодов.
+    /// </summary>
+    DbSet<SalaryFinalReport> SalaryFinalReports { get; }
 }
