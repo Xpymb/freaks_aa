@@ -1,6 +1,7 @@
 using Freaks.Portal.Bll.Implementation.SalarySummary.Helpers;
 using Freaks.Portal.Contracts.Entities.SalarySummary;
 using Freaks.Portal.Contracts.ValueObjects.RaidSummary;
+using Freaks.Portal.Contracts.ValueObjects.SalarySummary;
 using Freaks.Portal.SharedContracts.ValueObjects.Loot;
 using Freaks.Portal.SharedContracts.ValueObjects.RaidSummary;
 using Freaks.Portal.SharedContracts.ValueObjects.SalarySummary;
@@ -14,12 +15,12 @@ namespace Freaks.Portal.Bll.Implementation.SalarySummary.Algorithms;
 /// </summary>
 public class BasicSalaryAlgorithm
 {
-    private readonly Salary _salary;
-    private readonly IList<SalaryLoot> _loot;
-    private readonly IList<SalaryGuildLeader> _guildLeader;
-    private readonly IList<SalaryExpenses> _expenses;
-    private readonly IList<SalaryMember> _members;
-    private readonly IList<RaidFullInfo> _raids;
+    private Salary _salary;
+    private IList<SalaryLoot> _loot;
+    private IList<SalaryGuildLeader> _guildLeader;
+    private IList<SalaryExpenses> _expenses;
+    private IList<SalaryMember> _members;
+    private IList<RaidFullInfo> _raids;
 
     private Dictionary<Guid, MemberCalculation> _calculations = new();
     private decimal _undistributed;
@@ -27,50 +28,40 @@ public class BasicSalaryAlgorithm
     /// <summary>
     ///     Инициализирует новый экземпляр алгоритма расчета зарплат.
     /// </summary>
-    /// <param name="raids">Список рейдов за период с полной информацией.</param>
-    /// <param name="salary">Зарплатный период.</param>
-    /// <param name="loot">Проданный лут за период.</param>
-    /// <param name="guildLeader">Доли руководства гильдии.</param>
-    /// <param name="expenses">Расходы и отчисления периода.</param>
-    /// <param name="members">Участники зарплатного периода.</param>
-    public BasicSalaryAlgorithm(
-        IList<RaidFullInfo> raids,
-        Salary salary,
-        IList<SalaryLoot> loot,
-        IList<SalaryGuildLeader> guildLeader,
-        IList<SalaryExpenses> expenses,
-        IList<SalaryMember> members)
+    public BasicSalaryAlgorithm(SalaryCalculationData calculationData)
     {
-        _raids = raids;
-        _salary = salary;
-        _loot = loot;
-        _guildLeader = guildLeader;
-        _expenses = expenses;
-        _members = members;
+        _salary = calculationData.Salary;
+        _loot = calculationData.SalaryLoots;
+        _guildLeader = calculationData.SalaryGuildLeaderExpanses;
+        _expenses = calculationData.SalaryExpenses;
+        _members = calculationData.SalaryMembers;
+        _raids = calculationData.RaidFullInfos;
     }
 
     /// <summary>
     ///     Главный метод расчёта зарплат
     /// </summary>
-    public IList<SalaryMember> Calculate()
+    public SalaryCalculationResults Calculate()
     {
-        if (_members.Count == 0)
-        {
-            return new List<SalaryMember>();
-        }
+        var emptyResult = new SalaryCalculationResults(
+            new List<SalaryMemberCalculationResult>(),
+            0,
+            0,
+            0,
+            0,
+            0);
 
-        SetAllMembersToZero();
-
-        if (_raids.Count == 0)
+        if (_members.Count == 0
+            || _raids.Count == 0)
         {
-            return _members;
+            return emptyResult;
         }
 
         // Пул для распределения
         var distributionPool = CalculateDistributionPool();
         if (distributionPool <= 0)
         {
-            return _members;
+            return emptyResult;
         }
 
         // Создаём инвентарь лута для списания
@@ -85,14 +76,26 @@ public class BasicSalaryAlgorithm
         // Распределение голды за ответственность
         DistributeResponsibilityGold();
 
-        // Запись по типу выплаты
+        // Сборка результатов по участникам
         var (availableWb, pricePerWb) = GetWorldBossInfusionInfo();
-        AssignPaymentTypes(pricePerWb);
+        var memberResults = BuildMemberResults(pricePerWb);
 
         // Балансировка РБ
-        BalanceWorldBossInfusions(availableWb, pricePerWb);
+        memberResults = BalanceWorldBossInfusions(memberResults, availableWb, pricePerWb);
 
-        return _members;
+        // Подсчёт итоговых значений для отчёта
+        var goldForSalary = memberResults.Sum(m => m.AmountGold);
+        var wbForSalary = memberResults.Sum(m => m.AmountWorldBossInfusion);
+        var wbForSale = availableWb - wbForSalary;
+        var erenorForSalary = memberResults.Sum(m => m.AmountErenorInfusion);
+
+        return new SalaryCalculationResults(
+            memberResults,
+            goldForSalary,
+            wbForSalary,
+            wbForSale,
+            erenorForSalary,
+            0m);
     }
 
     /// <summary>
@@ -242,12 +245,14 @@ public class BasicSalaryAlgorithm
     }
 
     /// <summary>
-    ///     Шаг 6: Запись результатов в SalaryMember по типу выплаты
+    ///     Шаг 6: Сборка результатов расчёта по каждому участнику.
+    ///     Не мутирует SalaryMember, а возвращает список SalaryMemberCalculationResult.
     ///     AmountWorldBossInfusion = опыт синтеза (goldShare / pricePerSynthesisExp)
     /// </summary>
-    private void AssignPaymentTypes(decimal pricePerSynthesisExp)
+    private List<SalaryMemberCalculationResult> BuildMemberResults(decimal pricePerSynthesisExp)
     {
         var totalRaids = _raids.Count;
+        var results = new List<SalaryMemberCalculationResult>();
 
         foreach (var member in _members)
         {
@@ -257,80 +262,104 @@ public class BasicSalaryAlgorithm
             var raidCount = calc?.RaidCount ?? 0;
             var totalGold = activityGold + responsibilityGold;
 
-            member.ActivityGold = activityGold;
-            member.ResponsibilityGold = responsibilityGold;
-            member.ActivityPercentage = totalRaids > 0
+            var activityPercentage = totalRaids > 0
                 ? (decimal)raidCount / totalRaids * 100
                 : 0m;
+
+            decimal amountGold;
+            decimal amountWorldBossInfusion;
 
             switch (member.PaymentType)
             {
                 case SalaryPaymentType.Gold:
-                    member.AmountGold = totalGold;
-                    member.AmountWorldBossInfusion = 0m;
+                    amountGold = totalGold;
+                    amountWorldBossInfusion = 0m;
                     break;
 
                 case SalaryPaymentType.WorldBossInfusion:
                     if (pricePerSynthesisExp > 0)
                     {
-                        member.AmountWorldBossInfusion = totalGold / pricePerSynthesisExp;
-                        member.AmountGold = 0m;
+                        amountWorldBossInfusion = totalGold / pricePerSynthesisExp;
+                        amountGold = 0m;
                     }
                     else
                     {
-                        member.AmountGold = totalGold;
-                        member.AmountWorldBossInfusion = 0m;
+                        amountGold = totalGold;
+                        amountWorldBossInfusion = 0m;
                     }
                     break;
 
                 default:
-                    // Для других типов выплат (например ErenorInfusion) пока устанавливаем в золото
-                    member.AmountGold = totalGold;
-                    member.AmountWorldBossInfusion = 0m;
+                    amountGold = totalGold;
+                    amountWorldBossInfusion = 0m;
                     break;
             }
+
+            results.Add(new SalaryMemberCalculationResult(
+                member.UserId,
+                activityPercentage,
+                activityGold,
+                responsibilityGold,
+                amountGold,
+                amountWorldBossInfusion,
+                0m));
         }
+
+        return results;
     }
 
     /// <summary>
     ///     Шаг 7: Балансировка РБ инфузий - если не хватает опыта синтеза, компенсируем золотом
     /// </summary>
-    private void BalanceWorldBossInfusions(decimal availableSynthesisExp, decimal pricePerSynthesisExp)
+    private List<SalaryMemberCalculationResult> BalanceWorldBossInfusions(
+        List<SalaryMemberCalculationResult> memberResults,
+        decimal availableSynthesisExp,
+        decimal pricePerSynthesisExp)
     {
         if (pricePerSynthesisExp <= 0)
         {
-            return;
+            return memberResults;
         }
 
-        var wbMembers = _members
+        var wbMemberIds = _members
             .Where(m => m.PaymentType == SalaryPaymentType.WorldBossInfusion)
-            .ToList();
+            .Select(m => m.UserId)
+            .ToHashSet();
 
-        if (wbMembers.Count == 0)
+        if (wbMemberIds.Count == 0)
         {
-            return;
+            return memberResults;
         }
 
-        var totalRequestedExp = wbMembers.Sum(m => m.AmountWorldBossInfusion ?? 0m);
+        var totalRequestedExp = memberResults
+            .Where(m => wbMemberIds.Contains(m.MemberId))
+            .Sum(m => m.AmountWorldBossInfusion);
 
         if (totalRequestedExp <= availableSynthesisExp)
         {
-            return;
+            return memberResults;
         }
 
         // Не хватает опыта синтеза - пропорционально уменьшаем и компенсируем золотом
         var ratio = availableSynthesisExp / totalRequestedExp;
 
-        foreach (var member in wbMembers)
+        return memberResults.Select(m =>
         {
-            var originalExp = member.AmountWorldBossInfusion ?? 0m;
-            var actualExp = originalExp * ratio;
-            var deficitExp = originalExp - actualExp;
+            if (!wbMemberIds.Contains(m.MemberId))
+            {
+                return m;
+            }
+
+            var actualExp = m.AmountWorldBossInfusion * ratio;
+            var deficitExp = m.AmountWorldBossInfusion - actualExp;
             var goldCompensation = deficitExp * pricePerSynthesisExp;
 
-            member.AmountWorldBossInfusion = actualExp;
-            member.AmountGold = goldCompensation;
-        }
+            return m with
+            {
+                AmountWorldBossInfusion = actualExp,
+                AmountGold = goldCompensation
+            };
+        }).ToList();
     }
 
     /// <summary>
@@ -440,18 +469,6 @@ public class BasicSalaryAlgorithm
         _calculations[userId] = calc;
 
         return calc;
-    }
-
-    private void SetAllMembersToZero()
-    {
-        foreach (var member in _members)
-        {
-            member.ActivityPercentage = 0m;
-            member.ActivityGold = 0m;
-            member.ResponsibilityGold = 0m;
-            member.AmountGold = 0m;
-            member.AmountWorldBossInfusion = 0m;
-        }
     }
 
     /// <summary>

@@ -45,6 +45,7 @@ public static class ConfigureServices
         services.AddScoped<ISalaryLootService, SalaryLootService>();
         services.AddScoped<ISalaryGuildLeaderService, SalaryGuildLeaderService>();
         services.AddScoped<ISalaryExpensesService, SalaryExpensesService>();
+        services.AddScoped<ISalaryFinalReportService, SalaryFinalReportService>();
         services.AddScoped<ISalaryMemberService, SalaryMemberService>();
         services.AddScoped<ISalaryCalculationService, SalaryCalculationService>();
         services.AddScoped<ISalaryStepService, SalaryStepService>();

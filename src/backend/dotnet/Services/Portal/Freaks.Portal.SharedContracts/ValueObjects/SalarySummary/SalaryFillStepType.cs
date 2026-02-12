@@ -29,4 +29,9 @@ public enum SalaryFillStepType
     ///     Итоговый отчёт
     /// </summary>
     FinalReports = 40,
+
+    /// <summary>
+    ///     Распределение зарплат участникам
+    /// </summary>
+    Members = 50,
 }

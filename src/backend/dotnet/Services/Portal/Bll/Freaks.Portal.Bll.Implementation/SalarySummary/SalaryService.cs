@@ -150,7 +150,7 @@ public class SalaryService : ISalaryService
     {
         return _unitOfWork.ExecuteInsideTransactionAsync(async _ =>
         {
-            await _stepService.HandleStepActionAsync(id, SalaryFillStepType.FinalReports);
+            await _stepService.HandleStepActionAsync(id, SalaryFillStepType.Members);
 
             var entity = await _provider.GetAsync(id, EntityTrackingType.NoTracking);
             if (entity is null)
@@ -158,7 +158,7 @@ public class SalaryService : ISalaryService
                 throw new EntityNotFoundException(nameof(Salary));
             }
 
-            entity.FillStepType = SalaryFillStepType.FinalReports;
+            entity.IsFinished = true;
 
             entity.UpdatedDt = DateTime.UtcNow;
 

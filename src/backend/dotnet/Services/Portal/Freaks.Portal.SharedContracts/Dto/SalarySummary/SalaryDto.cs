@@ -16,6 +16,7 @@ namespace Freaks.Portal.SharedContracts.Dto.SalarySummary;
 /// <param name="AllowedPaymentTypes">Разрешённые способы получения ЗП.</param>
 /// <param name="UseCoefficients">Признак: использовать коэффициентную систему.</param>
 /// <param name="BossTypes">Учитываемые боссы.</param>
+/// <param name="IsFinished">Признак: зарплатный период завершён.</param>
 public record SalaryDto(
     long Id,
     string Name,
@@ -25,4 +26,5 @@ public record SalaryDto(
     SalaryRegistrationStatus RegistrationStatus,
     IList<SalaryPaymentType> AllowedPaymentTypes,
     bool UseCoefficients,
-    IList<BossType> BossTypes);
+    IList<BossType> BossTypes,
+    bool IsFinished);
