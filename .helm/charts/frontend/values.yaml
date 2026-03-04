@@ -17,7 +17,7 @@ ingress:
 auth:
   clientId: frontend
 limits:
-  memoryRequests: "500Mi"
-  memoryLimits: "1Gi"
-  cpuRequests: "500m"
+  memoryRequests: "200Mi"
+  memoryLimits: "512Mi"
+  cpuRequests: "100m"
   cpuLimits: "500m"
