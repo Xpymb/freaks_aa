@@ -15,7 +15,7 @@ RUN dotnet ef migrations bundle \
       --context UserDbContext \
       --output /out/efbundle
 
-FROM mcr.microsoft.com/dotnet/runtime:$DOTNET_SDK_VERSION
+FROM mcr.microsoft.com/dotnet/aspnet:$DOTNET_SDK_VERSION
 WORKDIR /app
 COPY --from=build /out/efbundle /app/efbundle
 ENTRYPOINT ["/app/efbundle"]
