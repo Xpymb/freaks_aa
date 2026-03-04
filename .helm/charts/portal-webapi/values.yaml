@@ -26,7 +26,7 @@ redis:
 centifugo:
   url: "http://centrifugo.freaks.svc.cluster.local:9000/api"
 limits:
-  memoryRequests: "500Mi"
-  memoryLimits: "1Gi"
-  cpuRequests: "500m"
+  memoryRequests: "200Mi"
+  memoryLimits: "512Mi"
+  cpuRequests: "100m"
   cpuLimits: "500m"
