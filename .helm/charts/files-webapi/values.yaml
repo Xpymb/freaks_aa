@@ -17,7 +17,7 @@ kcAdmin:
   verifyTokenAudience: "true"
   confidentialPort: "0"
 redis:
-  host: "redis-master.freaks-dev.svc.cluster.local"
+  host: "redis-master.freaks.svc.cluster.local"
   port: "6379"
   database: "0"
   connectTimeout: "60000"
@@ -27,7 +27,7 @@ s3:
   defaultBucketName: "3b49aa04-dfa87595-9ac1-49da-82e3-ebabea7b3c0f"
   withSsl: "true"
 limits:
-  memoryRequests: "500Mi"
-  memoryLimits: "1Gi"
-  cpuRequests: "500m"
-  cpuLimits: "1000m"
+  memoryRequests: "200Mi"
+  memoryLimits: "512Mi"
+  cpuRequests: "100m"
+  cpuLimits: "500m"
