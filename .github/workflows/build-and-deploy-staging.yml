@@ -49,6 +49,7 @@ jobs:
           source "$(werf ci-env github --as-file)"
           werf converge \
             --env "$WERF_ENV" \
+            --namespace freaks \
             --kube-config-base64 "$WERF_KUBECONFIG_BASE64"
         env:
           WERF_ENV: dev
