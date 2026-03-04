@@ -7,4 +7,4 @@ COPY . .
 
 RUN dotnet restore --verbosity m ./Freaks.slnx
 
-RUN dotnet publish --no-restore ./Freaks.slnx --configuration Release -p:Version=1.0.0
+RUN dotnet publish --no-restore ./Freaks.slnx --configuration Release -p:Version=1.0.0 -maxcpucount:1
