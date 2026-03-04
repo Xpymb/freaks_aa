@@ -9,6 +9,7 @@ ENV ASPNETCORE_ENVIRONMENT=Staging
 
 COPY . .
 RUN dotnet restore Shared/Users/Freaks.Users.Dal/Freaks.Users.Dal.csproj
+RUN dotnet build Shared/Users/Freaks.Users.Dal/Freaks.Users.Dal.csproj --no-restore -v detailed
 RUN dotnet ef migrations bundle \
       --project Shared/Users/Freaks.Users.Dal/Freaks.Users.Dal.csproj \
       --context UserDbContext \
