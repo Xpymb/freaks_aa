@@ -12,7 +12,6 @@ RUN dotnet restore Shared/Users/Freaks.Users.Dal/Freaks.Users.Dal.csproj
 RUN dotnet ef migrations bundle \
       --project Shared/Users/Freaks.Users.Dal/Freaks.Users.Dal.csproj \
       --context UserDbContext \
-      --runtime linux-x64 --self-contained \
       --output /out/efbundle
 
 FROM mcr.microsoft.com/dotnet/runtime-deps:$DOTNET_SDK_VERSION
