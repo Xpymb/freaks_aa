@@ -12,7 +12,6 @@ RUN dotnet restore Services/Portal/Dal/Freaks.Portal.Dal.Persistence/Freaks.Port
 RUN dotnet ef migrations bundle \
       --project Services/Portal/Dal/Freaks.Portal.Dal.Persistence/Freaks.Portal.Dal.Persistence.csproj \
       --context PortalDbContext \
-      --runtime linux-x64 --self-contained \
       --output /out/efbundle
 
 FROM mcr.microsoft.com/dotnet/runtime-deps:$DOTNET_SDK_VERSION
