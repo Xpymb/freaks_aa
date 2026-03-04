@@ -1,4 +1,4 @@
-ARG DOTNET_SDK_VERSION=9.0-alpine3.22
+ARG DOTNET_SDK_VERSION=10.0-alpine3.22
 FROM mcr.microsoft.com/dotnet/sdk:$DOTNET_SDK_VERSION AS build
 WORKDIR /src
 
