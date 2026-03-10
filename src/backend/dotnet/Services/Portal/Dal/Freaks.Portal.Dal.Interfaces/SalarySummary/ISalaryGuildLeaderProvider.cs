@@ -15,4 +15,10 @@ public interface ISalaryGuildLeaderProvider : IBaseProvider<SalaryGuildLeader, l
     /// <param name="salaryId">Идентификатор зарплатного периода.</param>
     /// <returns>Список долей руководства гильдии в зарплате.</returns>
     Task<IList<SalaryGuildLeader>> GetBySalaryIdAsync(long salaryId);
+
+    /// <summary>
+    ///     Удаляет все записи долей руководства гильдии по идентификатору зарплатного периода.
+    /// </summary>
+    /// <param name="salaryId">Идентификатор зарплатного периода.</param>
+    Task DeleteBySalaryIdAsync(long salaryId);
 }

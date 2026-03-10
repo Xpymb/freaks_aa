@@ -75,6 +75,13 @@ public class SalaryGuildLeaderProvider : BaseCachedProvider<SalaryGuildLeader, l
     }
 
     /// <inheritdoc />
+    public async Task DeleteBySalaryIdAsync(long salaryId)
+    {
+        await RemoveCacheAsync(salaryId);
+        await Set.Where(gl => gl.SalaryId == salaryId).ExecuteDeleteAsync();
+    }
+
+    /// <inheritdoc />
     protected override string GetCacheKey(long key)
     {
         return $"{nameof(SalaryGuildLeader)}:{key}";

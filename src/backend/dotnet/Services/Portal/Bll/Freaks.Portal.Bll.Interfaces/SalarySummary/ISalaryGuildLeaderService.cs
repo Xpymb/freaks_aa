@@ -25,6 +25,15 @@ public interface ISalaryGuildLeaderService
     Task<SalaryGuildLeaderDto> CreateAsync(long salaryId, CreateSalaryGuildLeaderRequest request);
 
     /// <summary>
+    ///     Полностью заменяет список долей руководства гильдии в зарплатном периоде.
+    ///     Все существующие записи удаляются и создаются заново на основе переданного запроса.
+    /// </summary>
+    /// <param name="salaryId">Идентификатор зарплатного периода.</param>
+    /// <param name="request">Запрос с новым списком долей руководства гильдии.</param>
+    /// <returns>Актуальный список долей руководства гильдии в виде DTO.</returns>
+    Task<IList<SalaryGuildLeaderDto>> SetAsync(long salaryId, SetSalaryGuildLeaderRequest request);
+
+    /// <summary>
     ///     Обновляет информацию о доле руководства гильдии в зарплатном периоде.
     ///     Amount пересчитывается по формуле: Quantity * PricePerLoot.
     /// </summary>

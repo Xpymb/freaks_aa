@@ -83,6 +83,31 @@ public class SalaryGuildLeaderService : ISalaryGuildLeaderService
     }
 
     /// <inheritdoc />
+    public Task<IList<SalaryGuildLeaderDto>> SetAsync(long salaryId, SetSalaryGuildLeaderRequest request)
+    {
+        return _unitOfWork.ExecuteInsideTransactionAsync(async _ =>
+        {
+            await _stepService.HandleStepActionAsync(salaryId, SalaryFillStepType.GuildLeaderSalary);
+
+            await _provider.DeleteBySalaryIdAsync(salaryId);
+
+            var entities = request.SalaryGuildLeaders.Select(gl => new SalaryGuildLeader
+            {
+                Id = gl.SalaryLootId,
+                SalaryId = salaryId,
+                Quantity = gl.Quantity,
+            })
+                .ToList();
+
+            var result = await _provider.SetAsync(entities);
+
+            await PublishMessageAsync(salaryId, EntityActionType.Created);
+
+            return _mapper.Map<IList<SalaryGuildLeaderDto>>(result);
+        });
+    }
+
+    /// <inheritdoc />
     public Task<SalaryGuildLeaderDto> UpdateAsync(long salaryId, long salaryLootId, UpdateSalaryGuildLeaderRequest request)
     {
         return _unitOfWork.ExecuteInsideTransactionAsync(async _ =>

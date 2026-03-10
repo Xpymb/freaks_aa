@@ -54,6 +54,20 @@ public class SalaryGuildLeaderController : ControllerBase
     }
 
     /// <summary>
+    ///     Полностью заменяет список долей руководства гильдии в указанном зарплатном периоде.
+    ///     Все существующие записи удаляются и создаются заново.
+    /// </summary>
+    /// <param name="salaryId">Идентификатор зарплатного периода.</param>
+    /// <param name="request">Новый список долей руководства гильдии.</param>
+    /// <returns>Актуальный список долей руководства гильдии после замены.</returns>
+    [RequireRoles(UserRole.Admin, UserRole.GuildLeader)]
+    [HttpPost("set")]
+    public Task<IList<SalaryGuildLeaderDto>> SetAsync([FromRoute] long salaryId, [FromBody] SetSalaryGuildLeaderRequest request)
+    {
+        return _service.SetAsync(salaryId, request);
+    }
+
+    /// <summary>
     ///     Обновляет информацию о доле руководства гильдии в указанном зарплатном периоде.
     ///     Amount пересчитывается по формуле: Quantity * PricePerLoot.
     /// </summary>
