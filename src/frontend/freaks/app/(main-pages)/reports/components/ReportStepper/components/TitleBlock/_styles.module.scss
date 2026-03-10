@@ -1,0 +1,13 @@
+@use "@/ThemeMUI/variables" as *;
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.25rem;
+  padding: 0 0 1rem;
+  .title {
+  }
+  .subtitle {
+    color: $mutedColor;
+  }
+}

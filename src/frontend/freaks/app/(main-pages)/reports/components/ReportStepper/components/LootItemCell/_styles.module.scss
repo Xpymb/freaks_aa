@@ -1,0 +1,41 @@
+.cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 100%;
+}
+
+.iconWrapper {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.icon {
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.gradeMask {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.fallback {
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+}
+
+.name {
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

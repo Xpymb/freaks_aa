@@ -5,8 +5,9 @@
   padding: 8px 0;
   background: transparent !important;
 
-  // Жестко переопределяем стили MUI Stepper
   :global(.MuiStepper-root) {
+    display: flex !important;
+    column-gap: 1rem;
     background: transparent !important;
     padding: 0 !important;
   }

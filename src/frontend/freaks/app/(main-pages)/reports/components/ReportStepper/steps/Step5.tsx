@@ -1,6 +1,7 @@
 import { CustomTypography } from "@/components";
+import type { StepProps } from "../ReportStepper";
 
-const Step5 = () => {
+const Step5 = ({ salaryId }: StepProps) => {
   return (
     <div style={{ padding: "40px", textAlign: "center" }}>
       <CustomTypography variant="h5" fontWeight={600}>

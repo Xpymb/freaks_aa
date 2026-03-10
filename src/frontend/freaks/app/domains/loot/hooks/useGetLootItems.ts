@@ -7,9 +7,7 @@ import type { LootItemDto } from "../types";
 export function useGetLootItems() {
   const { data, isLoading, errorState, mutate } = useProtectedSWR<
     LootItemDto[]
-  >("/loot-items", (token) => LootService.getLootItems(token), {
-    revalidateOnMount: false,
-  });
+  >("/loot-items", (token) => LootService.getLootItems(token));
 
   return {
     lootItems: data ?? [],

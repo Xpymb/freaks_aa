@@ -1,0 +1,21 @@
+.adornment {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  overflow: hidden;
+  flex-shrink: 0;
+  margin-right: 4px;
+}
+
+.adornmentIcon {
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.adornmentMask {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}

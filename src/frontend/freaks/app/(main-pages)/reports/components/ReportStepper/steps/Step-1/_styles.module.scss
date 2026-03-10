@@ -1,0 +1,45 @@
+@use "@/ThemeMUI/variables" as *;
+
+.wrapper {
+  padding: $StepperBodyPadding;
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  box-sizing: border-box;
+
+  .title {
+    color: $PrimaryStepperColor;
+    margin-bottom: 24px;
+  }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sectionTitle {
+  color: $SecondaryStepperColor;
+  font-weight: 600;
+}
+
+.row {
+  max-width: 480px;
+}
+
+.requiredHint {
+  display: block;
+  margin-top: 24px;
+  color: rgba(255, 255, 255, 0.5);
+
+  &::first-letter {
+    color: #ce93d8;
+  }
+}

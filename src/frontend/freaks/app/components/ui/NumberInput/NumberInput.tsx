@@ -3,11 +3,11 @@
 import { IconButton, OutlinedInput } from "@mui/material";
 import { Add, Remove } from "@mui/icons-material";
 import {
-  Controller,
   type Control,
+  Controller,
+  type ControllerProps,
   type FieldPath,
   type FieldValues,
-  type ControllerProps,
 } from "react-hook-form";
 import styles from "./_styles.module.scss";
 import { CustomTypography } from "../CustomTypography";
@@ -66,7 +66,7 @@ const NumberInput = ({
         >
           <Remove />
         </IconButton>
-        
+
         <OutlinedInput
           value={value}
           onChange={handleInputChange}
@@ -76,11 +76,11 @@ const NumberInput = ({
             min,
             max,
             type: "number",
-            style: { textAlign: "center" }
+            style: { textAlign: "center" },
           }}
           className={styles.input}
         />
-        
+
         <IconButton
           onClick={handleIncrement}
           disabled={disabled || value >= max}
@@ -126,9 +126,7 @@ export function NumberInputField<FV extends FieldValues>({
             onChange={field.onChange}
           />
           {fieldState.error && (
-            <div className={styles.errorText}>
-              {fieldState.error.message}
-            </div>
+            <div className={styles.errorText}>{fieldState.error.message}</div>
           )}
         </div>
       )}

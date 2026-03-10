@@ -1,7 +1,8 @@
 "use client";
 
-import { createTheme, ThemeProvider, alpha } from "@mui/material/styles";
+import { alpha, createTheme, ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
+import "@mui/x-data-grid/themeAugmentation";
 import { NextAppDirEmotionCacheProvider } from "./EmotionCache";
 
 // ── Palette расширения (как у тебя)
@@ -61,6 +62,36 @@ const baseTheme = createTheme({
     MuiCssBaseline: {
       styleOverrides: {
         body: { colorScheme: "dark" },
+      },
+    },
+    MuiDataGrid: {
+      styleOverrides: {
+        root: {
+          "--DataGrid-rowBorderColor": "rgba(255,255,255,0.07)",
+          "--DataGrid-containerBackground": "rgba(50, 48, 62, 1)",
+          backgroundColor: "rgba(50, 48, 62, 1)",
+          fontSize: "13px",
+        },
+        columnHeaders: {
+          "--DataGrid-t-header-background-base": "rgba(191, 184, 255, 0.05)",
+          position: "relative",
+          zIndex: 2,
+        },
+        columnHeader: {
+          color: "rgba(255,255,255,0.6)",
+          fontSize: "12px",
+        },
+        overlay: {
+          backgroundColor: "transparent",
+        },
+        cell: {
+          borderColor: "rgba(255,255,255,0.07)",
+        },
+        row: {
+          "&:hover": {
+            backgroundColor: "rgba(255,255,255,0.025)",
+          },
+        },
       },
     },
   },
@@ -227,14 +258,14 @@ const theme = createTheme(tokensTheme, {
           backgroundColor: alpha(tokensTheme.palette.primary.main, 0.06),
           borderBottom: `1px solid ${alpha(
             tokensTheme.palette.text.primary,
-            0.12
+            0.12,
           )}`,
         },
         body: {
           ...tokensTheme.typography.tableBody,
           borderBottom: `1px solid ${alpha(
             tokensTheme.palette.text.primary,
-            0.06
+            0.06,
           )}`,
         },
       },

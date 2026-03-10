@@ -36,6 +36,7 @@ type BaseProps<T extends string | number> = {
   loadingText?: string;
   noOptionsText?: string;
   renderOption?: (props: React.HTMLAttributes<HTMLLIElement>, option: Option<T>) => React.ReactNode;
+  renderStartAdornment?: (option: Option<T>) => React.ReactNode;
 };
 
 function SingleAutoInner<T extends string | number>({
@@ -56,6 +57,7 @@ function SingleAutoInner<T extends string | number>({
   loadingText = "Загрузка...",
   noOptionsText = "Нет вариантов",
   renderOption,
+  renderStartAdornment,
 }: BaseProps<T>) {
   const selected = React.useMemo(
     () => options.find((o) => o.value === value) || null,
@@ -75,6 +77,7 @@ function SingleAutoInner<T extends string | number>({
       value={selected}
       onChange={handleChange}
       getOptionLabel={(o) => o.label}
+      getOptionKey={(o) => o.value}
       isOptionEqualToValue={(a, b) => a.value === b.value}
       fullWidth={fullWidth}
       disabled={disabled}
@@ -91,6 +94,12 @@ function SingleAutoInner<T extends string | number>({
           size={size}
           error={error}
           helperText={helperText}
+          InputProps={{
+            ...params.InputProps,
+            startAdornment: selected && renderStartAdornment
+              ? renderStartAdornment(selected)
+              : params.InputProps.startAdornment,
+          }}
         />
       )}
     />

@@ -20,6 +20,7 @@ export const BossType = {
   Anthalon: 9,
   AbyssalSehekmet: 10,
   Kaliel: 11,
+  Risopoda: 12,
 } as const;
 export type BossType = (typeof BossType)[keyof typeof BossType];
 

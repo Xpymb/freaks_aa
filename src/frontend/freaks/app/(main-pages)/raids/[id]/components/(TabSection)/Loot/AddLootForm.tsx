@@ -6,16 +6,12 @@ import { Button } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import { CustomTypography } from "@/components/ui/CustomTypography";
 import { NumberInputField } from "@/components/ui/NumberInput/NumberInput";
-import {
-  SingleAutoField,
-  type Option,
-} from "@/components/ui/formInputs/SingleAutocomplete";
-import { RaidLootService, LootGradeType } from "@/domains/raids";
 import { LootItemDto } from "@/domains/loot";
-import { useAuth } from "@/store/authTokenStore";
-import { addLootSchema, type AddLootFormData } from "./addLootSchema";
-import CustomImage from "@/components/ui/CustomImage";
+import { useRaidLootMutations } from "@/domains/raids/hooks/useRaidLootMutations";
+import { type AddLootFormData, addLootSchema } from "./addLootSchema";
+import { LootAutoField } from "@/shared/components/LootAutoField/LootAutoField";
 import styles from "./_styles.module.scss";
+import React from "react";
 
 type Props = {
   raidId: number;
@@ -24,18 +20,13 @@ type Props = {
 };
 
 const AddLootForm = ({ raidId, onLootAdded, prefetchLootItems }: Props) => {
-  const { accessToken } = useAuth();
+  const { createLoot, isCreating } = useRaidLootMutations(raidId);
 
-  // Используем префетч данные вместо клиентского запроса
-  const lootItems = prefetchLootItems;
-  const isLoading = false;
-
-  // Настраиваем React Hook Form с Zod валидацией
   const {
     control,
     handleSubmit,
     reset,
-    formState: { isSubmitting, errors },
+    formState: { errors },
   } = useForm<AddLootFormData>({
     resolver: zodResolver(addLootSchema),
     defaultValues: {
@@ -43,94 +34,10 @@ const AddLootForm = ({ raidId, onLootAdded, prefetchLootItems }: Props) => {
     },
   });
 
-  // Конвертируем LootItemDto в Option для автокомплита
-  const lootOptions: Option<number>[] =
-    lootItems?.map((item) => ({
-      value: item.id,
-      label: item.name,
-      data: item, // Добавляем полные данные предмета
-    })) || [];
-
-  // Функция для рендеринга опций в автокомплите
-  const renderLootOption = (
-    props: React.HTMLAttributes<HTMLLIElement>,
-    option: Option<number>
-  ) => {
-    const item = option.data as LootItemDto;
-    if (!item) return <li {...props}>{option.label}</li>;
-
-    const getGradeColor = (gradeType: LootGradeType) => {
-      switch (gradeType) {
-        case LootGradeType.Crude:
-        case LootGradeType.Basic:
-          return "#9e9e9e";
-        case LootGradeType.Rare:
-          return "#2196f3";
-        case LootGradeType.Epic:
-          return "#9c27b0";
-        case LootGradeType.Legendary:
-          return "#ff9800";
-        default:
-          return "#9e9e9e";
-      }
-    };
-
-    return (
-      <li {...props} key={option.value}>
-        <div className={styles.optionContent}>
-          <div className={styles.optionIcon}>
-            {item.iconUri ? (
-              <div className={styles.optionIconContainer}>
-                <CustomImage
-                  src={`${process.env.NEXT_PUBLIC_STORAGE_MEDIA_URL}/${item.iconUri}`}
-                  alt={item.name}
-                  fill
-                  className={styles.optionImage}
-                />
-                <CustomImage
-                  src={`/images/masks/icon_grade${item.gradeType - 1}.png`}
-                  alt="Grade mask"
-                  fill
-                  className={styles.optionGradeMask}
-                />
-              </div>
-            ) : (
-              <div
-                className={styles.optionColorIcon}
-                style={{ backgroundColor: getGradeColor(item.gradeType) }}
-              />
-            )}
-          </div>
-          <div className={styles.optionText}>
-            <div className={styles.optionName}>{item.name}</div>
-            {item.synthesisExp && (
-              <div className={styles.optionSynthesis}>
-                Опыт: {item.synthesisExp}
-              </div>
-            )}
-          </div>
-        </div>
-      </li>
-    );
-  };
-
   const onSubmit = async (data: AddLootFormData) => {
-    if (!accessToken) return;
-
-    try {
-      await RaidLootService.createRaidLoot(accessToken, raidId, {
-        lootId: data.lootId,
-        quantity: data.quantity,
-      });
-
-      // Сбрасываем форму
-      reset();
-
-      // Уведомляем родительский компонент
-      onLootAdded();
-    } catch (error) {
-      console.error("Ошибка при добавлении лута:", error);
-    }
+    await createLoot({ arg: { lootId: data.lootId, quantity: data.quantity } });
+    reset();
+    onLootAdded();
   };
 
   return (
@@ -158,17 +65,13 @@ const AddLootForm = ({ raidId, onLootAdded, prefetchLootItems }: Props) => {
 
           <div className={styles.formRow}>
             <div className={styles.autocompleteWrapper}>
-              <SingleAutoField<AddLootFormData, number>
+              <LootAutoField<AddLootFormData>
                 control={control}
                 name="lootId"
-                options={lootOptions}
+                items={prefetchLootItems}
                 label="Выберите предмет"
                 placeholder="Начните вводить название..."
-                loading={isLoading}
-                disabled={isSubmitting}
-                loadingText="Загрузка..."
-                noOptionsText="Предметы не найдены"
-                renderOption={renderLootOption}
+                disabled={isCreating}
               />
             </div>
 
@@ -179,18 +82,18 @@ const AddLootForm = ({ raidId, onLootAdded, prefetchLootItems }: Props) => {
                 min={1}
                 max={999}
                 label="Количество"
-                disabled={isSubmitting}
+                disabled={isCreating}
               />
             </div>
 
             <Button
               type="submit"
               variant="contained"
-              disabled={isSubmitting}
+              disabled={isCreating}
               startIcon={<Add />}
               className={styles.addButton}
             >
-              {isSubmitting ? "Добавление..." : "Добавить"}
+              {isCreating ? "Добавление..." : "Добавить"}
             </Button>
           </div>
         </div>

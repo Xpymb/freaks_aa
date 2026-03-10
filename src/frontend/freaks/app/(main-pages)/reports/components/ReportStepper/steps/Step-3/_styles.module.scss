@@ -1,0 +1,31 @@
+@use "@/ThemeMUI/variables" as *;
+
+.wrapper {
+  padding: $StepperBodyPadding;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+
+  .tableArea {
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.amountCell {
+  color: #ffd700;
+  font-weight: 600;
+}
+
+.deleteButton {
+  color: rgba(255, 255, 255, 0.3) !important;
+  transition: color 0.15s ease !important;
+
+  &:hover {
+    color: #f44336 !important;
+    background: rgba(244, 67, 54, 0.08) !important;
+  }
+}

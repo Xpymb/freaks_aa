@@ -12,6 +12,7 @@ export const BOSS_LABEL: Record<BossType, string> = {
   9: "Анталлон",
   10: "Кошка",
   11: "Калиель",
+  12: "Жук",
 };
 
 export const RAID_STATUS_LABEL: Record<RaidStatus, string> = {

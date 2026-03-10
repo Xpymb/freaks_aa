@@ -1,20 +1,29 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Button } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { CustomContainer, CustomTypography } from "@/components";
 import ReportCard from "../ReportCard/ReportCard";
 import ReportFilters from "../ReportFilters/ReportFilters";
-import { MOCK_REPORTS } from "@/domains/reports";
 import styles from "./_styles.module.scss";
+import { useGetSalaries } from "@/domains/reports/hooks/SalaryLoot/useGetSalaries";
+import DefaultLoader from "@/components/ui/DefaultLoader/DefaultLoader";
+import ErrorLoadData from "@/components/ui/ErrorLoadData/ErrorLoadData";
 
 type Props = {
   onCreateNew: () => void;
-  onEdit: (reportId: number) => void;
+  onEdit: (salaryId: number) => void;
 };
 
 const ReportList = ({ onCreateNew, onEdit }: Props) => {
+  const { salaries, isLoading, errorState } = useGetSalaries();
+
+  if (isLoading || !salaries) return <DefaultLoader />;
+
+  if (errorState.isError) {
+    return <ErrorLoadData message={errorState.message} />;
+  }
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -26,22 +35,9 @@ const ReportList = ({ onCreateNew, onEdit }: Props) => {
     },
   };
 
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut" as const,
-      },
-    },
-  };
-
   return (
     <CustomContainer maxWidth="lg">
       <div className={styles.wrapper}>
-        {/* Заголовок и кнопка */}
         <div className={styles.header}>
           <CustomTypography variant="h4" fontWeight={700}>
             Отчеты
@@ -56,27 +52,13 @@ const ReportList = ({ onCreateNew, onEdit }: Props) => {
           </Button>
         </div>
 
-        {/* Фильтры */}
         <ReportFilters />
 
-        {/* Список отчетов */}
-        <motion.div
-          className={styles.reportsList}
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          {MOCK_REPORTS.map((report) => (
-            <motion.div
-              key={report.id}
-              variants={itemVariants}
-              whileHover={{ scale: 1.02 }}
-              transition={{ duration: 0.2 }}
-            >
-              <ReportCard report={report} onEdit={onEdit} />
-            </motion.div>
+        <div className={styles.reportsList}>
+          {salaries.map((salary) => (
+            <ReportCard key={salary.id} salary={salary} onEdit={onEdit} />
           ))}
-        </motion.div>
+        </div>
       </div>
     </CustomContainer>
   );

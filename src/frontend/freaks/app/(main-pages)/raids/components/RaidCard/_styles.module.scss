@@ -90,52 +90,6 @@
       transition: all 0.3s ease !important;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
 
-      &::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-          135deg,
-          rgba(255, 255, 255, 0.1),
-          transparent,
-          rgba(255, 255, 255, 0.05)
-        );
-        opacity: 0;
-        transition: opacity 0.3s ease;
-      }
-
-      &::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgba(255, 255, 255, 0.1),
-          transparent
-        );
-        transition: left 0.8s ease;
-      }
-
-      &:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
-
-        &::before {
-          opacity: 1;
-        }
-
-        &::after {
-          left: 100%;
-        }
-      }
-
       &.jmg {
         background: linear-gradient(
           135deg,
